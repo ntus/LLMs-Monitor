@@ -24,3 +24,6 @@ applyControls();render();sync();setInterval(sync,2000);
 const notifier=GlanceSound.createNotifier({active:()=>G.changes.active(),onState:on=>{$('#sound-toggle').textContent=on?'♪ 通知音 ON':'♪ 通知音を有効にする';$('#sound-toggle').setAttribute('aria-pressed',String(on))}});
 $('#sound-toggle').onclick=async()=>{if(notifier.isEnabled())notifier.disable();else try{await notifier.enable()}catch(e){toast(e.message)}};
 window.addEventListener('pagehide',()=>notifier.disable());
+
+$('#sound-test').onclick=async()=>{try{await notifier.test();toast('試聴音を再生しました。聞こえない場合は音量・タブのミュート・出力先を確認してください。')}catch(e){toast(e.message)}};
+$('#sound-volume').oninput=()=>notifier.setVolume(Number($('#sound-volume').value)/100);

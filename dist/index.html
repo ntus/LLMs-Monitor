@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#11151e"><title>各種トークン残量</title><link rel="stylesheet" href="style.css"></head>
 <body><header><a class="brand" href="./"><span class="brandmark">◔</span> 各種トークン残量<span class="brand-sub">AI USAGE MONITOR</span></a><span class="local">ブラウザ内だけに保存</span></header>
-<main><div class="page-title"><div><p class="eyebrow">AI USAGE MONITOR</p><h1>各種トークン残量</h1><p class="sub">ログイン中の利用枠を、ひと目で。</p></div><div class="top-actions"><button id="sound-toggle" aria-pressed="false">♪ 通知音を有効にする</button><button id="refresh">↻ 更新</button></div></div>
-<p class="sound-help">通知音は最初にボタンで有効にしてください（短い試聴音が鳴ります）。変更した数値の点滅中だけ、1秒ごとに小さく鳴ります。</p>
+<main><div class="page-title"><div><p class="eyebrow">AI USAGE MONITOR</p><h1>各種トークン残量</h1><p class="sub">ログイン中の利用枠を、ひと目で。</p></div><div class="top-actions"><button id="sound-toggle" aria-pressed="false">♪ 通知音を有効にする</button><button id="sound-test">▶ 音をテスト</button><label class="sound-volume">音量 <input id="sound-volume" type="range" min="1" max="50" value="18" aria-label="通知音量"></label><button id="refresh">↻ 更新</button></div></div>
+<p class="sound-help">「音をテスト」で試聴・有効化できます。聞こえない場合はタブのミュートと端末の出力先・音量をご確認ください。通知は数値が変わったときだけ鳴ります。</p>
 <div id="connection" class="notice"><span class="notice-icon">↗</span><div><strong>ブラウザを接続して、モニターを開始</strong><p>拡張機能が公式の使用量画面を読み取ります。ログイン情報の入力は各サービスの公式画面で行います。</p></div><a href="#setup" class="button primary">接続方法</a></div>
 <section id="cards" class="cards" aria-label="各サービスの残り使用量"></section>
 <p class="disclaimer">ChatGPTの通常のChat残量は、この使用量画面では取得できません。Work / Codexの共通枠を別項目として表示します。</p>
