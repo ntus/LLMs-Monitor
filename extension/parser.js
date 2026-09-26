@@ -12,6 +12,29 @@ function parse(doc,service){
  if(service==='chatgpt')for(const e of doc.querySelectorAll('progress,[role="progressbar"]')){const l=label(e,doc);if(!/残りの利用可能量|remaining/i.test(l))continue;const text=vicinity(e,true);const v=remaining(text);if(v===null)continue;const weekly=/週|week/i.test(text),five=/5\s*時間|5.hour|five.hour/i.test(text);if(!weekly&&!five||weekly&&five)continue;windows.push({label:weekly?'Work / Codex · 週間':'Work / Codex · 5時間',remaining:v,reset:reset(text)});}
  return windows.slice(0,6);
 }
-root.GlanceParser={parse,used,remaining,reset};
+function creditValue(text){
+ const t=clean(text),jp=t.match(/([$＄€£￥¥][\d,.]+)\s*中\s*([$＄€£￥¥][\d,.]+)\s*が?残/),en=t.match(/([$€£￥¥][\d,.]+)\s*(?:remaining|left)/i);
+ if(jp)return `残り ${jp[2]} / ${jp[1]}`;
+ if(en)return `残り ${en[1]}`;
+ const u=used(t);if(u!==null)return `残り ${Math.round(u)}%`;
+ const m=t.match(/[$＄€£￥¥]\s*[\d,.]+/);return m?m[0]:'未取得';
+}
+function parseExtras(doc,service){
+ if(service!=='claude'&&service!=='chatgpt')return [];
+ const targets=service==='claude'?[
+  [/^(クラウドセッションクレジット|Cloud session credits)$/i,'クラウドセッションクレジット'],
+  [/^(プロジェクトセットアップクレジット|Project setup credits)$/i,'プロジェクトセットアップクレジット'],
+  [/^(使用クレジット|Usage credits|Extra usage)$/i,'使用クレジット']
+ ]:[[/^(クレジット|Credits)$/i,'クレジット']];
+ const headings=Array.from(doc.querySelectorAll('h1,h2,h3,h4,[role="heading"]'));
+ return targets.map(([pattern,name])=>{const index=headings.findIndex(h=>pattern.test(clean(h.textContent)));if(index<0)return {label:name,value:'未取得',detail:''};
+  const h=headings[index],range=doc.createRange();range.setStartAfter(h);if(headings[index+1])range.setEndBefore(headings[index+1]);else range.setEndAfter(h.parentElement);
+  const content=range.cloneContents(),text=clean(content.textContent),value=creditValue(text);
+  const expiry=text.match(/(?:\d{1,4}年)?\s*\d{1,2}月\d{1,2}日[^。]{0,45}?(?:期限切れ|失効|期限)|本日[^。]{0,35}?(?:失効|期限切れ)|(?:expires?|expires? on)[^。]{0,60}/i)?.[0]||'';
+  const toggle=content.querySelector('[role="switch"]'),disabled=toggle?.getAttribute('aria-checked')==='false';
+  return {label:name,value,detail:[disabled?'無効':null,expiry].filter(Boolean).join(' · ')};
+ }).filter(e=>e.value!=='未取得'||service==='claude');
+}
+root.GlanceParser={parse,used,remaining,reset,parseExtras,creditValue};
 if(typeof module!=='undefined')module.exports=root.GlanceParser;
 })(globalThis);

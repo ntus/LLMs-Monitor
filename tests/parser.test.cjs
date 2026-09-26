@@ -1,4 +1,5 @@
 const {test}=require('node:test');const assert=require('node:assert/strict');const P=require('../extension/parser.js');
+test('クレジットは総額を残高に取り違えず、金額と割合を区別',()=>{assert.equal(P.creditValue('$100中$39が残っています'),'残り $39 / $100');assert.equal(P.creditValue('24% 使用済み'),'残り 76%');assert.equal(P.creditValue('$0 プランの上限に達した場合'),'$0');assert.equal(P.creditValue('$12.50 remaining'),'残り $12.50');assert.equal(P.creditValue('読み込み中'),'未取得');});
 function meter(label,value,text,parents=[]){let parent=null;for(const t of parents.toReversed())parent={innerText:t,parentElement:parent};return {getAttribute:k=>({'aria-label':label,'aria-valuenow':value,'aria-valuetext':text}[k]??null),parentElement:parent};}
 function doc(elements=[],selectors={}){return {querySelectorAll:()=>elements,querySelector:s=>selectors[s],getElementById:()=>null};}
 test('使用済みから残りへの変換・0と100・不正値',()=>{assert.equal(P.used('7% 使用済み'),93);assert.equal(P.used('0% used'),100);assert.equal(P.used('100% 使用中'),0);assert.equal(P.used('101% used'),null);assert.equal(P.used('24%'),null);assert.equal(P.remaining('残り0%'),0);assert.equal(P.remaining('71% remaining'),71);});
