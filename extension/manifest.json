@@ -1,0 +1,11 @@
+{
+ "manifest_version":3,"name":"Glance · AI残量モニター","version":"1.0.0",
+ "description":"公式の使用量画面を読み取り、ChatGPT・Claude・Geminiに小さな残量パネルを表示します。",
+ "permissions":["storage","alarms"],
+ "host_permissions":["https://chatgpt.com/*","https://claude.ai/*","https://gemini.google.com/*"],
+ "background":{"service_worker":"background.js"},
+ "action":{"default_title":"Glance モニターを開く"},
+ "content_scripts":[{"matches":["https://chatgpt.com/*","https://claude.ai/*","https://gemini.google.com/*"],"js":["shared.js","parser.js","content.js"],"run_at":"document_idle"}],
+ "externally_connectable":{"matches":["https://ai-usage-glance.ntusnog.chatgpt.site/*","http://localhost:4173/*","http://127.0.0.1:4173/*"]},
+ "content_security_policy":{"extension_pages":"script-src 'self'; object-src 'none'"}
+}

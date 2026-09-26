@@ -1,0 +1,20 @@
+(()=>{
+const service=location.hostname==='chatgpt.com'?'chatgpt':location.hostname==='claude.ai'?'claude':'gemini';
+let lastSignature='',pending=false,lastRead=0;
+const host=document.createElement('div');host.id='glance-ai-usage-panel';const shadow=host.attachShadow({mode:'closed'});
+const style=document.createElement('style');style.textContent=`:host{all:initial!important;position:fixed!important;z-index:2147483646!important;display:block;font:13px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;color:#eef2fa!important}*{box-sizing:border-box}.panel{width:246px;max-width:calc(100vw - 32px);padding:15px;border:1px solid #ffffff30;border-radius:14px;background:rgba(17,23,35,var(--alpha,.8));backdrop-filter:blur(18px);box-shadow:0 10px 35px #0003;line-height:1.5}.widget-title{display:flex;justify-content:space-between;font-weight:600}.widget-title span{font-size:10px;color:#b8c6dd}.widget-row{margin-top:12px}.widget-line{display:flex;justify-content:space-between}.widget-line b{font-weight:500}.track{height:4px;background:#ffffff20;margin-top:5px;border-radius:3px;overflow:hidden}.track i{display:block;height:100%;background:var(--color)}.widget-meta,.widget-foot{font-size:10px;color:#b5c1d7;margin-top:4px}.widget-foot{margin-top:12px}.actions{display:flex;justify-content:space-between;margin-top:12px}button{border:0;color:#cedbff;background:transparent;cursor:pointer;font:inherit;font-size:11px;padding:3px}button:focus-visible{outline:2px solid #b8c8ff}.collapsed .rows{display:none}`;
+const panel=document.createElement('div');panel.className='panel';const rows=document.createElement('div');rows.className='rows';const actions=document.createElement('div');actions.className='actions';const open=document.createElement('button');open.textContent='使用量 / ログイン ↗';const collapse=document.createElement('button');collapse.textContent='−';collapse.setAttribute('aria-label','パネルを折りたたむ');actions.append(open,collapse);panel.append(rows,actions);shadow.append(style,panel);document.documentElement.append(host);
+open.onclick=()=>window.open(Glance.services[service].url,'_blank','noopener');collapse.onclick=()=>{panel.classList.toggle('collapsed');collapse.textContent=panel.classList.contains('collapsed')?'+':'−';};
+async function draw(){try{const r=await chrome.runtime.sendMessage({type:'GET'});if(!r)return;rows.innerHTML=Glance.widget(r.data);host.style.setProperty('display',r.settings.enabled?'block':'none','important');const pos=r.settings.position;for(const side of ['top','bottom','left','right'])host.style.setProperty(side,pos.includes(side)?'16px':'auto','important');panel.style.setProperty('--alpha',r.settings.opacity/100)}catch{host.remove();clearInterval(interval)}}
+function onUsage(){return service==='chatgpt'?location.pathname==='/settings/usage':service==='gemini'?location.pathname==='/usage':location.hash==='#settings/usage'||location.pathname==='/settings/usage';}
+async function read(){pending=false;if(Date.now()-lastRead<1500)return;lastRead=Date.now();
+ const loginControls=Array.from(document.querySelectorAll('button,a')).filter(e=>e.getClientRects().length).some(e=>/^(ログイン|ログインする|Sign in|Log in)$/i.test((e.textContent||'').trim()));
+ const login=/\/(login|auth|signin)(\/|$)/i.test(location.pathname)||loginControls;
+ if(!onUsage()&&!login)return;
+ const windows=login?[]:GlanceParser.parse(document,service),status=login?'login':windows.length?'ready':'unavailable';
+ const sig=JSON.stringify({windows,status,path:location.href});if(sig===lastSignature)return;lastSignature=sig;
+ try{await chrome.runtime.sendMessage({type:'SNAPSHOT',service,windows,status})}catch{}
+}
+const observer=new MutationObserver(()=>{if(!pending){pending=true;setTimeout(read,1800)}});observer.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['aria-valuenow','aria-valuetext']});
+window.addEventListener('hashchange',()=>{lastSignature='';read()});const interval=setInterval(draw,5000);draw();setTimeout(read,2500);
+})();
