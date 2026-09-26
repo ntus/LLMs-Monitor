@@ -19,6 +19,7 @@ async function handle(message,sender,external){
  await setService(id,{windows:message.status==='login'?[]:windows,status:['ready','login','unavailable'].includes(message.status)?message.status:'unavailable',capturedAt:Date.now(),note:message.status==='login'?'公式サイトでログインしてください。':windows.length?'公式画面から取得。':'数値を読み取れません。公式画面を確認してください。'});return {ok:true};}
  // Content scripts can only read state; no arbitrary webpages may open tabs or change settings.
  if(message.type==='GET'&&(!external||trusted))return state();
+ if(message.type==='OPEN_CURRENT'&&!external&&HOSTS[message.service]&&origin===`https://${HOSTS[message.service]}`)return openService(message.service);
  if(!trusted)throw Error('このページからの操作は許可されていません');
  if(message.type==='OPEN')return openService(message.service);
  if(message.type==='REFRESH')return refresh();

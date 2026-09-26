@@ -17,5 +17,5 @@ $('#refresh').onclick=async()=>{try{await rpc({type:'REFRESH'});toast('専用の
 $('#connect-form').onsubmit=async e=>{e.preventDefault();extensionId=$('#extension-id').value.trim();try{const r=await rpc({type:'GET'});if(!r)throw Error('接続できません');localStorage.setItem('glance-extension-id',extensionId);await sync();toast('接続しました')}catch(e){toast(e.message)}};
 $('#extension-id').value=extensionId;$('#opacity').oninput=saveSettings;$('#position').onchange=saveSettings;$('#enabled').onchange=saveSettings;
 $('#pip').onclick=async()=>{try{if(!('documentPictureInPicture'in window)){toast('このブラウザでは最前面の小窓に未対応です。AIサイト内のパネルをご利用ください。');return}pipWindow=await window.documentPictureInPicture.requestWindow({width:290,height:330});const link=pipWindow.document.createElement('link');link.rel='stylesheet';link.href=new URL('style.css',location.href).href;pipWindow.document.head.append(link);pipWindow.document.title='Glance';pipWindow.document.body.className='pip-body';const panel=pipWindow.document.createElement('div');panel.className='widget';panel.innerHTML=G.widget(data);pipWindow.document.body.append(panel)}catch(e){toast('小窓を開けませんでした：'+e.message)}};
-if(internal)$('#setup').hidden=true;
+if(internal)$('#setup').style.display='none';
 applyControls();render();sync();setInterval(sync,5000);
