@@ -20,3 +20,7 @@ $('#extension-id').value=extensionId;$('#opacity').oninput=saveSettings;$('#posi
 $('#pip').onclick=async()=>{try{if(!('documentPictureInPicture'in window)){toast('このブラウザでは最前面の小窓に未対応です。AIサイト内のパネルをご利用ください。');return}pipWindow=await window.documentPictureInPicture.requestWindow({width:330,height:600});const link=pipWindow.document.createElement('link');link.rel='stylesheet';link.href=new URL('style.css',location.href).href;pipWindow.document.head.append(link);pipWindow.document.title='各種トークン残量';pipWindow.document.body.className='pip-body';const panel=pipWindow.document.createElement('div');panel.className='widget';panel.innerHTML=G.widget(data);pipWindow.document.body.append(panel)}catch(e){toast('小窓を開けませんでした：'+e.message)}};
 if(internal)$('#setup').style.display='none';
 applyControls();render();sync();setInterval(sync,2000);
+
+const notifier=GlanceSound.createNotifier({active:()=>G.changes.active(),onState:on=>{$('#sound-toggle').textContent=on?'♪ 通知音 ON':'♪ 通知音を有効にする';$('#sound-toggle').setAttribute('aria-pressed',String(on))}});
+$('#sound-toggle').onclick=async()=>{if(notifier.isEnabled())notifier.disable();else try{await notifier.enable()}catch(e){toast(e.message)}};
+window.addEventListener('pagehide',()=>notifier.disable());

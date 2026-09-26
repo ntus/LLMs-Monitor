@@ -10,7 +10,8 @@
   function clear(id){for(const map of [last,until])for(const key of map.keys())if(JSON.parse(key)[0]===id)map.delete(key);}
   function deadline(id,key,index,now=Date.now()){const t=until.get(JSON.stringify([id,key,index]))||0;return t>now?t:0;}
   function next(now=Date.now()){return Math.min(...Array.from(until.values()).filter(t=>t>now));}
-  return {observe,clear,deadline,next};
+  function active(now=Date.now()){return Number.isFinite(next(now));}
+  return {observe,clear,deadline,next,active};
  }
  root.GlanceChanges={createTracker};if(typeof module!=='undefined')module.exports=root.GlanceChanges;
 })(globalThis);
