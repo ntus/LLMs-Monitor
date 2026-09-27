@@ -1,0 +1,3 @@
+const {test}=require('node:test');const assert=require('node:assert/strict');const H=require('../extension/history.js');
+test('利用枠ごとに100件まで保存し、元データを変更しない',()=>{let h={};for(let i=0;i<105;i++)h=H.record(h,'claude',[{label:'現在のセッション',remaining:100-i},{label:'週間',remaining:90}],1000+i);assert.equal(h.claude['現在のセッション'].length,100);assert.equal(h.claude['現在のセッション'][0].capturedAt,1005);assert.equal(h.claude['週間'].length,100);});
+test('同じ取得時刻の重複を記録しない',()=>{let h=H.record({},'gemini',[{label:'週間',remaining:80}],1000);h=H.record(h,'gemini',[{label:'週間',remaining:80}],1000);assert.equal(h.gemini['週間'].length,1);});

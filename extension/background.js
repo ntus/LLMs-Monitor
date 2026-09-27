@@ -1,13 +1,14 @@
-importScripts('state.js');
+importScripts('state.js','history.js');
 const URLS={chatgpt:'https://chatgpt.com/settings/usage?tab=overview',claude:'https://claude.ai/new#settings/usage',gemini:'https://gemini.google.com/usage'};
 const HOSTS={chatgpt:'chatgpt.com',claude:'claude.ai',gemini:'gemini.google.com'};
 const ALLOWED=new Set(['https://ai-usage-glance.ntusnog.chatgpt.site','http://localhost:4173','http://127.0.0.1:4173']);
 let queue=Promise.resolve();
 function serialize(fn){const p=queue.then(fn);queue=p.catch(()=>{});return p;}
-async function state(){return {settings:{opacity:80,position:'bottom-right',enabled:true,...(await chrome.storage.local.get('settings')).settings},data:(await chrome.storage.session.get('data')).data||{}};}
+async function state(){const data=(await chrome.storage.session.get('data')).data||{},history=(await chrome.storage.local.get('history')).history||{};for(const [id,s]of Object.entries(data))s.history=history[id]||{};return {settings:{opacity:80,position:'bottom-right',enabled:true,...(await chrome.storage.local.get('settings')).settings},data};}
 async function managed(){return (await chrome.storage.session.get('managed')).managed||{}};
 async function setService(id,snapshot){const {data={}}=await chrome.storage.session.get('data');data[id]=snapshot;await chrome.storage.session.set({data});}
 async function beginRefresh(id){const {data={}}=await chrome.storage.session.get('data');await setService(id,GlanceState.loading(data[id]));}
+async function recordHistory(id,windows,capturedAt){const saved=await chrome.storage.local.get('history');await chrome.storage.local.set({history:GlanceHistory.record(saved.history||{},id,windows,capturedAt)});}
 function usageURL(id,url){try{const u=new URL(url);return u.hostname===HOSTS[id]&&(id==='chatgpt'?u.pathname==='/settings/usage':id==='gemini'?u.pathname==='/usage':u.pathname==='/settings/usage'||u.hash==='#settings/usage');}catch{return false}}
 async function openService(id){if(!URLS[id])throw Error('サービスが見つかりません');const m=await managed();if(m[id]){try{const t=await chrome.tabs.get(m[id]);await chrome.tabs.update(t.id,{active:true,...(!usageURL(id,t.url)?{url:URLS[id]}:{})});return {ok:true};}catch{delete m[id]}}
  const t=await chrome.tabs.create({url:URLS[id],active:true});m[id]=t.id;await chrome.storage.session.set({managed:m});await setService(id,{status:'loading',windows:[],capturedAt:null,note:'公式画面を読み込み中です。'});return {ok:true};}
@@ -19,15 +20,15 @@ async function handle(message,sender,external){
  if(message.type==='SNAPSHOT'&&!external){const id=message.service,m=await managed();if(!HOSTS[id]||sender.tab?.id!==m[id]||origin!==`https://${HOSTS[id]}`)return {ok:false};
  const windows=(message.windows||[]).filter(w=>typeof w.remaining==='number'&&Number.isFinite(w.remaining)&&w.remaining>=0&&w.remaining<=100).slice(0,6).map(w=>({label:String(w.label).slice(0,80),remaining:w.remaining,reset:String(w.reset||'').slice(0,150)}));
  const extras=(Array.isArray(message.extras)?message.extras:[]).slice(0,8).filter(e=>typeof e.label==='string'&&typeof e.value==='string').map(e=>({label:e.label.slice(0,80),value:e.value.slice(0,160),detail:String(e.detail||'').slice(0,180)}));
- const {data={}}=await chrome.storage.session.get('data');
- await setService(id,GlanceState.accept(data[id],{windows,extras,status:message.status==='login'?'login':windows.length||extras.length?'ready':'unavailable',note:message.status==='login'?'公式サイトでログインしてください。':'公式画面から取得。'}));return {ok:true};}
+ const {data={}}=await chrome.storage.session.get('data'),now=Date.now(),plan=typeof message.plan==='string'?message.plan.slice(0,80):'未取得';
+ const accepted=GlanceState.accept(data[id],{windows,extras,plan,status:message.status==='login'?'login':windows.length||extras.length?'ready':'unavailable',note:message.status==='login'?'公式サイトでログインしてください。':'公式画面から取得。'},now);await setService(id,accepted);if(accepted.status==='ready')await recordHistory(id,windows,now);return {ok:true};}
  // Content scripts can only read state; no arbitrary webpages may open tabs or change settings.
  if(message.type==='GET'&&(!external||trusted))return state();
  if(message.type==='OPEN_CURRENT'&&!external&&HOSTS[message.service]&&origin===`https://${HOSTS[message.service]}`)return openService(message.service);
  if(!trusted)throw Error('このページからの操作は許可されていません');
  if(message.type==='OPEN')return openService(message.service);
  if(message.type==='REFRESH')return refresh();
- if(message.type==='SETTINGS'){const s=message.settings||{},settings={opacity:Math.min(100,Math.max(35,Number(s.opacity)||80)),position:['bottom-right','bottom-left','top-right','top-left'].includes(s.position)?s.position:'bottom-right',enabled:s.enabled!==false};await chrome.storage.local.set({settings});return {ok:true};}
+ if(message.type==='SETTINGS'){const s=message.settings||{},settings={opacity:Math.min(100,Math.max(15,Number(s.opacity)||80)),position:['bottom-right','bottom-left','top-right','top-left'].includes(s.position)?s.position:'bottom-right',enabled:s.enabled!==false};await chrome.storage.local.set({settings});return {ok:true};}
  throw Error('未対応の操作');
 }
 function listener(external){return (m,s,reply)=>{serialize(()=>handle(m,s,external)).then(reply,e=>reply({error:e.message}));return true;};}

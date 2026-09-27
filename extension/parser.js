@@ -35,6 +35,14 @@ function parseExtras(doc,service){
   return {label:name,value,detail:[disabled?'無効':null,expiry].filter(Boolean).join(' · ')};
  }).filter(e=>e.value!=='未取得'||service==='claude');
 }
-root.GlanceParser={parse,used,remaining,reset,parseExtras,creditValue};
+function parsePlan(doc,service){
+ const exact={chatgpt:/^(Free|Go|Plus|Pro|Business|Enterprise|Edu|Team)$/i,claude:/^(Free|Pro|Max(?:\s*(?:5x|20x))?|Team|Enterprise)$/i,gemini:/^(Free|Google AI Plus|Google AI Pro|Google AI Ultra|AI Plus|AI Pro|AI Ultra|PRO|ULTRA)$/i}[service];
+ const candidates=[];
+ if(service==='gemini')candidates.push(...doc.querySelectorAll('.tier-pill,[class*="tier-pill"]'));
+ candidates.push(...doc.querySelectorAll('[data-testid*="plan"],[class*="plan"],button,[role="button"],span'));
+ for(const el of candidates){const raw=clean(el.textContent),aria=clean(el.getAttribute?.('aria-label'));for(const value of [raw,aria]){if(exact.test(value))return value.toUpperCase()==='PRO'&&service==='gemini'?'Google AI Pro':value;const m=value.match(/(?:^|\s)(Free|Go|Plus|Pro|Business|Enterprise|Edu|Team|Max\s*(?:5x|20x)|Google AI (?:Plus|Pro|Ultra))(?:\s|$)/i);if(m&&value.length<90)return m[1];}}
+ return '未取得';
+}
+root.GlanceParser={parse,used,remaining,reset,parseExtras,creditValue,parsePlan};
 if(typeof module!=='undefined')module.exports=root.GlanceParser;
 })(globalThis);

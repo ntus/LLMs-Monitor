@@ -11,10 +11,10 @@ async function read(){pending=false;if(Date.now()-lastRead<1500)return;lastRead=
  const loginControls=Array.from(document.querySelectorAll('button,a')).filter(e=>e.getClientRects().length).some(e=>/^(ログイン|ログインする|Sign in|Log in)$/i.test((e.textContent||'').trim()));
  const login=/\/(login|auth|signin)(\/|$)/i.test(location.pathname)||loginControls;
  if(!onUsage()&&!login)return;
- const windows=login?[]:GlanceParser.parse(document,service),extras=login||!onUsage()?[]:GlanceParser.parseExtras(document,service),status=login?'login':windows.length?'ready':'unavailable';
+ const windows=login?[]:GlanceParser.parse(document,service),extras=login||!onUsage()?[]:GlanceParser.parseExtras(document,service),plan=login?'未取得':GlanceParser.parsePlan(document,service),status=login?'login':windows.length?'ready':'unavailable';
  if(status==='unavailable'&&Date.now()-startedAt<45000)return;
- const sig=JSON.stringify({windows,extras,status,path:location.href});if(sig===lastSignature)return;lastSignature=sig;
- try{await chrome.runtime.sendMessage({type:'SNAPSHOT',service,windows,extras,status})}catch{}
+ const sig=JSON.stringify({windows,extras,plan,status,path:location.href});if(sig===lastSignature)return;lastSignature=sig;
+ try{await chrome.runtime.sendMessage({type:'SNAPSHOT',service,windows,extras,plan,status})}catch{}
 }
 const observer=new MutationObserver(()=>{if(!pending){pending=true;setTimeout(read,1800)}});observer.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['aria-valuenow','aria-valuetext']});
 window.addEventListener('hashchange',()=>{lastSignature='';read()});const interval=setInterval(()=>{draw();read()},2000);draw();setTimeout(read,2500);
