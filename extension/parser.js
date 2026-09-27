@@ -19,7 +19,17 @@ function creditValue(text){
  const u=used(t);if(u!==null)return `残り ${Math.round(u)}%`;
  const m=t.match(/[$＄€£￥¥]\s*[\d,.]+/);return m?m[0]:'未取得';
 }
-function expiryTime(text){const t=clean(text),iso=t.match(/20\d\d[-/]\d{1,2}[-/]\d{1,2}(?:[T\s]\d{1,2}:\d{2})?/i)?.[0];if(iso){const time=new Date(iso.replace(/\//g,'-')).getTime();return Number.isNaN(time)?null:time;}const jp=t.match(/(?:(20\d\d)年)?\s*(\d{1,2})月(\d{1,2})日(?:\s*(\d{1,2}):(\d{2}))?/);if(!jp)return null;const now=new Date(),year=jp[1]?Number(jp[1]):now.getFullYear();let date=new Date(year,Number(jp[2])-1,Number(jp[3]),Number(jp[4]||23),Number(jp[5]||59));if(!jp[1]&&date.getTime()<now.getTime()-86400000)date=new Date(year+1,Number(jp[2])-1,Number(jp[3]),Number(jp[4]||23),Number(jp[5]||59));return date.getTime();}
+function expiryTime(text){const t=clean(text),iso=t.match(/20\d\d[-/]\d{1,2}[-/]\d{1,2}(?:[T\s]\d{1,2}:\d{2})?/i)?.[0];if(iso){const time=new Date(iso.replace(/\//g,'-')).getTime();return Number.isNaN(time)?null:time;}const parts=t.match(/(?:(20\d\d)年)?\s*(\d{1,2})月(\d{1,2})日(?:\s*(\d{1,2}):(\d{2}))?/)||t.match(/(?:(20\d\d)[-/])?(\d{1,2})\/(\d{1,2})(?:\s+(\d{1,2}):(\d{2}))?/);if(!parts)return null;const now=new Date(),year=parts[1]?Number(parts[1]):now.getFullYear();let date=new Date(year,Number(parts[2])-1,Number(parts[3]),Number(parts[4]||23),Number(parts[5]||59));if(!parts[1]&&date.getTime()<now.getTime()-86400000)date=new Date(year+1,Number(parts[2])-1,Number(parts[3]),Number(parts[4]||23),Number(parts[5]||59));return date.getTime();}
+function expiryDetail(time){if(!time)return '';const date=new Date(time),days=Math.max(0,Math.ceil((time-Date.now())/86400000)),left=time<=Date.now()?'期限切れ':days<=1?'24時間以内':`あと${days}日`;return `有効期限 ${date.toLocaleString('ja-JP',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false})}（${left}）`;}
+function chatGPTReset(doc){
+ const tabs=Array.from(doc.querySelectorAll?.('[role="tab"]')||[]),tab=tabs.find(t=>/(?:利用可能|Available)\s*\d+/i.test(clean(t.textContent))),label=clean(tab?.textContent),count=label.match(/(\d+)/)?.[1];
+ const panels=Array.from(doc.querySelectorAll?.('[role="tabpanel"]')||[]),linked=tab?.id&&panels.find(p=>p.getAttribute?.('aria-labelledby')===tab.id),panel=linked||panels.find(p=>/(?:available|利用可能)/i.test(`${p.id||''} ${p.getAttribute?.('aria-labelledby')||''}`));
+ const body=clean(doc.body?.innerText||doc.body?.textContent||''),section=/(?:利用上限のリセット|Usage limit resets?|Rate limit resets?)/i.test(body);
+ if(!tab&&!panel&&!section)return null;
+ const scope=panel||doc,expiryEl=scope.querySelector?.('[aria-label*="有効期限"],[title*="有効期限"],[aria-label*="Expires" i],[title*="Expires" i]'),expiryText=expiryEl?.getAttribute?.('aria-label')||expiryEl?.getAttribute?.('title')||expiryEl?.textContent||'',expiresAt=expiryTime(expiryText);
+ const texts=Array.from(scope.querySelectorAll?.('span,div,p')||[]).map(e=>clean(e.textContent)).filter(t=>t&&t.length<90),kind=texts.find(t=>/(?:完全リセット|週間.*5\s*時間|full reset|weekly.*5.hour)/i.test(t))||'';
+ return {label:'利用上限のリセット',value:count!=null?`利用可能 ${count}`:'有無を取得できません',detail:[kind,expiresAt?expiryDetail(expiresAt):Number(count)>0?'期限未取得':''].filter(Boolean).join(' · '),expiresAt};
+}
 function parseExtras(doc,service){
  if(service!=='claude'&&service!=='chatgpt')return [];
  const targets=service==='claude'?[
@@ -28,13 +38,15 @@ function parseExtras(doc,service){
   [/^(使用クレジット|Usage credits|Extra usage)$/i,'使用クレジット']
  ]:[[/^(クレジット|Credits)$/i,'クレジット']];
  const headings=Array.from(doc.querySelectorAll('h1,h2,h3,h4,[role="heading"]'));
- return targets.map(([pattern,name])=>{const index=headings.findIndex(h=>pattern.test(clean(h.textContent)));if(index<0)return {label:name,value:'未取得',detail:''};
+ const entries=targets.map(([pattern,name])=>{const index=headings.findIndex(h=>pattern.test(clean(h.textContent)));if(index<0)return {label:name,value:'未取得',detail:''};
   const h=headings[index],range=doc.createRange();range.setStartAfter(h);if(headings[index+1])range.setEndBefore(headings[index+1]);else range.setEndAfter(h.parentElement);
   const content=range.cloneContents(),text=clean(content.textContent),value=creditValue(text);
   const expiry=text.match(/(?:\d{1,4}年)?\s*\d{1,2}月\d{1,2}日[^。]{0,45}?(?:期限切れ|失効|期限)|本日[^。]{0,35}?(?:失効|期限切れ)|(?:expires?|expires? on)[^。]{0,60}/i)?.[0]||'',meter=content.querySelector('[role="meter"],[role="progressbar"]'),usedPercent=Number(meter?.getAttribute('aria-valuenow')),barPercent=Number.isFinite(usedPercent)?Math.max(0,Math.min(100,100-usedPercent)):null;
   const toggle=content.querySelector('[role="switch"]'),disabled=toggle?.getAttribute('aria-checked')==='false';
   return {label:name,value,detail:[disabled?'無効':null,expiry].filter(Boolean).join(' · '),expiresAt:expiryTime(expiry),barPercent};
  }).filter(e=>e.value!=='未取得'||service==='claude');
+ if(service==='chatgpt'){const reset=chatGPTReset(doc);if(reset)entries.push(reset);}
+ return entries;
 }
 function normalizePlan(value,service){
  const text=clean(value).replace(/[_-]+/g,' '),allowed={chatgpt:['Free','Go','Plus','Pro','Business','Enterprise','Edu','Team'],claude:['Free','Pro','Max 5x','Max 20x','Max','Team','Enterprise'],gemini:['Free','Google AI Plus','Google AI Pro','Google AI Ultra','AI Plus','AI Pro','AI Ultra','Pro','Ultra']}[service]||[];
@@ -60,6 +72,6 @@ function parsePlan(doc,service){
  const body=clean(doc.body?.innerText||'');const contextual=body.match(/(?:current plan|your plan|subscription plan|account plan|現在のプラン|契約プラン)\s*[:：]?\s*(?:ChatGPT\s*)?(Free|Go|Plus|Pro|Business|Enterprise|Edu|Team|Max\s*(?:5x|20x)|Google AI (?:Plus|Pro|Ultra))/i);
  return contextual?normalizePlan(contextual[1],service):'未取得';
 }
-root.GlanceParser={parse,used,remaining,reset,parseExtras,creditValue,expiryTime,parsePlan,normalizePlan,planFromObject};
+root.GlanceParser={parse,used,remaining,reset,parseExtras,creditValue,expiryTime,chatGPTReset,parsePlan,normalizePlan,planFromObject};
 if(typeof module!=='undefined')module.exports=root.GlanceParser;
 })(globalThis);
