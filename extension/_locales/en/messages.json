@@ -1,0 +1,5 @@
+{
+  "extensionName":{"message":"LLMs Token Usage Monitor"},
+  "extensionDescription":{"message":"Monitor plans and remaining usage for ChatGPT, Claude, and Gemini locally from their official pages."},
+  "actionTitle":{"message":"Open LLMs Token Usage Monitor"}
+}
