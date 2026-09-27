@@ -21,9 +21,17 @@ $('#pip').onclick=async()=>{try{if(!('documentPictureInPicture'in window)){toast
 if(internal)$('#setup').style.display='none';
 applyControls();render();sync();setInterval(sync,2000);
 
-const notifier=GlanceSound.createNotifier({active:()=>G.changes.active(),onState:on=>{$('#sound-toggle').textContent=on?'♪ 通知音 ON':'♪ 通知音を有効にする';$('#sound-toggle').setAttribute('aria-pressed',String(on))}});
-$('#sound-toggle').onclick=async()=>{if(notifier.isEnabled())notifier.disable();else try{await notifier.enable()}catch(e){toast(e.message)}};
+let soundDesired=true;
+try{soundDesired=localStorage.getItem('token-sound')!=='off'}catch{}
+function paintSound(on,waiting=false){$('#sound-toggle').innerHTML=`<span class="sound-dot"></span>${on?'通知音 ON'+(waiting?' · 操作待ち':''):'通知音 OFF'}`;$('#sound-toggle').setAttribute('aria-pressed',String(on))}
+const notifier=GlanceSound.createNotifier({active:()=>G.changes.active(),eventId:()=>G.changes.eventId(),onState:on=>paintSound(soundDesired,!on&&soundDesired)});
+paintSound(soundDesired,soundDesired);
+async function armSound(){if(!soundDesired||notifier.isEnabled())return;try{await notifier.enable()}catch(e){paintSound(true,true)}}
+function rememberSound(){try{localStorage.setItem('token-sound',soundDesired?'on':'off')}catch{}}
+$('#sound-toggle').onclick=async()=>{soundDesired=!soundDesired;rememberSound();if(!soundDesired){notifier.disable();paintSound(false)}else{paintSound(true,true);try{await notifier.enable()}catch(e){toast(e.message)}}};
+const firstGesture=e=>{if(e.target.closest('#sound-toggle,#sound-test'))return;armSound();document.removeEventListener('pointerdown',firstGesture,true);document.removeEventListener('keydown',firstGesture,true)};
+document.addEventListener('pointerdown',firstGesture,true);document.addEventListener('keydown',firstGesture,true);
 window.addEventListener('pagehide',()=>notifier.disable());
 
-$('#sound-test').onclick=async()=>{try{await notifier.test();toast('試聴音を再生しました。聞こえない場合は音量・タブのミュート・出力先を確認してください。')}catch(e){toast(e.message)}};
+$('#sound-test').onclick=async()=>{soundDesired=true;rememberSound();try{await notifier.test();paintSound(true);toast('試聴音を再生しました。聞こえない場合は音量・タブのミュート・出力先を確認してください。')}catch(e){toast(e.message)}};
 $('#sound-volume').oninput=()=>notifier.setVolume(Number($('#sound-volume').value)/100);
