@@ -1,4 +1,4 @@
-const G=Glance,$=s=>document.querySelector(s);let data={},settings={opacity:55,position:'bottom-right',enabled:true},extensionId='',connected=false,pipWindow=null,highlightTimer=null;
+const G=Glance,$=s=>document.querySelector(s);let data={},settings={opacity:55,position:'bottom-right',enabled:true,theme:'dark'},extensionId='',connected=false,pipWindow=null,highlightTimer=null,theme='dark';
 try{extensionId=localStorage.getItem('glance-extension-id')||'';settings={...settings,...JSON.parse(localStorage.getItem('glance-settings')||'{}')}}catch{}
 const internal=!!globalThis.chrome?.runtime?.id;
 function toast(text){$('#toast').textContent=text;$('#toast').style.display='block';clearTimeout(toast.timer);toast.timer=setTimeout(()=>$('#toast').style.display='none',5000)}
@@ -10,9 +10,9 @@ function render(){
  if(pipWindow&&!pipWindow.closed){pipWindow.document.querySelector('.widget').innerHTML=G.widget(data)}
  $('#connection').innerHTML=connected?'<span class="notice-icon">↗</span><div><strong>ブラウザに接続済み</strong><p>表示用タブを開いたままにせず、60秒ごとにバックグラウンドで確認します。取得できない数値は推定しません。</p></div><span class="badge">LOCAL CONNECTION</span>':'<span class="notice-icon">↗</span><div><strong>ブラウザを接続して、モニターを開始</strong><p>拡張機能が公式の使用量画面を読み取ります。ログイン情報は公式画面で入力してください。</p></div><a href="#setup" class="button primary">接続方法</a>';
 }
-async function sync(){try{const r=await rpc({type:'GET'});if(!r)throw Error('接続できません');data=r.data||{};G.observe(data);settings={...settings,...r.settings};connected=true;applyControls();render()}catch{connected=false;render()}}
+async function sync(){try{const r=await rpc({type:'GET'});if(!r)throw Error('接続できません');data=r.data||{};G.observe(data);settings={...settings,...r.settings};theme=settings.theme||theme;connected=true;applyControls();applyTheme();render()}catch{connected=false;render()}}
 function applyControls(){$('#opacity').value=settings.opacity;$('#opacity-value').textContent=settings.opacity+'%';$('#position').value=settings.position;$('#enabled').checked=settings.enabled}
-async function saveSettings(){settings={opacity:Number($('#opacity').value),position:$('#position').value,enabled:$('#enabled').checked};try{localStorage.setItem('glance-settings',JSON.stringify(settings))}catch{}applyControls();render();if(connected)try{await rpc({type:'SETTINGS',settings})}catch(e){toast(e.message)}}
+async function saveSettings(){settings={opacity:Number($('#opacity').value),position:$('#position').value,enabled:$('#enabled').checked,theme};try{localStorage.setItem('glance-settings',JSON.stringify(settings))}catch{}applyControls();render();if(connected)try{await rpc({type:'SETTINGS',settings})}catch(e){toast(e.message)}}
 $('#cards').addEventListener('click',async e=>{const id=e.target.closest('[data-service]')?.dataset.service;if(!id)return;if(!connected){toast('拡張機能を追加し、接続してください');$('#setup').scrollIntoView({behavior:'smooth'});return}try{await rpc({type:'OPEN',service:id});toast('公式画面を開きました。未ログインならログインしてください。');setTimeout(sync,2500)}catch(e){toast(e.message)}});
 $('#refresh').onclick=async()=>{try{await rpc({type:'REFRESH'});toast('公式サービスからバックグラウンド更新しました');await sync()}catch(e){toast(e.message)}};
 $('#connect-form').onsubmit=async e=>{e.preventDefault();extensionId=$('#extension-id').value.trim();try{const r=await rpc({type:'GET'});if(!r)throw Error('接続できません');localStorage.setItem('glance-extension-id',extensionId);await sync();toast('接続しました')}catch(e){toast(e.message)}};
@@ -36,8 +36,8 @@ window.addEventListener('pagehide',()=>notifier.disable());
 $('#sound-test').onclick=async()=>{soundDesired=true;rememberSound();try{await notifier.test();paintSound(true);toast('試聴音を再生しました。聞こえない場合は音量・タブのミュート・出力先を確認してください。')}catch(e){toast(e.message)}};
 $('#sound-volume').oninput=()=>notifier.setVolume(Number($('#sound-volume').value)/100);
 
-let theme='dark';try{theme=localStorage.getItem('token-theme')||'dark'}catch{}
+try{theme=localStorage.getItem('token-theme')||settings.theme||'dark'}catch{}
 function applyTheme(){document.documentElement.dataset.theme=theme;$('#theme-toggle').textContent=theme==='dark'?'☼ 標準':'◐ ダーク';$('#theme-toggle').setAttribute('aria-pressed',String(theme==='dark'))}
-$('#theme-toggle').onclick=()=>{theme=theme==='dark'?'standard':'dark';try{localStorage.setItem('token-theme',theme)}catch{}applyTheme()};applyTheme();
+$('#theme-toggle').onclick=async()=>{theme=theme==='dark'?'standard':'dark';settings.theme=theme;try{localStorage.setItem('token-theme',theme)}catch{}applyTheme();await saveSettings()};applyTheme();
 function paintFullscreen(){const on=!!document.fullscreenElement;$('#fullscreen').textContent=on?'⛶ 全画面を終了':'⛶ フルスクリーン';$('#fullscreen').setAttribute('aria-pressed',String(on))}
 $('#fullscreen').onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen()}catch(e){toast('フルスクリーン表示を開始できませんでした')}};document.addEventListener('fullscreenchange',paintFullscreen);paintFullscreen();
