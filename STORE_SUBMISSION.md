@@ -1,6 +1,6 @@
 # Store submission checklist
 
-`dist/LLMs-Token-Usage-Monitor-v1.3.0.zip` is the store submission package. Its manifest is localized as “LLMs トークン残量モニタ” in Japanese and “LLMs Token Usage Monitor” in English.
+`dist/LLMs-Token-Usage-Monitor-v1.3.1.zip` is the store submission package. Its manifest is localized as “LLMs トークン残量モニタ” in Japanese and “LLMs Token Usage Monitor” in English.
 
 Developer-mode-free installation requires review and publication through Chrome Web Store and Microsoft Edge Add-ons. Before submission:
 
