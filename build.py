@@ -4,6 +4,16 @@ root = Path(__file__).resolve().parent
 manifest = json.loads((root / 'extension' / 'manifest.json').read_text())
 version = manifest['version']
 version_css = 'style-v' + version.replace('.', '') + '.css'
+for legacy_css in (root / 'dist').glob('style-v*.css'):
+    if legacy_css.name != version_css: legacy_css.unlink()
+for name in ['index.html', 'privacy.html', 'style.css', version_css, 'changes.js', 'shared.js', 'sound.js', 'advice.js', 'app.js']:
+    shutil.copy2(root / 'extension' / name, root / 'dist' / name)
+for html_name in ['index.html', 'privacy.html']:
+    target = root / 'dist' / html_name
+    html = target.read_text()
+    for asset in ['style.css', version_css, 'changes.js', 'shared.js', 'sound.js', 'advice.js', 'app.js']:
+        html = html.replace(f'"{asset}"', f'"{asset}?v={version.replace(".", "")}"')
+    target.write_text(html)
 requirements = json.loads((root / 'spec' / 'requirements.json').read_text())
 checks = {
     'dist/index.html': [version, version_css, f'LLMs-Token-Usage-Monitor-v{version}.zip'],
@@ -20,8 +30,6 @@ for relative, needles in checks.items():
     for needle in needles:
         if needle not in source:
             raise SystemExit(f'{relative} is missing version contract: {needle}')
-for name in ['index.html', 'privacy.html', 'style.css', version_css, 'changes.js', 'shared.js', 'sound.js', 'advice.js', 'app.js']:
-    shutil.copy2(root / 'dist' / name, root / 'extension' / name)
 for name in ['README.md', 'PRIVACY.md']:
     shutil.copy2(root / name, root / 'extension' / name)
 package = root / 'dist' / f'LLMs-Token-Usage-Monitor-v{version}.zip'

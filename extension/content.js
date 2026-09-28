@@ -16,8 +16,8 @@ async function chatGPTPlan(){
 async function read(){pending=false;if(Date.now()-lastRead<1500)return;lastRead=Date.now();
  const loginControls=Array.from(document.querySelectorAll('button,a')).filter(e=>e.getClientRects().length).some(e=>/^(ログイン|ログインする|Sign in|Log in)$/i.test((e.textContent||'').trim()));
  const login=/\/(login|auth|signin)(\/|$)/i.test(location.pathname)||loginControls;
- if(!onUsage()&&!login)return;
- const windows=login?[]:GlanceParser.parse(document,service),extras=login||!onUsage()?[]:GlanceParser.parseExtras(document,service);let plan=login?'未取得':GlanceParser.parsePlan(document,service);if(!login&&plan==='未取得')plan=await chatGPTPlan();const status=login?'login':windows.length?'ready':'unavailable';
+ const usagePage=onUsage();if(!usagePage&&!login&&service!=='gemini')return;
+ const windows=login||!usagePage?[]:GlanceParser.parse(document,service),extras=login||!usagePage?[]:GlanceParser.parseExtras(document,service);let plan=login?'未取得':GlanceParser.parsePlan(document,service);if(!login&&plan==='未取得')plan=await chatGPTPlan();if(service==='gemini'&&!usagePage&&plan==='未取得')return;const status=login?'login':windows.length||extras.length||plan!=='未取得'?'ready':'unavailable';
  if(status==='unavailable'&&Date.now()-startedAt<45000)return;
  const sig=JSON.stringify({windows,extras,plan,status,path:location.href});if(sig===lastSignature)return;lastSignature=sig;
  try{await chrome.runtime.sendMessage({type:'SNAPSHOT',service,windows,extras,plan,status})}catch{}

@@ -5,7 +5,7 @@
  const compactHours=value=>value===null?'時刻未取得':value<1?`あと${Math.max(1,Math.ceil(value*60))}分`:value<48?`あと${Math.ceil(value)}時間`:`あと${Math.ceil(value/24)}日`;
  function rowsFor(service,window){const history=service?.history||{},direct=history[window?.label];if(Array.isArray(direct))return direct;const old=window?.label==='週間 (Work / Codex)'?history['Work / Codex · 週間']:window?.label==='Work / Codex · 週間'?history['週間 (Work / Codex)']:null;return Array.isArray(old)?old:[];}
  function stats(service,window,now=Date.now()){
-  const rows=rowsFor(service,window).filter(row=>Number.isFinite(Number(row?.capturedAt))&&pct(row?.remaining)!==null).sort((a,b)=>a.capturedAt-b.capturedAt).slice(-100),remaining=pct(window?.remaining),spanHours=rows.length>1?(rows.at(-1).capturedAt-rows[0].capturedAt)/3600000:0;
+  const rows=rowsFor(service,window).filter(row=>Number.isFinite(Number(row?.capturedAt))&&pct(row?.remaining)!==null).sort((a,b)=>a.capturedAt-b.capturedAt).slice(-10000),remaining=pct(window?.remaining),spanHours=rows.length>1?(rows.at(-1).capturedAt-rows[0].capturedAt)/3600000:0;
   let consumed=0;for(let i=1;i<rows.length;i++)consumed+=Math.max(0,Number(rows[i-1].remaining)-Number(rows[i].remaining));
   const burn=spanHours>=.25?consumed/spanHours:null,left=hours(window?.resetAt,now),projected=remaining!==null&&burn!==null&&left!==null?Math.max(0,remaining-burn*left):null;
   return {samples:rows.length,spanHours,consumed,burn,hoursLeft:left,remaining,projected};

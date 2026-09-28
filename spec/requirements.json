@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs トークン残量モニタ",
     "name_en": "LLMs Token Usage Monitor",
-    "version": "1.5.0",
-    "package_filename": "LLMs-Token-Usage-Monitor-v1.5.0.zip",
+    "version": "1.5.1",
+    "package_filename": "LLMs-Token-Usage-Monitor-v1.5.1.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -120,8 +120,8 @@
         "README 1.3.0"
       ],
       "acceptance_criteria": [
-        "v1.5.0の成果物名がLLMs-Token-Usage-Monitor-v1.5.0.zipである。",
-        "manifest.version、ダウンロードリンク、footer、STORE_SUBMISSIONの版番号が1.5.0で一致する。"
+        "v1.5.1の成果物名がLLMs-Token-Usage-Monitor-v1.5.1.zipである。",
+        "manifest.version、ダウンロードリンク、footer、STORE_SUBMISSIONの版番号が1.5.1で一致する。"
       ],
       "implementation_evidence": [
         { "path": "extension/manifest.json", "symbol": "version" },
@@ -461,7 +461,7 @@
       "introduced_in": "1.2.0",
       "status": "implemented",
       "priority": "MUST",
-      "normative_requirement": "Gemini契約planは構造化plan/tier情報、公式usage応答、公式subscriptions/settings画面の順で探索し、Google AI Plus、Pro、Ultraへ正規化する。Google One AI PremiumとGemini AdvancedはGoogle AI Proとして扱い、upgrade広告だけを契約として採用してはならない。",
+      "normative_requirement": "Gemini契約planは構造化plan/tier情報、公式usage応答、アカウント状態RPC、公式subscriptions/settings画面、同一account prefixのGoogle One現在契約画面の順で探索し、Google AI Plus、Pro、Ultraへ正規化する。Google One AI PremiumとGemini AdvancedはGoogle AI Proとして扱い、upgrade広告だけを契約として採用してはならない。",
       "source_requirements": [
         "README 1.2.0",
         "README 1.3.3",
@@ -471,10 +471,11 @@
       "acceptance_criteria": [
         "現行名と旧称を期待するplanへ変換する。",
         "構造化キーまたは契約文脈のない一般広告文字列を採用しない。",
-        "一時的未取得時は既知planを保持する。"
+        "一時的未取得時は既知planを保持する。",
+        "Gemini側で未取得でも同一/u/NのGoogle One現在契約からplanを取得する。"
       ],
       "implementation_evidence": [
-        { "path": "extension/fetchers.js", "symbol": "plan/geminiPlan/fetchGemini" },
+        { "path": "extension/fetchers.js", "symbol": "plan/geminiPlan/googleOnePlan/fetchGemini" },
         { "path": "extension/parser.js", "symbol": "normalizePlan/planFromObject/parsePlan" },
         { "path": "extension/state.js", "symbol": "plan retention" }
       ],
@@ -584,7 +585,7 @@
       "introduced_in": "1.2.0",
       "status": "implemented",
       "priority": "MUST",
-      "normative_requirement": "各service×利用枠について初回成功値をbaselineとして1件記録し、以後はremaining数値が変化した場合だけ新しい履歴を追加しなければならない。同値更新を追加してはならず、各利用枠で最新1000件を保持する。",
+      "normative_requirement": "各service×利用枠について初回成功値をbaselineとして1件記録し、以後はremaining数値が変化した場合だけ新しい履歴を追加しなければならない。同値更新を追加してはならず、各利用枠で最新10000件を保持する。",
       "source_requirements": [
         "User request: history textbox reflects changes only",
         "README 1.2.0",
@@ -596,14 +597,14 @@
         "最初のready値が1件記録される。",
         "同じremainingの再取得で件数が増えない。",
         "remaining変更ごとに1件だけ増える。",
-        "1001件目で最古行が除かれ1000件を維持する。"
+        "10001件目で最古行が除かれ10000件を維持する。"
       ],
       "implementation_evidence": [
         { "path": "extension/history.js", "symbol": "LIMIT/record" },
         { "path": "extension/background.js", "symbol": "recordHistory" }
       ],
       "test_evidence": [
-        { "type": "automated", "path": "tests/history.test.cjs", "cases": ["起動後の初回と数値が変化した時だけ記録する", "変化履歴は利用枠ごとに1000件まで保存し、元データを変更しない"] }
+        { "type": "automated", "path": "tests/history.test.cjs", "cases": ["起動後の初回と数値が変化した時だけ記録する", "変化履歴は利用枠ごとに10000件まで保存し、元データを変更しない", "起動時は直近10000件を3秒以内の予算で復元する"] }
       ]
     },
     {
@@ -612,7 +613,7 @@
       "introduced_in": "1.5.0",
       "status": "implemented",
       "priority": "MUST",
-      "normative_requirement": "ログアウト時も既存の最大1000件の履歴を削除してはならない。ただし比較baselineはリセットし、次回ログイン後の最初の成功値を新しいbaselineとして追加しなければならない。",
+      "normative_requirement": "ログアウト、browser再起動、extension更新時も既存の最大10000件の履歴を削除してはならない。ただし比較baselineはログアウト時にリセットし、次回ログイン後の最初の成功値を新しいbaselineとして追加しなければならない。",
       "source_requirements": [
         "v1.5.0 history retention requirement"
       ],
@@ -642,7 +643,7 @@
       ],
       "acceptance_criteria": [
         "新しい履歴が上に表示される。",
-        "表示件数/1000が表示される。",
+        "各枠の表示件数が表示され、起動時に全体の期間・件数・読込分析時間が表示される。",
         "旧labelの履歴が新labelへ統合され旧labelキーが除去される。"
       ],
       "implementation_evidence": [
@@ -740,7 +741,7 @@
       "introduced_in": "1.2.0",
       "status": "implemented",
       "priority": "MUST",
-      "normative_requirement": "fullscreenでは画面寸法に応じて3サービスの監視カードを一画面へ配置し、ページ全体の縦横スクロールを発生させず、主残量、週間残量、状態をviewport内に表示しなければならない。",
+      "normative_requirement": "fullscreenでは画面寸法に応じて3サービスの監視カードを一画面へ配置し、ページ全体の縦横スクロールを発生させず、主残量、週間残量、状態、各サービスのスクロール可能な変化履歴をviewport内に表示しなければならない。",
       "source_requirements": [
         "User request: fullscreen layout without scrolling",
         "README 1.3.1",
@@ -749,10 +750,11 @@
       "acceptance_criteria": [
         "1920x1080、1440x900、1366x768、1280x720でdocument scrollHeight<=innerHeightかつscrollWidth<=innerWidthである。",
         "各viewportで3カード、主残量、週間残量、状態badgeがviewport内にある。",
-        "低い画面では補助説明を隠しても主監視値を隠さない。"
+        "低い画面では補助説明を隠しても主監視値と変化履歴を隠さない。"
       ],
       "implementation_evidence": [
-        { "path": "extension/style.css", "symbol": "html:fullscreen rules and max-height media query" },
+        { "path": "extension/style.css", "symbol": "html:fullscreen base rules" },
+        { "path": "dist/style-v151.css", "symbol": "fullscreen history retention and compact history rules" },
         { "path": "dist/app.js", "symbol": "fullscreen control" }
       ],
       "test_evidence": [
@@ -804,7 +806,7 @@
       ],
       "implementation_evidence": [
         { "path": "dist/shared.js", "symbol": "percent/value/resetUrgent/extras" },
-        { "path": "dist/style-v150.css", "symbol": "compact status and warning styles" },
+        { "path": "dist/style-v151.css", "symbol": "compact status and warning styles" },
         { "path": "dist/app.js", "symbol": "connection rendering" }
       ],
       "test_evidence": [
@@ -880,7 +882,7 @@
       "implementation_evidence": [
         { "path": "dist/app.js", "symbol": "openFrontmost and pip button handler" },
         { "path": "dist/index.html", "symbol": "Document PiP constraint copy and normal popup button" },
-        { "path": "dist/style-v150.css", "symbol": "pip-pin and pip-body styles" },
+        { "path": "dist/style-v151.css", "symbol": "pip-pin and pip-body styles" },
         { "path": "extension/background.js", "symbol": "CLOSE_FLOAT message" }
       ],
       "test_evidence": [
@@ -916,7 +918,7 @@
       "introduced_in": "1.4.0",
       "status": "implemented",
       "priority": "SHOULD",
-      "normative_requirement": "最新100件までの週間枠変化履歴から消費速度とreset時予測残量を計算し、3件以上かつ6時間以上の履歴がある場合だけplan活用助言を行う。履歴不足時に上位または下位planを勧めてはならない。",
+      "normative_requirement": "起動時に読み込んだ最大10000件の週間枠変化履歴から消費速度とreset時予測残量を計算し、3件以上かつ6時間以上の履歴がある場合だけplan活用助言を行う。履歴不足時に上位または下位planを勧めてはならない。",
       "source_requirements": [
         "README 1.4.0"
       ],
@@ -974,7 +976,7 @@
       ],
       "implementation_evidence": [
         { "path": "dist/app.js", "symbol": "paintAdvice/startAdviceTimer" },
-        { "path": "dist/style-v150.css", "symbol": "advisor ticker rules" }
+        { "path": "dist/style-v151.css", "symbol": "advisor ticker rules" }
       ],
       "test_evidence": [
         { "type": "automated", "path": "tests/advice.test.cjs", "cases": ["サービス別助言とリセット権助言を一つの表示列へまとめる"] },
@@ -999,7 +1001,7 @@
       "implementation_evidence": [
         { "path": "dist/index.html", "symbol": "aria attributes and toast role" },
         { "path": "extension/style.css", "symbol": "focus-visible and reduced-motion rules" },
-        { "path": "dist/style-v150.css", "symbol": "reduced-motion warning/advisor rules" },
+        { "path": "dist/style-v151.css", "symbol": "reduced-motion warning/advisor rules" },
         { "path": "dist/app.js", "symbol": "gauge aria-label" }
       ],
       "test_evidence": [
@@ -1012,7 +1014,7 @@
       "introduced_in": "1.0.0",
       "status": "implemented",
       "priority": "MUST",
-      "normative_requirement": "plan、usage snapshot、最大1000件の変化履歴、選択中Claude organization ID、表示設定はchrome.storage.localだけへ保存し、NT MicroSystems,Inc.または第三者サーバーへアップロード、販売、広告利用、profilingしてはならない。prompt送信、credit購入、reset権行使、account設定変更を自動実行してはならない。",
+      "normative_requirement": "plan、usage snapshot、利用枠ごとに最大10000件の変化履歴、選択中Claude organization ID、表示設定はchrome.storage.localだけへ保存し、NT MicroSystems,Inc.または第三者サーバーへアップロード、販売、広告利用、profilingしてはならない。prompt送信、credit購入、reset権行使、account設定変更を自動実行してはならない。",
       "source_requirements": [
         "README data and permissions",
         "PRIVACY.md"
@@ -1162,7 +1164,7 @@
       "introduced_in": "1.5.0",
       "status": "implemented",
       "priority": "MUST",
-      "normative_requirement": "v1.5.0 packageはstyle-v150.css、offscreen.html、offscreen.js、locales、icons、privacy/readmeを含み、秘密鍵、PEM、environment file、Git metadata、raw credential fixtureを含めてはならない。",
+      "normative_requirement": "v1.5.1 packageはstyle-v151.css、offscreen.html、offscreen.js、locales、icons、privacy/readmeを含み、秘密鍵、PEM、environment file、Git metadata、raw credential fixtureを含めてはならない。",
       "source_requirements": [
         "v1.5.0 offscreen and release package requirement"
       ],
@@ -1187,7 +1189,7 @@
       "introduced_in": "1.0.0",
       "status": "implemented",
       "priority": "MUST",
-      "normative_requirement": "公開HTTPS privacy pageは取得項目、ChatGPT tokenの一時利用、local保存、履歴1000件とlogout後保持、companionへ返すfield、削除方法、第三者送信・広告利用なしを説明し、製品画面から到達可能でなければならない。",
+      "normative_requirement": "公開HTTPS privacy pageは取得項目、ChatGPT tokenの一時利用、local保存、履歴10000件とlogout・更新後保持、companionへ返すfield、削除方法、第三者送信・広告利用なしを説明し、製品画面から到達可能でなければならない。",
       "source_requirements": [
         "STORE_SUBMISSION privacy requirement",
         "v1.5.0 privacy synchronization"
@@ -1204,6 +1206,33 @@
       ],
       "test_evidence": [
         { "type": "manual", "coverage": "required", "procedure": "After production deployment, fetch the privacy URL without authentication, follow the footer link, and compare every disclosure with storage and messaging behavior." }
+      ]
+    },
+    {
+      "id": "VERSION-001",
+      "category": "reliability",
+      "introduced_in": "1.5.1",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "公開画面は接続中の拡張機能versionを取得し、画面のAPP_VERSIONと異なる場合は双方のversionと更新要求を接続欄へ表示しなければならない。公開asset URLには製品versionを付け、旧JavaScriptやCSSのbrowser cacheを再利用してはならない。",
+      "source_requirements": [
+        "User request: prevent repeated omissions",
+        "v1.5.1 installed-extension diagnosis"
+      ],
+      "acceptance_criteria": [
+        "GET応答にmanifest.versionが含まれる。",
+        "version不一致時は通常の接続済み表示ではなく更新警告になる。",
+        "version一致時は従来のcompactな接続済み表示になる。",
+        "dist/index.htmlの共有JavaScriptとCSS URLに製品versionが付く。"
+      ],
+      "implementation_evidence": [
+        { "path": "extension/background.js", "symbol": "state extensionVersion" },
+        { "path": "extension/app.js", "symbol": "versionMismatch connection warning" },
+        { "path": "dist/style-v151.css", "symbol": "notice.version-warning" },
+        { "path": "build.py", "symbol": "versioned static asset URLs" }
+      ],
+      "test_evidence": [
+        { "type": "automated", "path": "tests/requirements.test.cjs", "cases": ["公開画面とインストール済み拡張機能の版違いを通知する"] }
       ]
     },
     {
@@ -1239,7 +1268,7 @@
       "introduced_in": "1.3.0",
       "status": "external_action_required",
       "priority": "MUST",
-      "normative_requirement": "store提出では3公式host permissionをplan、usage、reset、creditのlocal取得にのみ使うこと、ChatGPT tokenをmemory内だけで扱うこと、offscreen permissionを数値変更時のlocal audio playbackだけに使うこと、production companion originだけへ外部接続することを正確に申告しなければならない。",
+      "normative_requirement": "store提出ではChatGPT、Claude、Gemini、Google Oneの公式host permissionをplan、usage、reset、creditのlocal取得にのみ使うこと、ChatGPT tokenをmemory内だけで扱うこと、offscreen permissionを数値変更時のlocal audio playbackだけに使うこと、production companion originだけへ外部接続することを正確に申告しなければならない。",
       "source_requirements": [
         "STORE_SUBMISSION.md",
         "v1.5.0 offscreen and production-origin-only requirements"

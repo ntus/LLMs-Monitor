@@ -19,6 +19,8 @@ test('製品版・ZIP名・CSS・画面表示・仕様書が同期している',
  assert.equal(ledger.product.package_filename,`LLMs-Token-Usage-Monitor-v${version}.zip`);
  for(const file of ['dist/index.html','dist/shared.js','SPECIFICATION.md','STORE_SUBMISSION.md'])assert(read(file).includes(version),`${file} の版番号が未同期です`);
  assert(read('dist/index.html').includes(`style-v${digits}.css`));
+ assert(read('dist/index.html').includes(`shared.js?v=${digits}`));
+ assert(read('dist/index.html').includes(`app.js?v=${digits}`));
  assert(fs.existsSync(path.join(root,`dist/style-v${digits}.css`)));
 });
 
@@ -28,4 +30,19 @@ test('本番manifestの外部接続先と権限を最小範囲に保つ',()=>{
  assert.deepEqual(manifest.permissions,['storage','alarms','offscreen']);
  assert(!JSON.stringify(manifest).includes('localhost'));
  assert(!JSON.stringify(manifest).includes('127.0.0.1'));
+ assert(manifest.host_permissions.includes('https://one.google.com/*'));
+});
+
+test('フルスクリーンでも履歴を隠さず長期履歴ステータスを表示する',()=>{
+ const css=read(`dist/style-v${ledger.product.version.replaceAll('.','')}.css`),html=read('dist/index.html');
+ assert(!css.includes('html:fullscreen .card-note,html:fullscreen .history{display:none'));
+ assert(css.includes('html:fullscreen .history{display:flex!important'));
+ assert(html.includes('id="history-status"'));
+});
+
+test('公開画面とインストール済み拡張機能の版違いを通知する',()=>{
+ const background=read('extension/background.js'),app=read('extension/app.js');
+ assert(background.includes('extensionVersion:chrome.runtime.getManifest().version'));
+ assert(app.includes('拡張機能の更新が必要'));
+ assert(app.includes('extensionVersion!==G.APP_VERSION'));
 });

@@ -1,13 +1,13 @@
-# Store submission checklist — v1.5.0
+# Store submission checklist — v1.5.1
 
-`dist/LLMs-Token-Usage-Monitor-v1.5.0.zip` is the Chrome Web Store and Microsoft Edge Add-ons submission package. Its manifest is localized as “LLMs トークン残量モニタ” in Japanese and “LLMs Token Usage Monitor” in English.
+`dist/LLMs-Token-Usage-Monitor-v1.5.1.zip` is the Chrome Web Store and Microsoft Edge Add-ons submission package. Its manifest is localized as “LLMs トークン残量モニタ” in Japanese and “LLMs Token Usage Monitor” in English.
 
 Developer-mode-free installation requires the owner to complete both stores' account, review, and publication process. Building or hosting the ZIP does not publish an installable store extension.
 
 ## Required owner actions
 
 1. Register the owner developer accounts and enable two-step verification where required.
-2. Upload `LLMs-Token-Usage-Monitor-v1.5.0.zip`, the 128px icon, screenshots, Japanese and English descriptions, and reviewer test instructions.
+2. Upload `LLMs-Token-Usage-Monitor-v1.5.1.zip`, the 128px icon, screenshots, Japanese and English descriptions, and reviewer test instructions.
 3. Use the deployed privacy policy at `https://ai-usage-glance.ntusnog.chatgpt.site/privacy.html` and verify that it is reachable without sign-in.
 4. Submit for manual review in each store. After approval, replace the website package-only guidance with the approved store URLs.
 
@@ -19,6 +19,7 @@ Developer-mode-free installation requires the owner to complete both stores' acc
 - `https://chatgpt.com/*`: reads the signed-in account's official usage, plan, reset entitlement, and related credit fields. The first-party access token is held only in memory for the usage request and is never stored, logged, displayed, or shared.
 - `https://claude.ai/*`: reads the active signed-in organization's official usage, plan, cloud-session credit, project-setup credit, and prepaid/extra credit fields.
 - `https://gemini.google.com/*`: reads the currently signed-in Google account's official usage and Google AI plan fields, including account-prefixed `/u/N` pages.
+- `https://one.google.com/*`: reads the currently signed-in Google account's current Google AI membership name when Gemini does not expose it directly.
 - `externally_connectable`: limited to `https://ai-usage-glance.ntusnog.chatgpt.site/*`; localhost is excluded from the production package.
 
 ## Reviewer test flow
