@@ -1,14 +1,33 @@
 from pathlib import Path
-import shutil, zipfile
+import json, shutil, zipfile
 root = Path(__file__).resolve().parent
-for name in ['index.html', 'style.css', 'style-v141.css', 'changes.js', 'shared.js', 'sound.js', 'advice.js', 'app.js']:
+manifest = json.loads((root / 'extension' / 'manifest.json').read_text())
+version = manifest['version']
+version_css = 'style-v' + version.replace('.', '') + '.css'
+requirements = json.loads((root / 'spec' / 'requirements.json').read_text())
+checks = {
+    'dist/index.html': [version, version_css, f'LLMs-Token-Usage-Monitor-v{version}.zip'],
+    'dist/shared.js': [f"const APP_VERSION='{version}'"],
+    'SPECIFICATION.md': [f'対象製品版: {version}'],
+    'STORE_SUBMISSION.md': [version],
+}
+if requirements.get('product', {}).get('version') != version:
+    raise SystemExit('spec/requirements.json product.version does not match manifest.version')
+if requirements.get('product', {}).get('package_filename') != f'LLMs-Token-Usage-Monitor-v{version}.zip':
+    raise SystemExit('spec/requirements.json package_filename does not match manifest.version')
+for relative, needles in checks.items():
+    source = (root / relative).read_text()
+    for needle in needles:
+        if needle not in source:
+            raise SystemExit(f'{relative} is missing version contract: {needle}')
+for name in ['index.html', 'privacy.html', 'style.css', version_css, 'changes.js', 'shared.js', 'sound.js', 'advice.js', 'app.js']:
     shutil.copy2(root / 'dist' / name, root / 'extension' / name)
 for name in ['README.md', 'PRIVACY.md']:
     shutil.copy2(root / name, root / 'extension' / name)
-for legacy_name in ['glance-extension.zip', 'LLMs-Token-Usage-Monitor-v1.3.0.zip', 'LLMs-Token-Usage-Monitor-v1.3.1.zip', 'LLMs-Token-Usage-Monitor-v1.3.2.zip', 'LLMs-Token-Usage-Monitor-v1.3.3.zip', 'LLMs-Token-Usage-Monitor-v1.3.4.zip', 'LLMs-Token-Usage-Monitor-v1.3.5.zip', 'LLMs-Token-Usage-Monitor-v1.4.0.zip']:
-    legacy = root / 'dist' / legacy_name
-    if legacy.exists(): legacy.unlink()
-with zipfile.ZipFile(root / 'dist' / 'LLMs-Token-Usage-Monitor-v1.4.1.zip', 'w', zipfile.ZIP_DEFLATED) as archive:
+package = root / 'dist' / f'LLMs-Token-Usage-Monitor-v{version}.zip'
+for legacy in (root / 'dist').glob('LLMs-Token-Usage-Monitor-v*.zip'):
+    if legacy != package: legacy.unlink()
+with zipfile.ZipFile(package, 'w', zipfile.ZIP_DEFLATED) as archive:
     for path in sorted((root / 'extension').rglob('*')):
         if path.is_file(): archive.write(path, path.relative_to(root / 'extension'))
-print('LLMs Token Usage Monitor v1.4.1 package created.')
+print(f'LLMs Token Usage Monitor v{version} package created.')
