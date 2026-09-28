@@ -1,7 +1,7 @@
 # LLMs トークン残量モニタ 詳細仕様書
 
 文書版: 1.0  
-対象製品版: 1.5.2
+対象製品版: 1.5.3
 日本語名: **LLMs トークン残量モニタ**  
 英語名: **LLMs Token Usage Monitor**  
 対象リポジトリ: `ai-usage-panel`  
@@ -733,7 +733,7 @@ Document Picture-in-Pictureには以下の制約がある。
 
 - ストア提出ZIPの形式は `LLMs-Token-Usage-Monitor-v{semver}.zip` とする。
 - 旧名称をZIP、拡張機能名、HTMLタイトルに使わない。
-- 対象版では `LLMs-Token-Usage-Monitor-v1.5.2.zip` とする。
+- 対象版では `LLMs-Token-Usage-Monitor-v1.5.3.zip` とする。
 - Manifest、UI定数、HTMLフッター、ダウンロードリンク、版別CSS、ZIP名のバージョンを一致させる。
 - バージョンはSemantic Versioningを使う。
 
@@ -949,5 +949,5 @@ Document Picture-in-Pictureには以下の制約がある。
 3. 実アカウントでのChrome/Edge手動確認を終える。
 4. 通常画面、フルスクリーン、サイト内パネル、通常小窓、PiPの表示を確認する。
 5. プライバシー文書とストア権限説明が実装と一致する。
-6. `LLMs-Token-Usage-Monitor-v1.5.2.zip` が再現可能に生成され、内容を検査済みである。
+6. `LLMs-Token-Usage-Monitor-v1.5.3.zip` が再現可能に生成され、内容を検査済みである。
 7. 公開Webアプリとストア提出パッケージの名称、バージョン、接続originが一致する。

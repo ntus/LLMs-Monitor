@@ -16,7 +16,8 @@
  const canonical={
   '現在のセッション':'currentSession','週間':'weekly','週間 (Work / Codex)':'weeklyWork','Work / Codex · 週間':'weeklyWork','Work / Codex · 5時間':'fiveHourWork','週間の利用枠':'weeklyLimit','Work / Codex 共通枠':'workCommon'
  };
- function label(value){return canonical[value]?t(canonical[value]):String(value??'')}
+ const directEnglish={'Sonnet · 週間':'Sonnet · Weekly','Opus · 週間':'Opus · Weekly','OAuthアプリ · 週間':'OAuth apps · Weekly','Cowork · 週間':'Cowork · Weekly'};
+ function label(value){if(current==='en'&&directEnglish[value])return directEnglish[value];return canonical[value]?t(canonical[value]):String(value??'')}
  function locale(){return current==='ja'?'ja-JP':'en-US'}
  root.GlanceLocale={detect,normalize,setLanguage,language,t,label,locale,messages};if(typeof module!=='undefined')module.exports=root.GlanceLocale;
 })(globalThis);

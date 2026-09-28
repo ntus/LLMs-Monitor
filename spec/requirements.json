@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs トークン残量モニタ",
     "name_en": "LLMs Token Usage Monitor",
-    "version": "1.5.2",
-    "package_filename": "LLMs-Token-Usage-Monitor-v1.5.2.zip",
+    "version": "1.5.3",
+    "package_filename": "LLMs-Token-Usage-Monitor-v1.5.3.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -121,8 +121,8 @@
         "README 1.3.0"
       ],
       "acceptance_criteria": [
-        "v1.5.2の成果物名がLLMs-Token-Usage-Monitor-v1.5.2.zipである。",
-        "manifest.version、ダウンロードリンク、footer、STORE_SUBMISSIONの版番号が1.5.2で一致する。"
+        "v1.5.3の成果物名がLLMs-Token-Usage-Monitor-v1.5.3.zipである。",
+        "manifest.version、ダウンロードリンク、footer、STORE_SUBMISSIONの版番号が1.5.3で一致する。"
       ],
       "implementation_evidence": [
         { "path": "extension/manifest.json", "symbol": "version" },
@@ -462,7 +462,7 @@
       "introduced_in": "1.2.0",
       "status": "implemented",
       "priority": "MUST",
-      "normative_requirement": "Gemini契約planは構造化plan/tier情報、公式usage応答、アカウント状態RPC、公式subscriptions/settings画面、同一account prefixのGoogle One現在契約画面の順で探索し、Google AI Plus、Pro、Ultraへ正規化する。Google One AI PremiumとGemini AdvancedはGoogle AI Proとして扱い、upgrade広告だけを契約として採用してはならない。",
+      "normative_requirement": "Gemini契約planは構造化plan/tier情報、公式usage応答、アカウント状態RPC、公式subscriptions/settings画面、同一account番号をauthuserへ指定したGoogle Oneメンバーシップ管理画面の順で探索し、Google AI Plus、Pro、Ultraへ正規化する。現在のプラン欄をupgrade候補より優先し、Google One AI PremiumとGemini AdvancedはGoogle AI Proとして扱う。",
       "source_requirements": [
         "README 1.2.0",
         "README 1.3.3",
@@ -473,7 +473,8 @@
         "現行名と旧称を期待するplanへ変換する。",
         "構造化キーまたは契約文脈のない一般広告文字列を採用しない。",
         "一時的未取得時は既知planを保持する。",
-        "Gemini側で未取得でも同一/u/NのGoogle One現在契約からplanを取得する。"
+        "Gemini側で未取得でも同一/u/Nに対応するauthuser=NのGoogle One現在契約からplanを取得する。",
+        "現在のプランとupgrade候補が同じ画面にあっても現在のプランを採用する。"
       ],
       "implementation_evidence": [
         { "path": "extension/fetchers.js", "symbol": "plan/geminiPlan/googleOnePlan/fetchGemini" },
@@ -481,7 +482,7 @@
         { "path": "extension/state.js", "symbol": "plan retention" }
       ],
       "test_evidence": [
-        { "type": "automated", "path": "tests/fetchers.test.cjs", "cases": ["Geminiの埋め込みJSONから契約プランを取得する", "Geminiの旧称とAPI文字列から現行契約プランを取得する"] },
+        { "type": "automated", "path": "tests/fetchers.test.cjs", "cases": ["Geminiの埋め込みJSONから契約プランを取得する", "Geminiの旧称とAPI文字列から現行契約プランを取得する", "Google Oneの現在プランをアップグレード候補より優先する"] },
         { "type": "automated", "path": "tests/parser.test.cjs", "cases": ["Geminiの現行名と旧称を契約プランへ正規化", "Geminiの契約プランを埋め込みJSONの現行キーから読む", "Geminiの契約プランを短いアカウント表示内から読む"] }
       ]
     },
@@ -1221,7 +1222,7 @@
       "introduced_in": "1.5.0",
       "status": "implemented",
       "priority": "MUST",
-      "normative_requirement": "v1.5.2 packageはstyle-v151.css、style-v152.css、locale.js、offscreen.html、offscreen.js、locales、icons、privacy/readmeを含み、秘密鍵、PEM、environment file、Git metadata、raw credential fixtureを含めてはならない。",
+      "normative_requirement": "v1.5.3 packageはstyle-v151.css、style-v152.css、style-v153.css、locale.js、offscreen.html、offscreen.js、locales、icons、privacy/readmeを含み、秘密鍵、PEM、environment file、Git metadata、raw credential fixtureを含めてはならない。",
       "source_requirements": [
         "v1.5.0 offscreen and release package requirement"
       ],
