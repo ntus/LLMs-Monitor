@@ -28,7 +28,7 @@ function chatGPTReset(doc){
  if(!tab&&!panel&&!section)return null;
  const scope=panel||doc,expiryEl=scope.querySelector?.('[aria-label*="有効期限"],[title*="有効期限"],[aria-label*="Expires" i],[title*="Expires" i]'),expiryText=expiryEl?.getAttribute?.('aria-label')||expiryEl?.getAttribute?.('title')||expiryEl?.textContent||'',expiresAt=expiryTime(expiryText);
  const texts=Array.from(scope.querySelectorAll?.('span,div,p')||[]).map(e=>clean(e.textContent)).filter(t=>t&&t.length<90),kind=texts.find(t=>/(?:完全リセット|週間.*5\s*時間|full reset|weekly.*5.hour)/i.test(t))||'';
- return {label:'利用上限のリセット',value:count!=null?`利用可能 ${count}`:'有無を取得できません',detail:[kind,expiresAt?expiryDetail(expiresAt):Number(count)>0?'期限未取得':''].filter(Boolean).join(' · '),expiresAt};
+ return {label:'利用上限のリセット',value:count!=null?`利用可能 ${count}`:'有無を取得できません',detail:[kind,expiresAt?expiryDetail(expiresAt):Number(count)>0?'期限未取得':''].filter(Boolean).join(' · '),expiresAt,observedAt:Date.now()};
 }
 function parseExtras(doc,service){
  if(service!=='claude'&&service!=='chatgpt')return [];
@@ -50,6 +50,7 @@ function parseExtras(doc,service){
 }
 function normalizePlan(value,service){
  const text=clean(value).replace(/[_-]+/g,' '),allowed={chatgpt:['Free','Go','Plus','Pro','Business','Enterprise','Edu','Team'],claude:['Free','Pro','Max 5x','Max 20x','Max','Team','Enterprise'],gemini:['Free','Google AI Plus','Google AI Pro','Google AI Ultra','AI Plus','AI Pro','AI Ultra','Pro','Ultra']}[service]||[];
+ if(service==='gemini'){if(/Google One AI Premium|Gemini Advanced/i.test(text))return 'Google AI Pro';if(/^Google AI Ultra$/i.test(text))return 'Google AI Ultra';if(/^Google AI Plus$/i.test(text))return 'Google AI Plus';}
  for(const item of allowed)if(text.toLowerCase()===item.toLowerCase()||text.toLowerCase()===`chatgpt ${item}`.toLowerCase()||text.toLowerCase()===`claude ${item}`.toLowerCase())return service==='gemini'&&/^(?:pro|ai pro)$/i.test(item)?'Google AI Pro':service==='gemini'&&/^(?:ultra|ai ultra)$/i.test(item)?'Google AI Ultra':item;
  const keyed=text.match(/(?:current|your|subscription|account|契約|現在の)\s*(?:plan|プラン)?\s*[:：]?\s*(?:ChatGPT\s*)?(Free|Go|Plus|Pro|Business|Enterprise|Edu|Team|Max\s*(?:5x|20x)|Google AI (?:Plus|Pro|Ultra))/i);
  return keyed?normalizePlan(keyed[1],service):'未取得';
@@ -59,7 +60,7 @@ function planFromObject(value,service,depth=0){
  if(typeof value==='string')return normalizePlan(value,service);
  if(Array.isArray(value)){for(const item of value){const found=planFromObject(item,service,depth+1);if(found!=='未取得')return found;}return '未取得';}
  if(typeof value!=='object')return '未取得';
- const preferred=/^(plan(?:_?type|Name)?|subscription(?:_?plan|_?type)?|account(?:_?plan|_?type)?|tier)$/i;
+ const preferred=/^(plan(?:_?type|Name)?|current_?plan|paid_?tier|membership_?tier|product_?name|subscription(?:_?plan|_?type)?|account(?:_?plan|_?type)?|tier)$/i;
  for(const [key,item]of Object.entries(value))if(preferred.test(key)){const found=planFromObject(item,service,depth+1);if(found!=='未取得')return found;}
  for(const item of Object.values(value))if(item&&typeof item==='object'){const found=planFromObject(item,service,depth+1);if(found!=='未取得')return found;}
  return '未取得';
@@ -69,8 +70,13 @@ function parsePlan(doc,service){
  const selectors='[data-testid*="plan" i],[data-testid*="subscription" i],[aria-label*="plan" i],[aria-label*="プラン"],[class*="plan" i],.tier-pill,[class*="tier-pill"]';
  for(const el of doc.querySelectorAll(selectors)){for(const value of [el.textContent,el.getAttribute?.('aria-label')]){const found=normalizePlan(value,service);if(found!=='未取得')return found;}}
  for(const script of doc.querySelectorAll('script#__NEXT_DATA__,script[type="application/json"]')){const text=script.textContent||'';if(!text||text.length>1500000)continue;try{const found=planFromObject(JSON.parse(text),service);if(found!=='未取得')return found;}catch{}}
- const body=clean(doc.body?.innerText||'');const contextual=body.match(/(?:current plan|your plan|subscription plan|account plan|現在のプラン|契約プラン)\s*[:：]?\s*(?:ChatGPT\s*)?(Free|Go|Plus|Pro|Business|Enterprise|Edu|Team|Max\s*(?:5x|20x)|Google AI (?:Plus|Pro|Ultra))/i);
- return contextual?normalizePlan(contextual[1],service):'未取得';
+ const body=clean(doc.body?.innerText||''),contextual=body.match(/(?:current plan|your plan|subscription plan|account plan|現在のプラン|契約プラン|ご利用中のプラン|現在利用中)\s*[:：]?\s*(?:ChatGPT\s*)?(Free|Go|Plus|Pro|Business|Enterprise|Edu|Team|Max\s*(?:5x|20x)|Google AI (?:Plus|Pro|Ultra)|Google One AI Premium|Gemini Advanced)/i);
+ if(contextual)return normalizePlan(contextual[1],service);
+ if(service==='gemini'){
+  const candidates=Array.from(doc.querySelectorAll('a,button,[role="button"],[role="link"],span,div')).filter(el=>el.getClientRects?.().length).map(el=>clean(el.textContent)).filter(text=>text.length>0&&text.length<100&&!/(?:アップグレード|upgrade|試す|try|購入|buy)/i.test(text));
+  for(const text of candidates){const exact=text.match(/(?:^|[·:：｜|\s])(Google AI (?:Ultra|Pro|Plus)|Google One AI Premium|Gemini Advanced)(?=$|[·｜|\s])/i);if(exact)return normalizePlan(exact[1],service);}
+ }
+ return '未取得';
 }
 root.GlanceParser={parse,used,remaining,reset,parseExtras,creditValue,expiryTime,chatGPTReset,parsePlan,normalizePlan,planFromObject};
 if(typeof module!=='undefined')module.exports=root.GlanceParser;
