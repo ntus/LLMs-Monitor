@@ -34,15 +34,30 @@ test('本番manifestの外部接続先と権限を最小範囲に保つ',()=>{
 });
 
 test('フルスクリーンでも履歴を隠さず長期履歴ステータスを表示する',()=>{
- const css=read(`dist/style-v${ledger.product.version.replaceAll('.','')}.css`),html=read('dist/index.html');
+ const css=read('dist/style-v151.css')+read(`dist/style-v${ledger.product.version.replaceAll('.','')}.css`),html=read('dist/index.html');
  assert(!css.includes('html:fullscreen .card-note,html:fullscreen .history{display:none'));
  assert(css.includes('html:fullscreen .history{display:flex!important'));
  assert(html.includes('id="history-status"'));
 });
 
 test('公開画面とインストール済み拡張機能の版違いを通知する',()=>{
- const background=read('extension/background.js'),app=read('extension/app.js');
+ const background=read('extension/background.js'),app=read('extension/app.js'),locale=read('extension/locale.js');
  assert(background.includes('extensionVersion:chrome.runtime.getManifest().version'));
- assert(app.includes('拡張機能の更新が必要'));
+ assert(app.includes("L.t('versionUpdate')"));
+ assert(locale.includes("versionUpdate:'拡張機能の更新が必要'"));
+ assert(locale.includes("versionUpdate:'Extension update required'"));
  assert(app.includes('extensionVersion!==G.APP_VERSION'));
+});
+
+test('日英切替とフローティング同期・透明度を全表示面へ実装する',()=>{
+ const html=read('extension/index.html'),manifest=JSON.parse(read('extension/manifest.json')),background=read('extension/background.js'),floating=read('extension/floating.js'),css=read('extension/style-v152.css');
+ assert(html.includes('id="language-toggle"'));
+ assert(manifest.content_scripts[0].js.includes('locale.js'));
+ assert(background.includes("message.type==='MONITOR_READY'"));
+ assert(background.includes("message.type==='MONITOR_CLOSED'"));
+ assert(background.includes('width:180'));
+ assert(floating.includes("document.title=GlanceLocale.t('appTitle')"));
+ assert(floating.includes("document.body.style.setProperty('--alpha',alpha)"));
+ assert(css.includes('.floating-body .widget .history-log'));
+ assert(css.includes('html:fullscreen .card h2{font-size:21px}'));
 });

@@ -5,13 +5,13 @@ manifest = json.loads((root / 'extension' / 'manifest.json').read_text())
 version = manifest['version']
 version_css = 'style-v' + version.replace('.', '') + '.css'
 for legacy_css in (root / 'dist').glob('style-v*.css'):
-    if legacy_css.name != version_css: legacy_css.unlink()
-for name in ['index.html', 'privacy.html', 'style.css', version_css, 'changes.js', 'shared.js', 'sound.js', 'advice.js', 'app.js']:
+    if legacy_css.name not in {version_css, 'style-v151.css'}: legacy_css.unlink()
+for name in ['index.html', 'privacy.html', 'style.css', 'style-v151.css', version_css, 'locale.js', 'changes.js', 'shared.js', 'sound.js', 'advice.js', 'app.js']:
     shutil.copy2(root / 'extension' / name, root / 'dist' / name)
 for html_name in ['index.html', 'privacy.html']:
     target = root / 'dist' / html_name
     html = target.read_text()
-    for asset in ['style.css', version_css, 'changes.js', 'shared.js', 'sound.js', 'advice.js', 'app.js']:
+    for asset in ['style.css', 'style-v151.css', version_css, 'locale.js', 'changes.js', 'shared.js', 'sound.js', 'advice.js', 'app.js']:
         html = html.replace(f'"{asset}"', f'"{asset}?v={version.replace(".", "")}"')
     target.write_text(html)
 requirements = json.loads((root / 'spec' / 'requirements.json').read_text())
