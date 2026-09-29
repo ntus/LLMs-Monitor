@@ -5,7 +5,7 @@ const path=require('node:path');
 const root=path.resolve(__dirname,'..');
 
 test('human-readable documents start in English and link to a later Japanese section',()=>{
- for(const file of ['README.md','SPECIFICATION.md','AGENTS.md','PRIVACY.md','STORE_SUBMISSION.md']){
+ for(const file of ['README.md','SPECIFICATION.md','AGENTS.md','PRIVACY.md','STORE_SUBMISSION.md','CHANGELOG.md','SECURITY_REVIEW.md']){
   const body=fs.readFileSync(path.join(root,file),'utf8');
   assert(body.includes('href="#en"')||body.includes('](#en)'),`${file}: EN link`);
   assert(body.includes('href="#ja"')||body.includes('](#ja)'),`${file}: JP link`);

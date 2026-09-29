@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs トークン残量モニタ",
     "name_en": "LLMs Token Usage Monitor",
-    "version": "1.6.0",
-    "package_filename": "LLMs-Token-Usage-Monitor-v1.6.0.zip",
+    "version": "1.6.1",
+    "package_filename": "LLMs-Token-Usage-Monitor-v1.6.1.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -2463,6 +2463,108 @@
           "cases": [
             "documentation language order and navigation"
           ]
+        }
+      ]
+    },
+    {
+      "id": "STATUS-001",
+      "category": "v1.6.1",
+      "introduced_in": "1.6.1",
+      "normative_requirement": "公式障害情報を10分ごとに認証情報なしで取得し、新規障害を画面と通知音で知らせ、正常または取得不能もⓘで確認できる。",
+      "source_requirements": [
+        "User request 2026-09-30"
+      ],
+      "acceptance_criteria": [
+        "三社の公式ステータスを10分ごとに確認する。",
+        "新規障害の要点と公式リンクを表示し、同じ障害を再通知しない。",
+        "取得不能を正常と誤表示しない。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/provider-status.js",
+          "symbol": "parseStatuspage, parseGemini, view"
+        },
+        {
+          "path": "extension/background.js",
+          "symbol": "refreshProviderStatus"
+        },
+        {
+          "path": "tests/provider-status.test.cjs",
+          "symbol": "status parser tests"
+        }
+      ]
+    },
+    {
+      "id": "DOC-161",
+      "category": "v1.6.1",
+      "introduced_in": "1.6.1",
+      "normative_requirement": "READMEのサブタイトル、基本仕様、改訂履歴とアプリ内取扱説明リンクを保つ。",
+      "source_requirements": [
+        "User request 2026-09-30"
+      ],
+      "acceptance_criteria": [
+        "READMEのサブタイトル、基本仕様、改訂履歴とアプリ内取扱説明リンクを保つ。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "README.md",
+          "symbol": "v1.6.1 implementation"
+        },
+        {
+          "path": "CHANGELOG.md",
+          "symbol": "v1.6.1 implementation"
+        },
+        {
+          "path": "extension/index.html",
+          "symbol": "v1.6.1 implementation"
+        }
+      ]
+    },
+    {
+      "id": "RESET-161",
+      "category": "v1.6.1",
+      "introduced_in": "1.6.1",
+      "normative_requirement": "信頼できるリセット時刻に日・時間または時間・分の相対表示を添える。",
+      "source_requirements": [
+        "User request 2026-09-30"
+      ],
+      "acceptance_criteria": [
+        "信頼できるリセット時刻に日・時間または時間・分の相対表示を添える。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/shared.js",
+          "symbol": "v1.6.1 implementation"
+        },
+        {
+          "path": "extension/locale.js",
+          "symbol": "v1.6.1 implementation"
+        }
+      ]
+    },
+    {
+      "id": "SECURITY-161",
+      "category": "v1.6.1",
+      "introduced_in": "1.6.1",
+      "normative_requirement": "公開前の入力、権限、外部通信と表示を検証し残る手動確認を記録する。",
+      "source_requirements": [
+        "User request 2026-09-30"
+      ],
+      "acceptance_criteria": [
+        "公開前の入力、権限、外部通信と表示を検証し残る手動確認を記録する。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "SECURITY_REVIEW.md",
+          "symbol": "v1.6.1 implementation"
+        },
+        {
+          "path": "extension/background.js",
+          "symbol": "v1.6.1 implementation"
+        },
+        {
+          "path": "tests/provider-status.test.cjs",
+          "symbol": "v1.6.1 implementation"
         }
       ]
     }

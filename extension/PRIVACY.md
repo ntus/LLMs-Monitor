@@ -4,7 +4,7 @@
 
 <a id="en"></a>
 
-Last updated: 2026-09-29
+Last updated: 2026-09-30
 
 The extension reads plan names, usage limits, remaining percentages, reset times, and related credit balances from the official ChatGPT, Claude, Gemini, and Google One services for accounts already signed in within the browser profile. Google One is queried only to identify the current Google AI membership name when Gemini does not expose it directly.
 
@@ -13,6 +13,8 @@ For ChatGPT usage retrieval, the extension temporarily uses the access token exp
 Usage snapshots, change history (up to 10,000 changed values per usage window), the selected Claude organization identifier, and display preferences are stored locally through the browser extension storage API. Historical logs remain available after logout and extension updates; the comparison baseline is reset before the next signed-in snapshot. This information is not uploaded to NT MicroSystems,Inc. or sold, shared, or used for advertising, profiling, credit decisions, or unrelated purposes.
 
 The extension communicates only with the official service domains listed in its manifest and its companion monitor page at `https://ai-usage-glance.ntusnog.chatgpt.site`. When the user connects that page with the extension ID, the extension returns the plan, usage, credit, history, and display-setting fields required to render the monitor locally in the browser. The companion has no application code that uploads these values to NT MicroSystems,Inc. The extension does not submit prompts, purchase credits, exercise reset entitlements, or change account settings.
+
+The extension also requests public incident feeds from OpenAI Status, Claude Status, and Google Workspace Status approximately every ten minutes. These requests omit browser credentials and do not include usage history, plans, account identifiers, or prompts. The last service-status summary is stored locally.
 
 Users can remove all stored data by uninstalling the extension or clearing its extension storage.
 
@@ -39,3 +41,5 @@ ChatGPTの使用量取得では、公式ページがログイン中のアカウ�
 保存データは拡張機能のアンインストール、または拡張機能ストレージの消去で削除できます。
 
 お問い合わせ: NT MicroSystems,Inc.
+
+公開障害情報の要求には個人の使用データを含めません。

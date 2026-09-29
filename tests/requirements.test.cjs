@@ -27,7 +27,7 @@ test('製品版・ZIP名・CSS・画面表示・仕様書が同期している',
 test('本番manifestの外部接続先と権限を最小範囲に保つ',()=>{
  const manifest=JSON.parse(read('extension/manifest.json'));
  assert.deepEqual(manifest.externally_connectable.matches,['https://ai-usage-glance.ntusnog.chatgpt.site/*']);
- assert.deepEqual(manifest.permissions,['storage','alarms','offscreen']);
+ assert.deepEqual(manifest.permissions,['storage','alarms','offscreen','notifications']);
  assert(!JSON.stringify(manifest).includes('localhost'));
  assert(!JSON.stringify(manifest).includes('127.0.0.1'));
  assert(manifest.host_permissions.includes('https://one.google.com/*'));
