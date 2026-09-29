@@ -1,16 +1,16 @@
 # LLMs Token Usage Monitor
 
+**See the remaining usage across ChatGPT, Claude, and Gemini at a glance.**
+
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 <a id="en"></a>
 
-**See the remaining usage across ChatGPT, Claude, and Gemini at a glance.**
-
 This browser companion checks usage from your signed-in provider sessions about once a minute. Large gauges and bars show current and weekly limits, reset times, plans, and available credits. Your change history stays in your browser, with up to 10,000 entries per limit. The interface supports English and Japanese, light and dark themes, fullscreen viewing, and compact floating panels.
 
-Version **1.6.1 beta** adds official service-status monitoring, a reset countdown, and a linked user guide. Version 1.6.0 added service visibility and ordering, deadline alerts, an estimate of how many current-session equivalents remain in the weekly allowance, and compact usage advice. Tips and news link to their original sources. The estimate is based on your local history; it is not an official provider limit.
+Version **1.6.2 beta** puts service status in a compact bottom strip, marks recovery in green, refines deadline alerts, and shows seconds in the history range. Version 1.6.0 added service visibility and ordering, deadline alerts, an estimate of how many current-session equivalents remain in the weekly allowance, and compact usage advice. Tips and news link to their original sources. The estimate is based on your local history; it is not an official provider limit.
 
-[Open the monitor](https://ai-usage-glance.ntusnog.chatgpt.site/) · [Download the beta extension package](dist/LLMs-Token-Usage-Monitor-v1.6.1.zip) · [Detailed specification](SPECIFICATION.md) · [Privacy](PRIVACY.md) · [Follow @ntus on X](https://x.com/ntus)
+[Open the monitor](https://ai-usage-glance.ntusnog.chatgpt.site/) · [Download the beta extension package](dist/LLMs-Token-Usage-Monitor-v1.6.2.zip) · [Detailed specification](SPECIFICATION.md) · [Privacy](PRIVACY.md) · [Follow @ntus on X](https://x.com/ntus)
 
 ## Basic specifications
 
@@ -26,7 +26,7 @@ Version **1.6.1 beta** adds official service-status monitoring, a reset countdow
 ## Quick start
 
 1. Sign in to the services you want to monitor on their official [ChatGPT](https://chatgpt.com/), [Claude](https://claude.ai/), and [Gemini](https://gemini.google.com/) sites in the same Chrome or Edge profile. Enter credentials only on those sites.
-2. Before store approval, run `python3 build.py`, unpack `dist/LLMs-Token-Usage-Monitor-v1.6.1.zip`, and load the unpacked extension from the browser's extension management page for beta testing. Installing without developer mode requires Chrome Web Store or Edge Add-ons review and publication.
+2. Before store approval, run `python3 build.py`, unpack `dist/LLMs-Token-Usage-Monitor-v1.6.2.zip`, and load the unpacked extension from the browser's extension management page for beta testing. Installing without developer mode requires Chrome Web Store or Edge Add-ons review and publication.
 3. Open the extension or the [web monitor](https://ai-usage-glance.ntusnog.chatgpt.site/). The web monitor asks for your extension ID once. The providers' usage tabs do not need to remain open.
 4. Use **Show and arrange services** to choose and reorder cards. Hidden services continue collecting history. Adjust language, theme, opacity, volume, and fullscreen mode from the controls.
 
@@ -39,15 +39,17 @@ For contributors and future AI-assisted changes, read [AGENTS.md](AGENTS.md), th
 <a id="ja"></a>
 # 日本語 — LLMs トークン残量モニタ
 
+**ChatGPT/Claude/Geminiのトークン利用残量をリアルタイム表示**
+
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
-## 1.6.1 β
-
-> 各種LLMの利用残量をリアルタイム表示
+## 1.6.2 β
 
 ChatGPT、Claude、Gemini の残量とリセット時刻を、ログイン中の公式セッションから約1分ごとに確認するブラウザー用モニターです。円とバーで現在枠・週間枠を見渡し、変化履歴を各枠最大10,000件まで端末内に保持します。日本語／英語、標準／ダーク、フルスクリーン、通常小窓、対応ブラウザーでの最前面表示に対応します。
 
-今回のβ版では、3サービスの表示・非表示と順序を保存し、表示枚数に合わせてレイアウトを調整します。履歴から週間枠が現在セッションの何枠分に相当するかを推定し、期限が近いリセット権と利用枠を段階的に警告します。分析欄は高さを約半分に抑え、利用ペースの提案、公式ソース付きTips／NEWSを切り替えて表示します。通知音量のスライダー操作中も画面が動かないよう修正し、アプリアイコンを刷新しました。
+v1.6.2では障害情報を最下部のステータス欄へまとめ、復旧時は緑色の「復帰しました」を表示します。期限警告の配色を調整し、履歴の対象期間は秒まで示します。
+
+3サービスの表示・非表示と順序を保存し、表示枚数に合わせてレイアウトを調整します。履歴から週間枠が現在セッションの何枠分に相当するかを推定し、期限が近いリセット権と利用枠を段階的に警告します。分析欄は高さを約半分に抑え、利用ペースの提案、公式ソース付きTips／NEWSを切り替えて表示します。通知音量のスライダー操作中も画面が動かないよう修正し、アプリアイコンを刷新しました。
 
 [使い方](#使い方) · [基本仕様](#基本仕様) · [改訂履歴](CHANGELOG.md#ja) · [詳しい仕様と制限](SPECIFICATION.md) · [デグレ防止手順](AGENTS.md) · [プライバシー](PRIVACY.md) · [更新情報をXで見る](https://x.com/ntus)
 
@@ -63,7 +65,7 @@ ChatGPT、Claude、Gemini の残量とリセット時刻を、ログイン中の
 ### 使い方
 
 1. 同じChromeまたはEdgeプロファイルで [ChatGPT](https://chatgpt.com/)、[Claude](https://claude.ai/)、[Gemini](https://gemini.google.com/) に必要な分だけログインします。パスワードは公式サイトで入力します。
-2. ストア公開前は、このリポジトリで `python3 build.py` を実行し、`dist/LLMs-Token-Usage-Monitor-v1.6.1.zip` を展開して、ブラウザーの拡張機能管理画面から開発用として読み込みます。一般ユーザーがデベロッパーモードなしで導入するには、Chrome Web Store / Edge Add-ons の審査・公開が必要です。
+2. ストア公開前は、このリポジトリで `python3 build.py` を実行し、`dist/LLMs-Token-Usage-Monitor-v1.6.2.zip` を展開して、ブラウザーの拡張機能管理画面から開発用として読み込みます。一般ユーザーがデベロッパーモードなしで導入するには、Chrome Web Store / Edge Add-ons の審査・公開が必要です。
 3. 拡張機能の画面、または [公開モニター](https://ai-usage-glance.ntusnog.chatgpt.site/) を開きます。公開モニターでは拡張機能IDを一度登録してください。各サービスの使用量タブを開いたままにする必要はありません。
 4. 「表示サービス」からチェックと上下ボタンで表示数・順序を変更します。非表示中も取得と履歴保存は続きます。音、テーマ、言語、透明度、フルスクリーンも画面上で変更できます。
 5. 残量とリセット時刻は公式サービスが返す範囲で表示されます。リセット権は利用可能なら公式利用量ページへ移動できますが、アプリから自動行使しません。出典のあるTips／NEWSはリンクで原文を確認できます。

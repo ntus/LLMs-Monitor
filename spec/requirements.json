@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs トークン残量モニタ",
     "name_en": "LLMs Token Usage Monitor",
-    "version": "1.6.1",
-    "package_filename": "LLMs-Token-Usage-Monitor-v1.6.1.zip",
+    "version": "1.6.2",
+    "package_filename": "LLMs-Token-Usage-Monitor-v1.6.2.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -2565,6 +2565,98 @@
         {
           "path": "tests/provider-status.test.cjs",
           "symbol": "v1.6.1 implementation"
+        }
+      ]
+    },
+    {
+      "id": "ALERT-162",
+      "category": "v1.6.2",
+      "introduced_in": "1.6.2",
+      "normative_requirement": "期限間近の反転表示を画面と調和した赤系のアクセントにし、重大警告のフェードを維持する。",
+      "source_requirements": [
+        "User request 2026-09-30"
+      ],
+      "acceptance_criteria": [
+        "期限間近の反転表示を画面と調和した赤系のアクセントにし、重大警告のフェードを維持する。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/style-v162.css",
+          "symbol": "v1.6.2 implementation"
+        },
+        {
+          "path": "extension/content.js",
+          "symbol": "v1.6.2 implementation"
+        }
+      ]
+    },
+    {
+      "id": "FOOTER-162",
+      "category": "v1.6.2",
+      "introduced_in": "1.6.2",
+      "normative_requirement": "フッターの製品名と版番号をGitHubへリンクし、障害情報を最下部の共通ステータス領域に表示する。",
+      "source_requirements": [
+        "User request 2026-09-30"
+      ],
+      "acceptance_criteria": [
+        "フッターの製品名と版番号をGitHubへリンクし、障害情報を最下部の共通ステータス領域に表示する。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/index.html",
+          "symbol": "v1.6.2 implementation"
+        },
+        {
+          "path": "extension/style-v162.css",
+          "symbol": "v1.6.2 implementation"
+        }
+      ]
+    },
+    {
+      "id": "RECOVERY-162",
+      "category": "v1.6.2",
+      "introduced_in": "1.6.2",
+      "normative_requirement": "障害から公式正常応答への復帰を10分間緑色で表示し、取得不能を正常とみなさない。",
+      "source_requirements": [
+        "User request 2026-09-30"
+      ],
+      "acceptance_criteria": [
+        "障害から公式正常応答への復帰を10分間緑色で表示し、取得不能を正常とみなさない。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/provider-status.js",
+          "symbol": "v1.6.2 implementation"
+        },
+        {
+          "path": "extension/background.js",
+          "symbol": "v1.6.2 implementation"
+        },
+        {
+          "path": "tests/provider-status.test.cjs",
+          "symbol": "v1.6.2 implementation"
+        }
+      ]
+    },
+    {
+      "id": "HISTORY-162",
+      "category": "v1.6.2",
+      "introduced_in": "1.6.2",
+      "normative_requirement": "過去変化履歴の取得期間を秒まで含むローカル日時で示す。",
+      "source_requirements": [
+        "User request 2026-09-30"
+      ],
+      "acceptance_criteria": [
+        "過去変化履歴の取得期間を秒まで含むローカル日時で示す。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/app.js",
+          "symbol": "v1.6.2 implementation"
+        },
+        {
+          "path": "extension/locale.js",
+          "symbol": "v1.6.2 implementation"
         }
       ]
     }

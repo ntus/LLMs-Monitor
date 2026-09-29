@@ -1,10 +1,10 @@
-# Security review — v1.6.1 beta
+# Security review — v1.6.2 beta
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 <a id="en"></a>
 
-This review records the checks performed for the 1.6.1 beta; it is not a guarantee that no vulnerabilities exist. A release owner should also test the packaged extension in current Chrome and Edge with real accounts and submit it to store review.
+This review records the checks performed for the 1.6.2 beta; it is not a guarantee that no vulnerabilities exist. A release owner should also test the packaged extension in current Chrome and Edge with real accounts and submit it to store review.
 
 ## Attack surface and controls
 
@@ -12,7 +12,7 @@ This review records the checks performed for the 1.6.1 beta; it is not a guarant
 - **Message validation:** service snapshots are accepted only from the matching provider origin. The arrays, percentages, labels, and counts are bounded before storage. State-changing settings and window commands require the extension's own origin or the approved monitor origin.
 - **Untrusted content:** incident text and provider-derived labels are escaped before HTML rendering. Links are fixed to official HTTPS status pages. No remote scripts, `eval`, or arbitrary URL navigation are used for status content.
 - **Network and storage:** status responses have an 8-second timeout and a 3 MB cap. Incident requests omit credentials. Account data, history, and the last status summary remain in browser storage; no developer analytics endpoint receives them. Existing stored history is not migrated or deleted.
-- **Notification behavior:** a new issue signature triggers one browser popup and one audio sequence. Repeated ten-minute checks of the same signature do not retrigger. Unknown source state is shown as unavailable, not as healthy.
+- **Notification behavior:** a new issue signature triggers one browser popup and one audio sequence. Repeated ten-minute checks of the same signature do not retrigger. Unknown source state is shown as unavailable, not as healthy. Recovery is based only on a subsequent official healthy response and is retained for ten minutes.
 
 ## Verification and limits
 
@@ -26,7 +26,7 @@ This review records the checks performed for the 1.6.1 beta; it is not a guarant
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
-v1.6.1 βで確認した範囲の記録です。「脆弱性が存在しない」という保証ではありません。正式公開前には最新版Chrome／Edgeの実アカウントで配布ZIPを確認し、ストア審査を受けてください。
+v1.6.2 βで確認した範囲の記録です。「脆弱性が存在しない」という保証ではありません。正式公開前には最新版Chrome／Edgeの実アカウントで配布ZIPを確認し、ストア審査を受けてください。
 
 外部接続先は公開モニターのHTTPS origin、ページ内スクリプトは3社の公式サイトに限定しています。障害情報は固定した公式HTTPS URLから認証情報なしで取得し、8秒でタイムアウト、3 MB超の応答を拒否します。受信したスナップショットの型・件数・数値範囲を検証します。障害の文章はHTML表示時にエスケープし、リンク先は公式URLに固定します。新しい障害だけ通知し、同じ障害を10分ごとに鳴らし直しません。取得失敗は正常扱いせず「確認できません」と表示します。
 
