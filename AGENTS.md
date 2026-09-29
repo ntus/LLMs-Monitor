@@ -1,4 +1,42 @@
-# LLMs Token Usage Monitor — 作業指示
+# LLMs Token Usage Monitor — Agent Instructions
+
+[🌍 EN](#en) · [🇯🇵 JP](#ja)
+
+<a id="en"></a>
+
+This file is the starting point for every future Codex or LLM edit. Follow the user's current instructions while preserving existing features and browser-stored data.
+
+## Read before every change
+
+1. Read this entire `AGENTS.md`.
+2. Read all of `SPECIFICATION.md`, including acceptance criteria and known limitations.
+3. Read every requirement ID, data contract, and evidence item in `spec/requirements.json`.
+4. Review `README.md`, `STORE_SUBMISSION.md`, `extension/manifest.json`, relevant source code, and existing tests.
+5. Check `git status` and recent diffs; never overwrite user or parallel changes.
+
+## Regression-prevention workflow
+
+- Map the request to existing requirement IDs. Add IDs for missing requirements; never silently delete or weaken an old requirement.
+- Update `SPECIFICATION.md` and `spec/requirements.json` with the implementation. Disclose limits and unverified behavior.
+- Treat `extension/` as the source of truth for shared UI. Generate `dist/` and the ZIP with `build.py`; do not edit generated `dist/` alone.
+- Preserve storage keys, history, limit labels, acquisition sources, account boundaries, and compatibility with older settings. New settings need optional defaults.
+- Apply settings to the main page, public web app, normal popup, always-on-top view, and in-page panels. Hidden services must keep fetching and recording history so they can be restored.
+- Check the existing acquisition paths, 60-second refresh, history, numeric-only change indicator, three sounds, localization, themes, opacity, fullscreen, and privacy before release.
+- Never replace an official provider value with an estimate. Tips and news require dates and primary-source links; never send private usage data or history to an external news source.
+- Run meaningful tests, `node --test tests/*.test.cjs`, `python3 build.py`, ZIP inspection, version checks, and diff checks. Record any necessary manual verification in `SPECIFICATION.md`.
+- Keep the manifest, UI, CSS, ZIP, README, specification, and submission materials on the same version. Preserve the existing Site audience when deploying.
+
+## Every deliverable
+
+Keep this `AGENTS.md` in the repository and update it when a new acceptance rule or failure-prevention step arises. In the final report, link this file, the detailed specification, and the distribution package; distinguish verified behavior from live-account checks that remain unverified.
+
+---
+
+<a id="ja"></a>
+
+# 日本語 — LLMs Token Usage Monitor 作業指示
+
+[🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 このファイルは将来の Codex / LLM に向けた、毎回の作業開始点です。ユーザーの最新指示を優先しつつ、既存機能と保存データを守ってください。
 

@@ -1,4 +1,56 @@
-# LLMs トークン残量モニタ 詳細仕様書
+# LLMs Token Usage Monitor — Implementation Specification
+
+[🌍 EN](#en) · [🇯🇵 JP](#ja)
+
+<a id="en"></a>
+
+Document revision: 1.0 · Product version: **1.6.0** · Web companion: `https://ai-usage-glance.ntusnog.chatgpt.site/`
+
+This English section defines the implementation contract for the beta. The [Japanese section](#ja) contains the full historical and field-level acceptance criteria. Implementers must read both sections and every ID in [`spec/requirements.json`](spec/requirements.json); neither translation overrides the other.
+
+## 1. Product behavior
+
+The Chrome/Edge Manifest V3 extension reads remaining usage from the already signed-in ChatGPT, Claude, and Gemini accounts about every 60 seconds without requiring their usage tabs to remain open. It uses official service requests first and official-page DOM parsing as a fallback. It must never request a provider password or API key in its own UI. A signed-out service gets a link to the provider's official sign-in or usage page. Display only obtained provider values as official values; show unavailable when a plan, deadline, or credit cannot be obtained reliably.
+
+Each service card shows its plan, current and weekly limits, percentage gauge, horizontal bars, reset date/time and time left, available credits or reset entitlements, and a per-limit change-history box. The floating popup, Document Picture-in-Picture view, and provider-page panel must preserve the same essential data. A browser startup opens one normal popup; an always-on-top Document PiP view starts only after a user gesture in a supporting browser. The web page alone cannot provide an OS-wide always-on-top window or make the native browser-window chrome transparent.
+
+## 2. Data and persistence
+
+The extension background worker owns `ServiceSnapshot`, `UsageWindow`, `Extra`, history, and settings state. A usage window has a 0–100 remaining percentage and optional reset timestamp. An extra may have a value, detail, expiry, and optional bar percentage. Values from API and DOM sources merge without erasing a known plan, credit, or future reset time merely because the next source omits it. An account boundary prevents one user's prior values from appearing under another user. A transient refresh failure keeps the last known display value; sign-out clears current personal values but retains stored history.
+
+History records the first observed value after startup and subsequent **changed** values only, per usage-window label, up to 10,000 entries. It survives restarts and extension upgrades. On startup, load as much recent history as can be read and analyzed within roughly three seconds and show the date range, count, and elapsed time. Previously stored ChatGPT weekly-label aliases must be migrated without discarding rows. The same restored history feeds the advice engine. Provider access tokens exist only in request memory and must never enter storage, logs, displayed values, or this repository. Usage, history, and settings stay in browser extension storage and are not uploaded to the operator.
+
+## 3. Settings, presentation, and alerts
+
+Settings include theme (`dark`/`standard`), language (`ja`/`en`), opacity (15–100), site-panel position, sound enabled and volume, panel visibility, `serviceOrder`, and `hiddenServices`. Missing older preferences default to all three services in ChatGPT–Claude–Gemini order. Users can choose zero through three cards and reorder them; zero shows an empty state, one centers, two form two columns, and three form three columns where space permits. Hidden services continue fetching and saving history. Propagate changes to the web page, extension page, popup, PiP, and in-page panel. Detect Japanese at first launch only when the environment language is Japanese; otherwise use English. Keep the product title in the appropriate language and synchronize standard/dark appearance.
+
+Keep previous values visible while fetching. When a numeric value changes, blink **only that numeric text** red for ten seconds. Aggregate simultaneous changes into one audible event, with at most three local notification tones one second apart. Sound defaults on; browser audio may require an initial gesture. Do not rebuild or move the volume slider while it is being dragged. The fullscreen layout must retain bars and history, increase readability, and avoid page-level scrolling at supported desktop sizes.
+
+Use red inverse text and a warning symbol when a current-session reset is under two hours away, a weekly reset under one day away, or a ChatGPT reset entitlement expires in under five days. For any window under one hour or entitlement under one day, add a gentle two-second fade. Respect reduced-motion settings. Unknown dates must not trigger a fabricated warning. When the entitlement is available, show its official expiry and a ticket-marked link to the official usage page; never exercise it automatically.
+
+## 4. Advice and sourced updates
+
+The compact bottom ticker rotates approximately every nine seconds. Analyze the locally restored history to forecast consumption and provide plan-fit advice only when observations are sufficient. Advise on reset-entitlement timing, including waiting for an imminent natural reset where appropriate. A weekly bar may show an **estimated** number of full current-session equivalents: pair current and weekly changes captured at the same timestamps in the last seven days, accept paired decreases within six hours, and require at least ten current percentage points plus one weekly point consumed. Divide weekly remaining percentage by the observed cost of one full current session. Do not show a number when evidence is insufficient, and label the result as an estimate.
+
+Tips and NEWS must include the primary-source HTTPS link, publisher, and date. Release-bundled news headlines expire after 45 days, then fall back to an official changelog. The news display must not send private usage history externally. Claude Code's graceful stopping and post-reset automatic continuation are separate features and must not be conflated.
+
+## 5. Code, build, and release contract
+
+`extension/` is authoritative. `background.js`, `fetchers.js`, `parser.js`, `state.js`, and `history.js` acquire and normalize data; `shared.js`, `preferences.js`, `locale.js`, `advice.js`, and CSS render the common surfaces. `build.py` copies shared assets to `dist/`, synchronizes documentation into the extension package, cache-busts public assets, and creates `dist/LLMs-Token-Usage-Monitor-v1.6.0.zip`. Manifest, UI, ZIP, specification, and store checklist versions must agree. Chrome Web Store/Edge Add-ons review is necessary for installation without developer mode; the ZIP alone does not provide that. Future native macOS, Windows, iOS, and Android apps should reuse the normalized data contracts and analysis rules through platform-specific authentication/window adapters; those apps are not part of this release.
+
+Run `node --test tests/*.test.cjs`, `python3 build.py`, ZIP-content and version checks, and UI smoke checks. Test sign-in/sign-out, refresh fallback, every display surface, language/theme/opacity, deadline boundaries, history retention, and service visibility/order on actual Chrome and Edge installations before claiming live-account acceptance. Keep the Site's existing audience unless the user explicitly changes it. See the [Japanese detailed specification](#ja) and [requirements ledger](spec/requirements.json) for every acceptance case.
+
+## 6. Documentation language and navigation
+
+Human-readable documentation must start in English and place Japanese in the latter part of each document. Provide visible `🌍 EN` and `🇯🇵 JP` links near the top and at the Japanese section. This applies to the README, implementation specification, agent instructions, privacy policy, store checklist, and the web privacy page. Keep the translated sections synchronized when behavior or release details change. JSON manifests and the machine-readable requirements ledger retain their schema; their prose values may remain in the language required by the existing data contract.
+
+---
+
+<a id="ja"></a>
+
+# 日本語 — LLMs トークン残量モニタ 詳細仕様書
+
+[🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
 対象製品版: 1.6.0
@@ -963,6 +1015,10 @@ Document Picture-in-Pictureには以下の制約がある。
 ### 26.5 検証ゲート
 
 以後の作業開始時に `AGENTS.md`、本仕様、`spec/requirements.json` を必ず読み、新旧の全要件と保存データ互換性を確認する。ビルド、既存テスト、新要件テスト、ZIP内容、通常・全画面・小窓・PiPの目視を行い、実アカウントで未検証のものは明示する。公開画面と配布ZIPの版をそろえる。
+
+### 26.6 文書の言語順と切替
+
+README、本仕様、AGENTS、PRIVACY、ストア提出資料、Webプライバシーページは英語を先頭、日本語を後半に配置する。冒頭と日本語部分に `🌍 EN` / `🇯🇵 JP` のページ内リンクを置き、機能や版が変わるたびに双方を同期する。JSON Manifestと機械可読の要件台帳はスキーマを維持し、その値の文章は既存データ契約に必要な言語を保持してよい。
 
 ## 27. 実装完了の定義
 

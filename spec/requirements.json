@@ -2414,6 +2414,57 @@
           "procedure": "Verify normal, fullscreen, floating, PiP, content panel and signed-in providers."
         }
       ]
+    },
+    {
+      "id": "DOC-001",
+      "category": "documentation",
+      "introduced_in": "1.6.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "人間向けのREADME、仕様書、AGENTS、PRIVACY、ストア提出資料、Webプライバシーページは英語から始めて日本語を後半に置き、冒頭と日本語部分にEN/JPのページ内リンクを提供する。版や機能の変更時は両言語を同期する。",
+      "source_requirements": [
+        "2026-09-29 user request: English-first all documents with EN/JP links"
+      ],
+      "acceptance_criteria": [
+        "各人間向け文書の先頭が英語である。",
+        "日本語部分が後半にあり、EN/JPリンクで移動できる。",
+        "既存の詳細仕様・データ契約を削除しない。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "README.md",
+          "symbol": "English section, Japanese section and EN/JP links"
+        },
+        {
+          "path": "SPECIFICATION.md",
+          "symbol": "English section, Japanese section and EN/JP links"
+        },
+        {
+          "path": "AGENTS.md",
+          "symbol": "English section, Japanese section and EN/JP links"
+        },
+        {
+          "path": "PRIVACY.md",
+          "symbol": "English section, Japanese section and EN/JP links"
+        },
+        {
+          "path": "STORE_SUBMISSION.md",
+          "symbol": "English section, Japanese section and EN/JP links"
+        },
+        {
+          "path": "extension/privacy.html",
+          "symbol": "English section, Japanese section and EN/JP links"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/documentation.test.cjs",
+          "cases": [
+            "documentation language order and navigation"
+          ]
+        }
+      ]
     }
   ]
 }

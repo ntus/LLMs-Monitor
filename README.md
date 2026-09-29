@@ -1,8 +1,36 @@
-# LLMs トークン残量モニタ
+# LLMs Token Usage Monitor
 
-English name: **LLMs Token Usage Monitor**
+[🌍 EN](#en) · [🇯🇵 JP](#ja)
 
-## 1.6.0 β — 自分の利用枠を、一目で使いこなす
+<a id="en"></a>
+
+**See the remaining usage across ChatGPT, Claude, and Gemini at a glance.**
+
+This browser companion checks usage from your signed-in provider sessions about once a minute. Large gauges and bars show current and weekly limits, reset times, plans, and available credits. Your change history stays in your browser, with up to 10,000 entries per limit. The interface supports English and Japanese, light and dark themes, fullscreen viewing, and compact floating panels.
+
+Version **1.6.0 beta** adds service visibility and ordering, deadline alerts, an estimate of how many current-session equivalents remain in the weekly allowance, and compact usage advice. Tips and news link to their original sources. The estimate is based on your local history; it is not an official provider limit.
+
+[Open the monitor](https://ai-usage-glance.ntusnog.chatgpt.site/) · [Download the beta extension package](dist/LLMs-Token-Usage-Monitor-v1.6.0.zip) · [Detailed specification](SPECIFICATION.md) · [Privacy](PRIVACY.md) · [Follow @ntus on X](https://x.com/ntus)
+
+## Quick start
+
+1. Sign in to the services you want to monitor on their official [ChatGPT](https://chatgpt.com/), [Claude](https://claude.ai/), and [Gemini](https://gemini.google.com/) sites in the same Chrome or Edge profile. Enter credentials only on those sites.
+2. Before store approval, run `python3 build.py`, unpack `dist/LLMs-Token-Usage-Monitor-v1.6.0.zip`, and load the unpacked extension from the browser's extension management page for beta testing. Installing without developer mode requires Chrome Web Store or Edge Add-ons review and publication.
+3. Open the extension or the [web monitor](https://ai-usage-glance.ntusnog.chatgpt.site/). The web monitor asks for your extension ID once. The providers' usage tabs do not need to remain open.
+4. Use **Show and arrange services** to choose and reorder cards. Hidden services continue collecting history. Adjust language, theme, opacity, volume, and fullscreen mode from the controls.
+
+The monitor never asks for provider passwords and never exercises a reset entitlement automatically. A reset link opens the official usage page when an entitlement is available. If a provider does not expose a reliable plan or deadline, the app shows it as unavailable rather than guessing. Document Picture-in-Picture can keep a panel on top in supported browsers; OS-wide window transparency and native mobile apps are outside this beta.
+
+For contributors and future AI-assisted changes, read [AGENTS.md](AGENTS.md), the [specification](SPECIFICATION.md), and the [requirements ledger](spec/requirements.json) before editing. Run `node --test tests/*.test.cjs` and `python3 build.py` before releasing.
+
+---
+
+<a id="ja"></a>
+# 日本語 — LLMs トークン残量モニタ
+
+[🌍 EN](#en) · [🇯🇵 JP](#ja)
+
+## 1.6.0 β — 各種LLMの利用残量をリアルタイム表示
 
 ChatGPT、Claude、Gemini の残量とリセット時刻を、ログイン中の公式セッションから約1分ごとに確認するブラウザー用モニターです。円とバーで現在枠・週間枠を見渡し、変化履歴を各枠最大10,000件まで端末内に保持します。日本語／英語、標準／ダーク、フルスクリーン、通常小窓、対応ブラウザーでの最前面表示に対応します。
 

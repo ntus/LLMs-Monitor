@@ -1,6 +1,10 @@
 # LLMs Token Usage Monitor — Privacy Policy
 
-Last updated: 2026-09-28
+[🌍 EN](#en) · [🇯🇵 JP](#ja)
+
+<a id="en"></a>
+
+Last updated: 2026-09-29
 
 The extension reads plan names, usage limits, remaining percentages, reset times, and related credit balances from the official ChatGPT, Claude, Gemini, and Google One services for accounts already signed in within the browser profile. Google One is queried only to identify the current Google AI membership name when Gemini does not expose it directly.
 
@@ -13,3 +17,25 @@ The extension communicates only with the official service domains listed in its 
 Users can remove all stored data by uninstalling the extension or clearing its extension storage.
 
 Contact: NT MicroSystems,Inc.
+
+---
+
+<a id="ja"></a>
+
+# 日本語 — LLMs トークン残量モニタ プライバシーポリシー
+
+[🌍 EN](#en) · [🇯🇵 JP](#ja)
+
+最終更新: 2026-09-29
+
+本拡張機能は、同じブラウザープロファイルでログイン済みのChatGPT、Claude、Gemini、Google Oneの公式サービスから、契約プラン名、利用枠、残量、リセット日時、関連クレジットを取得します。Gemini側で現在の契約名を取得できない場合に限り、Google Oneで現在のGoogle AIメンバーシップ名を確認します。
+
+ChatGPTの使用量取得では、公式ページがログイン中のアカウントに提供するアクセストークンを要求中だけメモリー内で利用します。保存、ログ出力、画面表示、開発者や第三者への送信はしません。パスワードは読み取りません。
+
+使用量スナップショット、利用枠ごとに最大10,000件の変化履歴、選択したClaude組織ID、表示設定をブラウザーの拡張機能ストレージに保存します。ログアウトや拡張機能の更新後も履歴を維持し、再ログイン後の比較基準だけをリセットします。これらをNT MicroSystems,Inc.へアップロードしたり、販売、共有、広告、プロファイリング、信用判断、無関係な目的に利用したりしません。
+
+拡張機能はManifestに記載した公式ドメインとコンパニオン画面 `https://ai-usage-glance.ntusnog.chatgpt.site` だけと通信します。利用者が拡張機能IDでその画面を接続した場合、表示に必要なプラン、使用量、クレジット、履歴、設定が同じブラウザー内の画面へ返されます。その値を運営者のサーバーへアップロードする処理はありません。プロンプト送信、クレジット購入、リセット権行使、アカウント設定変更を自動実行しません。
+
+保存データは拡張機能のアンインストール、または拡張機能ストレージの消去で削除できます。
+
+お問い合わせ: NT MicroSystems,Inc.
