@@ -1,17 +1,17 @@
-# Store submission checklist — v1.6.1
+# Store submission checklist — v1.6.2
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 <a id="en"></a>
 
-`dist/LLMs-Token-Usage-Monitor-v1.6.1.zip` is the Chrome Web Store and Microsoft Edge Add-ons submission package. Its manifest and complete runtime UI are localized as “LLMs トークン残量モニタ” in Japanese and “LLMs TOKEN USAGE MONITOR” in English.
+`dist/LLMs-Token-Usage-Monitor-v1.6.2.zip` is the Chrome Web Store and Microsoft Edge Add-ons submission package. Its manifest and complete runtime UI are localized as “LLMs トークン残量モニタ” in Japanese and “LLMs TOKEN USAGE MONITOR” in English.
 
 Developer-mode-free installation requires the owner to complete both stores' account, review, and publication process. Building or hosting the ZIP does not publish an installable store extension.
 
 ## Required owner actions
 
 1. Register the owner developer accounts and enable two-step verification where required.
-2. Upload `LLMs-Token-Usage-Monitor-v1.6.1.zip`, the 128px icon, screenshots, Japanese and English descriptions, and reviewer test instructions.
+2. Upload `LLMs-Token-Usage-Monitor-v1.6.2.zip`, the 128px icon, screenshots, Japanese and English descriptions, and reviewer test instructions.
 3. Use the deployed privacy policy at `https://ai-usage-glance.ntusnog.chatgpt.site/privacy.html` and verify that it is reachable without sign-in.
 4. Submit for manual review in each store. After approval, replace the website package-only guidance with the approved store URLs.
 
@@ -44,11 +44,11 @@ Before uploading, run `node --test tests/*.test.cjs`, `python3 build.py`, inspec
 
 <a id="ja"></a>
 
-# 日本語 — ストア提出チェックリスト v1.6.1
+# 日本語 — ストア提出チェックリスト v1.6.2
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
-提出物は `dist/LLMs-Token-Usage-Monitor-v1.6.1.zip` です。拡張機能名と画面は日本語「LLMs トークン残量モニタ」、英語「LLMs TOKEN USAGE MONITOR」に対応します。デベロッパーモード不要の導入には、所有者がChrome Web StoreとMicrosoft Edge Add-onsでアカウント、審査、公開を完了する必要があります。ZIPの作成やWeb配布だけではストア公開になりません。
+提出物は `dist/LLMs-Token-Usage-Monitor-v1.6.2.zip` です。拡張機能名と画面は日本語「LLMs トークン残量モニタ」、英語「LLMs TOKEN USAGE MONITOR」に対応します。デベロッパーモード不要の導入には、所有者がChrome Web StoreとMicrosoft Edge Add-onsでアカウント、審査、公開を完了する必要があります。ZIPの作成やWeb配布だけではストア公開になりません。
 
 ## 所有者が行う提出作業
 

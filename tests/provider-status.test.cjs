@@ -19,3 +19,20 @@ test('an unchanged issue key does not represent a new notification',()=>{
  const second=S.normalize({claude:{state:'issue',summary:'Outage',checkedAt:2}});
  assert.equal(S.incidentKey(first),S.incidentKey(second));
 });
+
+test('issue recovery stays green briefly and then returns to operational',()=>{
+ const issue={claude:{state:'issue',summary:'Service disruption',checkedAt:100}};
+ const healthy={claude:{state:'ok',summary:'All systems operational',checkedAt:200}};
+ const recovered=S.transition(issue,healthy,200);
+ assert.equal(recovered.claude.state,'recovered');
+ assert(S.view(recovered,'ja').includes('復帰しました'));
+ assert(S.view(recovered,'en').includes('recovered'));
+ assert.equal(S.transition(recovered,healthy,200+300000).claude.state,'recovered');
+ assert.equal(S.transition(recovered,healthy,200+600001).claude.state,'ok');
+});
+
+test('a temporary status fetch failure does not erase recovery evidence',()=>{
+ const issue={gemini:{state:'issue',summary:'Disruption',checkedAt:100}};
+ const unknown=S.transition(issue,{gemini:{state:'unknown',summary:'Unavailable',checkedAt:200}},200);
+ assert.equal(S.transition(unknown,{gemini:{state:'ok',summary:'Operational',checkedAt:300}},300).gemini.state,'recovered');
+});
