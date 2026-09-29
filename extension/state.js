@@ -1,0 +1,17 @@
+(function(root){
+ function loading(old={},now=Date.now()) {return {...old,status:'loading',refreshing:true,refreshStartedAt:now,note:'更新中 · 前回取得値を表示しています。'};}
+ function accept(old={},incoming,now=Date.now()) {
+  if(incoming.status==='login')return {...incoming,windows:[],extras:[],capturedAt:null,refreshing:false};
+  if(incoming.status!=='ready')return {...old,status:'error',refreshing:false,note:'取得できませんでした · 前回取得値を表示しています。'};
+  const accountChanged=!!old.accountKey&&!!incoming.accountKey&&old.accountKey!==incoming.accountKey,prior=accountChanged?{}:old,source=incoming.source||'api',origin=item=>item?._source||prior.source||'legacy';
+  const receivedWindows=(Array.isArray(incoming.windows)?incoming.windows:[]).map(item=>({...item,_source:source})),windowInput=[...receivedWindows,...(prior.windows||[]).filter(oldWindow=>origin(oldWindow)!==source&&!receivedWindows.some(w=>w.label===oldWindow.label))];
+  const windows=windowInput.map(w=>{const prev=prior.windows?.find(p=>p.label===w.label),resetAt=Number.isFinite(Number(w.resetAt))?Number(w.resetAt):prev?.resetAt>now?prev.resetAt:null;return {...w,resetAt,previous:prev&&prev.remaining!==w.remaining?{remaining:prev.remaining,capturedAt:prior.capturedAt}:prev?.previous};});
+  const receivedExtras=(Array.isArray(incoming.extras)?incoming.extras:[]).map(item=>({...item,_source:source})),extraInput=[...receivedExtras,...(prior.extras||[]).filter(oldExtra=>origin(oldExtra)!==source&&!receivedExtras.some(e=>e.label===oldExtra.label)&&(!oldExtra.expiresAt||oldExtra.expiresAt>now))];
+  const extras=extraInput.map(e=>{const prev=prior.extras?.find(p=>p.label===e.label),missing=e.value==='未取得'&&prev&&prev.value!=='未取得',sameReset=e.label==='利用上限のリセット'&&prev?.value===e.value&&prev.expiresAt>now;if(missing)return prev;return {...e,...(sameReset&&!e.expiresAt?{expiresAt:prev.expiresAt,detail:prev.detail,observedAt:prev.observedAt}:{}),previous:prev&&prev.value!==e.value?{value:prev.value,capturedAt:prior.capturedAt}:prev?.previous};});
+  const oldReset=prior.extras?.find(e=>e.label==='利用上限のリセット'),hasReset=extras.some(e=>e.label==='利用上限のリセット');
+  if(!hasReset&&oldReset?.expiresAt>now)extras.push(oldReset);
+  const plan=incoming.plan&&incoming.plan!=='未取得'?incoming.plan:(prior.plan||'未取得');
+  return {...incoming,plan,windows,extras,capturedAt:now,refreshing:false};
+ }
+ root.GlanceState={loading,accept};if(typeof module!=='undefined')module.exports=root.GlanceState;
+})(globalThis);

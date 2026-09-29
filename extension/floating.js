@@ -1,0 +1,6 @@
+const panel=document.querySelector('#floating-widget');
+function paintChrome(settings={}){const language=settings.language==='en'?'en':'ja',alpha=(settings.opacity??55)/100;GlanceLocale.setLanguage(language);document.documentElement.lang=language;document.documentElement.dataset.language=language;document.documentElement.dataset.theme=settings.theme==='standard'?'standard':'dark';document.title=GlanceLocale.t('appTitle');document.body.style.setProperty('--alpha',alpha);panel.style.setProperty('--alpha',alpha);document.querySelector('#floating-refresh').textContent=`↻ ${GlanceLocale.t('refreshShort')}`;document.querySelector('#floating-monitor').textContent=`${GlanceLocale.t('openMonitor')} ↗`;}
+async function sync(){try{const result=await chrome.runtime.sendMessage({type:'GET'});paintChrome(result.settings);Glance.observe(result.data||{});panel.innerHTML=Glance.widget(result.data||{},result.settings||{});Glance.decorate(panel,result.data||{},result.settings||{});}catch{panel.textContent=GlanceLocale.t('connectionLost');}}
+document.querySelector('#floating-refresh').onclick=async()=>{await chrome.runtime.sendMessage({type:'REFRESH'});await sync();};
+document.querySelector('#floating-monitor').onclick=()=>chrome.tabs.create({url:chrome.runtime.getURL('index.html')});
+sync();setInterval(sync,2000);

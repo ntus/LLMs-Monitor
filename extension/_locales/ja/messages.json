@@ -1,0 +1,5 @@
+{
+  "extensionName":{"message":"LLMs トークン残量モニタ"},
+  "extensionDescription":{"message":"ChatGPT・Claude・Geminiの公式画面から契約内容と残り使用量を端末内で確認します。"},
+  "actionTitle":{"message":"LLMs トークン残量モニタを開く"}
+}

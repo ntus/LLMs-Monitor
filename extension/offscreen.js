@@ -1,0 +1,3 @@
+let sequence=0,context=null;
+function beep(volume){context??=new AudioContext();const oscillator=context.createOscillator(),gain=context.createGain(),now=context.currentTime;oscillator.type='sine';oscillator.frequency.setValueAtTime(880,now);gain.gain.setValueAtTime(.0001,now);gain.gain.exponentialRampToValueAtTime(Math.max(.01,Math.min(.5,Number(volume||18)/100)),now+.015);gain.gain.exponentialRampToValueAtTime(.0001,now+.11);oscillator.connect(gain).connect(context.destination);oscillator.start(now);oscillator.stop(now+.12);}
+chrome.runtime.onMessage.addListener(message=>{if(message?.type!=='PLAY_CHANGE_SOUND')return;const id=++sequence;[0,1000,2000].forEach(delay=>setTimeout(()=>{if(id===sequence)beep(message.volume)},delay));});
