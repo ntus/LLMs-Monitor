@@ -39,7 +39,7 @@ For contributors and future AI-assisted changes, read [AGENTS.md](AGENTS.md), th
 <a id="ja"></a>
 # 日本語 — LLMs トークン残量モニタ
 
-> 各種LLMの利用残量をリアルタイム表示
+**ChatGPT/Claude/Geminiのトークン利用残量をリアルタイム表示**
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
