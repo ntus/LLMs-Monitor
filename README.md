@@ -1,10 +1,10 @@
 # LLMs Token Usage Monitor
 
+**See the remaining usage across ChatGPT, Claude, and Gemini at a glance.**
+
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 <a id="en"></a>
-
-**See the remaining usage across ChatGPT, Claude, and Gemini at a glance.**
 
 This browser companion checks usage from your signed-in provider sessions about once a minute. Large gauges and bars show current and weekly limits, reset times, plans, and available credits. Your change history stays in your browser, with up to 10,000 entries per limit. The interface supports English and Japanese, light and dark themes, fullscreen viewing, and compact floating panels.
 
@@ -39,11 +39,11 @@ For contributors and future AI-assisted changes, read [AGENTS.md](AGENTS.md), th
 <a id="ja"></a>
 # 日本語 — LLMs トークン残量モニタ
 
+**ChatGPT/Claude/Geminiのトークン利用残量をリアルタイム表示**
+
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 ## 1.6.2 β
-
-> 各種LLMの利用残量をリアルタイム表示
 
 ChatGPT、Claude、Gemini の残量とリセット時刻を、ログイン中の公式セッションから約1分ごとに確認するブラウザー用モニターです。円とバーで現在枠・週間枠を見渡し、変化履歴を各枠最大10,000件まで端末内に保持します。日本語／英語、標準／ダーク、フルスクリーン、通常小窓、対応ブラウザーでの最前面表示に対応します。
 
