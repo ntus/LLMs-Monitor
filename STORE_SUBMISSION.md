@@ -1,13 +1,13 @@
-# Store submission checklist — v1.5.3
+# Store submission checklist — v1.6.0
 
-`dist/LLMs-Token-Usage-Monitor-v1.5.3.zip` is the Chrome Web Store and Microsoft Edge Add-ons submission package. Its manifest and complete runtime UI are localized as “LLMs トークン残量モニタ” in Japanese and “LLMs TOKEN USAGE MONITOR” in English.
+`dist/LLMs-Token-Usage-Monitor-v1.6.0.zip` is the Chrome Web Store and Microsoft Edge Add-ons submission package. Its manifest and complete runtime UI are localized as “LLMs トークン残量モニタ” in Japanese and “LLMs TOKEN USAGE MONITOR” in English.
 
 Developer-mode-free installation requires the owner to complete both stores' account, review, and publication process. Building or hosting the ZIP does not publish an installable store extension.
 
 ## Required owner actions
 
 1. Register the owner developer accounts and enable two-step verification where required.
-2. Upload `LLMs-Token-Usage-Monitor-v1.5.3.zip`, the 128px icon, screenshots, Japanese and English descriptions, and reviewer test instructions.
+2. Upload `LLMs-Token-Usage-Monitor-v1.6.0.zip`, the 128px icon, screenshots, Japanese and English descriptions, and reviewer test instructions.
 3. Use the deployed privacy policy at `https://ai-usage-glance.ntusnog.chatgpt.site/privacy.html` and verify that it is reachable without sign-in.
 4. Submit for manual review in each store. After approval, replace the website package-only guidance with the approved store URLs.
 

@@ -1,13 +1,13 @@
 {
   "schema_version": "1.0.0",
   "ledger_id": "llms-token-usage-monitor-requirements",
-  "last_updated": "2026-09-28",
+  "last_updated": "2026-09-29",
   "authoritative": true,
   "product": {
     "name_ja": "LLMs トークン残量モニタ",
     "name_en": "LLMs Token Usage Monitor",
-    "version": "1.5.3",
-    "package_filename": "LLMs-Token-Usage-Monitor-v1.5.3.zip",
+    "version": "1.6.0",
+    "package_filename": "LLMs-Token-Usage-Monitor-v1.6.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -79,7 +79,9 @@
       "theme": "dark | standard",
       "language": "ja | en",
       "sound": "boolean",
-      "volume": "integer from 1 through 50"
+      "volume": "integer from 1 through 50",
+      "serviceOrder": "optional ordered permutation of chatgpt, claude, gemini; defaults to all",
+      "hiddenServices": "optional subset of service IDs; defaults to none"
     }
   },
   "requirements": [
@@ -100,13 +102,29 @@
         "日本語モードと英語モードでindexとfloatingの文書タイトルが指定製品名へ切り替わる。"
       ],
       "implementation_evidence": [
-        { "path": "extension/_locales/ja/messages.json", "symbol": "extensionName/actionTitle" },
-        { "path": "extension/_locales/en/messages.json", "symbol": "extensionName/actionTitle" },
-        { "path": "dist/index.html", "symbol": "document title and brand" },
-        { "path": "extension/floating.html", "symbol": "document title" }
+        {
+          "path": "extension/_locales/ja/messages.json",
+          "symbol": "extensionName/actionTitle"
+        },
+        {
+          "path": "extension/_locales/en/messages.json",
+          "symbol": "extensionName/actionTitle"
+        },
+        {
+          "path": "dist/index.html",
+          "symbol": "document title and brand"
+        },
+        {
+          "path": "extension/floating.html",
+          "symbol": "document title"
+        }
       ],
       "test_evidence": [
-        { "type": "manual", "coverage": "required", "procedure": "Chrome and Edge in Japanese and English UI locales must show the expected localized extension name; inspect both monitor windows." }
+        {
+          "type": "manual",
+          "coverage": "required",
+          "procedure": "Chrome and Edge in Japanese and English UI locales must show the expected localized extension name; inspect both monitor windows."
+        }
       ]
     },
     {
@@ -121,16 +139,29 @@
         "README 1.3.0"
       ],
       "acceptance_criteria": [
-        "v1.5.3の成果物名がLLMs-Token-Usage-Monitor-v1.5.3.zipである。",
-        "manifest.version、ダウンロードリンク、footer、STORE_SUBMISSIONの版番号が1.5.3で一致する。"
+        "v1.6.0の成果物名がLLMs-Token-Usage-Monitor-v1.6.0.zipである。",
+        "manifest.version、ダウンロードリンク、footer、STORE_SUBMISSIONの版番号が1.6.0で一致する。"
       ],
       "implementation_evidence": [
-        { "path": "extension/manifest.json", "symbol": "version" },
-        { "path": "build.py", "symbol": "version-derived package filename" },
-        { "path": "dist/index.html", "symbol": "package link and footer" }
+        {
+          "path": "extension/manifest.json",
+          "symbol": "version"
+        },
+        {
+          "path": "build.py",
+          "symbol": "version-derived package filename"
+        },
+        {
+          "path": "dist/index.html",
+          "symbol": "package link and footer"
+        }
       ],
       "test_evidence": [
-        { "type": "manual", "coverage": "required", "procedure": "Run python3 build.py and compare manifest.version with the ZIP filename, download link, footer, and store checklist." }
+        {
+          "type": "manual",
+          "coverage": "required",
+          "procedure": "Run python3 build.py and compare manifest.version with the ZIP filename, download link, footer, and store checklist."
+        }
       ]
     },
     {
@@ -149,12 +180,25 @@
         "未検証プラットフォームはREADMEで明示される。"
       ],
       "implementation_evidence": [
-        { "path": "extension/manifest.json", "symbol": "manifest_version" },
-        { "path": "README.md", "symbol": "platform scope" },
-        { "path": ".openai/hosting.json", "symbol": "static.directory" }
+        {
+          "path": "extension/manifest.json",
+          "symbol": "manifest_version"
+        },
+        {
+          "path": "README.md",
+          "symbol": "platform scope"
+        },
+        {
+          "path": ".openai/hosting.json",
+          "symbol": "static.directory"
+        }
       ],
       "test_evidence": [
-        { "type": "manual", "coverage": "required", "procedure": "Install the release package in current stable Chrome and Edge desktop and execute the smoke checklist." }
+        {
+          "type": "manual",
+          "coverage": "required",
+          "procedure": "Install the release package in current stable Chrome and Edge desktop and execute the smoke checklist."
+        }
       ]
     },
     {
@@ -173,13 +217,29 @@
         "一つの表示面で設定を変更すると拡張機能へ接続された他の表示面へ反映される。"
       ],
       "implementation_evidence": [
-        { "path": "extension/background.js", "symbol": "state and SETTINGS message handlers" },
-        { "path": "dist/app.js", "symbol": "sync/render/saveSettings" },
-        { "path": "extension/content.js", "symbol": "draw" },
-        { "path": "extension/floating.js", "symbol": "sync" }
+        {
+          "path": "extension/background.js",
+          "symbol": "state and SETTINGS message handlers"
+        },
+        {
+          "path": "dist/app.js",
+          "symbol": "sync/render/saveSettings"
+        },
+        {
+          "path": "extension/content.js",
+          "symbol": "draw"
+        },
+        {
+          "path": "extension/floating.js",
+          "symbol": "sync"
+        }
       ],
       "test_evidence": [
-        { "type": "manual", "coverage": "not_automated", "procedure": "Open every supported surface, alter theme, position, enabled state and opacity, then compare rendered state." }
+        {
+          "type": "manual",
+          "coverage": "not_automated",
+          "procedure": "Open every supported surface, alter theme, position, enabled state and opacity, then compare rendered state."
+        }
       ]
     },
     {
@@ -199,12 +259,25 @@
         "認証情報を運営サーバーへ送信しない。"
       ],
       "implementation_evidence": [
-        { "path": "extension/fetchers.js", "symbol": "credentials: include provider requests" },
-        { "path": "extension/background.js", "symbol": "login state handling" },
-        { "path": "PRIVACY.md", "symbol": "password and token disclosure" }
+        {
+          "path": "extension/fetchers.js",
+          "symbol": "credentials: include provider requests"
+        },
+        {
+          "path": "extension/background.js",
+          "symbol": "login state handling"
+        },
+        {
+          "path": "PRIVACY.md",
+          "symbol": "password and token disclosure"
+        }
       ],
       "test_evidence": [
-        { "type": "manual", "coverage": "required", "procedure": "Use a signed-out browser profile and confirm that only official-site login navigation is offered and no credential form appears in the product." }
+        {
+          "type": "manual",
+          "coverage": "required",
+          "procedure": "Use a signed-out browser profile and confirm that only official-site login navigation is offered and no credential form appears in the product."
+        }
       ]
     },
     {
@@ -224,11 +297,21 @@
         "起動時に保存値を表示した後、バックグラウンド更新する。"
       ],
       "implementation_evidence": [
-        { "path": "extension/background.js", "symbol": "FETCHERS/refresh/bootstrap/chrome.alarms" },
-        { "path": "extension/fetchers.js", "symbol": "fetchChatGPT/fetchClaude/fetchGemini" }
+        {
+          "path": "extension/background.js",
+          "symbol": "FETCHERS/refresh/bootstrap/chrome.alarms"
+        },
+        {
+          "path": "extension/fetchers.js",
+          "symbol": "fetchChatGPT/fetchClaude/fetchGemini"
+        }
       ],
       "test_evidence": [
-        { "type": "manual", "coverage": "required", "procedure": "Close every provider tab, remain signed in to the profile, trigger REFRESH, and verify all supported snapshots update." }
+        {
+          "type": "manual",
+          "coverage": "required",
+          "procedure": "Close every provider tab, remain signed in to the profile, trigger REFRESH, and verify all supported snapshots update."
+        }
       ]
     },
     {
@@ -247,10 +330,17 @@
         "dataとhistoryへの同時更新でサービス状態や履歴行を失わない。"
       ],
       "implementation_evidence": [
-        { "path": "extension/background.js", "symbol": "dataQueue/historyQueue/timebox/refresh" }
+        {
+          "path": "extension/background.js",
+          "symbol": "dataQueue/historyQueue/timebox/refresh"
+        }
       ],
       "test_evidence": [
-        { "type": "manual", "coverage": "not_automated", "procedure": "Stub one provider fetch to never resolve, allow the other two to succeed, and confirm timeout plus retained successful results." }
+        {
+          "type": "manual",
+          "coverage": "not_automated",
+          "procedure": "Stub one provider fetch to never resolve, allow the other two to succeed, and confirm timeout plus retained successful results."
+        }
       ]
     },
     {
@@ -270,12 +360,30 @@
         "reset_atまたはreset_after_secondsがepoch millisecondsへ正規化される。"
       ],
       "implementation_evidence": [
-        { "path": "extension/fetchers.js", "symbol": "chatWindow/parseChatGPTUsage/fetchChatGPT" },
-        { "path": "extension/parser.js", "symbol": "parse chatgpt branch" }
+        {
+          "path": "extension/fetchers.js",
+          "symbol": "chatWindow/parseChatGPTUsage/fetchChatGPT"
+        },
+        {
+          "path": "extension/parser.js",
+          "symbol": "parse chatgpt branch"
+        }
       ],
       "test_evidence": [
-        { "type": "automated", "path": "tests/fetchers.test.cjs", "cases": ["ChatGPTの5時間・週間利用率を残量へ変換する"] },
-        { "type": "automated", "path": "tests/parser.test.cjs", "cases": ["ChatGPT: リセット時間を枠の長さと取り違えずChatと区別"] }
+        {
+          "type": "automated",
+          "path": "tests/fetchers.test.cjs",
+          "cases": [
+            "ChatGPTの5時間・週間利用率を残量へ変換する"
+          ]
+        },
+        {
+          "type": "automated",
+          "path": "tests/parser.test.cjs",
+          "cases": [
+            "ChatGPT: リセット時間を枠の長さと取り違えずChatと区別"
+          ]
+        }
       ]
     },
     {
@@ -296,15 +404,45 @@
         "直前planが既知で新値が未取得の場合は直前planを保持する。"
       ],
       "implementation_evidence": [
-        { "path": "extension/fetchers.js", "symbol": "chatGPTBootstrap/plan" },
-        { "path": "extension/content.js", "symbol": "chatGPTPlan" },
-        { "path": "extension/parser.js", "symbol": "parsePlan/planFromObject" },
-        { "path": "extension/state.js", "symbol": "plan retention" }
+        {
+          "path": "extension/fetchers.js",
+          "symbol": "chatGPTBootstrap/plan"
+        },
+        {
+          "path": "extension/content.js",
+          "symbol": "chatGPTPlan"
+        },
+        {
+          "path": "extension/parser.js",
+          "symbol": "parsePlan/planFromObject"
+        },
+        {
+          "path": "extension/state.js",
+          "symbol": "plan retention"
+        }
       ],
       "test_evidence": [
-        { "type": "automated", "path": "tests/fetchers.test.cjs", "cases": ["ChatGPT bootstrapからトークン・アカウント・Plusを取得する"] },
-        { "type": "automated", "path": "tests/parser.test.cjs", "cases": ["ChatGPTのclient-bootstrapから契約プランを読み、アップグレード広告は誤認しない"] },
-        { "type": "automated", "path": "tests/state.test.cjs", "cases": ["一時的に契約プランを取得できなくても既知の値を保持"] }
+        {
+          "type": "automated",
+          "path": "tests/fetchers.test.cjs",
+          "cases": [
+            "ChatGPT bootstrapからトークン・アカウント・Plusを取得する"
+          ]
+        },
+        {
+          "type": "automated",
+          "path": "tests/parser.test.cjs",
+          "cases": [
+            "ChatGPTのclient-bootstrapから契約プランを読み、アップグレード広告は誤認しない"
+          ]
+        },
+        {
+          "type": "automated",
+          "path": "tests/state.test.cjs",
+          "cases": [
+            "一時的に契約プランを取得できなくても既知の値を保持"
+          ]
+        }
       ]
     },
     {
@@ -324,15 +462,46 @@
         "期限7日以内を警告し、リンクはChatGPT公式usage URLだけを開く。"
       ],
       "implementation_evidence": [
-        { "path": "extension/fetchers.js", "symbol": "chatGPTReset" },
-        { "path": "extension/parser.js", "symbol": "chatGPTReset" },
-        { "path": "extension/state.js", "symbol": "reset entitlement retention" },
-        { "path": "extension/shared.js", "symbol": "extras" }
+        {
+          "path": "extension/fetchers.js",
+          "symbol": "chatGPTReset"
+        },
+        {
+          "path": "extension/parser.js",
+          "symbol": "chatGPTReset"
+        },
+        {
+          "path": "extension/state.js",
+          "symbol": "reset entitlement retention"
+        },
+        {
+          "path": "extension/shared.js",
+          "symbol": "extras"
+        }
       ],
       "test_evidence": [
-        { "type": "automated", "path": "tests/fetchers.test.cjs", "cases": ["ChatGPT APIの利用上限リセット権は件数・種別・期限を表示する"] },
-        { "type": "automated", "path": "tests/parser.test.cjs", "cases": ["ChatGPTの利用上限リセット権・種別・期限を公式カードから取得"] },
-        { "type": "automated", "path": "tests/state.test.cjs", "cases": ["公式画面から取得したChatGPTリセット期限をAPI更新後も期限まで保持", "同じリセット権のAPI結果に期限がなくても既知の期限を補完"] }
+        {
+          "type": "automated",
+          "path": "tests/fetchers.test.cjs",
+          "cases": [
+            "ChatGPT APIの利用上限リセット権は件数・種別・期限を表示する"
+          ]
+        },
+        {
+          "type": "automated",
+          "path": "tests/parser.test.cjs",
+          "cases": [
+            "ChatGPTの利用上限リセット権・種別・期限を公式カードから取得"
+          ]
+        },
+        {
+          "type": "automated",
+          "path": "tests/state.test.cjs",
+          "cases": [
+            "公式画面から取得したChatGPTリセット期限をAPI更新後も期限まで保持",
+            "同じリセット権のAPI結果に期限がなくても既知の期限を補完"
+          ]
+        }
       ]
     },
     {
@@ -350,12 +519,25 @@
         "通常Chat残量を推定またはWork/Codex値で代用しない。"
       ],
       "implementation_evidence": [
-        { "path": "dist/app.js", "symbol": "ChatGPT card note" },
-        { "path": "dist/shared.js", "symbol": "widget Chat対象外 note" },
-        { "path": "README.md", "symbol": "ChatGPT limitation" }
+        {
+          "path": "dist/app.js",
+          "symbol": "ChatGPT card note"
+        },
+        {
+          "path": "dist/shared.js",
+          "symbol": "widget Chat対象外 note"
+        },
+        {
+          "path": "README.md",
+          "symbol": "ChatGPT limitation"
+        }
       ],
       "test_evidence": [
-        { "type": "manual", "coverage": "required", "procedure": "Inspect the main card and floating widget and verify that Work/Codex is never labeled as normal Chat usage." }
+        {
+          "type": "manual",
+          "coverage": "required",
+          "procedure": "Inspect the main card and floating widget and verify that Work/Codex is never labeled as normal Chat usage."
+        }
       ]
     },
     {
@@ -374,12 +556,30 @@
         "Cowork、製品別枠、credit meterを主枠として誤採用しない。"
       ],
       "implementation_evidence": [
-        { "path": "extension/fetchers.js", "symbol": "utilization/parseClaude/fetchClaude" },
-        { "path": "extension/parser.js", "symbol": "parse claude branch" }
+        {
+          "path": "extension/fetchers.js",
+          "symbol": "utilization/parseClaude/fetchClaude"
+        },
+        {
+          "path": "extension/parser.js",
+          "symbol": "parse claude branch"
+        }
       ],
       "test_evidence": [
-        { "type": "automated", "path": "tests/fetchers.test.cjs", "cases": ["Claude利用率と契約階層を変換する"] },
-        { "type": "automated", "path": "tests/parser.test.cjs", "cases": ["Claude: 製品別配分とクレジットは残量として採用しない"] }
+        {
+          "type": "automated",
+          "path": "tests/fetchers.test.cjs",
+          "cases": [
+            "Claude利用率と契約階層を変換する"
+          ]
+        },
+        {
+          "type": "automated",
+          "path": "tests/parser.test.cjs",
+          "cases": [
+            "Claude: 製品別配分とクレジットは残量として採用しない"
+          ]
+        }
       ]
     },
     {
@@ -400,12 +600,32 @@
         "割合があるクレジットだけbarPercentを表示する。"
       ],
       "implementation_evidence": [
-        { "path": "extension/fetchers.js", "symbol": "nestedPlan/cloudCredit/parseClaude" },
-        { "path": "extension/parser.js", "symbol": "parseExtras/creditValue" }
+        {
+          "path": "extension/fetchers.js",
+          "symbol": "nestedPlan/cloudCredit/parseClaude"
+        },
+        {
+          "path": "extension/parser.js",
+          "symbol": "parseExtras/creditValue"
+        }
       ],
       "test_evidence": [
-        { "type": "automated", "path": "tests/fetchers.test.cjs", "cases": ["Claudeのネストした契約階層を取得する", "ChatGPTの利用権期限とClaudeのクラウドクレジット残・期限を変換する", "Claudeの新しいクラウドセッションクレジット枠と未使用セッションを変換する"] },
-        { "type": "automated", "path": "tests/parser.test.cjs", "cases": ["クレジットは総額を残高に取り違えず、金額と割合を区別"] }
+        {
+          "type": "automated",
+          "path": "tests/fetchers.test.cjs",
+          "cases": [
+            "Claudeのネストした契約階層を取得する",
+            "ChatGPTの利用権期限とClaudeのクラウドクレジット残・期限を変換する",
+            "Claudeの新しいクラウドセッションクレジット枠と未使用セッションを変換する"
+          ]
+        },
+        {
+          "type": "automated",
+          "path": "tests/parser.test.cjs",
+          "cases": [
+            "クレジットは総額を残高に取り違えず、金額と割合を区別"
+          ]
+        }
       ]
     },
     {
@@ -423,12 +643,30 @@
         "使用開始後は公式reset時刻を表示する。"
       ],
       "implementation_evidence": [
-        { "path": "extension/fetchers.js", "symbol": "parseClaude" },
-        { "path": "extension/parser.js", "symbol": "parse claude branch" }
+        {
+          "path": "extension/fetchers.js",
+          "symbol": "parseClaude"
+        },
+        {
+          "path": "extension/parser.js",
+          "symbol": "parse claude branch"
+        }
       ],
       "test_evidence": [
-        { "type": "automated", "path": "tests/parser.test.cjs", "cases": ["Claudeの未使用セッションは開始後にリセット時刻が決まることを表示"] },
-        { "type": "automated", "path": "tests/fetchers.test.cjs", "cases": ["Claudeの新しいクラウドセッションクレジット枠と未使用セッションを変換する"] }
+        {
+          "type": "automated",
+          "path": "tests/parser.test.cjs",
+          "cases": [
+            "Claudeの未使用セッションは開始後にリセット時刻が決まることを表示"
+          ]
+        },
+        {
+          "type": "automated",
+          "path": "tests/fetchers.test.cjs",
+          "cases": [
+            "Claudeの新しいクラウドセッションクレジット枠と未使用セッションを変換する"
+          ]
+        }
       ]
     },
     {
@@ -448,12 +686,30 @@
         "anti-XSSI prefixを除去してwrb.fr/jSf9Qc応答だけを解析する。"
       ],
       "implementation_evidence": [
-        { "path": "extension/fetchers.js", "symbol": "token/findRpc/parseGeminiBatch/fetchGemini" },
-        { "path": "extension/parser.js", "symbol": "parse gemini branch" }
+        {
+          "path": "extension/fetchers.js",
+          "symbol": "token/findRpc/parseGeminiBatch/fetchGemini"
+        },
+        {
+          "path": "extension/parser.js",
+          "symbol": "parse gemini branch"
+        }
       ],
       "test_evidence": [
-        { "type": "automated", "path": "tests/fetchers.test.cjs", "cases": ["Gemini RPCの現在・週間利用率を残量へ変換する"] },
-        { "type": "automated", "path": "tests/parser.test.cjs", "cases": ["Gemini: 公式セレクタの現在・週を独立して読む"] }
+        {
+          "type": "automated",
+          "path": "tests/fetchers.test.cjs",
+          "cases": [
+            "Gemini RPCの現在・週間利用率を残量へ変換する"
+          ]
+        },
+        {
+          "type": "automated",
+          "path": "tests/parser.test.cjs",
+          "cases": [
+            "Gemini: 公式セレクタの現在・週を独立して読む"
+          ]
+        }
       ]
     },
     {
@@ -477,13 +733,38 @@
         "現在のプランとupgrade候補が同じ画面にあっても現在のプランを採用する。"
       ],
       "implementation_evidence": [
-        { "path": "extension/fetchers.js", "symbol": "plan/geminiPlan/googleOnePlan/fetchGemini" },
-        { "path": "extension/parser.js", "symbol": "normalizePlan/planFromObject/parsePlan" },
-        { "path": "extension/state.js", "symbol": "plan retention" }
+        {
+          "path": "extension/fetchers.js",
+          "symbol": "plan/geminiPlan/googleOnePlan/fetchGemini"
+        },
+        {
+          "path": "extension/parser.js",
+          "symbol": "normalizePlan/planFromObject/parsePlan"
+        },
+        {
+          "path": "extension/state.js",
+          "symbol": "plan retention"
+        }
       ],
       "test_evidence": [
-        { "type": "automated", "path": "tests/fetchers.test.cjs", "cases": ["Geminiの埋め込みJSONから契約プランを取得する", "Geminiの旧称とAPI文字列から現行契約プランを取得する", "Google Oneの現在プランをアップグレード候補より優先する"] },
-        { "type": "automated", "path": "tests/parser.test.cjs", "cases": ["Geminiの現行名と旧称を契約プランへ正規化", "Geminiの契約プランを埋め込みJSONの現行キーから読む", "Geminiの契約プランを短いアカウント表示内から読む"] }
+        {
+          "type": "automated",
+          "path": "tests/fetchers.test.cjs",
+          "cases": [
+            "Geminiの埋め込みJSONから契約プランを取得する",
+            "Geminiの旧称とAPI文字列から現行契約プランを取得する",
+            "Google Oneの現在プランをアップグレード候補より優先する"
+          ]
+        },
+        {
+          "type": "automated",
+          "path": "tests/parser.test.cjs",
+          "cases": [
+            "Geminiの現行名と旧称を契約プランへ正規化",
+            "Geminiの契約プランを埋め込みJSONの現行キーから読む",
+            "Geminiの契約プランを短いアカウント表示内から読む"
+          ]
+        }
       ]
     },
     {
@@ -502,11 +783,21 @@
         "認証済みHTMLでtokenやwindowが欠ける場合は一時失敗として前回値を保持する。"
       ],
       "implementation_evidence": [
-        { "path": "extension/fetchers.js", "symbol": "fetchGemini authenticated/loginSeen and account prefix loop" },
-        { "path": "extension/state.js", "symbol": "unavailable retention" }
+        {
+          "path": "extension/fetchers.js",
+          "symbol": "fetchGemini authenticated/loginSeen and account prefix loop"
+        },
+        {
+          "path": "extension/state.js",
+          "symbol": "unavailable retention"
+        }
       ],
       "test_evidence": [
-        { "type": "manual", "coverage": "not_automated", "procedure": "Exercise signed-out, signed-in schema-error, and multiple Google-account fixtures and compare login versus transient outcomes." }
+        {
+          "type": "manual",
+          "coverage": "not_automated",
+          "procedure": "Exercise signed-out, signed-in schema-error, and multiple Google-account fixtures and compare login versus transient outcomes."
+        }
       ]
     },
     {
@@ -526,12 +817,29 @@
         "45秒と125秒の境界でUI文言が変わる。"
       ],
       "implementation_evidence": [
-        { "path": "extension/state.js", "symbol": "loading/accept" },
-        { "path": "extension/shared.js", "symbol": "fresh/updating/status" }
+        {
+          "path": "extension/state.js",
+          "symbol": "loading/accept"
+        },
+        {
+          "path": "extension/shared.js",
+          "symbol": "fresh/updating/status"
+        }
       ],
       "test_evidence": [
-        { "type": "automated", "path": "tests/state.test.cjs", "cases": ["更新開始と取得失敗でも直前値・取得日時を保持", "ログアウト後は値・クレジット・履歴を残さない"] },
-        { "type": "manual", "coverage": "partial", "procedure": "Verify status labels at 44/45 seconds and 124/125 seconds with a controlled clock." }
+        {
+          "type": "automated",
+          "path": "tests/state.test.cjs",
+          "cases": [
+            "更新開始と取得失敗でも直前値・取得日時を保持",
+            "ログアウト後は値・クレジット・履歴を残さない"
+          ]
+        },
+        {
+          "type": "manual",
+          "coverage": "partial",
+          "procedure": "Verify status labels at 44/45 seconds and 124/125 seconds with a controlled clock."
+        }
       ]
     },
     {
@@ -551,11 +859,21 @@
         "期限内resetAtがDOMで欠ける場合、既知resetAtを保持する。"
       ],
       "implementation_evidence": [
-        { "path": "extension/background.js", "symbol": "source assignment in refreshService and SNAPSHOT" },
-        { "path": "extension/state.js", "symbol": "dom merge in accept" }
+        {
+          "path": "extension/background.js",
+          "symbol": "source assignment in refreshService and SNAPSHOT"
+        },
+        {
+          "path": "extension/state.js",
+          "symbol": "dom merge in accept"
+        }
       ],
       "test_evidence": [
-        { "type": "manual", "coverage": "not_automated", "procedure": "Feed a complete API snapshot followed by a partial DOM snapshot and compare the merged windows, extras, resetAt and plan." }
+        {
+          "type": "manual",
+          "coverage": "not_automated",
+          "procedure": "Feed a complete API snapshot followed by a partial DOM snapshot and compare the merged windows, extras, resetAt and plan."
+        }
       ]
     },
     {
@@ -574,11 +892,21 @@
         "表示対象は各公式サービスで現在選択された一つのaccountである。"
       ],
       "implementation_evidence": [
-        { "path": "extension/state.js", "symbol": "accountChanged/prior" },
-        { "path": "README.md", "symbol": "multiple account limitation" }
+        {
+          "path": "extension/state.js",
+          "symbol": "accountChanged/prior"
+        },
+        {
+          "path": "README.md",
+          "symbol": "multiple account limitation"
+        }
       ],
       "test_evidence": [
-        { "type": "manual", "coverage": "not_automated", "procedure": "Provide two ready snapshots with distinct accountKey values and verify no prior plan, extras or previous values leak." }
+        {
+          "type": "manual",
+          "coverage": "not_automated",
+          "procedure": "Provide two ready snapshots with distinct accountKey values and verify no prior plan, extras or previous values leak."
+        }
       ]
     },
     {
@@ -602,11 +930,25 @@
         "10001件目で最古行が除かれ10000件を維持する。"
       ],
       "implementation_evidence": [
-        { "path": "extension/history.js", "symbol": "LIMIT/record" },
-        { "path": "extension/background.js", "symbol": "recordHistory" }
+        {
+          "path": "extension/history.js",
+          "symbol": "LIMIT/record"
+        },
+        {
+          "path": "extension/background.js",
+          "symbol": "recordHistory"
+        }
       ],
       "test_evidence": [
-        { "type": "automated", "path": "tests/history.test.cjs", "cases": ["起動後の初回と数値が変化した時だけ記録する", "変化履歴は利用枠ごとに10000件まで保存し、元データを変更しない", "起動時は直近10000件を3秒以内の予算で復元する"] }
+        {
+          "type": "automated",
+          "path": "tests/history.test.cjs",
+          "cases": [
+            "起動後の初回と数値が変化した時だけ記録する",
+            "変化履歴は利用枠ごとに10000件まで保存し、元データを変更しない",
+            "起動時は直近10000件を3秒以内の予算で復元する"
+          ]
+        }
       ]
     },
     {
@@ -625,11 +967,21 @@
         "次のready値は同値でも新baselineとして履歴へ追加される。"
       ],
       "implementation_evidence": [
-        { "path": "extension/background.js", "symbol": "resetHistoryBaseline/accept" },
-        { "path": "PRIVACY.md", "symbol": "history retention disclosure" }
+        {
+          "path": "extension/background.js",
+          "symbol": "resetHistoryBaseline/accept"
+        },
+        {
+          "path": "PRIVACY.md",
+          "symbol": "history retention disclosure"
+        }
       ],
       "test_evidence": [
-        { "type": "manual", "coverage": "not_automated", "procedure": "Create history, send an explicit login snapshot, inspect chrome.storage.local, then send the same ready value and confirm a new baseline row." }
+        {
+          "type": "manual",
+          "coverage": "not_automated",
+          "procedure": "Create history, send an explicit login snapshot, inspect chrome.storage.local, then send the same ready value and confirm a new baseline row."
+        }
       ]
     },
     {
@@ -649,12 +1001,31 @@
         "旧labelの履歴が新labelへ統合され旧labelキーが除去される。"
       ],
       "implementation_evidence": [
-        { "path": "extension/history.js", "symbol": "aliases/record" },
-        { "path": "extension/shared.js", "symbol": "label/historyDate/historyRows/historyBox" }
+        {
+          "path": "extension/history.js",
+          "symbol": "aliases/record"
+        },
+        {
+          "path": "extension/shared.js",
+          "symbol": "label/historyDate/historyRows/historyBox"
+        }
       ],
       "test_evidence": [
-        { "type": "automated", "path": "tests/history.test.cjs", "cases": ["旧ChatGPT週間ラベルの履歴を新ラベルへ移行して保持"] },
-        { "type": "automated", "path": "tests/changes.test.cjs", "cases": ["履歴は新しい順に契約どおりの書式で表示する", "保存済みのChatGPT週間ラベルも全表示で新表記へ統一する"] }
+        {
+          "type": "automated",
+          "path": "tests/history.test.cjs",
+          "cases": [
+            "旧ChatGPT週間ラベルの履歴を新ラベルへ移行して保持"
+          ]
+        },
+        {
+          "type": "automated",
+          "path": "tests/changes.test.cjs",
+          "cases": [
+            "履歴は新しい順に契約どおりの書式で表示する",
+            "保存済みのChatGPT週間ラベルも全表示で新表記へ統一する"
+          ]
+        }
       ]
     },
     {
@@ -673,13 +1044,38 @@
         "同値再描画で10秒期限を延長しない。"
       ],
       "implementation_evidence": [
-        { "path": "extension/state.js", "symbol": "previous calculation" },
-        { "path": "dist/changes.js", "symbol": "createTracker" },
-        { "path": "dist/shared.js", "symbol": "observe/numeric/previous" }
+        {
+          "path": "extension/state.js",
+          "symbol": "previous calculation"
+        },
+        {
+          "path": "dist/changes.js",
+          "symbol": "createTracker"
+        },
+        {
+          "path": "dist/shared.js",
+          "symbol": "observe/numeric/previous"
+        }
       ],
       "test_evidence": [
-        { "type": "automated", "path": "tests/state.test.cjs", "cases": ["変更時の前回値・直前の取得日時を枠別に保存し、同値では履歴保持", "クレジット変化とゼロ残量"] },
-        { "type": "automated", "path": "tests/changes.test.cjs", "cases": ["初回表示は点滅せず、変化した値だけ10秒間保持する", "同値での再描画は点滅期限を延長しない", "残高が変わっても総額や別サービスは点滅しない", "文字だけの変更、初回取得、ログインし直しは点滅しない"] }
+        {
+          "type": "automated",
+          "path": "tests/state.test.cjs",
+          "cases": [
+            "変更時の前回値・直前の取得日時を枠別に保存し、同値では履歴保持",
+            "クレジット変化とゼロ残量"
+          ]
+        },
+        {
+          "type": "automated",
+          "path": "tests/changes.test.cjs",
+          "cases": [
+            "初回表示は点滅せず、変化した値だけ10秒間保持する",
+            "同値での再描画は点滅期限を延長しない",
+            "残高が変わっても総額や別サービスは点滅しない",
+            "文字だけの変更、初回取得、ログインし直しは点滅しない"
+          ]
+        }
       ]
     },
     {
@@ -700,15 +1096,42 @@
         "試聴と音量変更が利用できる。"
       ],
       "implementation_evidence": [
-        { "path": "extension/manifest.json", "symbol": "offscreen permission" },
-        { "path": "extension/background.js", "symbol": "numericChanged/ensureOffscreen/queueChangeSound" },
-        { "path": "extension/offscreen.html", "symbol": "offscreen audio document" },
-        { "path": "extension/offscreen.js", "symbol": "PLAY_CHANGE_SOUND listener" },
-        { "path": "dist/app.js", "symbol": "sound settings and preview" }
+        {
+          "path": "extension/manifest.json",
+          "symbol": "offscreen permission"
+        },
+        {
+          "path": "extension/background.js",
+          "symbol": "numericChanged/ensureOffscreen/queueChangeSound"
+        },
+        {
+          "path": "extension/offscreen.html",
+          "symbol": "offscreen audio document"
+        },
+        {
+          "path": "extension/offscreen.js",
+          "symbol": "PLAY_CHANGE_SOUND listener"
+        },
+        {
+          "path": "dist/app.js",
+          "symbol": "sound settings and preview"
+        }
       ],
       "test_evidence": [
-        { "type": "automated", "path": "tests/sound.test.cjs", "coverage": "legacy notifier logic", "cases": ["同時に変わった複数の数値は1秒に1音、10秒後に停止、同値取得で延長しない", "音声を有効にする前は再生せず、非対応ブラウザは説明できるエラー"] },
-        { "type": "manual", "coverage": "offscreen path required", "procedure": "Close the monitor UI, change a numeric snapshot, and confirm exactly three offscreen beeps at one-second intervals; repeat with sound disabled." }
+        {
+          "type": "automated",
+          "path": "tests/sound.test.cjs",
+          "coverage": "legacy notifier logic",
+          "cases": [
+            "同時に変わった複数の数値は1秒に1音、10秒後に停止、同値取得で延長しない",
+            "音声を有効にする前は再生せず、非対応ブラウザは説明できるエラー"
+          ]
+        },
+        {
+          "type": "manual",
+          "coverage": "offscreen path required",
+          "procedure": "Close the monitor UI, change a numeric snapshot, and confirm exactly three offscreen beeps at one-second intervals; repeat with sound disabled."
+        }
       ]
     },
     {
@@ -730,11 +1153,21 @@
         "円形ゲージとprimary-trackが同じremainingを表す。"
       ],
       "implementation_evidence": [
-        { "path": "extension/style.css", "symbol": "gauge and gauge-value v1.3 rules" },
-        { "path": "dist/app.js", "symbol": "gauge and primary-track rendering" }
+        {
+          "path": "extension/style.css",
+          "symbol": "gauge and gauge-value v1.3 rules"
+        },
+        {
+          "path": "dist/app.js",
+          "symbol": "gauge and primary-track rendering"
+        }
       ],
       "test_evidence": [
-        { "type": "manual", "coverage": "not_automated", "procedure": "At 1920x1080, 1440x900, 1366x768, and 1280x720, inspect computed font-size and compare the dial and bar values." }
+        {
+          "type": "manual",
+          "coverage": "not_automated",
+          "procedure": "At 1920x1080, 1440x900, 1366x768, and 1280x720, inspect computed font-size and compare the dial and bar values."
+        }
       ]
     },
     {
@@ -755,13 +1188,29 @@
         "低い画面では補助説明を隠しても主監視値と変化履歴を隠さない。"
       ],
       "implementation_evidence": [
-        { "path": "extension/style.css", "symbol": "html:fullscreen base rules" },
-        { "path": "dist/style-v151.css", "symbol": "fullscreen history retention and compact history rules" },
-        { "path": "dist/style-v152.css", "symbol": "responsive enlarged fullscreen typography" },
-        { "path": "dist/app.js", "symbol": "fullscreen control" }
+        {
+          "path": "extension/style.css",
+          "symbol": "html:fullscreen base rules"
+        },
+        {
+          "path": "dist/style-v151.css",
+          "symbol": "fullscreen history retention and compact history rules"
+        },
+        {
+          "path": "dist/style-v152.css",
+          "symbol": "responsive enlarged fullscreen typography"
+        },
+        {
+          "path": "dist/app.js",
+          "symbol": "fullscreen control"
+        }
       ],
       "test_evidence": [
-        { "type": "manual", "coverage": "not_automated", "procedure": "Enter fullscreen at each acceptance viewport, record document dimensions and element bounding boxes, and capture screenshots." }
+        {
+          "type": "manual",
+          "coverage": "not_automated",
+          "procedure": "Enter fullscreen at each acceptance viewport, record document dimensions and element bounding boxes, and capture screenshots."
+        }
       ]
     },
     {
@@ -782,13 +1231,29 @@
         "標準themeで文字、境界、操作部品が判読できる。"
       ],
       "implementation_evidence": [
-        { "path": "extension/style.css", "symbol": "data-theme standard rules" },
-        { "path": "dist/app.js", "symbol": "applyTheme/saveSettings/Document PiP theme" },
-        { "path": "extension/content.js", "symbol": "panel light class" },
-        { "path": "extension/floating.js", "symbol": "theme sync" }
+        {
+          "path": "extension/style.css",
+          "symbol": "data-theme standard rules"
+        },
+        {
+          "path": "dist/app.js",
+          "symbol": "applyTheme/saveSettings/Document PiP theme"
+        },
+        {
+          "path": "extension/content.js",
+          "symbol": "panel light class"
+        },
+        {
+          "path": "extension/floating.js",
+          "symbol": "theme sync"
+        }
       ],
       "test_evidence": [
-        { "type": "manual", "coverage": "not_automated", "procedure": "Switch themes while all supported surfaces are open, restart the browser, and compare each surface." }
+        {
+          "type": "manual",
+          "coverage": "not_automated",
+          "procedure": "Switch themes while all supported surfaces are open, restart the browser, and compare each surface."
+        }
       ]
     },
     {
@@ -808,12 +1273,25 @@
         "invalidまたは欠損remainingで—を表示する。"
       ],
       "implementation_evidence": [
-        { "path": "dist/shared.js", "symbol": "percent/value/resetUrgent/extras" },
-        { "path": "dist/style-v151.css", "symbol": "compact status and warning styles" },
-        { "path": "dist/app.js", "symbol": "connection rendering" }
+        {
+          "path": "dist/shared.js",
+          "symbol": "percent/value/resetUrgent/extras"
+        },
+        {
+          "path": "dist/style-v151.css",
+          "symbol": "compact status and warning styles"
+        },
+        {
+          "path": "dist/app.js",
+          "symbol": "connection rendering"
+        }
       ],
       "test_evidence": [
-        { "type": "manual", "coverage": "not_automated", "procedure": "Render boundary values at 2 hours and 7 days and inspect label, color, and accessible warning text." }
+        {
+          "type": "manual",
+          "coverage": "not_automated",
+          "procedure": "Render boundary values at 2 hours and 7 days and inspect label, color, and accessible warning text."
+        }
       ]
     },
     {
@@ -834,14 +1312,33 @@
         "背景alphaだけが変化しテキストalphaは維持される。"
       ],
       "implementation_evidence": [
-        { "path": "dist/app.js", "symbol": "settings opacity and position" },
-        { "path": "extension/content.js", "symbol": "draw panel alpha and position" },
-        { "path": "extension/floating.js", "symbol": "floating alpha" },
-        { "path": "extension/style.css", "symbol": "widget alpha" },
-        { "path": "extension/style-v152.css", "symbol": "body and panel dynamic alpha" }
+        {
+          "path": "dist/app.js",
+          "symbol": "settings opacity and position"
+        },
+        {
+          "path": "extension/content.js",
+          "symbol": "draw panel alpha and position"
+        },
+        {
+          "path": "extension/floating.js",
+          "symbol": "floating alpha"
+        },
+        {
+          "path": "extension/style.css",
+          "symbol": "widget alpha"
+        },
+        {
+          "path": "extension/style-v152.css",
+          "symbol": "body and panel dynamic alpha"
+        }
       ],
       "test_evidence": [
-        { "type": "manual", "coverage": "not_automated", "procedure": "Set opacity to 15, 55, and 100 and inspect computed background alpha on preview, site overlay, normal popup and Document PiP." }
+        {
+          "type": "manual",
+          "coverage": "not_automated",
+          "procedure": "Set opacity to 15, 55, and 100 and inspect computed background alpha on preview, site overlay, normal popup and Document PiP."
+        }
       ]
     },
     {
@@ -861,10 +1358,17 @@
         "enabled=falseでpopupが閉じ、次回起動でも開かない。"
       ],
       "implementation_evidence": [
-        { "path": "extension/background.js", "symbol": "openFloating/closeFloating/removeStaleFloating/bootstrap" }
+        {
+          "path": "extension/background.js",
+          "symbol": "openFloating/closeFloating/removeStaleFloating/bootstrap"
+        }
       ],
       "test_evidence": [
-        { "type": "manual", "coverage": "required", "procedure": "Restart Chrome and Edge with enabled true and false, count popup windows, and verify initial focus remains on the user's existing window." }
+        {
+          "type": "manual",
+          "coverage": "required",
+          "procedure": "Restart Chrome and Edge with enabled true and false, count popup windows, and verify initial focus remains on the user's existing window."
+        }
       ]
     },
     {
@@ -885,14 +1389,33 @@
         "非対応browserでは明確な説明または通常popupを提供する。"
       ],
       "implementation_evidence": [
-        { "path": "dist/app.js", "symbol": "openFrontmost and pip button handler" },
-        { "path": "dist/index.html", "symbol": "Document PiP constraint copy and normal popup button" },
-        { "path": "dist/style-v151.css", "symbol": "pip-pin and pip-body styles" },
-        { "path": "dist/style-v152.css", "symbol": "dense responsive popup and PiP layout" },
-        { "path": "extension/background.js", "symbol": "CLOSE_FLOAT message" }
+        {
+          "path": "dist/app.js",
+          "symbol": "openFrontmost and pip button handler"
+        },
+        {
+          "path": "dist/index.html",
+          "symbol": "Document PiP constraint copy and normal popup button"
+        },
+        {
+          "path": "dist/style-v151.css",
+          "symbol": "pip-pin and pip-body styles"
+        },
+        {
+          "path": "dist/style-v152.css",
+          "symbol": "dense responsive popup and PiP layout"
+        },
+        {
+          "path": "extension/background.js",
+          "symbol": "CLOSE_FLOAT message"
+        }
       ],
       "test_evidence": [
-        { "type": "manual", "coverage": "required", "procedure": "From a user click, open Document PiP, move focus to another application, verify it stays in front, then close the source monitor and confirm PiP closes; repeat on a non-supporting browser." }
+        {
+          "type": "manual",
+          "coverage": "required",
+          "procedure": "From a user click, open Document PiP, move focus to another application, verify it stays in front, then close the source monitor and confirm PiP closes; repeat on a non-supporting browser."
+        }
       ]
     },
     {
@@ -911,11 +1434,21 @@
         "Document PiPのユーザー操作、source document、対応browserの制約が説明される。"
       ],
       "implementation_evidence": [
-        { "path": "README.md", "symbol": "floating display constraints" },
-        { "path": "dist/index.html", "symbol": "floating fine print" }
+        {
+          "path": "README.md",
+          "symbol": "floating display constraints"
+        },
+        {
+          "path": "dist/index.html",
+          "symbol": "floating fine print"
+        }
       ],
       "test_evidence": [
-        { "type": "manual", "coverage": "documentation", "procedure": "Compare the README and in-product wording against actual Chrome/Edge behavior; reject claims of OS-level transparency or automatic Document PiP startup." }
+        {
+          "type": "manual",
+          "coverage": "documentation",
+          "procedure": "Compare the README and in-product wording against actual Chrome/Edge behavior; reject claims of OS-level transparency or automatic Document PiP startup."
+        }
       ]
     },
     {
@@ -934,12 +1467,28 @@
         "再読み込み中に通常popupの重複や閉じたままになる状態が発生しない。"
       ],
       "implementation_evidence": [
-        { "path": "dist/app.js", "symbol": "MONITOR_READY and MONITOR_CLOSED lifecycle announcements" },
-        { "path": "extension/background.js", "symbol": "monitorReady/monitorClosed lifecycle handling" }
+        {
+          "path": "dist/app.js",
+          "symbol": "MONITOR_READY and MONITOR_CLOSED lifecycle announcements"
+        },
+        {
+          "path": "extension/background.js",
+          "symbol": "monitorReady/monitorClosed lifecycle handling"
+        }
       ],
       "test_evidence": [
-        { "type": "automated", "path": "tests/requirements.test.cjs", "cases": ["通常小窓をメイン画面のreloadとcloseに連動する"] },
-        { "type": "manual", "coverage": "required", "procedure": "Open, reload, and close the main monitor while observing popup data, window count, and closure timing." }
+        {
+          "type": "automated",
+          "path": "tests/requirements.test.cjs",
+          "cases": [
+            "通常小窓をメイン画面のreloadとcloseに連動する"
+          ]
+        },
+        {
+          "type": "manual",
+          "coverage": "required",
+          "procedure": "Open, reload, and close the main monitor while observing popup data, window count, and closure timing."
+        }
       ]
     },
     {
@@ -959,15 +1508,41 @@
         "日本語タイトルはLLMs トークン残量モニタ、英語タイトルはLLMs TOKEN USAGE MONITORである。"
       ],
       "implementation_evidence": [
-        { "path": "extension/locale.js", "symbol": "locale dictionary, detect and setLanguage" },
-        { "path": "dist/app.js", "symbol": "language state, paintLanguage and persistence" },
-        { "path": "extension/background.js", "symbol": "environmentLanguage and settings.language" },
-        { "path": "extension/content.js", "symbol": "localized site panel" },
-        { "path": "extension/floating.js", "symbol": "localized normal popup" }
+        {
+          "path": "extension/locale.js",
+          "symbol": "locale dictionary, detect and setLanguage"
+        },
+        {
+          "path": "dist/app.js",
+          "symbol": "language state, paintLanguage and persistence"
+        },
+        {
+          "path": "extension/background.js",
+          "symbol": "environmentLanguage and settings.language"
+        },
+        {
+          "path": "extension/content.js",
+          "symbol": "localized site panel"
+        },
+        {
+          "path": "extension/floating.js",
+          "symbol": "localized normal popup"
+        }
       ],
       "test_evidence": [
-        { "type": "automated", "path": "tests/locale.test.cjs", "cases": ["locale titles and toggle labels", "environment language detection"] },
-        { "type": "manual", "coverage": "required", "procedure": "Start in Japanese and English browser UI locales, switch language with every surface open, and compare labels and document titles." }
+        {
+          "type": "automated",
+          "path": "tests/locale.test.cjs",
+          "cases": [
+            "locale titles and toggle labels",
+            "environment language detection"
+          ]
+        },
+        {
+          "type": "manual",
+          "coverage": "required",
+          "procedure": "Start in Japanese and English browser UI locales, switch language with every surface open, and compare labels and document titles."
+        }
       ]
     },
     {
@@ -986,10 +1561,21 @@
         "履歴不足時は学習中と表示する。"
       ],
       "implementation_evidence": [
-        { "path": "dist/advice.js", "symbol": "stats/usageAdvice" }
+        {
+          "path": "dist/advice.js",
+          "symbol": "stats/usageAdvice"
+        }
       ],
       "test_evidence": [
-        { "type": "automated", "path": "tests/advice.test.cjs", "cases": ["週間枠を使い切る履歴では上位プラン比較を提示", "長時間観測して大幅に余る履歴では下位プラン比較を提示", "履歴不足時はプラン変更を勧めず学習中とする"] }
+        {
+          "type": "automated",
+          "path": "tests/advice.test.cjs",
+          "cases": [
+            "週間枠を使い切る履歴では上位プラン比較を提示",
+            "長時間観測して大幅に余る履歴では下位プラン比較を提示",
+            "履歴不足時はプラン変更を勧めず学習中とする"
+          ]
+        }
       ]
     },
     {
@@ -1009,11 +1595,23 @@
         "操作は公式usage画面へのnavigationだけである。"
       ],
       "implementation_evidence": [
-        { "path": "dist/advice.js", "symbol": "resetAdvice" },
-        { "path": "dist/shared.js", "symbol": "reset entitlement action link" }
+        {
+          "path": "dist/advice.js",
+          "symbol": "resetAdvice"
+        },
+        {
+          "path": "dist/shared.js",
+          "symbol": "reset entitlement action link"
+        }
       ],
       "test_evidence": [
-        { "type": "automated", "path": "tests/advice.test.cjs", "cases": ["ChatGPTリセット権は残量と期限から行使タイミングを提示"] }
+        {
+          "type": "automated",
+          "path": "tests/advice.test.cjs",
+          "cases": [
+            "ChatGPTリセット権は残量と期限から行使タイミングを提示"
+          ]
+        }
       ]
     },
     {
@@ -1033,12 +1631,28 @@
         "ON/OFFと手動送りが動作し、hover中は自動切替が停止する。"
       ],
       "implementation_evidence": [
-        { "path": "dist/app.js", "symbol": "paintAdvice/startAdviceTimer" },
-        { "path": "dist/style-v151.css", "symbol": "advisor ticker rules" }
+        {
+          "path": "dist/app.js",
+          "symbol": "paintAdvice/startAdviceTimer"
+        },
+        {
+          "path": "dist/style-v151.css",
+          "symbol": "advisor ticker rules"
+        }
       ],
       "test_evidence": [
-        { "type": "automated", "path": "tests/advice.test.cjs", "cases": ["サービス別助言とリセット権助言を一つの表示列へまとめる"] },
-        { "type": "manual", "coverage": "partial", "procedure": "Measure the 9-second rotation and verify the ticker does not change document flow." }
+        {
+          "type": "automated",
+          "path": "tests/advice.test.cjs",
+          "cases": [
+            "サービス別助言とリセット権助言を一つの表示列へまとめる"
+          ]
+        },
+        {
+          "type": "manual",
+          "coverage": "partial",
+          "procedure": "Measure the 9-second rotation and verify the ticker does not change document flow."
+        }
       ]
     },
     {
@@ -1057,13 +1671,29 @@
         "screen readerが各ゲージのservice、window、remainingを読み上げられる。"
       ],
       "implementation_evidence": [
-        { "path": "dist/index.html", "symbol": "aria attributes and toast role" },
-        { "path": "extension/style.css", "symbol": "focus-visible and reduced-motion rules" },
-        { "path": "dist/style-v151.css", "symbol": "reduced-motion warning/advisor rules" },
-        { "path": "dist/app.js", "symbol": "gauge aria-label" }
+        {
+          "path": "dist/index.html",
+          "symbol": "aria attributes and toast role"
+        },
+        {
+          "path": "extension/style.css",
+          "symbol": "focus-visible and reduced-motion rules"
+        },
+        {
+          "path": "dist/style-v151.css",
+          "symbol": "reduced-motion warning/advisor rules"
+        },
+        {
+          "path": "dist/app.js",
+          "symbol": "gauge aria-label"
+        }
       ],
       "test_evidence": [
-        { "type": "manual", "coverage": "not_automated", "procedure": "Run keyboard-only, screen-reader label, and prefers-reduced-motion checks on the main monitor and floating controls." }
+        {
+          "type": "manual",
+          "coverage": "not_automated",
+          "procedure": "Run keyboard-only, screen-reader label, and prefers-reduced-motion checks on the main monitor and floating controls."
+        }
       ]
     },
     {
@@ -1083,13 +1713,29 @@
         "prompt、購入、reset行使、設定変更APIを呼ばない。"
       ],
       "implementation_evidence": [
-        { "path": "extension/background.js", "symbol": "chrome.storage.local use" },
-        { "path": "extension/manifest.json", "symbol": "host_permissions" },
-        { "path": "PRIVACY.md", "symbol": "data handling disclosure" },
-        { "path": "dist/privacy.html", "symbol": "public privacy notice" }
+        {
+          "path": "extension/background.js",
+          "symbol": "chrome.storage.local use"
+        },
+        {
+          "path": "extension/manifest.json",
+          "symbol": "host_permissions"
+        },
+        {
+          "path": "PRIVACY.md",
+          "symbol": "data handling disclosure"
+        },
+        {
+          "path": "dist/privacy.html",
+          "symbol": "public privacy notice"
+        }
       ],
       "test_evidence": [
-        { "type": "manual", "coverage": "required", "procedure": "Inspect a full session in browser DevTools and verify no request containing snapshot, history, token, prompt, purchase, entitlement action or settings mutation reaches a non-provider server." }
+        {
+          "type": "manual",
+          "coverage": "required",
+          "procedure": "Inspect a full session in browser DevTools and verify no request containing snapshot, history, token, prompt, purchase, entitlement action or settings mutation reaches a non-provider server."
+        }
       ]
     },
     {
@@ -1109,12 +1755,29 @@
         "chrome.storage.local、GET応答、consoleにtoken文字列が現れない。"
       ],
       "implementation_evidence": [
-        { "path": "extension/fetchers.js", "symbol": "chatGPTBootstrap/fetchChatGPT finally" },
-        { "path": "PRIVACY.md", "symbol": "ChatGPT token disclosure" }
+        {
+          "path": "extension/fetchers.js",
+          "symbol": "chatGPTBootstrap/fetchChatGPT finally"
+        },
+        {
+          "path": "PRIVACY.md",
+          "symbol": "ChatGPT token disclosure"
+        }
       ],
       "test_evidence": [
-        { "type": "automated", "path": "tests/fetchers.test.cjs", "coverage": "parser only", "cases": ["ChatGPT bootstrapからトークン・アカウント・Plusを取得する"] },
-        { "type": "manual", "coverage": "storage and log inspection required", "procedure": "Use a unique synthetic token, execute success and failure paths, then search storage, messages, rendered DOM and captured logs for the token." }
+        {
+          "type": "automated",
+          "path": "tests/fetchers.test.cjs",
+          "coverage": "parser only",
+          "cases": [
+            "ChatGPT bootstrapからトークン・アカウント・Plusを取得する"
+          ]
+        },
+        {
+          "type": "manual",
+          "coverage": "storage and log inspection required",
+          "procedure": "Use a unique synthetic token, execute success and failure paths, then search storage, messages, rendered DOM and captured logs for the token."
+        }
       ]
     },
     {
@@ -1135,11 +1798,21 @@
         "範囲外remaining、過剰配列、過長文字列を破棄またはtruncateする。"
       ],
       "implementation_evidence": [
-        { "path": "extension/manifest.json", "symbol": "externally_connectable" },
-        { "path": "extension/background.js", "symbol": "ALLOWED and SNAPSHOT validation" }
+        {
+          "path": "extension/manifest.json",
+          "symbol": "externally_connectable"
+        },
+        {
+          "path": "extension/background.js",
+          "symbol": "ALLOWED and SNAPSHOT validation"
+        }
       ],
       "test_evidence": [
-        { "type": "manual", "coverage": "not_automated", "procedure": "Send GET, SNAPSHOT and mutating messages from the production origin, localhost, an unrelated origin and mismatched provider origins; inspect accept/reject results." }
+        {
+          "type": "manual",
+          "coverage": "not_automated",
+          "procedure": "Send GET, SNAPSHOT and mutating messages from the production origin, localhost, an unrelated origin and mismatched provider origins; inspect accept/reject results."
+        }
       ]
     },
     {
@@ -1158,13 +1831,32 @@
         "content panelのshadow rootがclosedである。"
       ],
       "implementation_evidence": [
-        { "path": "dist/shared.js", "symbol": "escape and render helpers" },
-        { "path": "extension/content.js", "symbol": "attachShadow closed" },
-        { "path": "extension/manifest.json", "symbol": "content_security_policy" }
+        {
+          "path": "dist/shared.js",
+          "symbol": "escape and render helpers"
+        },
+        {
+          "path": "extension/content.js",
+          "symbol": "attachShadow closed"
+        },
+        {
+          "path": "extension/manifest.json",
+          "symbol": "content_security_policy"
+        }
       ],
       "test_evidence": [
-        { "type": "automated", "path": "tests/changes.test.cjs", "cases": ["補足情報は指定サービスだけを出力し、値をHTMLとして解釈しない"] },
-        { "type": "manual", "coverage": "partial", "procedure": "Scan the release package for remote script URLs, eval/new Function, and executable inline script; inspect the manifest CSP." }
+        {
+          "type": "automated",
+          "path": "tests/changes.test.cjs",
+          "cases": [
+            "補足情報は指定サービスだけを出力し、値をHTMLとして解釈しない"
+          ]
+        },
+        {
+          "type": "manual",
+          "coverage": "partial",
+          "procedure": "Scan the release package for remote script URLs, eval/new Function, and executable inline script; inspect the manifest CSP."
+        }
       ]
     },
     {
@@ -1183,13 +1875,29 @@
         "companion側に受信stateを運営serverへ送るnetwork codeがない。"
       ],
       "implementation_evidence": [
-        { "path": "dist/app.js", "symbol": "rpc/connect-form/sync" },
-        { "path": "dist/index.html", "symbol": "extension-id input" },
-        { "path": "extension/background.js", "symbol": "external GET and origin check" },
-        { "path": "PRIVACY.md", "symbol": "companion field disclosure" }
+        {
+          "path": "dist/app.js",
+          "symbol": "rpc/connect-form/sync"
+        },
+        {
+          "path": "dist/index.html",
+          "symbol": "extension-id input"
+        },
+        {
+          "path": "extension/background.js",
+          "symbol": "external GET and origin check"
+        },
+        {
+          "path": "PRIVACY.md",
+          "symbol": "companion field disclosure"
+        }
       ],
       "test_evidence": [
-        { "type": "manual", "coverage": "required", "procedure": "Try empty, malformed, wrong and correct extension IDs from the production site and inspect connection state and network traffic." }
+        {
+          "type": "manual",
+          "coverage": "required",
+          "procedure": "Try empty, malformed, wrong and correct extension IDs from the production site and inspect connection state and network traffic."
+        }
       ]
     },
     {
@@ -1210,10 +1918,17 @@
         "共有assetのdist版とextension版がbyte-for-byte一致する。"
       ],
       "implementation_evidence": [
-        { "path": "build.py", "symbol": "version/version_css/package and copy loops" }
+        {
+          "path": "build.py",
+          "symbol": "version/version_css/package and copy loops"
+        }
       ],
       "test_evidence": [
-        { "type": "manual", "coverage": "not_automated", "procedure": "Run a clean build, list ZIP contents, compare copied files, and verify that no older LLMs-Token-Usage-Monitor ZIP remains." }
+        {
+          "type": "manual",
+          "coverage": "not_automated",
+          "procedure": "Run a clean build, list ZIP contents, compare copied files, and verify that no older LLMs-Token-Usage-Monitor ZIP remains."
+        }
       ]
     },
     {
@@ -1222,7 +1937,7 @@
       "introduced_in": "1.5.0",
       "status": "implemented",
       "priority": "MUST",
-      "normative_requirement": "v1.5.3 packageはstyle-v151.css、style-v152.css、style-v153.css、locale.js、offscreen.html、offscreen.js、locales、icons、privacy/readmeを含み、秘密鍵、PEM、environment file、Git metadata、raw credential fixtureを含めてはならない。",
+      "normative_requirement": "v1.6.0 packageはstyle-v151.css、style-v152.css、style-v153.css、locale.js、offscreen.html、offscreen.js、locales、icons、privacy/readmeを含み、秘密鍵、PEM、environment file、Git metadata、raw credential fixtureを含めてはならない。",
       "source_requirements": [
         "v1.5.0 offscreen and release package requirement"
       ],
@@ -1232,13 +1947,29 @@
         "unzipしたpackageをChromeとEdgeで読み込み検証できる。"
       ],
       "implementation_evidence": [
-        { "path": "build.py", "symbol": "extension tree archive" },
-        { "path": "extension/manifest.json", "symbol": "runtime asset declarations" },
-        { "path": "extension/offscreen.html", "symbol": "offscreen asset" },
-        { "path": "extension/offscreen.js", "symbol": "offscreen asset" }
+        {
+          "path": "build.py",
+          "symbol": "extension tree archive"
+        },
+        {
+          "path": "extension/manifest.json",
+          "symbol": "runtime asset declarations"
+        },
+        {
+          "path": "extension/offscreen.html",
+          "symbol": "offscreen asset"
+        },
+        {
+          "path": "extension/offscreen.js",
+          "symbol": "offscreen asset"
+        }
       ],
       "test_evidence": [
-        { "type": "manual", "coverage": "required", "procedure": "List and scan every ZIP entry, then load the unpacked archive in stable Chrome and Edge before submission." }
+        {
+          "type": "manual",
+          "coverage": "required",
+          "procedure": "List and scan every ZIP entry, then load the unpacked archive in stable Chrome and Edge before submission."
+        }
       ]
     },
     {
@@ -1258,12 +1989,25 @@
         "PRIVACY.md、privacy.html、実装のdata practiceが一致する。"
       ],
       "implementation_evidence": [
-        { "path": "PRIVACY.md", "symbol": "privacy policy source" },
-        { "path": "dist/privacy.html", "symbol": "hosted privacy page" },
-        { "path": "dist/index.html", "symbol": "privacy footer link" }
+        {
+          "path": "PRIVACY.md",
+          "symbol": "privacy policy source"
+        },
+        {
+          "path": "dist/privacy.html",
+          "symbol": "hosted privacy page"
+        },
+        {
+          "path": "dist/index.html",
+          "symbol": "privacy footer link"
+        }
       ],
       "test_evidence": [
-        { "type": "manual", "coverage": "required", "procedure": "After production deployment, fetch the privacy URL without authentication, follow the footer link, and compare every disclosure with storage and messaging behavior." }
+        {
+          "type": "manual",
+          "coverage": "required",
+          "procedure": "After production deployment, fetch the privacy URL without authentication, follow the footer link, and compare every disclosure with storage and messaging behavior."
+        }
       ]
     },
     {
@@ -1284,13 +2028,31 @@
         "dist/index.htmlの共有JavaScriptとCSS URLに製品versionが付く。"
       ],
       "implementation_evidence": [
-        { "path": "extension/background.js", "symbol": "state extensionVersion" },
-        { "path": "extension/app.js", "symbol": "versionMismatch connection warning" },
-        { "path": "dist/style-v151.css", "symbol": "notice.version-warning" },
-        { "path": "build.py", "symbol": "versioned static asset URLs" }
+        {
+          "path": "extension/background.js",
+          "symbol": "state extensionVersion"
+        },
+        {
+          "path": "extension/app.js",
+          "symbol": "versionMismatch connection warning"
+        },
+        {
+          "path": "dist/style-v151.css",
+          "symbol": "notice.version-warning"
+        },
+        {
+          "path": "build.py",
+          "symbol": "versioned static asset URLs"
+        }
       ],
       "test_evidence": [
-        { "type": "automated", "path": "tests/requirements.test.cjs", "cases": ["公開画面とインストール済み拡張機能の版違いを通知する"] }
+        {
+          "type": "automated",
+          "path": "tests/requirements.test.cjs",
+          "cases": [
+            "公開画面とインストール済み拡張機能の版違いを通知する"
+          ]
+        }
       ]
     },
     {
@@ -1312,12 +2074,25 @@
         "developer account登録、本人確認、二段階認証、審査はrepository buildで自動完了できない事実を明記する。"
       ],
       "implementation_evidence": [
-        { "path": "STORE_SUBMISSION.md", "symbol": "manual account, review and publication checklist" },
-        { "path": "README.md", "symbol": "store installation and package limitation" },
-        { "path": "dist/index.html", "symbol": "store package disclaimer" }
+        {
+          "path": "STORE_SUBMISSION.md",
+          "symbol": "manual account, review and publication checklist"
+        },
+        {
+          "path": "README.md",
+          "symbol": "store installation and package limitation"
+        },
+        {
+          "path": "dist/index.html",
+          "symbol": "store package disclaimer"
+        }
       ],
       "test_evidence": [
-        { "type": "manual", "coverage": "external release gate", "procedure": "Record both approved store URLs, install from each in a clean stable browser without developer mode, and confirm automatic update eligibility." }
+        {
+          "type": "manual",
+          "coverage": "external release gate",
+          "procedure": "Record both approved store URLs, install from each in a clean stable browser without developer mode, and confirm automatic update eligibility."
+        }
       ]
     },
     {
@@ -1337,12 +2112,307 @@
         "審査用accountが必要な場合は所有者が安全なtest credentialをstore reviewerへ直接提供する。"
       ],
       "implementation_evidence": [
-        { "path": "STORE_SUBMISSION.md", "symbol": "permission and review declarations" },
-        { "path": "extension/manifest.json", "symbol": "permissions, host_permissions, externally_connectable" },
-        { "path": "PRIVACY.md", "symbol": "declared data practices" }
+        {
+          "path": "STORE_SUBMISSION.md",
+          "symbol": "permission and review declarations"
+        },
+        {
+          "path": "extension/manifest.json",
+          "symbol": "permissions, host_permissions, externally_connectable"
+        },
+        {
+          "path": "PRIVACY.md",
+          "symbol": "declared data practices"
+        }
       ],
       "test_evidence": [
-        { "type": "manual", "coverage": "external release gate", "procedure": "Before submitting, compare every dashboard disclosure and reviewer instruction against manifest permissions, endpoints and actual behavior." }
+        {
+          "type": "manual",
+          "coverage": "external release gate",
+          "procedure": "Before submitting, compare every dashboard disclosure and reviewer instruction against manifest permissions, endpoints and actual behavior."
+        }
+      ]
+    },
+    {
+      "id": "PREF-001",
+      "category": "v1.6.0",
+      "introduced_in": "1.6.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "表示サービスと順序を保存し、0〜3件に応じて通常・全画面・小窓・PiP・サイト内パネルを整列する。非表示でも取得と履歴保存を続け、旧設定は全表示へ移行する。",
+      "source_requirements": [
+        "2026-09-29 user request"
+      ],
+      "acceptance_criteria": [
+        "表示サービスと順序を保存し、0〜3件に応じて通常・全画面・小窓・PiP・サイト内パネルを整列する。非表示でも取得と履歴保存を続け、旧設定は全表示へ移行する。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/preferences.js",
+          "symbol": "v1.6.0 implementation"
+        },
+        {
+          "path": "extension/app.js",
+          "symbol": "v1.6.0 implementation"
+        },
+        {
+          "path": "extension/floating.js",
+          "symbol": "v1.6.0 implementation"
+        },
+        {
+          "path": "extension/content.js",
+          "symbol": "v1.6.0 implementation"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/v160.test.cjs",
+          "cases": [
+            "v1.6.0 core behavior"
+          ]
+        },
+        {
+          "type": "manual",
+          "coverage": "UI and live-account verification",
+          "procedure": "Verify normal, fullscreen, floating, PiP, content panel and signed-in providers."
+        }
+      ]
+    },
+    {
+      "id": "WARN-001",
+      "category": "v1.6.0",
+      "introduced_in": "1.6.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "現在セッションは2時間/1時間、週間は1日/1時間、リセット権は5日/1日で段階的な赤反転と2秒フェードを適用する。期限不明は推測しない。",
+      "source_requirements": [
+        "2026-09-29 user request"
+      ],
+      "acceptance_criteria": [
+        "現在セッションは2時間/1時間、週間は1日/1時間、リセット権は5日/1日で段階的な赤反転と2秒フェードを適用する。期限不明は推測しない。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/shared.js",
+          "symbol": "v1.6.0 implementation"
+        },
+        {
+          "path": "extension/style-v160.css",
+          "symbol": "v1.6.0 implementation"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/v160.test.cjs",
+          "cases": [
+            "v1.6.0 core behavior"
+          ]
+        },
+        {
+          "type": "manual",
+          "coverage": "UI and live-account verification",
+          "procedure": "Verify normal, fullscreen, floating, PiP, content panel and signed-in providers."
+        }
+      ]
+    },
+    {
+      "id": "EST-001",
+      "category": "v1.6.0",
+      "introduced_in": "1.6.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "同期した履歴から週間残量に相当する現在セッション枠数を推定し、根拠不足時は推定値を出さない。",
+      "source_requirements": [
+        "2026-09-29 user request"
+      ],
+      "acceptance_criteria": [
+        "同期した履歴から週間残量に相当する現在セッション枠数を推定し、根拠不足時は推定値を出さない。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/advice.js",
+          "symbol": "v1.6.0 implementation"
+        },
+        {
+          "path": "extension/shared.js",
+          "symbol": "v1.6.0 implementation"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/v160.test.cjs",
+          "cases": [
+            "v1.6.0 core behavior"
+          ]
+        },
+        {
+          "type": "manual",
+          "coverage": "UI and live-account verification",
+          "procedure": "Verify normal, fullscreen, floating, PiP, content panel and signed-in providers."
+        }
+      ]
+    },
+    {
+      "id": "ADVICE-004",
+      "category": "v1.6.0",
+      "introduced_in": "1.6.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "利用ペースと自然リセットを考慮した提案、一次情報にリンクした日付つきTips/NEWSを低い下部ティッカーで表示する。使用履歴を外部へ送信しない。",
+      "source_requirements": [
+        "2026-09-29 user request"
+      ],
+      "acceptance_criteria": [
+        "利用ペースと自然リセットを考慮した提案、一次情報にリンクした日付つきTips/NEWSを低い下部ティッカーで表示する。使用履歴を外部へ送信しない。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/advice.js",
+          "symbol": "v1.6.0 implementation"
+        },
+        {
+          "path": "extension/app.js",
+          "symbol": "v1.6.0 implementation"
+        },
+        {
+          "path": "extension/style-v160.css",
+          "symbol": "v1.6.0 implementation"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/v160.test.cjs",
+          "cases": [
+            "v1.6.0 core behavior"
+          ]
+        },
+        {
+          "type": "manual",
+          "coverage": "UI and live-account verification",
+          "procedure": "Verify normal, fullscreen, floating, PiP, content panel and signed-in providers."
+        }
+      ]
+    },
+    {
+      "id": "UX-001",
+      "category": "v1.6.0",
+      "introduced_in": "1.6.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "通知音量のドラッグ中はUIを再生成せず、確定時に設定を保存する。",
+      "source_requirements": [
+        "2026-09-29 user request"
+      ],
+      "acceptance_criteria": [
+        "通知音量のドラッグ中はUIを再生成せず、確定時に設定を保存する。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/app.js",
+          "symbol": "v1.6.0 implementation"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/v160.test.cjs",
+          "cases": [
+            "v1.6.0 core behavior"
+          ]
+        },
+        {
+          "type": "manual",
+          "coverage": "UI and live-account verification",
+          "procedure": "Verify normal, fullscreen, floating, PiP, content panel and signed-in providers."
+        }
+      ]
+    },
+    {
+      "id": "BRAND-002",
+      "category": "v1.6.0",
+      "introduced_in": "1.6.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "新しいリングアイコン、X @ntusへの導線、GitHub向け紹介・使用説明を同梱する。",
+      "source_requirements": [
+        "2026-09-29 user request"
+      ],
+      "acceptance_criteria": [
+        "新しいリングアイコン、X @ntusへの導線、GitHub向け紹介・使用説明を同梱する。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/icons/icon.svg",
+          "symbol": "v1.6.0 implementation"
+        },
+        {
+          "path": "extension/index.html",
+          "symbol": "v1.6.0 implementation"
+        },
+        {
+          "path": "README.md",
+          "symbol": "v1.6.0 implementation"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/v160.test.cjs",
+          "cases": [
+            "v1.6.0 core behavior"
+          ]
+        },
+        {
+          "type": "manual",
+          "coverage": "UI and live-account verification",
+          "procedure": "Verify normal, fullscreen, floating, PiP, content panel and signed-in providers."
+        }
+      ]
+    },
+    {
+      "id": "MAINT-001",
+      "category": "v1.6.0",
+      "introduced_in": "1.6.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "将来の変更時はAGENTS.md、仕様、全要件IDを読み、テストと配布物を同期してデグレを防ぐ。",
+      "source_requirements": [
+        "2026-09-29 user request"
+      ],
+      "acceptance_criteria": [
+        "将来の変更時はAGENTS.md、仕様、全要件IDを読み、テストと配布物を同期してデグレを防ぐ。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "AGENTS.md",
+          "symbol": "v1.6.0 implementation"
+        },
+        {
+          "path": "SPECIFICATION.md",
+          "symbol": "v1.6.0 implementation"
+        },
+        {
+          "path": "build.py",
+          "symbol": "v1.6.0 implementation"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/v160.test.cjs",
+          "cases": [
+            "v1.6.0 core behavior"
+          ]
+        },
+        {
+          "type": "manual",
+          "coverage": "UI and live-account verification",
+          "procedure": "Verify normal, fullscreen, floating, PiP, content panel and signed-in providers."
+        }
       ]
     }
   ]
