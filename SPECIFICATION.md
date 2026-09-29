@@ -4,7 +4,7 @@
 
 <a id="en"></a>
 
-Document revision: 1.0 · Product version: **1.6.0** · Web companion: `https://ai-usage-glance.ntusnog.chatgpt.site/`
+Document revision: 1.0 · Product version: **1.6.1** · Web companion: `https://ai-usage-glance.ntusnog.chatgpt.site/`
 
 This English section defines the implementation contract for the beta. The [Japanese section](#ja) contains the full historical and field-level acceptance criteria. Implementers must read both sections and every ID in [`spec/requirements.json`](spec/requirements.json); neither translation overrides the other.
 
@@ -36,7 +36,7 @@ Tips and NEWS must include the primary-source HTTPS link, publisher, and date. R
 
 ## 5. Code, build, and release contract
 
-`extension/` is authoritative. `background.js`, `fetchers.js`, `parser.js`, `state.js`, and `history.js` acquire and normalize data; `shared.js`, `preferences.js`, `locale.js`, `advice.js`, and CSS render the common surfaces. `build.py` copies shared assets to `dist/`, synchronizes documentation into the extension package, cache-busts public assets, and creates `dist/LLMs-Token-Usage-Monitor-v1.6.0.zip`. Manifest, UI, ZIP, specification, and store checklist versions must agree. Chrome Web Store/Edge Add-ons review is necessary for installation without developer mode; the ZIP alone does not provide that. Future native macOS, Windows, iOS, and Android apps should reuse the normalized data contracts and analysis rules through platform-specific authentication/window adapters; those apps are not part of this release.
+`extension/` is authoritative. `background.js`, `fetchers.js`, `parser.js`, `state.js`, and `history.js` acquire and normalize data; `shared.js`, `preferences.js`, `locale.js`, `advice.js`, and CSS render the common surfaces. `build.py` copies shared assets to `dist/`, synchronizes documentation into the extension package, cache-busts public assets, and creates `dist/LLMs-Token-Usage-Monitor-v1.6.1.zip`. Manifest, UI, ZIP, specification, and store checklist versions must agree. Chrome Web Store/Edge Add-ons review is necessary for installation without developer mode; the ZIP alone does not provide that. Future native macOS, Windows, iOS, and Android apps should reuse the normalized data contracts and analysis rules through platform-specific authentication/window adapters; those apps are not part of this release.
 
 Run `node --test tests/*.test.cjs`, `python3 build.py`, ZIP-content and version checks, and UI smoke checks. Test sign-in/sign-out, refresh fallback, every display surface, language/theme/opacity, deadline boundaries, history retention, and service visibility/order on actual Chrome and Edge installations before claiming live-account acceptance. Keep the Site's existing audience unless the user explicitly changes it. See the [Japanese detailed specification](#ja) and [requirements ledger](spec/requirements.json) for every acceptance case.
 
@@ -53,7 +53,7 @@ Human-readable documentation must start in English and place Japanese in the lat
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.6.0
+対象製品版: 1.6.1
 日本語名: **LLMs トークン残量モニタ**  
 英語名: **LLMs Token Usage Monitor**  
 対象リポジトリ: `ai-usage-panel`  
@@ -785,7 +785,7 @@ Document Picture-in-Pictureには以下の制約がある。
 
 - ストア提出ZIPの形式は `LLMs-Token-Usage-Monitor-v{semver}.zip` とする。
 - 旧名称をZIP、拡張機能名、HTMLタイトルに使わない。
-- 対象版では `LLMs-Token-Usage-Monitor-v1.6.0.zip` とする。
+- 対象版では `LLMs-Token-Usage-Monitor-v1.6.1.zip` とする。
 - Manifest、UI定数、HTMLフッター、ダウンロードリンク、版別CSS、ZIP名のバージョンを一致させる。
 - バージョンはSemantic Versioningを使う。
 
@@ -1029,5 +1029,14 @@ README、本仕様、AGENTS、PRIVACY、ストア提出資料、Webプライバ�
 3. 実アカウントでのChrome/Edge手動確認を終える。
 4. 通常画面、フルスクリーン、サイト内パネル、通常小窓、PiPの表示を確認する。
 5. プライバシー文書とストア権限説明が実装と一致する。
-6. `LLMs-Token-Usage-Monitor-v1.6.0.zip` が再現可能に生成され、内容を検査済みである。
+6. `LLMs-Token-Usage-Monitor-v1.6.1.zip` が再現可能に生成され、内容を検査済みである。
 7. 公開Webアプリとストア提出パッケージの名称、バージョン、接続originが一致する。
+
+
+## 27. v1.6.1 beta: official status, countdown, and release documentation
+
+The product refreshes usage about every 60 seconds and official OpenAI/Claude Statuspage summaries plus the Google Workspace Gemini incident feed every 10 minutes. Status requests use fixed HTTPS origins, omit credentials, time out after eight seconds, and reject responses larger than 3 MB. New incident signatures cause a browser notification and local alert sound; the in-app status disclosure opens automatically and remains available through ⓘ. Unknown or failed feeds are not described as healthy. Reset labels append a localized day/hour or hour/minute countdown when a reliable `resetAt` exists. The README contains a subtitle and basic-specification sections, while releases through 1.5.3 are retained in `CHANGELOG.md`. The GitHub README is linked from the app footer. See `SECURITY_REVIEW.md` for the bounded security review and remaining manual checks.
+
+### 日本語
+
+残量は約60秒ごと、OpenAI／Claude StatuspageとGoogle WorkspaceのGemini関連障害情報は約10分ごとに確認する。障害が新規に報告された場合、ブラウザー通知、ローカル警告音、ⓘ欄の自動展開で要点を示す。取得不能は正常とは表示しない。信頼できる `resetAt` がある枠だけ、リセット表記に日・時間または時間・分の残り時間を添える。READMEにサブタイトルと基本仕様を置き、1.5.3以前の改訂履歴は `CHANGELOG.md` に保存する。画面の取扱説明はGitHub READMEへリンクする。追加した権限・入力検証・限界は `SECURITY_REVIEW.md` を参照する。

@@ -8,10 +8,10 @@
   }
  };
  Object.assign(messages.ja,{
-  serviceDisplayOrder:'サービスの表示・並び順',serviceOrderHelp:'表示するサービスを選び、矢印で順序を変更',serviceListAria:'表示するサービス',moveUp:'{service}を上へ',moveDown:'{service}を下へ',noServices:'表示するサービスを選択してください。',followX:'𝕏 @ntusで更新情報を見る',sourceLink:'出典 ↗',historyEvidence:'この端末の変化履歴',sessionEquivalent:'現在の利用ペースで約{n}セッション分',sessionEstimate:'履歴から推定',sessionEstimatePending:'セッション換算は履歴を蓄積中',expiresAt:'有効期限 {date}',news:'NEWS',tip:'TIP',volumeAria:'通知音量',adviceNext:'次のアドバイス'
+  serviceDisplayOrder:'サービスの表示・並び順',serviceOrderHelp:'表示するサービスを選び、矢印で順序を変更',serviceListAria:'表示するサービス',moveUp:'{service}を上へ',moveDown:'{service}を下へ',noServices:'表示するサービスを選択してください。',followX:'𝕏 @ntusで更新情報を見る',manual:'取扱説明',daysHoursLeft:'あと{d}日と{h}時間',sourceLink:'出典 ↗',historyEvidence:'この端末の変化履歴',sessionEquivalent:'現在の利用ペースで約{n}セッション分',sessionEstimate:'履歴から推定',sessionEstimatePending:'セッション換算は履歴を蓄積中',expiresAt:'有効期限 {date}',news:'NEWS',tip:'TIP',volumeAria:'通知音量',adviceNext:'次のアドバイス'
  });
  Object.assign(messages.en,{
-  serviceDisplayOrder:'Show and arrange services',serviceOrderHelp:'Choose services and use the arrows to reorder them',serviceListAria:'Visible services',moveUp:'Move {service} up',moveDown:'Move {service} down',noServices:'Select a service to display.',followX:'Follow updates on 𝕏 @ntus',sourceLink:'Source ↗',historyEvidence:'Change history on this device',sessionEquivalent:'About {n} sessions at the current pace',sessionEstimate:'Estimated from history',sessionEstimatePending:'Collecting history for a session estimate',expiresAt:'Expires {date}',news:'NEWS',tip:'TIP',volumeAria:'Notification volume',adviceNext:'Next advice'
+  serviceDisplayOrder:'Show and arrange services',serviceOrderHelp:'Choose services and use the arrows to reorder them',serviceListAria:'Visible services',moveUp:'Move {service} up',moveDown:'Move {service} down',noServices:'Select a service to display.',followX:'Follow updates on 𝕏 @ntus',manual:'User guide',daysHoursLeft:'{d}d {h}h left',sourceLink:'Source ↗',historyEvidence:'Change history on this device',sessionEquivalent:'About {n} sessions at the current pace',sessionEstimate:'Estimated from history',sessionEstimatePending:'Collecting history for a session estimate',expiresAt:'Expires {date}',news:'NEWS',tip:'TIP',volumeAria:'Notification volume',adviceNext:'Next advice'
  });
  let current='ja';
  function detect(){try{return String(navigator.language||'').toLowerCase().startsWith('ja')?'ja':'en'}catch{return 'ja'}}
