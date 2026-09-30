@@ -2800,6 +2800,45 @@
           "procedure": "Inspect throttle, log controls, and source markup."
         }
       ]
+    },
+    {
+      "id": "WEB-001",
+      "category": "product_site",
+      "introduced_in": "1.6.4",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "運用モニターを変更せず、別URLの製品紹介ページを英語、日本語、簡体字中国語に対応させる。英語を既定とし、環境言語と保存済み選択を反映し、実装済み機能・プライバシー・導入先への導線をレスポンシブに表示する。",
+      "source_requirements": [
+        "User request: chic high-quality web content with English/Japanese/Chinese support"
+      ],
+      "acceptance_criteria": [
+        "product.htmlが運用モニターと別URLで存在する。",
+        "EN、日本語、中文の切替があり、全主要コピーが三言語分定義される。",
+        "言語選択をlocalStorageへ保存し、初回はnavigator.languageを参照する。",
+        "モニター、GitHub、プライバシー、紹介画像へのリンクがある。",
+        "モバイル用media queryとreduced-motion配慮がある。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "web/product.html",
+          "symbol": "tri-lingual product page"
+        },
+        {
+          "path": "web/product.css",
+          "symbol": "responsive presentation"
+        },
+        {
+          "path": "web/product.js",
+          "symbol": "COPY/apply"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "product-site.test.cjs",
+          "procedure": "Inspect language dictionaries, links, responsive CSS, build output and non-regression separation."
+        }
+      ]
     }
   ]
 }
