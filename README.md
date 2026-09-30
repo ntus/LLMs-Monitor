@@ -14,7 +14,7 @@ This browser companion checks usage from your signed-in provider sessions about 
 
 Version **1.6.4 beta** consolidates operational messages into a browsable status log, refreshes the history-load summary at most once per minute, stops opening a popup automatically, and lets the normal popup use any browser/OS-supported window size.
 
-[Open the monitor](https://ai-usage-glance.ntusnog.chatgpt.site/) · [Download the beta extension package](dist/LLMs-Monitor-v1.6.4.zip) · [Detailed specification](SPECIFICATION.md) · [Privacy](PRIVACY.md) · [Follow @ntus on X](https://x.com/ntus)
+[Product site](https://ai-usage-glance.ntusnog.chatgpt.site/product.html) · [Open the monitor](https://ai-usage-glance.ntusnog.chatgpt.site/) · [Download the beta extension package](dist/LLMs-Monitor-v1.6.4.zip) · [Detailed specification](SPECIFICATION.md) · [Privacy](PRIVACY.md) · [Follow @ntus on X](https://x.com/ntus)
 
 ## Basic specifications
 
