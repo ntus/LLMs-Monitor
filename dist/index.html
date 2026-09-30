@@ -5,12 +5,12 @@
  <meta name="viewport" content="width=device-width,initial-scale=1">
  <meta name="theme-color" content="#11151e">
  <title>LLMs モニター</title>
- <link rel="stylesheet" href="style.css?v=163">
- <link rel="stylesheet" href="style-v151.css?v=163">
- <link rel="stylesheet" href="style-v152.css?v=163">
- <link rel="stylesheet" href="style-v153.css?v=163">
- <link rel="stylesheet" href="style-v160.css?v=163">
- <link rel="stylesheet" href="style-v161.css?v=163"><link rel="stylesheet" href="style-v162.css?v=163"><link rel="stylesheet" href="style-v163.css?v=163">
+ <link rel="stylesheet" href="style.css?v=164">
+ <link rel="stylesheet" href="style-v151.css?v=164">
+ <link rel="stylesheet" href="style-v152.css?v=164">
+ <link rel="stylesheet" href="style-v153.css?v=164">
+ <link rel="stylesheet" href="style-v160.css?v=164">
+ <link rel="stylesheet" href="style-v161.css?v=164"><link rel="stylesheet" href="style-v162.css?v=164"><link rel="stylesheet" href="style-v163.css?v=164"><link rel="stylesheet" href="style-v164.css?v=164">
 </head>
 <body>
  <header>
@@ -19,7 +19,7 @@
  </header>
  <main>
   <div class="page-title">
-   <div><p class="sub" data-i18n="subtitle">ChatGPT・Claude・Geminiの利用枠をリアルタイム監視</p><p id="history-status" class="history-status" role="status" aria-live="polite" data-i18n="historyLoading">過去変化履歴を読み込んでいます…</p></div>
+   <div><p class="sub" data-i18n="subtitle">ChatGPT・Claude・Geminiの利用枠をリアルタイム監視</p></div>
    <div class="top-actions">
     <button id="language-toggle" aria-label="Language">🇯🇵JP</button>
     <button id="theme-toggle" aria-pressed="false">☼ 標準</button>
@@ -31,7 +31,7 @@
     <button id="refresh">↻ <span data-i18n="refresh">今すぐ更新</span></button>
    </div>
   </div>
-  <p class="sound-help" data-i18n="soundHelp">通知音は初期状態でON。拡張機能が数値変化を検出すると、1秒間隔で最初の3回だけ鳴ります。</p>
+  <div id="status-log" class="status-log" role="group" aria-label="ステータスログ"><button id="status-prev" type="button" aria-label="前のメッセージ">‹</button><p id="status-log-message" role="status" aria-live="polite" data-i18n="soundHelp">通知音は初期状態でON。拡張機能が数値変化を検出すると、1秒間隔で最初の3回だけ鳴ります。</p><span id="status-log-position">1 / 1</span><button id="status-next" type="button" aria-label="次のメッセージ">›</button></div>
   <div id="connection" class="notice"><span class="notice-icon">↗</span><div><strong data-i18n="connectTitle">ブラウザを接続して、モニターを開始</strong><p data-i18n="connectBody">拡張機能が公式の使用量画面を読み取ります。ログイン情報は公式画面で入力してください。</p></div><a href="#setup" class="button primary" data-i18n="connectHow">接続方法</a></div>
   <section id="cards" class="cards" aria-label="各サービスの残り使用量"></section>
   <p class="disclaimer" data-i18n="chatDisclaimer">ChatGPTの通常のChat残量は、この使用量画面では取得できません。Work / Codexの共通枠を別項目として表示します。</p>
@@ -44,7 +44,7 @@
      <label for="position"><span data-i18n="panelPosition">AIサイト内パネル位置</span><select id="position"><option value="bottom-right" data-i18n="bottomRight">右下</option><option value="bottom-left" data-i18n="bottomLeft">左下</option><option value="top-right" data-i18n="topRight">右上</option><option value="top-left" data-i18n="topLeft">左上</option></select></label>
     </div>
     <div class="floating-buttons"><button id="pip" class="wide primary">▣ <span data-i18n="pin">最前面に固定</span></button><button id="floating-normal" class="wide">↗ <span data-i18n="normalWindow">通常小窓</span></button></div>
-    <p class="fine" data-i18n="floatingHelp">起動時は通常小窓を自動表示します。最前面固定は対応ブラウザのDocument Picture-in-Pictureを使います。透明度、テーマ、言語、表示内容は全画面で同期します。</p>
+    <p class="fine" data-i18n="floatingHelp">通常小窓はボタンを押した時だけ開きます。最前面固定は対応ブラウザのDocument Picture-in-Pictureを使います。透明度、テーマ、言語、表示内容は全画面で同期します。</p>
    </div>
    <div class="preview"><div class="preview-toolbar"><span>● ● ●</span><span>LIVE PREVIEW</span></div><div class="preview-paper"><span class="preview-caption" data-i18n="previewCaption">集中を切らさず、残量と履歴を確認。</span><div class="paper-line"></div><div class="paper-line short"></div></div><div id="widget" class="widget bottom-right"></div></div>
   </section>
@@ -64,13 +64,13 @@
    </div>
   </section>
   <section id="setup" class="setup">
-   <div><p class="eyebrow">EXTENSION PACKAGE</p><h2 data-i18n="packageTitle">ストア公開用パッケージ。</h2><p class="sub" data-i18n="desktopFor">Chrome / Edge デスクトップ版。macOS・Windows・Linux共通です。</p><a class="button primary" href="LLMs-Monitor-v1.6.3.zip" download>LLMs Monitor v1.6.3 ↓</a><p class="fine" data-i18n="storeNotice">デベロッパーモードなしの導入には、Chrome Web StoreまたはMicrosoft Edge Add-onsでの審査・公開が必要です。</p></div>
+   <div><p class="eyebrow">EXTENSION PACKAGE</p><h2 data-i18n="packageTitle">ストア公開用パッケージ。</h2><p class="sub" data-i18n="desktopFor">Chrome / Edge デスクトップ版。macOS・Windows・Linux共通です。</p><a class="button primary" href="LLMs-Monitor-v1.6.4.zip" download>LLMs Monitor v1.6.4 ↓</a><p class="fine" data-i18n="storeNotice">デベロッパーモードなしの導入には、Chrome Web StoreまたはMicrosoft Edge Add-onsでの審査・公開が必要です。</p></div>
    <ol><li><strong data-i18n="installStore">ストアから拡張機能を追加</strong></li><li><strong data-i18n="loginOfficial">公式サイトへログイン</strong><form id="connect-form"><input id="extension-id" aria-label="拡張機能ID" placeholder="拡張機能ID（32文字）" pattern="[a-p]{32}" required><button type="submit" data-i18n="connect">接続</button></form></li><li><strong data-i18n="backgroundUpdate">バックグラウンドで自動更新</strong></li></ol>
   </section>
-  <footer><div id="provider-status-main" class="provider-status-host" aria-live="polite"></div><span><a href="https://github.com/ntus/LLMs-Monitor" target="_blank" rel="noopener noreferrer" class="product-link">LLMs MONITOR v1.6.3</a> - Copyright (C) 2026 <a href="https://ntus.info" target="_blank" rel="noopener">NT MicroSystems,Inc.</a></span><span><a href="https://x.com/ntus" target="_blank" rel="noopener noreferrer" class="social-link" data-i18n="followX">𝕏 @ntusで更新情報を見る</a> · <a href="https://github.com/ntus/LLMs-Monitor#quick-start" target="_blank" rel="noopener noreferrer" data-i18n="manual">取扱説明</a> · <a href="privacy.html" data-i18n="privacy">プライバシーポリシー</a> · <span data-i18n="delayNote">公式画面の更新には遅延がある場合があります。</span></span></footer>
+  <footer><div id="provider-status-main" class="provider-status-host" aria-live="polite"></div><span><a href="https://github.com/ntus/LLMs-Monitor" target="_blank" rel="noopener noreferrer" class="product-link">LLMs MONITOR v1.6.4</a> - Copyright (C) 2026 <a href="https://ntus.info" target="_blank" rel="noopener">NT MicroSystems,Inc.</a></span><span><a href="https://x.com/ntus" target="_blank" rel="noopener noreferrer" class="social-link" data-i18n="followX">𝕏 @ntusで更新情報を見る</a> · <a href="https://github.com/ntus/LLMs-Monitor#quick-start" target="_blank" rel="noopener noreferrer" data-i18n="manual">取扱説明</a> · <a href="privacy.html" data-i18n="privacy">プライバシーポリシー</a> · <span data-i18n="delayNote">公式画面の更新には遅延がある場合があります。</span></span></footer>
  </main>
  <aside id="advisor" class="advisor" hidden aria-label="Usage advice"><div class="advisor-head"><span class="advisor-spark">✦</span><span id="advisor-service">MONITOR</span></div><strong id="advisor-title"></strong><p id="advisor-text"></p><small id="advisor-evidence"></small><a id="advisor-source" target="_blank" rel="noopener noreferrer" hidden></a><div id="advisor-dots" class="advisor-dots" aria-hidden="true"></div><button id="advisor-next" type="button" title="Next advice" aria-label="Next advice">›</button></aside>
  <div id="toast" role="status" aria-live="polite"></div>
- <script src="locale.js?v=163"></script><script src="preferences.js?v=163"></script><script src="provider-status.js?v=163"></script><script src="changes.js?v=163"></script><script src="shared.js?v=163"></script><script src="sound.js?v=163"></script><script src="advice.js?v=163"></script><script src="app.js?v=163"></script>
+ <script src="locale.js?v=164"></script><script src="preferences.js?v=164"></script><script src="provider-status.js?v=164"></script><script src="changes.js?v=164"></script><script src="shared.js?v=164"></script><script src="sound.js?v=164"></script><script src="advice.js?v=164"></script><script src="app.js?v=164"></script>
 </body>
 </html>

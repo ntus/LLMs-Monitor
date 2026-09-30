@@ -21,7 +21,7 @@ This file is the starting point for every future Codex or LLM edit. Follow the u
 - Treat `extension/` as the source of truth for shared UI. Generate `dist/` and the ZIP with `build.py`; do not edit generated `dist/` alone.
 - Preserve storage keys, history, limit labels, acquisition sources, account boundaries, and compatibility with older settings. New settings need optional defaults.
 - Apply settings to the main page, public web app, normal popup, always-on-top view, and in-page panels. Hidden services must keep fetching and recording history so they can be restored.
-- Check the existing acquisition paths, 60-second refresh, one-minute official service-status monitoring, history, numeric-only change indicator, three sounds, localization, themes, opacity, fullscreen, and privacy before release. Read `SECURITY_REVIEW.md` and keep its permissions and manual-test limits current.
+- Check the existing acquisition paths, 60-second refresh, one-minute official service-status monitoring and status-log throttle, history, numeric-only change indicator, three sounds, localization, themes, opacity, fullscreen, explicit-only popup launch, unrestricted popup CSS sizing, and privacy before release. Read `SECURITY_REVIEW.md` and keep its permissions and manual-test limits current.
 - Never replace an official provider value with an estimate. Tips and news require dates and primary-source links; never send private usage data or history to an external news source.
 - Run meaningful tests, `node --test tests/*.test.cjs`, `python3 build.py`, ZIP inspection, version checks, and diff checks. Record any necessary manual verification in `SPECIFICATION.md`.
 - Keep the manifest, UI, CSS, ZIP, README, specification, and submission materials on the same version. Preserve the existing Site audience when deploying.
@@ -55,7 +55,7 @@ Keep this `AGENTS.md` in the repository and update it when a new acceptance rule
 - `extension/` を共通画面の正本とし、`build.py` で `dist/` と ZIP を生成する。生成後の `dist/` だけを直接直さない。
 - 保存キー、履歴、利用枠ラベル、取得元、アカウント境界、設定の旧データとの互換性を保つ。新しい設定は省略可能な既定値を持たせる。
 - 設定変更はメイン画面、公開Web、通常小窓、最前面表示、サイト内パネルに反映する。非表示のサービスもバックグラウンド取得・履歴保存を続け、再表示時に既存データを戻す。
-- 既存の取得経路、60秒更新、履歴、数値だけの通知、3音、日英、テーマ、透明度、フルスクリーン、プライバシーを変更前後で確認する。
+- 既存の取得経路、60秒更新、1分周期の障害監視とステータスログ抑制、履歴、数値だけの通知、3音、日英、テーマ、透明度、フルスクリーン、小窓の明示起動と自由リサイズ、プライバシーを変更前後で確認する。
 - 公式サービス由来の値を推測値で置き換えない。外部情報やニュースは日付と一次情報へのリンクを付け、使用量・履歴を外部へ送信しない。
 - 適切な意味のあるテストと `node --test tests/*.test.cjs` を実行し、`python3 build.py`、ZIP一覧、版番号、差分を確認する。必要な手動確認を `SPECIFICATION.md` に記録する。
 - リリース時は Manifest、UI、CSS、ZIP、README、仕様、提出資料を同一バージョンへそろえ、既存の公開範囲を保ってサイトを更新する。

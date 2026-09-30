@@ -4,6 +4,11 @@
 
 <a id="en"></a>
 
+## 1.6.4 beta
+
+- Consolidated sound guidance and history-load results into one navigable status log, with the history summary refreshed at most once per minute.
+- Stopped automatic popup creation and removed application-level popup size constraints.
+
 ## Earlier releases
 
 Version 1.5.3 and earlier focused on plan retrieval, persistent change history, bilingual and floating displays, reset and credit details, and browser integration. The Japanese section below retains the original release-by-release details.
@@ -15,6 +20,11 @@ Version 1.5.3 and earlier focused on plan retrieval, persistent change history, 
 <a id="ja"></a>
 
 # 日本語 — 改訂履歴
+
+## 1.6.4 の変更
+
+- 通知音説明と履歴読込結果を左右ボタン付きのステータスログへ集約し、履歴読込結果の再計算を最大1分に1回へ抑制しました。
+- 起動時などの通常小窓自動表示を廃止し、アプリ側の固定幅・固定高を撤廃しました。
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
