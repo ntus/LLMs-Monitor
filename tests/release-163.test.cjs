@@ -23,8 +23,10 @@ test('weekly session guides render for every visible provider without learned hi
 test('LLM directory exposes ten products, official destinations, source, and bilingual copy',()=>{
  const html=read('extension/index.html'),locale=read('extension/locale.js');
  const section=html.match(/<section class="llm-directory"[\s\S]*?<\/section>/)?.[0]||'';
- assert.equal((section.match(/<article>/g)||[]).length,10);
+ assert.equal((section.match(/<article(?:\s|>)/g)||[]).length,10);
  assert.equal((section.match(/<nav>/g)||[]).length,10);
+ assert.equal((section.match(/class="llm-icon /g)||[]).length,10);
+ assert.equal((section.match(/aria-hidden="true"/g)||[]).length,10);
  assert.equal((section.match(/target="_blank"/g)||[]).length,21);
  assert(section.includes('similarweb.com/corp/reports/2026-generative-ai-landscape'));
  for(const key of ['llmDirectory','llmChatgpt','llmGemini','llmClaude','llmLechat'])assert(locale.includes(`${key}:`));

@@ -1074,10 +1074,19 @@ The history-load summary and sound guidance share one compact, navigable status 
 履歴読込結果と通知音説明を左右ボタンで切り替えられるステータスログへ集約し、履歴読込結果の再計算を最大1分に1回とする。起動、インストール、メイン画面読込、設定変更では通常小窓を作らない。ユーザーが既に開いた通常小窓は従来どおりメイン画面の再読込・終了に連動する。通常小窓作成時の固定寸法とCSS上の最小幅・最小高を設けないが、ブラウザー／OS固有の制限は解除できない。
 
 
-## 31. Trilingual product website
+## 31. Bilingual product website
 
-`product.html` is a separate promotional surface so the operational monitor at `/` remains unchanged. It starts in English unless the environment or a saved choice selects Japanese or Simplified Chinese. Language switching is client-side, persists locally, and does not request a remote translation service. The page presents only implemented behavior, links to the monitor, GitHub, privacy policy, downloadable flyer, NT MicroSystems,Inc., and @ntus. It must remain responsive from mobile widths through large desktop displays and respect reduced-motion preferences.
+`product.html` is a separate promotional surface so the operational monitor at `/` remains unchanged. It starts in English unless the environment or a saved choice selects Japanese. Simplified Chinese was removed by the later product decision. Language switching is client-side, persists locally, and does not request a remote translation service. The page presents only implemented behavior, links to the monitor, GitHub, privacy policy, downloadable flyer, NT MicroSystems,Inc., and @ntus. It must remain responsive from mobile widths through large desktop displays and respect reduced-motion preferences.
 
 ### 日本語
 
-`product.html` を運用モニター `/` と分離した製品紹介ページとする。既定は英語とし、環境言語または保存済み選択が日本語・簡体字中国語の場合はそれを適用する。切替は端末内だけで行い、外部翻訳サービスへ通信しない。実装済み機能だけを説明し、モニター、GitHub、プライバシーポリシー、紹介画像、NT MicroSystems,Inc.、@ntusへの導線を設ける。モバイルから大画面まで対応し、視差や不要な連続アニメーションを使わない。
+`product.html` を運用モニター `/` と分離した製品紹介ページとする。既定は英語とし、環境言語または保存済み選択が日本語の場合はそれを適用する。後続要件により簡体字中国語は廃止した。切替は端末内だけで行い、外部翻訳サービスへ通信しない。実装済み機能だけを説明し、モニター、GitHub、プライバシーポリシー、紹介画像、NT MicroSystems,Inc.、@ntusへの導線を設ける。モバイルから大画面まで対応し、視差や不要な連続アニメーションを使わない。
+
+
+## 32. Product discovery and LLM directory identity
+
+The application header links directly to the separate product page. Every entry in the ten-item LLM directory includes a compact, decorative identifying mark with provider-specific color treatment; the product name remains the accessible label.
+
+### 日本語
+
+アプリのヘッダーから独立した商品説明ページへ直接移動できる。各種LLMの10項目にはサービスごとの色を用いた小型識別アイコンを付け、アクセシブルな名称は商品名で担保する。

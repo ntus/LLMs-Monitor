@@ -8,7 +8,7 @@ for legacy_css in (root / 'dist').glob('style-v*.css'):
     if legacy_css.name not in {version_css, 'style-v151.css', 'style-v152.css', 'style-v153.css', 'style-v160.css', 'style-v161.css', 'style-v162.css', 'style-v163.css'}: legacy_css.unlink()
 for name in ['index.html', 'privacy.html', 'style.css', 'style-v151.css', 'style-v152.css', 'style-v153.css', 'style-v160.css', 'style-v161.css', 'style-v162.css', 'style-v163.css', version_css, 'locale.js', 'preferences.js', 'provider-status.js', 'changes.js', 'shared.js', 'sound.js', 'advice.js', 'app.js']:
     shutil.copy2(root / 'extension' / name, root / 'dist' / name)
-# Standalone tri-lingual product page and its promotional artwork.
+# Standalone bilingual product page and its promotional artwork.
 for name in ['product.html', 'product.css', 'product.js']:
     shutil.copy2(root / 'web' / name, root / 'dist' / name)
 (root / 'dist' / 'promotional').mkdir(exist_ok=True)

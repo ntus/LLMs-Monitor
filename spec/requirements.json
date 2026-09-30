@@ -2807,15 +2807,17 @@
       "introduced_in": "1.6.4",
       "status": "implemented",
       "priority": "MUST",
-      "normative_requirement": "運用モニターを変更せず、別URLの製品紹介ページを英語、日本語、簡体字中国語に対応させる。英語を既定とし、環境言語と保存済み選択を反映し、実装済み機能・プライバシー・導入先への導線をレスポンシブに表示する。",
+      "normative_requirement": "運用モニターと分離した製品紹介ページを英語・日本語に対応させる。英語を既定とし、環境言語と保存済み選択を反映する。中国語UIは廃止し、2行固定の主要コピー、読みやすい最小文字サイズ、Webアプリ・特長・プライバシー等への導線をレスポンシブに表示する。",
       "source_requirements": [
-        "User request: chic high-quality web content with English/Japanese/Chinese support"
+        "User request: chic high-quality web content with English/Japanese/Chinese support",
+        "User request: discontinue Chinese, improve the hero copy/layout and tiny text, add Web app navigation"
       ],
       "acceptance_criteria": [
         "product.htmlが運用モニターと別URLで存在する。",
-        "EN、日本語、中文の切替があり、全主要コピーが三言語分定義される。",
+        "EN／日本語の切替があり、中国語の切替・コピーを含まない。",
         "言語選択をlocalStorageへ保存し、初回はnavigator.languageを参照する。",
-        "モニター、GitHub、プライバシー、紹介画像へのリンクがある。",
+        "主要キャッチコピーが各言語で2行を維持し、補助文字も判読可能な大きさである。",
+        "Webアプリ、特長、プライバシー、GitHub、紹介画像へのリンクがある。",
         "モバイル用media queryとreduced-motion配慮がある。"
       ],
       "implementation_evidence": [
@@ -2837,6 +2839,39 @@
           "type": "automated",
           "coverage": "product-site.test.cjs",
           "procedure": "Inspect language dictionaries, links, responsive CSS, build output and non-regression separation."
+        }
+      ]
+    },
+    {
+      "id": "UI-DIRECTORY-ICON-165",
+      "category": "navigation",
+      "introduced_in": "1.6.4",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "各種LLMディレクトリの10製品に、一覧内で判別しやすい固有のアイコン表示を設ける。アプリ最上部には製品説明ページへのリンクを設ける。",
+      "source_requirements": [
+        "User request: add each LLM icon and a product-page link near the top of the app"
+      ],
+      "acceptance_criteria": [
+        "各種LLMの10項目すべてに装飾アイコンがある。",
+        "アイコンは支援技術へ重複読み上げされない。",
+        "ヘッダーから商品説明ページを新しいタブで開ける。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/index.html",
+          "symbol": "header-product-link and ten llm-icon elements"
+        },
+        {
+          "path": "extension/style-v164.css",
+          "symbol": "header and provider icon presentation"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "release-163.test.cjs / product-site.test.cjs",
+          "procedure": "Inspect directory icon count and header product link."
         }
       ]
     }
