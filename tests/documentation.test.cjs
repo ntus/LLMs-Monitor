@@ -16,3 +16,5 @@ test('human-readable documents start in English and link to a later Japanese sec
  assert(html.indexOf('id="en"')<html.indexOf('id="ja"'));
  assert(html.includes('href="#en"')&&html.includes('href="#ja"'));
 });
+
+test('future public hostname is fixed in durable documentation',()=>{for(const file of ['AGENTS.md','SPECIFICATION.md'])assert(fs.readFileSync(path.join(root,file),'utf8').includes('https://aimon.ntus.info/'));});

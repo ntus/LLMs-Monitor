@@ -1098,3 +1098,11 @@ Web-only presentation enhancements are stored under `web/` and composed into the
 ### 日本語
 
 Web限定の表示改善は `web/` に保持し、ブラウザー拡張機能のソースと既存ZIPを変えずにホスト用 `dist/` へ合成する。通常の `python3 build.py` はZIPを維持し、意図的な再生成には `--package` を必須とする。ストア公開用パッケージを変更する場合は `x.y.z` の `y` を1増やして `z=0` とし、パッケージを変更しない軽微なリリースは `z` を1増やす。ただし利用者が版据え置きを明示した更新は現行版を維持する。今回の商品説明・Web表示更新は v1.6.4 のままとする。
+
+## 34. Public-hosting migration target
+
+The product page may be published first with GitHub Pages while the operational monitor remains owner-only. The canonical hostname for the formal public release is `https://aimon.ntus.info/`, planned for Cloudflare Pages. The production migration must align HTTPS redirects, Content Security Policy, documentation, canonical links, and the extension's `externally_connectable` allowlist with that exact origin. Because changing the extension allowlist changes the store package, that migration requires a minor release under the versioning rule; it is not part of the version-neutral v1.6.4 content update.
+
+### 日本語
+
+商品説明ページはGitHub Pagesで先行公開でき、運用モニターは正式公開まで所有者限定を維持できる。正式公開時の正規ホスト名は `https://aimon.ntus.info/` とし、Cloudflare Pagesへの配置を想定する。移行時はHTTPSリダイレクト、CSP、文書、canonicalリンク、拡張機能の `externally_connectable` 許可先をこのオリジンへ統一する。接続許可先の変更はストアパッケージ変更となるため版管理規則上のマイナーリリースとし、版据え置きのv1.6.4更新には含めない。

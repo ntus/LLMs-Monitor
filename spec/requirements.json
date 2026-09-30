@@ -2916,6 +2916,39 @@
           "procedure": "Verify web-only assets and opt-in package generation."
         }
       ]
+    },
+    {
+      "id": "HOSTING-001",
+      "category": "deployment",
+      "introduced_in": "1.6.4",
+      "status": "planned",
+      "priority": "MUST",
+      "normative_requirement": "商品説明ページはGitHub Pagesで先行公開できる。正式公開時の正規ホスト名はhttps://aimon.ntus.info/とし、Cloudflare Pages、HTTPS、CSP、canonicalリンク、文書、拡張機能接続許可をこのオリジンへ統一する。",
+      "source_requirements": [
+        "User-approved hosting plan with clarification: use aimon.ntus.info for formal launch"
+      ],
+      "acceptance_criteria": [
+        "正式公開用の正規URLをhttps://aimon.ntus.info/として文書化する。",
+        "正式移行前は運用モニターの所有者限定公開を維持できる。",
+        "externally_connectable変更はストアパッケージ変更としてマイナーリリースにする。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "AGENTS.md",
+          "symbol": "canonical production hostname rule"
+        },
+        {
+          "path": "SPECIFICATION.md",
+          "symbol": "Public-hosting migration target"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "documentation.test.cjs",
+          "procedure": "Verify canonical future hostname is retained in durable instructions and specification."
+        }
+      ]
     }
   ]
 }
