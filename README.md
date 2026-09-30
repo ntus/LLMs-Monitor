@@ -2,7 +2,7 @@
 
 [![LLMs Monitor — A4 landscape product overview](https://raw.githubusercontent.com/ntus/LLMs-Monitor/main/assets/promotional/llms-monitor-a4-landscape-flyer-v1.jpg)](https://raw.githubusercontent.com/ntus/LLMs-Monitor/main/assets/promotional/llms-monitor-a4-landscape-flyer-v1.jpg)
 
-[Open the full-size flyer](https://raw.githubusercontent.com/ntus/LLMs-Monitor/main/assets/promotional/llms-monitor-a4-landscape-flyer-v1.jpg) · [Download PNG](https://raw.githubusercontent.com/ntus/LLMs-Monitor/main/assets/promotional/llms-monitor-a4-landscape-flyer-v1.jpg)
+[Open the full-size flyer](https://raw.githubusercontent.com/ntus/LLMs-Monitor/main/assets/promotional/llms-monitor-a4-landscape-flyer-v1.jpg) · [Download JPEG](https://raw.githubusercontent.com/ntus/LLMs-Monitor/main/assets/promotional/llms-monitor-a4-landscape-flyer-v1.jpg)
 
 **See the remaining usage across ChatGPT, Claude, and Gemini at a glance.**
 
