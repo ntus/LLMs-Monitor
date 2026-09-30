@@ -1,6 +1,6 @@
 # LLMs Monitor
 
-<a href="https://raw.githubusercontent.com/ntus/LLMs-Monitor/main/assets/promotional/llms-monitor-a4-landscape-flyer-v1.png"><img src="assets/promotional/llms-monitor-a4-landscape-flyer-v1.png" alt="LLMs Monitor — A4 landscape product overview" width="100%"></a>
+[![LLMs Monitor — A4 landscape product overview](https://raw.githubusercontent.com/ntus/LLMs-Monitor/main/assets/promotional/llms-monitor-a4-landscape-flyer-v1.png)](https://raw.githubusercontent.com/ntus/LLMs-Monitor/main/assets/promotional/llms-monitor-a4-landscape-flyer-v1.png)
 
 [Open the full-size flyer](https://raw.githubusercontent.com/ntus/LLMs-Monitor/main/assets/promotional/llms-monitor-a4-landscape-flyer-v1.png) · [Download PNG](https://raw.githubusercontent.com/ntus/LLMs-Monitor/main/assets/promotional/llms-monitor-a4-landscape-flyer-v1.png)
 
