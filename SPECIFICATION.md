@@ -4,7 +4,7 @@
 
 <a id="en"></a>
 
-Document revision: 1.0 · Product version: **1.6.2** · Web companion: `https://ai-usage-glance.ntusnog.chatgpt.site/`
+Document revision: 1.0 · Product version: **1.6.4** · Web companion: `https://ai-usage-glance.ntusnog.chatgpt.site/`
 
 This English section defines the implementation contract for the beta. The [Japanese section](#ja) contains the full historical and field-level acceptance criteria. Implementers must read both sections and every ID in [`spec/requirements.json`](spec/requirements.json); neither translation overrides the other.
 
@@ -12,13 +12,13 @@ This English section defines the implementation contract for the beta. The [Japa
 
 The Chrome/Edge Manifest V3 extension reads remaining usage from the already signed-in ChatGPT, Claude, and Gemini accounts about every 60 seconds without requiring their usage tabs to remain open. It uses official service requests first and official-page DOM parsing as a fallback. It must never request a provider password or API key in its own UI. A signed-out service gets a link to the provider's official sign-in or usage page. Display only obtained provider values as official values; show unavailable when a plan, deadline, or credit cannot be obtained reliably.
 
-Each service card shows its plan, current and weekly limits, percentage gauge, horizontal bars, reset date/time and time left, available credits or reset entitlements, and a per-limit change-history box. The floating popup, Document Picture-in-Picture view, and provider-page panel must preserve the same essential data. A browser startup opens one normal popup; an always-on-top Document PiP view starts only after a user gesture in a supporting browser. The web page alone cannot provide an OS-wide always-on-top window or make the native browser-window chrome transparent.
+Each service card shows its plan, current and weekly limits, percentage gauge, horizontal bars, reset date/time and time left, available credits or reset entitlements, and a per-limit change-history box. The floating popup, Document Picture-in-Picture view, and provider-page panel must preserve the same essential data. The normal popup opens only after an explicit button action and is freely resizable within browser and OS limits; an always-on-top Document PiP view starts only after a user gesture in a supporting browser. The web page alone cannot provide an OS-wide always-on-top window or make the native browser-window chrome transparent.
 
 ## 2. Data and persistence
 
 The extension background worker owns `ServiceSnapshot`, `UsageWindow`, `Extra`, history, and settings state. A usage window has a 0–100 remaining percentage and optional reset timestamp. An extra may have a value, detail, expiry, and optional bar percentage. Values from API and DOM sources merge without erasing a known plan, credit, or future reset time merely because the next source omits it. An account boundary prevents one user's prior values from appearing under another user. A transient refresh failure keeps the last known display value; sign-out clears current personal values but retains stored history.
 
-History records the first observed value after startup and subsequent **changed** values only, per usage-window label, up to 10,000 entries. It survives restarts and extension upgrades. On startup, load as much recent history as can be read and analyzed within roughly three seconds and show the date range, count, and elapsed time. Previously stored ChatGPT weekly-label aliases must be migrated without discarding rows. The same restored history feeds the advice engine. Provider access tokens exist only in request memory and must never enter storage, logs, displayed values, or this repository. Usage, history, and settings stay in browser extension storage and are not uploaded to the operator.
+History records the first observed value after startup and subsequent **changed** values only, per usage-window label, up to 10,000 entries. It survives restarts and extension upgrades. On startup, load as much recent history as can be read and analyzed within roughly three seconds. Put its date range, count, and elapsed time in the shared status log; refresh that summary no more than once per minute and retain it for review with previous/next controls. Previously stored ChatGPT weekly-label aliases must be migrated without discarding rows. The same restored history feeds the advice engine. Provider access tokens exist only in request memory and must never enter storage, logs, displayed values, or this repository. Usage, history, and settings stay in browser extension storage and are not uploaded to the operator.
 
 ## 3. Settings, presentation, and alerts
 
@@ -36,7 +36,7 @@ Tips and NEWS must include the primary-source HTTPS link, publisher, and date. R
 
 ## 5. Code, build, and release contract
 
-`extension/` is authoritative. `background.js`, `fetchers.js`, `parser.js`, `state.js`, and `history.js` acquire and normalize data; `shared.js`, `preferences.js`, `locale.js`, `advice.js`, and CSS render the common surfaces. `build.py` copies shared assets to `dist/`, synchronizes documentation into the extension package, cache-busts public assets, and creates `dist/LLMs-Monitor-v1.6.3.zip`. Manifest, UI, ZIP, specification, and store checklist versions must agree. Chrome Web Store/Edge Add-ons review is necessary for installation without developer mode; the ZIP alone does not provide that. Future native macOS, Windows, iOS, and Android apps should reuse the normalized data contracts and analysis rules through platform-specific authentication/window adapters; those apps are not part of this release.
+`extension/` is authoritative. `background.js`, `fetchers.js`, `parser.js`, `state.js`, and `history.js` acquire and normalize data; `shared.js`, `preferences.js`, `locale.js`, `advice.js`, and CSS render the common surfaces. `build.py` copies shared assets to `dist/`, synchronizes documentation into the extension package, cache-busts public assets, and creates `dist/LLMs-Monitor-v1.6.4.zip`. Manifest, UI, ZIP, specification, and store checklist versions must agree. Chrome Web Store/Edge Add-ons review is necessary for installation without developer mode; the ZIP alone does not provide that. Future native macOS, Windows, iOS, and Android apps should reuse the normalized data contracts and analysis rules through platform-specific authentication/window adapters; those apps are not part of this release.
 
 Run `node --test tests/*.test.cjs`, `python3 build.py`, ZIP-content and version checks, and UI smoke checks. Test sign-in/sign-out, refresh fallback, every display surface, language/theme/opacity, deadline boundaries, history retention, and service visibility/order on actual Chrome and Edge installations before claiming live-account acceptance. Keep the Site's existing audience unless the user explicitly changes it. See the [Japanese detailed specification](#ja) and [requirements ledger](spec/requirements.json) for every acceptance case.
 
@@ -53,7 +53,7 @@ Human-readable documentation must start in English and place Japanese in the lat
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.6.3
+対象製品版: 1.6.4
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -92,7 +92,7 @@ Human-readable documentation must start in English and place Japanese in the lat
 7. 1つの変化イベントにつき、通知音を1秒間隔で最大3回鳴らす。通知音設定の初期値はONとする。
 8. 標準テーマとダークテーマ、背景不透明度、サイト内パネル位置、通知音量、表示ON/OFFを保存して全表示面へ同期する。
 9. フルスクリーン時はページ全体のスクロールを発生させず、画面内に3サービスと操作部と下部アドバイスを収める。
-10. ブラウザ起動時に通常小窓を1つ自動表示し、ユーザー操作により最前面表示へ切り替えられるようにする。
+10. 通常小窓は明示的なボタン操作時だけ1つ表示し、ブラウザーとOSが許す範囲で縦横にリサイズでき、ユーザー操作により最前面表示へ切り替えられるようにする。
 11. すべての使用量、履歴、設定をブラウザ端末内に保存し、運営サーバーへ送信しない。
 12. Chrome Web StoreおよびMicrosoft Edge Add-onsへ提出可能なManifest V3パッケージを生成する。
 13. 日本語と英語を切り替え、初回言語を実行環境から自動選択し、全表示面へ同期する。
@@ -126,7 +126,7 @@ Human-readable documentation must start in English and place Japanese in the lat
 | 拡張機能内蔵メイン画面 | 拡張機能へ内部メッセージ | なし | なし | プレビューへ反映 | 全情報・設定 |
 | 公開Webアプリ | 拡張機能へ外部メッセージ | なし | なし | プレビューへ反映 | 配布・接続・全情報 |
 | 公式サイト内パネル | 拡張機能へ内部メッセージ | 対象ページ表示時 | ページ内のみ | 対応 | 作業中の確認 |
-| 通常小窓 | 拡張機能へ内部メッセージ | ブラウザ起動時 | 非対応 | パネル面・背景へ対応 | 全情報の高密度自動表示 |
+| 通常小窓 | 拡張機能へ内部メッセージ | 明示的なボタン操作時 | 非対応 | パネル面・背景へ対応 | 全情報の高密度表示・自由リサイズ |
 | Document PiP | 親メイン画面の状態を描画 | ユーザー操作後のみ | 対応 | パネル面・背景へ対応 | 全情報の最前面表示 |
 
 ## 4. リポジトリ構成と責務
@@ -628,8 +628,8 @@ Copyright (C) 2026 NT MicroSystems,Inc.
 
 ### 15.1 通常小窓
 
-- ブラウザ起動および拡張機能インストール後に、設定 `enabled` がtrueなら `floating.html` を180×720px程度の `type: "popup"` で1つ開く。
-- 保存済み `floatingWindowId` と実行中コンテキストを確認し、重複小窓を作らない。
+- ブラウザ起動、拡張機能インストール、メイン画面読込、表示設定ONでは通常小窓を自動作成しない。メイン画面の「通常小窓」ボタンを押した時だけ `floating.html` を `type: "popup"` で1つ開く。
+- 保存済み `floatingWindowId` と実行中コンテキストを確認し、重複小窓を作らない。作成時に幅・高さを固定せず、CSSも最小幅・最小高・最大幅を課さない。ブラウザーまたはOS固有のネイティブ最小サイズは製品から解除できない。
 - staleな小窓を除去してから新しい小窓を開く。
 - ユーザーが閉じたときはIDを削除する。
 - メイン画面の「通常小窓」で既存小窓をフォーカスし、なければ作成する。
@@ -663,7 +663,7 @@ Document Picture-in-Pictureには以下の制約がある。
 4. 同時に利用できるPiPは通常1つである。
 5. 対応状況はChromiumの版と企業ポリシーに依存する。
 
-このため、拡張機能だけで満たせる仕様は「起動時に通常小窓を自動表示し、ユーザーが一度操作するとOS横断の最前面PiPへ移行」である。起動直後から無操作でOS全体の常時最前面を求める場合は、Native Messagingを使うOS別コンパニオンアプリが必要となり、「シンプルでOS依存しないWebアプリ」という製品範囲外になる。
+このため、拡張機能だけで満たせる仕様は「ユーザーが通常小窓または最前面PiPを明示的に開く」である。起動直後から無操作でOS全体の常時最前面を求める場合は、Native Messagingを使うOS別コンパニオンアプリが必要となり、「シンプルでOS依存しないWebアプリ」という製品範囲外になる。
 
 ## 16. 利用アドバイス
 
@@ -785,7 +785,7 @@ Document Picture-in-Pictureには以下の制約がある。
 
 - ストア提出ZIPの形式は `LLMs-Token-Usage-Monitor-v{semver}.zip` とする。
 - 旧名称をZIP、拡張機能名、HTMLタイトルに使わない。
-- 対象版では `LLMs-Monitor-v1.6.3.zip` とする。
+- 対象版では `LLMs-Monitor-v1.6.4.zip` とする。
 - Manifest、UI定数、HTMLフッター、ダウンロードリンク、版別CSS、ZIP名のバージョンを一致させる。
 - バージョンはSemantic Versioningを使う。
 
@@ -885,7 +885,9 @@ Document Picture-in-Pictureには以下の制約がある。
 - [ ] 標準／ダークテーマがすべての表示面で同期する。
 - [ ] 背景不透明度15%、55%、100%の違いが明確で、文字は読みやすい。
 - [ ] フルスクリーンでページスクロールとアドバイスの重なりがない。
-- [ ] 起動時に通常小窓が1つ表示される。
+- [ ] 起動時に通常小窓が表示されず、ボタン操作時だけ1つ表示される。
+- [ ] 通常小窓をブラウザーとOSが許す範囲で縦横にリサイズできる。
+- [ ] 履歴読込結果は通知音説明と同じステータスログで最大1分に1回更新され、左右ボタンで読み返せる。
 - [ ] 対応ブラウザでユーザー操作後に最前面PiPを表示できる。
 
 ### 22.4 配布とプライバシー
@@ -983,7 +985,7 @@ Document Picture-in-Pictureには以下の制約がある。
 | R-025 | 拡張機能ファイル名を改名 | 20.1 | ZIP名確認 | 英語名を使用 |
 | R-026 | 別タブなしで取得 | 5.1、6 | タブを閉じて更新 | 直接取得優先 |
 | R-027 | デベロッパーモード不要 | 20.3 | ストア公開版導入 | ストア審査が必須 |
-| R-028 | 起動時にフローティング表示 | 15.1 | ブラウザ再起動 | 通常小窓を自動表示 |
+| R-028 | 通常小窓の明示起動 | 15.1 | ブラウザ再起動／ボタン操作 | 再起動では開かず、ボタン操作時だけ表示 |
 | R-029 | 常時最前面 | 15.2、15.3 | PiP手動検証 | 最初のクリックが必要 |
 | R-030 | 下部の横長アドバイス | 16.1 | 重なり・9秒切替 | 小画面は情報を縮退 |
 | R-031 | 履歴からプラン活用を助言 | 16.2 | advice単体テスト | 学習不足時は勧めない |
@@ -1029,7 +1031,7 @@ README、本仕様、AGENTS、PRIVACY、ストア提出資料、Webプライバ�
 3. 実アカウントでのChrome/Edge手動確認を終える。
 4. 通常画面、フルスクリーン、サイト内パネル、通常小窓、PiPの表示を確認する。
 5. プライバシー文書とストア権限説明が実装と一致する。
-6. `LLMs-Monitor-v1.6.3.zip` が再現可能に生成され、内容を検査済みである。
+6. `LLMs-Monitor-v1.6.4.zip` が再現可能に生成され、内容を検査済みである。
 7. 公開Webアプリとストア提出パッケージの名称、バージョン、接続originが一致する。
 
 
@@ -1050,7 +1052,7 @@ The official provider-status disclosure shares the bottom status area of the mai
 
 公式障害情報はメイン画面最下部のステータス欄を共有し、全画面でも確認できる。閉じた状態は細い帯、展開時は利用枠カードを押し下げず上方向へ表示する。小窓とページ内パネルでは従来どおりインライン表示する。障害から公式の正常応答へ移った場合は10分間、緑色で「復帰しました」と表示し、その後は通常の正常表示へ戻す。一時的な取得不能では障害履歴を失わないが、取得不能自体は不明として表示する。期日警告は抑えた赤系のアクセントに変更し、最も近い期限では2秒のフェードを維持する。履歴期間は端末時刻の秒まで表示する。フッターの製品名・版番号はGitHubリポジトリへリンクする。
 
-## 29. v1.6.3 beta: one-minute status, weekly guides, and LLM directory
+## 29. v1.6.4 beta: one-minute status, weekly guides, and LLM directory
 
 The product name is “LLMs Monitor” / 「LLMs モニター」 across the web app, extension, floating views, package, and documentation. Official provider incident feeds are checked every minute. The weekly bar always draws session-scale separators for ChatGPT, Claude, and Gemini: learned history determines the spacing when available; otherwise the current-session consumption supplies a clearly disclosed visual guide. Separator strokes use the unfilled track color so they remain legible inside the colored portion without adding a competing color.
 
@@ -1061,3 +1063,12 @@ The main page includes an “LLM directory” / 「各種LLM」 section with ten
 Web、拡張機能、小窓、配布ファイル、文書の製品名を日本語「LLMs モニター」、英語「LLMs Monitor」に統一する。各社の公式障害情報は1分ごとに確認する。ChatGPT、Claude、Geminiの週間バーには常にセッション規模の区切りを表示し、履歴が十分なら実測推定、足りなければ現在セッションの消費量を目安にする。区切り線は未使用部分の背景色と同色にし、バー本体の色を邪魔せず見分けられるようにする。
 
 メイン画面に「各種LLM」を設け、公開Webトラフィックを中心に利用規模の大きい約10製品を目安順で掲載する。各製品には公式製品ページ、公式の使用量・契約・アカウント確認先、約40文字の特徴説明を付ける。OS、オフィス、SNSへの組込み利用や地域差はWeb順位へ十分反映されないため、厳密な市場シェアではない旨とSimilarweb 2026の出典を明示する。
+
+
+## 30. v1.6.4 beta: status log and popup lifecycle
+
+The history-load summary and sound guidance share one compact, navigable status log. The history summary is recalculated at most once per minute. Startup, installation, monitor load, and setting changes do not create a popup. An existing user-opened popup still reloads and closes with the monitor. The popup creation request omits fixed dimensions and the floating CSS imposes no application-level width or height minimum; browser and OS native limits still apply.
+
+### 日本語
+
+履歴読込結果と通知音説明を左右ボタンで切り替えられるステータスログへ集約し、履歴読込結果の再計算を最大1分に1回とする。起動、インストール、メイン画面読込、設定変更では通常小窓を作らない。ユーザーが既に開いた通常小窓は従来どおりメイン画面の再読込・終了に連動する。通常小窓作成時の固定寸法とCSS上の最小幅・最小高を設けないが、ブラウザー／OS固有の制限は解除できない。

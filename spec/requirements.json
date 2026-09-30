@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs トークン残量モニタ",
     "name_en": "LLMs Token Usage Monitor",
-    "version": "1.6.3",
-    "package_filename": "LLMs-Monitor-v1.6.3.zip",
+    "version": "1.6.4",
+    "package_filename": "LLMs-Monitor-v1.6.4.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -1347,15 +1347,17 @@
       "introduced_in": "1.3.0",
       "status": "implemented",
       "priority": "MUST",
-      "normative_requirement": "表示設定が有効な場合、extension installおよびbrowser startupで180×720の通常popupをfocused=falseで一つだけ開かなければならない。無効化時は閉じ、重複またはstale popupを残してはならない。",
+      "normative_requirement": "通常popupは起動、install、メイン画面読込、設定ONで自動作成せず、明示的な通常小窓ボタン操作時だけ一つ開く。作成時に固定width/heightを指定せず、CSSもアプリ固有の最小幅・最小高を課さない。既存popupはメイン画面のreload/closeへ連動し、重複またはstale popupを残さない。",
       "source_requirements": [
         "User request: show floating display at startup",
-        "README 1.3.0"
+        "README 1.3.0",
+        "User request 2026-09-30: abolish startup popup and remove resize limits"
       ],
       "acceptance_criteria": [
-        "起動時に通常popupが一つ開く。",
-        "既存popupがある場合は二つ目を作らない。",
-        "enabled=falseでpopupが閉じ、次回起動でも開かない。"
+        "起動、install、メイン画面読込、設定ONでpopupを自動作成しない。",
+        "通常小窓ボタンで既存popupをfocusし、なければ一つ作る。",
+        "windows.createへwidth/heightを指定せず、floating CSSにアプリ固有の最小寸法を設定しない。",
+        "既に開いたpopupはメイン画面reload/closeへ連動する。"
       ],
       "implementation_evidence": [
         {
@@ -1365,9 +1367,14 @@
       ],
       "test_evidence": [
         {
+          "type": "automated",
+          "coverage": "release-164.test.cjs",
+          "procedure": "Inspect popup lifecycle, creation options, and responsive CSS."
+        },
+        {
           "type": "manual",
           "coverage": "required",
-          "procedure": "Restart Chrome and Edge with enabled true and false, count popup windows, and verify initial focus remains on the user's existing window."
+          "procedure": "Resize a user-opened popup horizontally and vertically in current Chrome and Edge; record any browser/OS native minimum."
         }
       ]
     },
@@ -2665,36 +2672,134 @@
       "category": "v1.6.3",
       "introduced_in": "1.6.3",
       "normative_requirement": "三社の公式障害情報を1分ごとに確認する。",
-      "source_requirements": ["User request 2026-09-30"],
-      "acceptance_criteria": ["alarmsの障害監視周期が1分で、画面説明と文書も一致する。"],
-      "implementation_evidence": [{"path":"extension/background.js","symbol":"llms-provider-status alarm"},{"path":"extension/provider-status.js","symbol":"view interval disclosure"}]
+      "source_requirements": [
+        "User request 2026-09-30"
+      ],
+      "acceptance_criteria": [
+        "alarmsの障害監視周期が1分で、画面説明と文書も一致する。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/background.js",
+          "symbol": "llms-provider-status alarm"
+        },
+        {
+          "path": "extension/provider-status.js",
+          "symbol": "view interval disclosure"
+        }
+      ]
     },
     {
       "id": "WEEKLY-163",
       "category": "v1.6.3",
       "introduced_in": "1.6.3",
       "normative_requirement": "三サービスの週間バーへ、未使用部の背景色と同色のセッション規模区切りを表示する。",
-      "source_requirements": ["User request 2026-09-30"],
-      "acceptance_criteria": ["履歴推定の有無にかかわらず週間バーに区切りが出る。","ChatGPT、Claude、Geminiで同じ描画規則を使う。"],
-      "implementation_evidence": [{"path":"extension/shared.js","symbol":"decorate"},{"path":"extension/style-v163.css","symbol":"weekly-track"}]
+      "source_requirements": [
+        "User request 2026-09-30"
+      ],
+      "acceptance_criteria": [
+        "履歴推定の有無にかかわらず週間バーに区切りが出る。",
+        "ChatGPT、Claude、Geminiで同じ描画規則を使う。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/shared.js",
+          "symbol": "decorate"
+        },
+        {
+          "path": "extension/style-v163.css",
+          "symbol": "weekly-track"
+        }
+      ]
     },
     {
       "id": "BRAND-163",
       "category": "v1.6.3",
       "introduced_in": "1.6.3",
       "normative_requirement": "製品名を日本語LLMs モニター、英語LLMs Monitorへ統一する。",
-      "source_requirements": ["User request 2026-09-30"],
-      "acceptance_criteria": ["Web、拡張機能、フローティング、文書、ZIP名が新名称と版番号で一致する。"],
-      "implementation_evidence": [{"path":"extension/locale.js","symbol":"appTitle"},{"path":"extension/_locales/ja/messages.json","symbol":"extensionName"},{"path":"build.py","symbol":"package"}]
+      "source_requirements": [
+        "User request 2026-09-30"
+      ],
+      "acceptance_criteria": [
+        "Web、拡張機能、フローティング、文書、ZIP名が新名称と版番号で一致する。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/locale.js",
+          "symbol": "appTitle"
+        },
+        {
+          "path": "extension/_locales/ja/messages.json",
+          "symbol": "extensionName"
+        },
+        {
+          "path": "build.py",
+          "symbol": "package"
+        }
+      ]
     },
     {
       "id": "DIRECTORY-163",
       "category": "v1.6.3",
       "introduced_in": "1.6.3",
       "normative_requirement": "各種LLM欄に利用規模の大きい約10製品を目安順で、公式製品・使用量等のリンクと短い特徴説明付きで掲載する。",
-      "source_requirements": ["User request 2026-09-30"],
-      "acceptance_criteria": ["10製品を日英表示する。","各製品に2つの公式リンクと短い説明がある。","順位の測定限界と出典を示す。"],
-      "implementation_evidence": [{"path":"extension/index.html","symbol":"llm-directory"},{"path":"extension/style-v163.css","symbol":"llm-directory-grid"},{"path":"extension/locale.js","symbol":"llmDirectory"}]
+      "source_requirements": [
+        "User request 2026-09-30"
+      ],
+      "acceptance_criteria": [
+        "10製品を日英表示する。",
+        "各製品に2つの公式リンクと短い説明がある。",
+        "順位の測定限界と出典を示す。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/index.html",
+          "symbol": "llm-directory"
+        },
+        {
+          "path": "extension/style-v163.css",
+          "symbol": "llm-directory-grid"
+        },
+        {
+          "path": "extension/locale.js",
+          "symbol": "llmDirectory"
+        }
+      ]
+    },
+    {
+      "id": "STATUSLOG-164",
+      "category": "v1.6.4",
+      "introduced_in": "1.6.4",
+      "normative_requirement": "履歴読込期間・件数・分析時間のメッセージは最大1分に1回更新し、通知音説明と同じコンパクトなログ領域へ集約して前後ボタンで読み返せるようにする。",
+      "source_requirements": [
+        "User request 2026-09-30"
+      ],
+      "acceptance_criteria": [
+        "履歴読込メッセージの更新間隔が60000ms以上である。",
+        "通知音説明と履歴読込結果が同じログ領域にある。",
+        "前後ボタンと位置表示を備える。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/app.js",
+          "symbol": "paintStatusLog/paintHistoryStatus"
+        },
+        {
+          "path": "extension/index.html",
+          "symbol": "status-log"
+        },
+        {
+          "path": "extension/style-v164.css",
+          "symbol": "status-log"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "release-164.test.cjs",
+          "procedure": "Inspect throttle, log controls, and source markup."
+        }
+      ]
     }
   ]
 }

@@ -1,0 +1,7 @@
+const {test}=require('node:test');
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const read=file=>fs.readFileSync(file,'utf8');
+test('status log consolidates messages and throttles history summary to one minute',()=>{const html=read('extension/index.html'),app=read('extension/app.js');assert(html.includes('id="status-log"'));assert(html.includes('id="status-prev"')&&html.includes('id="status-next"'));assert(!html.includes('id="history-status"'));assert(app.includes('now-historyStatusAt<60000'));assert(app.includes("[L.t('soundHelp'),historyStatusText"));});
+test('normal popup opens only by explicit request and has no fixed creation size',()=>{const bg=read('extension/background.js'),open=bg.match(/async function openFloating[\s\S]*?async function closeFloating/)[0],bootstrap=bg.match(/async function bootstrap[\s\S]*?chrome\.runtime\.onMessage/)[0],ready=bg.match(/async function monitorReady[\s\S]*?function monitorClosed/)[0];assert(open.includes("type:'popup',focused:focus"));assert(!open.includes('width:'));assert(!open.includes('height:'));assert(!bootstrap.includes('openFloating(false)'));assert(!ready.includes('openFloating('));assert(bg.includes("message.type==='FLOAT'"));});
+test('floating CSS does not impose application minimum dimensions',()=>{const css=read('extension/style-v164.css');assert(css.includes('min-width:0!important'));assert(css.includes('min-height:0!important'));assert(css.includes('max-width:none'));});

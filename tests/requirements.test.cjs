@@ -37,7 +37,8 @@ test('フルスクリーンでも履歴を隠さず長期履歴ステータス�
  const css=read('dist/style-v151.css')+read(`dist/style-v${ledger.product.version.replaceAll('.','')}.css`),html=read('dist/index.html');
  assert(!css.includes('html:fullscreen .card-note,html:fullscreen .history{display:none'));
  assert(css.includes('html:fullscreen .history{display:flex!important'));
- assert(html.includes('id="history-status"'));
+ assert(html.includes('id="status-log"'));
+ assert(html.includes('id="status-prev"')&&html.includes('id="status-next"'));
 });
 
 test('公開画面とインストール済み拡張機能の版違いを通知する',()=>{
@@ -55,7 +56,8 @@ test('日英切替とフローティング同期・透明度を全表示面へ�
  assert(manifest.content_scripts[0].js.includes('locale.js'));
  assert(background.includes("message.type==='MONITOR_READY'"));
  assert(background.includes("message.type==='MONITOR_CLOSED'"));
- assert(background.includes('width:180'));
+ assert(!background.includes('width:180'));
+ assert(background.includes("type:'popup',focused:focus"));
  assert(floating.includes("document.title=GlanceLocale.t('appTitle')"));
  assert(floating.includes("document.body.style.setProperty('--alpha',alpha)"));
  assert(css.includes('.floating-body .widget .history-log'));

@@ -1,17 +1,17 @@
-# Store submission checklist — v1.6.3
+# Store submission checklist — v1.6.4
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 <a id="en"></a>
 
-`dist/LLMs-Monitor-v1.6.3.zip` is the Chrome Web Store and Microsoft Edge Add-ons submission package. Its manifest and complete runtime UI are localized as “LLMs モニター” in Japanese and “LLMs Monitor” in English.
+`dist/LLMs-Monitor-v1.6.4.zip` is the Chrome Web Store and Microsoft Edge Add-ons submission package. Its manifest and complete runtime UI are localized as “LLMs モニター” in Japanese and “LLMs Monitor” in English.
 
 Developer-mode-free installation requires the owner to complete both stores' account, review, and publication process. Building or hosting the ZIP does not publish an installable store extension.
 
 ## Required owner actions
 
 1. Register the owner developer accounts and enable two-step verification where required.
-2. Upload `LLMs-Monitor-v1.6.3.zip`, the 128px icon, screenshots, Japanese and English descriptions, and reviewer test instructions.
+2. Upload `LLMs-Monitor-v1.6.4.zip`, the 128px icon, screenshots, Japanese and English descriptions, and reviewer test instructions.
 3. Use the deployed privacy policy at `https://ai-usage-glance.ntusnog.chatgpt.site/privacy.html` and verify that it is reachable without sign-in.
 4. Submit for manual review in each store. After approval, replace the website package-only guidance with the approved store URLs.
 
@@ -35,7 +35,7 @@ Developer-mode-free installation requires the owner to complete both stores' acc
 3. Close the provider tabs and use “Refresh now”. Confirm that supported usage remains available from the signed-in sessions and signed-out providers show a login action.
 4. Confirm 60-second refresh, saved-value fallback, plan labels, reset times, credit extras, changed-value history, and the three-tone notification.
 5. Compare dark and standard themes and opacity 15/55/100% in the embedded panel and floating views.
-6. Confirm that startup opens one normal popup, “Always on top” opens Document Picture-in-Picture after a user click, and the normal popup closes.
+6. Confirm that startup does not open a popup, the popup button opens one freely resizable normal popup, and “Always on top” opens Document Picture-in-Picture after a user click.
 7. Confirm that the production companion page connects only after a valid 32-character extension ID is entered.
 
 Before uploading, run `node --test tests/*.test.cjs`, `python3 build.py`, inspect the ZIP contents, and perform the manual acceptance checklist in `SPECIFICATION.md`.
@@ -44,11 +44,11 @@ Before uploading, run `node --test tests/*.test.cjs`, `python3 build.py`, inspec
 
 <a id="ja"></a>
 
-# 日本語 — ストア提出チェックリスト v1.6.3
+# 日本語 — ストア提出チェックリスト v1.6.4
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
-提出物は `dist/LLMs-Monitor-v1.6.3.zip` です。拡張機能名と画面は日本語「LLMs モニター」、英語「LLMs MONITOR」に対応します。デベロッパーモード不要の導入には、所有者がChrome Web StoreとMicrosoft Edge Add-onsでアカウント、審査、公開を完了する必要があります。ZIPの作成やWeb配布だけではストア公開になりません。
+提出物は `dist/LLMs-Monitor-v1.6.4.zip` です。拡張機能名と画面は日本語「LLMs モニター」、英語「LLMs MONITOR」に対応します。デベロッパーモード不要の導入には、所有者がChrome Web StoreとMicrosoft Edge Add-onsでアカウント、審査、公開を完了する必要があります。ZIPの作成やWeb配布だけではストア公開になりません。
 
 ## 所有者が行う提出作業
 
@@ -74,7 +74,7 @@ Before uploading, run `node --test tests/*.test.cjs`, `python3 build.py`, inspec
 2. 公式サービスのタブを閉じて手動更新し、残量の取得と未ログイン時の公式ログイン導線を確認する。
 3. 約60秒更新、前回値の保持、契約名、リセット時刻、クレジット、変化履歴、3音を確認する。
 4. 標準／ダーク、透明度15/55/100%、メイン、小窓、最前面表示、サイト内パネルを確認する。
-5. 起動時の通常小窓、ユーザークリック後のDocument PiP、両者の切替を確認する。
+5. 起動時に小窓が開かず、ボタン操作で自由にリサイズできる通常小窓が開き、ユーザークリック後にDocument PiPへ切り替わることを確認する。
 6. 本番Web画面との接続が有効な32文字の拡張機能IDに限られることを確認する。
 
 提出前に `node --test tests/*.test.cjs`、`python3 build.py`、ZIP内容の点検、および `SPECIFICATION.md` の手動受入確認を行ってください。
