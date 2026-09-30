@@ -1,8 +1,8 @@
 # LLMs Monitor
 
-[![LLMs Monitor — English A4 landscape product overview](assets/promotional/llms-monitor-a4-landscape-flyer-en-v1.jpg)](assets/promotional/llms-monitor-a4-landscape-flyer-en-v1.jpg?raw=1)
+<a href="https://raw.githubusercontent.com/ntus/LLMs-Monitor/main/assets/promotional/llms-monitor-a4-landscape-flyer-v1.png"><img src="assets/promotional/llms-monitor-a4-landscape-flyer-v1.png" alt="LLMs Monitor — A4 landscape product overview" width="100%"></a>
 
-[Open the full-size English flyer](assets/promotional/llms-monitor-a4-landscape-flyer-en-v1.jpg?raw=1) · [Download English JPEG](assets/promotional/llms-monitor-a4-landscape-flyer-en-v1.jpg?raw=1)
+[Open the full-size flyer](https://raw.githubusercontent.com/ntus/LLMs-Monitor/main/assets/promotional/llms-monitor-a4-landscape-flyer-v1.png) · [Download PNG](https://raw.githubusercontent.com/ntus/LLMs-Monitor/main/assets/promotional/llms-monitor-a4-landscape-flyer-v1.png)
 
 **See the remaining usage across ChatGPT, Claude, and Gemini at a glance.**
 
@@ -44,10 +44,6 @@ For contributors and future AI-assisted changes, read [AGENTS.md](AGENTS.md), th
 # 日本語 — LLMs モニター
 
 **ChatGPT/Claude/Geminiのトークン利用残量をリアルタイム表示**
-
-[![LLMs モニター — 日本語A4横製品紹介](assets/promotional/llms-monitor-a4-landscape-flyer-v1.jpg)](assets/promotional/llms-monitor-a4-landscape-flyer-v1.jpg?raw=1)
-
-[日本語版チラシを原寸表示](assets/promotional/llms-monitor-a4-landscape-flyer-v1.jpg?raw=1) · [日本語版JPEGをダウンロード](assets/promotional/llms-monitor-a4-landscape-flyer-v1.jpg?raw=1)
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 

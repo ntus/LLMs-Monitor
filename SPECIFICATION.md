@@ -1090,3 +1090,11 @@ The application header links directly to the separate product page. Every entry 
 ### 日本語
 
 アプリのヘッダーから独立した商品説明ページへ直接移動できる。各種LLMの10項目にはサービスごとの色を用いた小型識別アイコンを付け、アクセシブルな名称は商品名で担保する。
+
+## 33. Versioning and package isolation
+
+Web-only presentation enhancements are stored under `web/` and composed into the hosted `dist/` output without changing the browser-extension source or its existing ZIP. A normal `python3 build.py` preserves the package; `--package` is required to rebuild it intentionally. A store-package change increments the minor component in `x.y.z` and resets the patch component to zero. A lightweight non-package release increments the patch component, unless the user explicitly designates the update as version-neutral. This product-page update is version-neutral and remains v1.6.4.
+
+### 日本語
+
+Web限定の表示改善は `web/` に保持し、ブラウザー拡張機能のソースと既存ZIPを変えずにホスト用 `dist/` へ合成する。通常の `python3 build.py` はZIPを維持し、意図的な再生成には `--package` を必須とする。ストア公開用パッケージを変更する場合は `x.y.z` の `y` を1増やして `z=0` とし、パッケージを変更しない軽微なリリースは `z` を1増やす。ただし利用者が版据え置きを明示した更新は現行版を維持する。今回の商品説明・Web表示更新は v1.6.4 のままとする。

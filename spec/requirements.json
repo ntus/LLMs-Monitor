@@ -2848,7 +2848,7 @@
       "introduced_in": "1.6.4",
       "status": "implemented",
       "priority": "MUST",
-      "normative_requirement": "各種LLMディレクトリの10製品に、一覧内で判別しやすい固有のアイコン表示を設ける。アプリ最上部には製品説明ページへのリンクを設ける。",
+      "normative_requirement": "公開Webアプリの各種LLMディレクトリ10製品に識別アイコンを設け、Webアプリ最上部に商品説明ページへのリンクを設ける。ストア公開用拡張機能と既存ZIPは変更しない。",
       "source_requirements": [
         "User request: add each LLM icon and a product-page link near the top of the app"
       ],
@@ -2859,12 +2859,16 @@
       ],
       "implementation_evidence": [
         {
-          "path": "extension/index.html",
-          "symbol": "header-product-link and ten llm-icon elements"
+          "path": "web/app-web.js",
+          "symbol": "enhance and provider marks"
         },
         {
-          "path": "extension/style-v164.css",
+          "path": "web/app-web.css",
           "symbol": "header and provider icon presentation"
+        },
+        {
+          "path": "build.py",
+          "symbol": "web-only asset composition"
         }
       ],
       "test_evidence": [
@@ -2872,6 +2876,44 @@
           "type": "automated",
           "coverage": "release-163.test.cjs / product-site.test.cjs",
           "procedure": "Inspect directory icon count and header product link."
+        }
+      ]
+    },
+    {
+      "id": "RELEASE-003",
+      "category": "release_management",
+      "introduced_in": "1.6.4",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "ストア公開用パッケージ変更時はx.y.zのyを1増やしzを0とする。パッケージ非変更の軽微なリリースはzを1増やす。利用者が版据え置きを明示した場合は現行版を維持する。通常ビルドではZIPを変更せず、--package指定時だけ再生成する。",
+      "source_requirements": [
+        "User request: preserve the current package/version and establish minor/patch versioning rules"
+      ],
+      "acceptance_criteria": [
+        "通常のpython3 build.pyで既存ZIPの内容ハッシュが変化しない。",
+        "--packageを指定しない限り拡張機能パッケージを再生成しない。",
+        "版付け規則をAGENTS.mdと詳細仕様へ記録する。",
+        "今回の版表示はv1.6.4を維持する。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "build.py",
+          "symbol": "--package gate"
+        },
+        {
+          "path": "AGENTS.md",
+          "symbol": "version decision rules"
+        },
+        {
+          "path": "SPECIFICATION.md",
+          "symbol": "Versioning and package isolation"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "product-site.test.cjs",
+          "procedure": "Verify web-only assets and opt-in package generation."
         }
       ]
     }

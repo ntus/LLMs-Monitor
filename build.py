@@ -1,5 +1,5 @@
 from pathlib import Path
-import json, shutil, zipfile
+import json, shutil, zipfile, sys
 root = Path(__file__).resolve().parent
 manifest = json.loads((root / 'extension' / 'manifest.json').read_text())
 version = manifest['version']
@@ -9,7 +9,7 @@ for legacy_css in (root / 'dist').glob('style-v*.css'):
 for name in ['index.html', 'privacy.html', 'style.css', 'style-v151.css', 'style-v152.css', 'style-v153.css', 'style-v160.css', 'style-v161.css', 'style-v162.css', 'style-v163.css', version_css, 'locale.js', 'preferences.js', 'provider-status.js', 'changes.js', 'shared.js', 'sound.js', 'advice.js', 'app.js']:
     shutil.copy2(root / 'extension' / name, root / 'dist' / name)
 # Standalone bilingual product page and its promotional artwork.
-for name in ['product.html', 'product.css', 'product.js']:
+for name in ['product.html', 'product.css', 'product.js', 'app-web.css', 'app-web.js']:
     shutil.copy2(root / 'web' / name, root / 'dist' / name)
 (root / 'dist' / 'promotional').mkdir(exist_ok=True)
 shutil.copy2(root / 'assets' / 'promotional' / 'llms-monitor-a4-landscape-flyer-v1.png', root / 'dist' / 'promotional' / 'llms-monitor-a4-landscape-flyer-v1.png')
@@ -18,6 +18,9 @@ for html_name in ['index.html', 'privacy.html']:
     html = target.read_text()
     for asset in ['style.css', 'style-v151.css', 'style-v152.css', 'style-v153.css', 'style-v160.css', 'style-v161.css', 'style-v162.css', 'style-v163.css', version_css, 'locale.js', 'preferences.js', 'provider-status.js', 'changes.js', 'shared.js', 'sound.js', 'advice.js', 'app.js']:
         html = html.replace(f'"{asset}"', f'"{asset}?v={version.replace(".", "")}"')
+    if html_name == 'index.html':
+        html = html.replace('</head>', f'<link rel="stylesheet" href="app-web.css?v={version.replace('.', '')}"></head>')
+        html = html.replace('</body>', f'<script src="app-web.js?v={version.replace('.', '')}"></script></body>')
     target.write_text(html)
 requirements = json.loads((root / 'spec' / 'requirements.json').read_text())
 checks = {
@@ -35,12 +38,15 @@ for relative, needles in checks.items():
     for needle in needles:
         if needle not in source:
             raise SystemExit(f'{relative} is missing version contract: {needle}')
-for name in ['README.md', 'PRIVACY.md', 'CHANGELOG.md', 'SECURITY_REVIEW.md']:
-    shutil.copy2(root / name, root / 'extension' / name)
 package = root / 'dist' / f'LLMs-Monitor-v{version}.zip'
-for legacy in (root / 'dist').glob('LLMs-*-v*.zip'):
-    if legacy != package: legacy.unlink()
-with zipfile.ZipFile(package, 'w', zipfile.ZIP_DEFLATED) as archive:
-    for path in sorted((root / 'extension').rglob('*')):
-        if path.is_file(): archive.write(path, path.relative_to(root / 'extension'))
-print(f'LLMs Monitor v{version} package created.')
+if '--package' in sys.argv:
+    for name in ['README.md', 'PRIVACY.md', 'CHANGELOG.md', 'SECURITY_REVIEW.md']:
+        shutil.copy2(root / name, root / 'extension' / name)
+    for legacy in (root / 'dist').glob('LLMs-*-v*.zip'):
+        if legacy != package: legacy.unlink()
+    with zipfile.ZipFile(package, 'w', zipfile.ZIP_DEFLATED) as archive:
+        for path in sorted((root / 'extension').rglob('*')):
+            if path.is_file(): archive.write(path, path.relative_to(root / 'extension'))
+    print(f'LLMs Monitor v{version} package created.')
+else:
+    print(f'LLMs Monitor web assets built; store package v{version} preserved.')
