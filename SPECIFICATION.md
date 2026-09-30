@@ -1,4 +1,4 @@
-# LLMs Token Usage Monitor — Implementation Specification
+# LLMs Monitor — Implementation Specification
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
@@ -36,7 +36,7 @@ Tips and NEWS must include the primary-source HTTPS link, publisher, and date. R
 
 ## 5. Code, build, and release contract
 
-`extension/` is authoritative. `background.js`, `fetchers.js`, `parser.js`, `state.js`, and `history.js` acquire and normalize data; `shared.js`, `preferences.js`, `locale.js`, `advice.js`, and CSS render the common surfaces. `build.py` copies shared assets to `dist/`, synchronizes documentation into the extension package, cache-busts public assets, and creates `dist/LLMs-Token-Usage-Monitor-v1.6.2.zip`. Manifest, UI, ZIP, specification, and store checklist versions must agree. Chrome Web Store/Edge Add-ons review is necessary for installation without developer mode; the ZIP alone does not provide that. Future native macOS, Windows, iOS, and Android apps should reuse the normalized data contracts and analysis rules through platform-specific authentication/window adapters; those apps are not part of this release.
+`extension/` is authoritative. `background.js`, `fetchers.js`, `parser.js`, `state.js`, and `history.js` acquire and normalize data; `shared.js`, `preferences.js`, `locale.js`, `advice.js`, and CSS render the common surfaces. `build.py` copies shared assets to `dist/`, synchronizes documentation into the extension package, cache-busts public assets, and creates `dist/LLMs-Monitor-v1.6.3.zip`. Manifest, UI, ZIP, specification, and store checklist versions must agree. Chrome Web Store/Edge Add-ons review is necessary for installation without developer mode; the ZIP alone does not provide that. Future native macOS, Windows, iOS, and Android apps should reuse the normalized data contracts and analysis rules through platform-specific authentication/window adapters; those apps are not part of this release.
 
 Run `node --test tests/*.test.cjs`, `python3 build.py`, ZIP-content and version checks, and UI smoke checks. Test sign-in/sign-out, refresh fallback, every display surface, language/theme/opacity, deadline boundaries, history retention, and service visibility/order on actual Chrome and Edge installations before claiming live-account acceptance. Keep the Site's existing audience unless the user explicitly changes it. See the [Japanese detailed specification](#ja) and [requirements ledger](spec/requirements.json) for every acceptance case.
 
@@ -48,14 +48,14 @@ Human-readable documentation must start in English and place Japanese in the lat
 
 <a id="ja"></a>
 
-# 日本語 — LLMs トークン残量モニタ 詳細仕様書
+# 日本語 — LLMs モニター 詳細仕様書
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.6.2
-日本語名: **LLMs トークン残量モニタ**  
-英語名: **LLMs Token Usage Monitor**  
+対象製品版: 1.6.3
+日本語名: **LLMs モニター**
+英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
 公開Webアプリ: `https://ai-usage-glance.ntusnog.chatgpt.site/`
 
@@ -509,8 +509,8 @@ YYYY-MM-DD HH:MM:SS　残り使用量 NN%
 
 ### 12.1 ブランドと共通表示
 
-- 日本語モードでは画面内の主タイトルを1か所だけに **「LLMs トークン残量モニタ」** と表示する。
-- 英語モードでは主タイトルを **「LLMs TOKEN USAGE MONITOR」** と表示する。
+- 日本語モードでは画面内の主タイトルを1か所だけに **「LLMs モニター」** と表示する。
+- 英語モードでは主タイトルを **「LLMs MONITOR」** と表示する。
 - 旧名称 `glance` をユーザー向けタイトル、ファイル名、ストア名に使わない。
 - 最下段に次を小さく表示する。
 
@@ -634,7 +634,7 @@ Copyright (C) 2026 NT MicroSystems,Inc.
 - ユーザーが閉じたときはIDを削除する。
 - メイン画面の「通常小窓」で既存小窓をフォーカスし、なければ作成する。
 - 小窓は横幅に応じて文字と余白を縮小しつつ、通常画面と同じ主残量、全利用枠、リセット、補足情報、状態、変化履歴を内部スクロールで表示する。
-- 小窓の文書タイトルはURLではなく、言語に応じて **「LLMs トークン残量モニタ」** または **「LLMs TOKEN USAGE MONITOR」** とする。
+- 小窓の文書タイトルはURLではなく、言語に応じて **「LLMs モニター」** または **「LLMs MONITOR」** とする。
 - 小窓は言語、テーマ、背景不透明度、最新データを同期する。背景不透明度は小窓全体の背景と各パネル面へ反映し、15%、55%、100%の差が明確に見えること。
 - メイン画面がリロードされた場合は小窓も再読み込みし、メイン画面が閉じられた場合は短い猶予後に小窓を閉じる。リロード中に閉じて開き直すちらつきは避ける。
 
@@ -785,7 +785,7 @@ Document Picture-in-Pictureには以下の制約がある。
 
 - ストア提出ZIPの形式は `LLMs-Token-Usage-Monitor-v{semver}.zip` とする。
 - 旧名称をZIP、拡張機能名、HTMLタイトルに使わない。
-- 対象版では `LLMs-Token-Usage-Monitor-v1.6.2.zip` とする。
+- 対象版では `LLMs-Monitor-v1.6.3.zip` とする。
 - Manifest、UI定数、HTMLフッター、ダウンロードリンク、版別CSS、ZIP名のバージョンを一致させる。
 - バージョンはSemantic Versioningを使う。
 
@@ -1029,17 +1029,17 @@ README、本仕様、AGENTS、PRIVACY、ストア提出資料、Webプライバ�
 3. 実アカウントでのChrome/Edge手動確認を終える。
 4. 通常画面、フルスクリーン、サイト内パネル、通常小窓、PiPの表示を確認する。
 5. プライバシー文書とストア権限説明が実装と一致する。
-6. `LLMs-Token-Usage-Monitor-v1.6.2.zip` が再現可能に生成され、内容を検査済みである。
+6. `LLMs-Monitor-v1.6.3.zip` が再現可能に生成され、内容を検査済みである。
 7. 公開Webアプリとストア提出パッケージの名称、バージョン、接続originが一致する。
 
 
 ## 27. v1.6.1 beta: official status, countdown, and release documentation
 
-The product refreshes usage about every 60 seconds and official OpenAI/Claude Statuspage summaries plus the Google Workspace Gemini incident feed every 10 minutes. Status requests use fixed HTTPS origins, omit credentials, time out after eight seconds, and reject responses larger than 3 MB. New incident signatures cause a browser notification and local alert sound; the in-app status disclosure opens automatically and remains available through ⓘ. Unknown or failed feeds are not described as healthy. Reset labels append a localized day/hour or hour/minute countdown when a reliable `resetAt` exists. The README contains a subtitle and basic-specification sections, while releases through 1.5.3 are retained in `CHANGELOG.md`. The GitHub README is linked from the app footer. See `SECURITY_REVIEW.md` for the bounded security review and remaining manual checks.
+The product refreshes usage about every 60 seconds and official OpenAI/Claude Statuspage summaries plus the Google Workspace Gemini incident feed every minute. Status requests use fixed HTTPS origins, omit credentials, time out after eight seconds, and reject responses larger than 3 MB. New incident signatures cause a browser notification and local alert sound; the in-app status disclosure opens automatically and remains available through ⓘ. Unknown or failed feeds are not described as healthy. Reset labels append a localized day/hour or hour/minute countdown when a reliable `resetAt` exists. The README contains a subtitle and basic-specification sections, while releases through 1.5.3 are retained in `CHANGELOG.md`. The GitHub README is linked from the app footer. See `SECURITY_REVIEW.md` for the bounded security review and remaining manual checks.
 
 ### 日本語
 
-残量は約60秒ごと、OpenAI／Claude StatuspageとGoogle WorkspaceのGemini関連障害情報は約10分ごとに確認する。障害が新規に報告された場合、ブラウザー通知、ローカル警告音、ⓘ欄の自動展開で要点を示す。取得不能は正常とは表示しない。信頼できる `resetAt` がある枠だけ、リセット表記に日・時間または時間・分の残り時間を添える。READMEにサブタイトルと基本仕様を置き、1.5.3以前の改訂履歴は `CHANGELOG.md` に保存する。画面の取扱説明はGitHub READMEへリンクする。追加した権限・入力検証・限界は `SECURITY_REVIEW.md` を参照する。
+残量は約60秒ごと、OpenAI／Claude StatuspageとGoogle WorkspaceのGemini関連障害情報は約1分ごとに確認する。障害が新規に報告された場合、ブラウザー通知、ローカル警告音、ⓘ欄の自動展開で要点を示す。取得不能は正常とは表示しない。信頼できる `resetAt` がある枠だけ、リセット表記に日・時間または時間・分の残り時間を添える。READMEにサブタイトルと基本仕様を置き、1.5.3以前の改訂履歴は `CHANGELOG.md` に保存する。画面の取扱説明はGitHub READMEへリンクする。追加した権限・入力検証・限界は `SECURITY_REVIEW.md` を参照する。
 
 
 ## 28. v1.6.2 beta: bottom status and recovery state
@@ -1049,3 +1049,15 @@ The official provider-status disclosure shares the bottom status area of the mai
 ### 日本語
 
 公式障害情報はメイン画面最下部のステータス欄を共有し、全画面でも確認できる。閉じた状態は細い帯、展開時は利用枠カードを押し下げず上方向へ表示する。小窓とページ内パネルでは従来どおりインライン表示する。障害から公式の正常応答へ移った場合は10分間、緑色で「復帰しました」と表示し、その後は通常の正常表示へ戻す。一時的な取得不能では障害履歴を失わないが、取得不能自体は不明として表示する。期日警告は抑えた赤系のアクセントに変更し、最も近い期限では2秒のフェードを維持する。履歴期間は端末時刻の秒まで表示する。フッターの製品名・版番号はGitHubリポジトリへリンクする。
+
+## 29. v1.6.3 beta: one-minute status, weekly guides, and LLM directory
+
+The product name is “LLMs Monitor” / 「LLMs モニター」 across the web app, extension, floating views, package, and documentation. Official provider incident feeds are checked every minute. The weekly bar always draws session-scale separators for ChatGPT, Claude, and Gemini: learned history determines the spacing when available; otherwise the current-session consumption supplies a clearly disclosed visual guide. Separator strokes use the unfilled track color so they remain legible inside the colored portion without adding a competing color.
+
+The main page includes an “LLM directory” / 「各種LLM」 section with ten widely used products ordered approximately by public web traffic. Each entry has an official product link, an official usage, plan, or account link, and a concise feature description. Because embedded use in operating systems, office suites, social apps, and regional services is not fully represented by website traffic, the order is labeled as an approximation and links to the Similarweb 2026 Generative AI Landscape source.
+
+### 日本語
+
+Web、拡張機能、小窓、配布ファイル、文書の製品名を日本語「LLMs モニター」、英語「LLMs Monitor」に統一する。各社の公式障害情報は1分ごとに確認する。ChatGPT、Claude、Geminiの週間バーには常にセッション規模の区切りを表示し、履歴が十分なら実測推定、足りなければ現在セッションの消費量を目安にする。区切り線は未使用部分の背景色と同色にし、バー本体の色を邪魔せず見分けられるようにする。
+
+メイン画面に「各種LLM」を設け、公開Webトラフィックを中心に利用規模の大きい約10製品を目安順で掲載する。各製品には公式製品ページ、公式の使用量・契約・アカウント確認先、約40文字の特徴説明を付ける。OS、オフィス、SNSへの組込み利用や地域差はWeb順位へ十分反映されないため、厳密な市場シェアではない旨とSimilarweb 2026の出典を明示する。

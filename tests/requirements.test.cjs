@@ -16,7 +16,7 @@ test('要件台帳のID・必須項目・実装証跡を機械検証する',()=>
 test('製品版・ZIP名・CSS・画面表示・仕様書が同期している',()=>{
  const manifest=JSON.parse(read('extension/manifest.json')),version=manifest.version,digits=version.replaceAll('.','');
  assert.equal(ledger.product.version,version);
- assert.equal(ledger.product.package_filename,`LLMs-Token-Usage-Monitor-v${version}.zip`);
+ assert.equal(ledger.product.package_filename,`LLMs-Monitor-v${version}.zip`);
  for(const file of ['dist/index.html','dist/shared.js','SPECIFICATION.md','STORE_SUBMISSION.md'])assert(read(file).includes(version),`${file} の版番号が未同期です`);
  assert(read('dist/index.html').includes(`style-v${digits}.css`));
  assert(read('dist/index.html').includes(`shared.js?v=${digits}`));

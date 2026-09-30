@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="LLMs Token Usage Monitor">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="LLMs Monitor">
   <defs>
     <linearGradient id="surface" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#1c2e4a"/><stop offset="1" stop-color="#090e1b"/></linearGradient>
     <radialGradient id="core"><stop stop-color="#ffffff"/><stop offset="1" stop-color="#b9ccfa"/></radialGradient>
