@@ -1,4 +1,4 @@
-# LLMs Token Usage Monitor — Privacy Policy
+# LLMs Monitor — Privacy Policy
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
@@ -24,7 +24,7 @@ Contact: NT MicroSystems,Inc.
 
 <a id="ja"></a>
 
-# 日本語 — LLMs トークン残量モニタ プライバシーポリシー
+# 日本語 — LLMs モニター プライバシーポリシー
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 

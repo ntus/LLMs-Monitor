@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs トークン残量モニタ",
     "name_en": "LLMs Token Usage Monitor",
-    "version": "1.6.2",
-    "package_filename": "LLMs-Token-Usage-Monitor-v1.6.2.zip",
+    "version": "1.6.3",
+    "package_filename": "LLMs-Monitor-v1.6.3.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -2582,11 +2582,11 @@
       "implementation_evidence": [
         {
           "path": "extension/style-v162.css",
-          "symbol": "v1.6.2 implementation"
+          "symbol": "v1.6.3 implementation"
         },
         {
           "path": "extension/content.js",
-          "symbol": "v1.6.2 implementation"
+          "symbol": "v1.6.3 implementation"
         }
       ]
     },
@@ -2604,11 +2604,11 @@
       "implementation_evidence": [
         {
           "path": "extension/index.html",
-          "symbol": "v1.6.2 implementation"
+          "symbol": "v1.6.3 implementation"
         },
         {
           "path": "extension/style-v162.css",
-          "symbol": "v1.6.2 implementation"
+          "symbol": "v1.6.3 implementation"
         }
       ]
     },
@@ -2626,15 +2626,15 @@
       "implementation_evidence": [
         {
           "path": "extension/provider-status.js",
-          "symbol": "v1.6.2 implementation"
+          "symbol": "v1.6.3 implementation"
         },
         {
           "path": "extension/background.js",
-          "symbol": "v1.6.2 implementation"
+          "symbol": "v1.6.3 implementation"
         },
         {
           "path": "tests/provider-status.test.cjs",
-          "symbol": "v1.6.2 implementation"
+          "symbol": "v1.6.3 implementation"
         }
       ]
     },
@@ -2652,13 +2652,49 @@
       "implementation_evidence": [
         {
           "path": "extension/app.js",
-          "symbol": "v1.6.2 implementation"
+          "symbol": "v1.6.3 implementation"
         },
         {
           "path": "extension/locale.js",
-          "symbol": "v1.6.2 implementation"
+          "symbol": "v1.6.3 implementation"
         }
       ]
+    },
+    {
+      "id": "STATUS-163",
+      "category": "v1.6.3",
+      "introduced_in": "1.6.3",
+      "normative_requirement": "三社の公式障害情報を1分ごとに確認する。",
+      "source_requirements": ["User request 2026-09-30"],
+      "acceptance_criteria": ["alarmsの障害監視周期が1分で、画面説明と文書も一致する。"],
+      "implementation_evidence": [{"path":"extension/background.js","symbol":"llms-provider-status alarm"},{"path":"extension/provider-status.js","symbol":"view interval disclosure"}]
+    },
+    {
+      "id": "WEEKLY-163",
+      "category": "v1.6.3",
+      "introduced_in": "1.6.3",
+      "normative_requirement": "三サービスの週間バーへ、未使用部の背景色と同色のセッション規模区切りを表示する。",
+      "source_requirements": ["User request 2026-09-30"],
+      "acceptance_criteria": ["履歴推定の有無にかかわらず週間バーに区切りが出る。","ChatGPT、Claude、Geminiで同じ描画規則を使う。"],
+      "implementation_evidence": [{"path":"extension/shared.js","symbol":"decorate"},{"path":"extension/style-v163.css","symbol":"weekly-track"}]
+    },
+    {
+      "id": "BRAND-163",
+      "category": "v1.6.3",
+      "introduced_in": "1.6.3",
+      "normative_requirement": "製品名を日本語LLMs モニター、英語LLMs Monitorへ統一する。",
+      "source_requirements": ["User request 2026-09-30"],
+      "acceptance_criteria": ["Web、拡張機能、フローティング、文書、ZIP名が新名称と版番号で一致する。"],
+      "implementation_evidence": [{"path":"extension/locale.js","symbol":"appTitle"},{"path":"extension/_locales/ja/messages.json","symbol":"extensionName"},{"path":"build.py","symbol":"package"}]
+    },
+    {
+      "id": "DIRECTORY-163",
+      "category": "v1.6.3",
+      "introduced_in": "1.6.3",
+      "normative_requirement": "各種LLM欄に利用規模の大きい約10製品を目安順で、公式製品・使用量等のリンクと短い特徴説明付きで掲載する。",
+      "source_requirements": ["User request 2026-09-30"],
+      "acceptance_criteria": ["10製品を日英表示する。","各製品に2つの公式リンクと短い説明がある。","順位の測定限界と出典を示す。"],
+      "implementation_evidence": [{"path":"extension/index.html","symbol":"llm-directory"},{"path":"extension/style-v163.css","symbol":"llm-directory-grid"},{"path":"extension/locale.js","symbol":"llmDirectory"}]
     }
   ]
 }

@@ -1,4 +1,4 @@
-# LLMs Token Usage Monitor — Agent Instructions
+# LLMs Monitor — Agent Instructions
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
@@ -21,7 +21,7 @@ This file is the starting point for every future Codex or LLM edit. Follow the u
 - Treat `extension/` as the source of truth for shared UI. Generate `dist/` and the ZIP with `build.py`; do not edit generated `dist/` alone.
 - Preserve storage keys, history, limit labels, acquisition sources, account boundaries, and compatibility with older settings. New settings need optional defaults.
 - Apply settings to the main page, public web app, normal popup, always-on-top view, and in-page panels. Hidden services must keep fetching and recording history so they can be restored.
-- Check the existing acquisition paths, 60-second refresh, 10-minute official service-status monitoring, history, numeric-only change indicator, three sounds, localization, themes, opacity, fullscreen, and privacy before release. Read `SECURITY_REVIEW.md` and keep its permissions and manual-test limits current.
+- Check the existing acquisition paths, 60-second refresh, one-minute official service-status monitoring, history, numeric-only change indicator, three sounds, localization, themes, opacity, fullscreen, and privacy before release. Read `SECURITY_REVIEW.md` and keep its permissions and manual-test limits current.
 - Never replace an official provider value with an estimate. Tips and news require dates and primary-source links; never send private usage data or history to an external news source.
 - Run meaningful tests, `node --test tests/*.test.cjs`, `python3 build.py`, ZIP inspection, version checks, and diff checks. Record any necessary manual verification in `SPECIFICATION.md`.
 - Keep the manifest, UI, CSS, ZIP, README, specification, and submission materials on the same version. Preserve the existing Site audience when deploying.
@@ -34,7 +34,7 @@ Keep this `AGENTS.md` in the repository and update it when a new acceptance rule
 
 <a id="ja"></a>
 
-# 日本語 — LLMs Token Usage Monitor 作業指示
+# 日本語 — LLMs Monitor 作業指示
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
