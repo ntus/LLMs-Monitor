@@ -4,6 +4,12 @@
 
 <a id="en"></a>
 
+## 1.7.0 beta
+
+- Fixed inactive or expired Claude five-hour windows incorrectly appearing as 0% remaining.
+- Missing/null current windows now show an unused 100% state; failed refreshes preserve only unexpired prior values.
+
+
 ## 1.6.4 beta
 
 - Consolidated sound guidance and history-load results into one navigable status log, with the history summary refreshed at most once per minute.
@@ -18,6 +24,12 @@ Version 1.5.3 and earlier focused on plan retrieval, persistent change history, 
 ---
 
 <a id="ja"></a>
+
+## 1.7.0 β
+
+- Claudeの未開始または期限切れ5時間枠が残り0%と誤表示される問題を修正。
+- 現在枠の欠落・nullは未使用100%とし、取得失敗では期限前の前回値だけを保持。
+
 
 # 日本語 — 改訂履歴
 

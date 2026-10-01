@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs トークン残量モニタ",
     "name_en": "LLMs Token Usage Monitor",
-    "version": "1.6.4",
-    "package_filename": "LLMs-Monitor-v1.6.4.zip",
+    "version": "1.7.0",
+    "package_filename": "LLMs-Monitor-v1.7.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -2947,6 +2947,40 @@
           "type": "automated",
           "coverage": "documentation.test.cjs",
           "procedure": "Verify canonical future hostname is retained in durable instructions and specification."
+        }
+      ]
+    },
+    {
+      "id": "CLAUDE-004",
+      "category": "claude_usage",
+      "introduced_in": "1.7.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "Claudeの現在5時間枠について、データなし・期限切れ・取得失敗・真の残り0%を区別する。未開始または期限切れは残り100%と開始待ちを表示し、取得失敗は期限前の前回値と取得時刻を保持し、未来のリセット期限を持つ使用率100%だけ残り0%とする。",
+      "source_requirements": [
+        "User bug report: inactive Claude five-hour window incorrectly displayed zero remaining"
+      ],
+      "acceptance_criteria": [
+        "five_hourがnull、空、または欠落し週間枠が有効なら現在枠を100%の未使用として表示する。",
+        "resetAtが過去の枠は100%へ正規化し期限切れ時刻を残さない。",
+        "取得失敗時は期限前の前回値を保持し、前回値なしは未取得とする。",
+        "使用率100%かつresetAtが未来の場合だけ残り0%を表示する。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/fetchers.js",
+          "symbol": "utilization/parseClaude"
+        },
+        {
+          "path": "extension/state.js",
+          "symbol": "expireWindows/accept/loading"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "fetchers.test.cjs / state.test.cjs",
+          "procedure": "Exercise missing, null, expired, failed, and genuinely exhausted Claude windows with synthetic data."
         }
       ]
     }

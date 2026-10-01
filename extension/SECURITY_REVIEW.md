@@ -1,10 +1,10 @@
-# Security review — v1.6.4 beta
+# Security review — v1.7.0 beta
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 <a id="en"></a>
 
-This review records the checks performed for the 1.6.4 beta; it is not a guarantee that no vulnerabilities exist. A release owner should also test the packaged extension in current Chrome and Edge with real accounts and submit it to store review.
+This review records the checks performed for the 1.7.0 beta; it is not a guarantee that no vulnerabilities exist. A release owner should also test the packaged extension in current Chrome and Edge with real accounts and submit it to store review.
 
 ## Attack surface and controls
 
@@ -16,7 +16,7 @@ This review records the checks performed for the 1.6.4 beta; it is not a guarant
 
 ## Verification and limits
 
-`node --test tests/*.test.cjs` exercises the status parser, hostile summary escaping, service filtering, duplicate-incident signature, and existing regression contracts. `python3 build.py` checks version alignment and packages only the `extension/` tree. This is static and unit-level review; live provider responses, browser permission dialogs, accessibility, and store policy acceptance still require manual review. Google's Workspace status feed may not report every Gemini consumer issue. False negatives remain possible when providers omit incidents or change their feeds.
+`node --test tests/*.test.cjs` exercises the status parser, hostile summary escaping, service filtering, duplicate-incident signature, and existing regression contracts. `python3 build.py --package` checks version alignment and packages only the `extension/` tree. The regression suite also distinguishes missing, expired, failed, and genuinely exhausted Claude sessions. This is static and unit-level review; live provider responses, browser permission dialogs, accessibility, and store policy acceptance still require manual review. Google's Workspace status feed may not report every Gemini consumer issue. False negatives remain possible when providers omit incidents or change their feeds.
 
 ---
 
@@ -26,7 +26,7 @@ This review records the checks performed for the 1.6.4 beta; it is not a guarant
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
-v1.6.4 βで確認した範囲の記録です。「脆弱性が存在しない」という保証ではありません。正式公開前には最新版Chrome／Edgeの実アカウントで配布ZIPを確認し、ストア審査を受けてください。
+v1.7.0 βで確認した範囲の記録です。「脆弱性が存在しない」という保証ではありません。正式公開前には最新版Chrome／Edgeの実アカウントで配布ZIPを確認し、ストア審査を受けてください。
 
 外部接続先は公開モニターのHTTPS origin、ページ内スクリプトは3社の公式サイトに限定しています。障害情報は固定した公式HTTPS URLから認証情報なしで取得し、8秒でタイムアウト、3 MB超の応答を拒否します。受信したスナップショットの型・件数・数値範囲を検証します。障害の文章はHTML表示時にエスケープし、リンク先は公式URLに固定します。新しい障害だけ通知し、同じ障害を1分ごとに鳴らし直しません。取得失敗は正常扱いせず「確認できません」と表示します。
 

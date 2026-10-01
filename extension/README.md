@@ -1,8 +1,8 @@
 # LLMs Monitor
 
-<a href="https://raw.githubusercontent.com/ntus/LLMs-Monitor/main/assets/promotional/llms-monitor-a4-landscape-flyer-v1.png"><img src="assets/promotional/llms-monitor-a4-landscape-flyer-v1.png" alt="LLMs Monitor — A4 landscape product overview" width="100%"></a>
+[![LLMs Monitor — English A4 landscape product overview](assets/promotional/llms-monitor-a4-landscape-flyer-en-v1.jpg)](assets/promotional/llms-monitor-a4-landscape-flyer-en-v1.jpg?raw=1)
 
-[Open the full-size flyer](https://raw.githubusercontent.com/ntus/LLMs-Monitor/main/assets/promotional/llms-monitor-a4-landscape-flyer-v1.png) · [Download PNG](https://raw.githubusercontent.com/ntus/LLMs-Monitor/main/assets/promotional/llms-monitor-a4-landscape-flyer-v1.png)
+[Open the full-size English flyer](assets/promotional/llms-monitor-a4-landscape-flyer-en-v1.jpg?raw=1) · [Download English JPEG](assets/promotional/llms-monitor-a4-landscape-flyer-en-v1.jpg?raw=1)
 
 **See the remaining usage across ChatGPT, Claude, and Gemini at a glance.**
 
@@ -12,9 +12,9 @@
 
 This browser companion checks usage from your signed-in provider sessions about once a minute. Large gauges and bars show current and weekly limits, reset times, plans, and available credits. Your change history stays in your browser, with up to 10,000 entries per limit. The interface supports English and Japanese, light and dark themes, fullscreen viewing, and compact floating panels.
 
-Version **1.6.4 beta** consolidates operational messages into a browsable status log, refreshes the history-load summary at most once per minute, stops opening a popup automatically, and lets the normal popup use any browser/OS-supported window size.
+Version **1.7.0 beta** fixes Claude inactive and expired five-hour sessions so only a live, genuinely exhausted window displays 0% remaining.
 
-[Product site](https://ai-usage-glance.ntusnog.chatgpt.site/product.html) · [Open the monitor](https://ai-usage-glance.ntusnog.chatgpt.site/) · [Download the beta extension package](dist/LLMs-Monitor-v1.6.4.zip) · [Detailed specification](SPECIFICATION.md) · [Privacy](PRIVACY.md) · [Follow @ntus on X](https://x.com/ntus)
+[Product site](https://ai-usage-glance.ntusnog.chatgpt.site/product.html) · [Open the monitor](https://ai-usage-glance.ntusnog.chatgpt.site/) · [Download the beta extension package](dist/LLMs-Monitor-v1.7.0.zip) · [Detailed specification](SPECIFICATION.md) · [Privacy](PRIVACY.md) · [Follow @ntus on X](https://x.com/ntus)
 
 ## Basic specifications
 
@@ -30,13 +30,13 @@ Version **1.6.4 beta** consolidates operational messages into a browsable status
 ## Quick start
 
 1. Sign in to the services you want to monitor on their official [ChatGPT](https://chatgpt.com/), [Claude](https://claude.ai/), and [Gemini](https://gemini.google.com/) sites in the same Chrome or Edge profile. Enter credentials only on those sites.
-2. Before store approval, run `python3 build.py`, unpack `dist/LLMs-Monitor-v1.6.4.zip`, and load the unpacked extension from the browser's extension management page for beta testing. Installing without developer mode requires Chrome Web Store or Edge Add-ons review and publication.
+2. Before store approval, run `python3 build.py --package`, unpack `dist/LLMs-Monitor-v1.7.0.zip`, and load the unpacked extension from the browser's extension management page for beta testing. Installing without developer mode requires Chrome Web Store or Edge Add-ons review and publication.
 3. Open the extension or the [web monitor](https://ai-usage-glance.ntusnog.chatgpt.site/). The web monitor asks for your extension ID once. The providers' usage tabs do not need to remain open.
 4. Use **Show and arrange services** to choose and reorder cards. Hidden services continue collecting history. Adjust language, theme, opacity, volume, and fullscreen mode from the controls.
 
 The monitor never asks for provider passwords and never exercises a reset entitlement automatically. A reset link opens the official usage page when an entitlement is available. If a provider does not expose a reliable plan or deadline, the app shows it as unavailable rather than guessing. Document Picture-in-Picture can keep a panel on top in supported browsers; OS-wide window transparency and native mobile apps are outside this beta.
 
-For contributors and future AI-assisted changes, read [AGENTS.md](AGENTS.md), the [specification](SPECIFICATION.md), and the [requirements ledger](spec/requirements.json) before editing. Run `node --test tests/*.test.cjs` and `python3 build.py` before releasing.
+For contributors and future AI-assisted changes, read [AGENTS.md](AGENTS.md), the [specification](SPECIFICATION.md), and the [requirements ledger](spec/requirements.json) before editing. Run `node --test tests/*.test.cjs` and `python3 build.py --package` before a package release.
 
 ---
 
@@ -45,7 +45,15 @@ For contributors and future AI-assisted changes, read [AGENTS.md](AGENTS.md), th
 
 **ChatGPT/Claude/Geminiのトークン利用残量をリアルタイム表示**
 
+[![LLMs モニター — 日本語A4横製品紹介](assets/promotional/llms-monitor-a4-landscape-flyer-v1.jpg)](assets/promotional/llms-monitor-a4-landscape-flyer-v1.jpg?raw=1)
+
+[日本語版チラシを原寸表示](assets/promotional/llms-monitor-a4-landscape-flyer-v1.jpg?raw=1) · [日本語版JPEGをダウンロード](assets/promotional/llms-monitor-a4-landscape-flyer-v1.jpg?raw=1)
+
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
+
+## 1.7.0 β
+
+Claudeの未開始・期限切れ5時間枠を「残り0%」と誤表示する問題を修正しました。取得失敗では期限前の前回値と取得時刻を保持し、本当に上限へ達してリセット時刻が未来の場合だけ0%を表示します。
 
 ## 1.6.4 β
 
@@ -69,7 +77,7 @@ v1.6.4では履歴読込結果と通知音説明を左右ボタン付きのス�
 ### 使い方
 
 1. 同じChromeまたはEdgeプロファイルで [ChatGPT](https://chatgpt.com/)、[Claude](https://claude.ai/)、[Gemini](https://gemini.google.com/) に必要な分だけログインします。パスワードは公式サイトで入力します。
-2. ストア公開前は、このリポジトリで `python3 build.py` を実行し、`dist/LLMs-Monitor-v1.6.4.zip` を展開して、ブラウザーの拡張機能管理画面から開発用として読み込みます。一般ユーザーがデベロッパーモードなしで導入するには、Chrome Web Store / Edge Add-ons の審査・公開が必要です。
+2. ストア公開前は、このリポジトリで `python3 build.py` を実行し、`dist/LLMs-Monitor-v1.7.0.zip` を展開して、ブラウザーの拡張機能管理画面から開発用として読み込みます。一般ユーザーがデベロッパーモードなしで導入するには、Chrome Web Store / Edge Add-ons の審査・公開が必要です。
 3. 拡張機能の画面、または [公開モニター](https://ai-usage-glance.ntusnog.chatgpt.site/) を開きます。公開モニターでは拡張機能IDを一度登録してください。各サービスの使用量タブを開いたままにする必要はありません。
 4. 「表示サービス」からチェックと上下ボタンで表示数・順序を変更します。非表示中も取得と履歴保存は続きます。音、テーマ、言語、透明度、フルスクリーンも画面上で変更できます。
 5. 残量とリセット時刻は公式サービスが返す範囲で表示されます。リセット権は利用可能なら公式利用量ページへ移動できますが、アプリから自動行使しません。出典のあるTips／NEWSはリンクで原文を確認できます。
@@ -111,7 +119,7 @@ OSに依存しない静的Webアプリと、Chrome / Edgeデスクトップ用Ma
 
 - `python3 -m http.server 4173 --directory dist` でローカルWeb版の表示を確認できます。本番Manifestは安全のためlocalhostからの外部接続を許可しないので、実データ接続は拡張機能内蔵画面か公開HTTPS版で検証します。
 - `node --test tests/*.test.cjs` で残量パーサーを検証。
-- `python3 build.py` で共通ファイルを拡張機能に複製し、配布ZIPを更新。
+- `python3 build.py` でWeb成果物を更新し、ストア配布ZIPを意図的に更新する場合だけ `python3 build.py --package` を使う。
 - `dist/` が静的Web配布物。`extension/` が読み込み可能な拡張機能。
 
 実装契約、取得経路、データモデル、手動検証項目は [SPECIFICATION.md](SPECIFICATION.md) を正本とし、機械可読の受入条件は [`spec/requirements.json`](spec/requirements.json) を参照してください。公式サービスの非公開内部構造は変更され得るため、拡張機能の実アカウントでの通し動作はリリースごとに確認します。

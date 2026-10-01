@@ -4,7 +4,7 @@
 
 <a id="en"></a>
 
-Document revision: 1.0 · Product version: **1.6.4** · Web companion: `https://ai-usage-glance.ntusnog.chatgpt.site/`
+Document revision: 1.0 · Product version: **1.7.0** · Web companion: `https://ai-usage-glance.ntusnog.chatgpt.site/`
 
 This English section defines the implementation contract for the beta. The [Japanese section](#ja) contains the full historical and field-level acceptance criteria. Implementers must read both sections and every ID in [`spec/requirements.json`](spec/requirements.json); neither translation overrides the other.
 
@@ -36,9 +36,9 @@ Tips and NEWS must include the primary-source HTTPS link, publisher, and date. R
 
 ## 5. Code, build, and release contract
 
-`extension/` is authoritative. `background.js`, `fetchers.js`, `parser.js`, `state.js`, and `history.js` acquire and normalize data; `shared.js`, `preferences.js`, `locale.js`, `advice.js`, and CSS render the common surfaces. `build.py` copies shared assets to `dist/`, synchronizes documentation into the extension package, cache-busts public assets, and creates `dist/LLMs-Monitor-v1.6.4.zip`. Manifest, UI, ZIP, specification, and store checklist versions must agree. Chrome Web Store/Edge Add-ons review is necessary for installation without developer mode; the ZIP alone does not provide that. Future native macOS, Windows, iOS, and Android apps should reuse the normalized data contracts and analysis rules through platform-specific authentication/window adapters; those apps are not part of this release.
+`extension/` is authoritative. `background.js`, `fetchers.js`, `parser.js`, `state.js`, and `history.js` acquire and normalize data; `shared.js`, `preferences.js`, `locale.js`, `advice.js`, and CSS render the common surfaces. `build.py` copies shared assets to `dist/`, synchronizes documentation into the extension package, cache-busts public assets, and creates `dist/LLMs-Monitor-v1.7.0.zip`. Manifest, UI, ZIP, specification, and store checklist versions must agree. Chrome Web Store/Edge Add-ons review is necessary for installation without developer mode; the ZIP alone does not provide that. Future native macOS, Windows, iOS, and Android apps should reuse the normalized data contracts and analysis rules through platform-specific authentication/window adapters; those apps are not part of this release.
 
-Run `node --test tests/*.test.cjs`, `python3 build.py`, ZIP-content and version checks, and UI smoke checks. Test sign-in/sign-out, refresh fallback, every display surface, language/theme/opacity, deadline boundaries, history retention, and service visibility/order on actual Chrome and Edge installations before claiming live-account acceptance. Keep the Site's existing audience unless the user explicitly changes it. See the [Japanese detailed specification](#ja) and [requirements ledger](spec/requirements.json) for every acceptance case.
+Run `node --test tests/*.test.cjs`, `python3 build.py --package`, ZIP-content and version checks, and UI smoke checks. Test sign-in/sign-out, refresh fallback, every display surface, language/theme/opacity, deadline boundaries, history retention, and service visibility/order on actual Chrome and Edge installations before claiming live-account acceptance. Keep the Site's existing audience unless the user explicitly changes it. See the [Japanese detailed specification](#ja) and [requirements ledger](spec/requirements.json) for every acceptance case.
 
 ## 6. Documentation language and navigation
 
@@ -53,7 +53,7 @@ Human-readable documentation must start in English and place Japanese in the lat
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.6.4
+対象製品版: 1.7.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -785,7 +785,7 @@ Document Picture-in-Pictureには以下の制約がある。
 
 - ストア提出ZIPの形式は `LLMs-Token-Usage-Monitor-v{semver}.zip` とする。
 - 旧名称をZIP、拡張機能名、HTMLタイトルに使わない。
-- 対象版では `LLMs-Monitor-v1.6.4.zip` とする。
+- 対象版では `LLMs-Monitor-v1.7.0.zip` とする。
 - Manifest、UI定数、HTMLフッター、ダウンロードリンク、版別CSS、ZIP名のバージョンを一致させる。
 - バージョンはSemantic Versioningを使う。
 
@@ -793,7 +793,7 @@ Document Picture-in-Pictureには以下の制約がある。
 
 1. `extension/manifest.json` のバージョンを更新する。
 2. 版別CSSを `style-v{数字のみ}.css` として作成し、HTMLから読み込む。
-3. `python3 build.py` を実行する。
+3. ストアパッケージを更新するリリースでは `python3 build.py --package` を実行する。
 4. ビルドは `dist/` の共通HTML/CSS/JSとルートのREADME/プライバシーポリシーを `extension/` へ同期する。
 5. 旧版ZIPを削除し、`dist/LLMs-Token-Usage-Monitor-v{version}.zip` を生成する。
 6. `node --test tests/*.test.cjs` を実行する。
@@ -1031,7 +1031,7 @@ README、本仕様、AGENTS、PRIVACY、ストア提出資料、Webプライバ�
 3. 実アカウントでのChrome/Edge手動確認を終える。
 4. 通常画面、フルスクリーン、サイト内パネル、通常小窓、PiPの表示を確認する。
 5. プライバシー文書とストア権限説明が実装と一致する。
-6. `LLMs-Monitor-v1.6.4.zip` が再現可能に生成され、内容を検査済みである。
+6. `LLMs-Monitor-v1.7.0.zip` が再現可能に生成され、内容を検査済みである。
 7. 公開Webアプリとストア提出パッケージの名称、バージョン、接続originが一致する。
 
 
@@ -1106,3 +1106,12 @@ The product page may be published first with GitHub Pages while the operational 
 ### 日本語
 
 商品説明ページはGitHub Pagesで先行公開でき、運用モニターは正式公開まで所有者限定を維持できる。正式公開時の正規ホスト名は `https://aimon.ntus.info/` とし、Cloudflare Pagesへの配置を想定する。移行時はHTTPSリダイレクト、CSP、文書、canonicalリンク、拡張機能の `externally_connectable` 許可先をこのオリジンへ統一する。接続許可先の変更はストアパッケージ変更となるため版管理規則上のマイナーリリースとし、版据え置きのv1.6.4更新には含めない。
+
+
+## 35. v1.7.0 beta: Claude inactive-session state
+
+Claude's five-hour window distinguishes four states. A missing or null current window alongside valid usage data is an inactive session and displays 100% with “Starts with the first message.” A window whose reliable reset time has passed is normalized to the same inactive state, including when restoring a cached snapshot after a fetch failure. A fetch failure with an unexpired prior value retains that value and capture time while showing the error state; no prior value displays unavailable. Zero remaining is preserved only when official utilization is 100% and the reset deadline is still in the future.
+
+### 日本語
+
+Claudeの5時間枠は4状態を区別する。有効な使用状況レスポンス内で現在枠が欠落またはnullなら未使用とし、100%と「最初のメッセージから開始します」を表示する。信頼できるリセット時刻が過去なら、取得失敗時に復元したキャッシュを含め同じ未使用状態へ正規化する。取得失敗時に期限前の前回値があれば値と取得時刻を保持し、前回値がなければ未取得を表示する。公式使用率が100%でリセット期限が未来の場合だけ残り0%を維持する。
