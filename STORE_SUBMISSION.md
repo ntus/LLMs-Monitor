@@ -1,18 +1,18 @@
-# Store submission checklist — v1.7.0
+# Store submission checklist — v1.8.0
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 <a id="en"></a>
 
-`dist/LLMs-Monitor-v1.7.0.zip` is the Chrome Web Store and Microsoft Edge Add-ons submission package. Its manifest and complete runtime UI are localized as “LLMs モニター” in Japanese and “LLMs Monitor” in English.
+`dist/LLMs-Monitor-v1.8.0.zip` is the Chrome Web Store and Microsoft Edge Add-ons submission package. Its manifest and complete runtime UI are localized as “LLMs モニター” in Japanese and “LLMs Monitor” in English.
 
 Developer-mode-free installation requires the owner to complete both stores' account, review, and publication process. Building or hosting the ZIP does not publish an installable store extension.
 
 ## Required owner actions
 
 1. Register the owner developer accounts and enable two-step verification where required.
-2. Upload `LLMs-Monitor-v1.7.0.zip`, the 128px icon, screenshots, Japanese and English descriptions, and reviewer test instructions.
-3. Use the deployed privacy policy at `https://ai-usage-glance.ntusnog.chatgpt.site/privacy.html` and verify that it is reachable without sign-in.
+2. Upload `LLMs-Monitor-v1.8.0.zip`, the 128px icon, screenshots, Japanese and English descriptions, and reviewer test instructions.
+3. Use the deployed privacy policy at `https://llmsmonitor.ntusnog.chatgpt.site/privacy.html` and verify that it is reachable without sign-in.
 4. Submit for manual review in each store. After approval, replace the website package-only guidance with the approved store URLs.
 
 ## Permission declarations
@@ -26,7 +26,7 @@ Developer-mode-free installation requires the owner to complete both stores' acc
 - `https://gemini.google.com/*`: reads the currently signed-in Google account's official usage and Google AI plan fields, including account-prefixed `/u/N` pages.
 - `https://one.google.com/*`: reads the currently signed-in Google account's current Google AI membership name when Gemini does not expose it directly.
 - Official status hosts (`status.openai.com`, `status.claude.com`, `www.google.com/appsstatus/dashboard`): fetch public incident summaries without credentials or user usage data.
-- `externally_connectable`: limited to `https://ai-usage-glance.ntusnog.chatgpt.site/*`; localhost is excluded from the production package.
+- `externally_connectable`: limited to `https://llmsmonitor.ntusnog.chatgpt.site/*`; localhost is excluded from the production package.
 
 ## Reviewer test flow
 
@@ -44,17 +44,17 @@ Before uploading, run `node --test tests/*.test.cjs`, `python3 build.py --packag
 
 <a id="ja"></a>
 
-# 日本語 — ストア提出チェックリスト v1.7.0
+# 日本語 — ストア提出チェックリスト v1.8.0
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
-提出物は `dist/LLMs-Monitor-v1.7.0.zip` です。拡張機能名と画面は日本語「LLMs モニター」、英語「LLMs MONITOR」に対応します。デベロッパーモード不要の導入には、所有者がChrome Web StoreとMicrosoft Edge Add-onsでアカウント、審査、公開を完了する必要があります。ZIPの作成やWeb配布だけではストア公開になりません。
+提出物は `dist/LLMs-Monitor-v1.8.0.zip` です。拡張機能名と画面は日本語「LLMs モニター」、英語「LLMs MONITOR」に対応します。デベロッパーモード不要の導入には、所有者がChrome Web StoreとMicrosoft Edge Add-onsでアカウント、審査、公開を完了する必要があります。ZIPの作成やWeb配布だけではストア公開になりません。
 
 ## 所有者が行う提出作業
 
 1. 両ストアの開発者アカウントを登録し、必要な本人確認と二段階認証を完了する。
 2. ZIP、128pxアイコン、スクリーンショット、日英の説明、審査担当者向けテスト手順を提出する。
-3. `https://ai-usage-glance.ntusnog.chatgpt.site/privacy.html` にサインインなしでアクセスできるか確認する。
+3. `https://llmsmonitor.ntusnog.chatgpt.site/privacy.html` にサインインなしでアクセスできるか確認する。
 4. 審査へ提出し、承認後にサイトのストア案内を正式な掲載URLへ置き換える。
 
 ## 権限の説明
@@ -66,7 +66,7 @@ Before uploading, run `node --test tests/*.test.cjs`, `python3 build.py --packag
 - ChatGPT、Claude、Gemini、Google Oneの公式host権限: ログイン済みアカウントの使用量、契約プラン、リセット権、クレジットを取得する。ChatGPTのアクセストークンは要求中のメモリー内だけで扱う。
 - Official status hosts (`status.openai.com`, `status.claude.com`, `www.google.com/appsstatus/dashboard`): fetch public incident summaries without credentials or user usage data.
 - OpenAI Status、Claude Status、Google Workspace Statusの公式host権限: 公開障害情報のみを認証情報なしで取得する。
-- `externally_connectable`: 本番コンパニオン画面 `https://ai-usage-glance.ntusnog.chatgpt.site/*` に限定し、localhostは含めない。
+- `externally_connectable`: 本番コンパニオン画面 `https://llmsmonitor.ntusnog.chatgpt.site/*` に限定し、localhostは含めない。
 
 ## 審査時の確認手順
 

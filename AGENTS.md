@@ -26,6 +26,7 @@ This file is the starting point for every future Codex or LLM edit. Follow the u
 - Run meaningful tests, `node --test tests/*.test.cjs`, `python3 build.py`, ZIP inspection, version checks, and diff checks. Record any necessary manual verification in `SPECIFICATION.md`.
 - Decide the version before building. If the store package changes, increment the minor component `y` in `x.y.z` and reset `z` to zero. If only lightweight non-package content changes, increment `z`; an explicitly version-neutral content update keeps the current version. Keep all changed release surfaces consistent and preserve the existing Site audience when deploying.
 - Treat `https://aimon.ntus.info/` as the canonical hostname for the future public production release. Any extension allowlist, CSP, redirects, documentation, and hosting configuration introduced for that release must use this exact HTTPS origin. Publishing the product page on GitHub Pages may precede that migration.
+- Any interim Site slug or origin change must update `manifest.externally_connectable`, the background `ALLOWED` set, Web links, privacy and release documents, and regression tests in one package release before the renamed URL is reported usable.
 
 ## Every deliverable
 
@@ -61,6 +62,7 @@ Keep this `AGENTS.md` in the repository and update it when a new acceptance rule
 - 適切な意味のあるテストと `node --test tests/*.test.cjs` を実行し、`python3 build.py`、ZIP一覧、版番号、差分を確認する。必要な手動確認を `SPECIFICATION.md` に記録する。
 - ビルド前に版を判定する。ストア公開用パッケージが変わる場合は `x.y.z` の `y` を1増やして `z=0`、パッケージを変えない軽微な変更は `z` を1増やす。ただし利用者が版据え置きを明示したコンテンツ更新は現行版を維持する。変更対象の版表記をそろえ、既存の公開範囲を保ってサイトを更新する。
 - 将来の正式公開URLは `https://aimon.ntus.info/` を正本とする。その公開時に追加する拡張機能の接続許可、CSP、リダイレクト、文書、ホスティング設定は、このHTTPSオリジンへ統一する。商品説明ページのGitHub Pages先行公開は可能とする。
+- 正式公開前のSitesスラッグまたはoriginを変更する場合も、`manifest.externally_connectable`、backgroundの`ALLOWED`、Webリンク、プライバシー・リリース文書、回帰テストを同じパッケージリリースで同時更新し、新URLの利用可否を報告する前に接続整合を確認する。
 
 ## 毎回の成果物
 

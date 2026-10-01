@@ -4,7 +4,7 @@
 
 <a id="en"></a>
 
-Document revision: 1.0 · Product version: **1.7.0** · Web companion: `https://ai-usage-glance.ntusnog.chatgpt.site/`
+Document revision: 1.0 · Product version: **1.8.0** · Web companion: `https://llmsmonitor.ntusnog.chatgpt.site/`
 
 This English section defines the implementation contract for the beta. The [Japanese section](#ja) contains the full historical and field-level acceptance criteria. Implementers must read both sections and every ID in [`spec/requirements.json`](spec/requirements.json); neither translation overrides the other.
 
@@ -36,7 +36,7 @@ Tips and NEWS must include the primary-source HTTPS link, publisher, and date. R
 
 ## 5. Code, build, and release contract
 
-`extension/` is authoritative. `background.js`, `fetchers.js`, `parser.js`, `state.js`, and `history.js` acquire and normalize data; `shared.js`, `preferences.js`, `locale.js`, `advice.js`, and CSS render the common surfaces. `build.py` copies shared assets to `dist/`, synchronizes documentation into the extension package, cache-busts public assets, and creates `dist/LLMs-Monitor-v1.7.0.zip`. Manifest, UI, ZIP, specification, and store checklist versions must agree. Chrome Web Store/Edge Add-ons review is necessary for installation without developer mode; the ZIP alone does not provide that. Future native macOS, Windows, iOS, and Android apps should reuse the normalized data contracts and analysis rules through platform-specific authentication/window adapters; those apps are not part of this release.
+`extension/` is authoritative. `background.js`, `fetchers.js`, `parser.js`, `state.js`, and `history.js` acquire and normalize data; `shared.js`, `preferences.js`, `locale.js`, `advice.js`, and CSS render the common surfaces. `build.py` copies shared assets to `dist/`, synchronizes documentation into the extension package, cache-busts public assets, and creates `dist/LLMs-Monitor-v1.8.0.zip`. Manifest, UI, ZIP, specification, and store checklist versions must agree. Chrome Web Store/Edge Add-ons review is necessary for installation without developer mode; the ZIP alone does not provide that. Future native macOS, Windows, iOS, and Android apps should reuse the normalized data contracts and analysis rules through platform-specific authentication/window adapters; those apps are not part of this release.
 
 Run `node --test tests/*.test.cjs`, `python3 build.py --package`, ZIP-content and version checks, and UI smoke checks. Test sign-in/sign-out, refresh fallback, every display surface, language/theme/opacity, deadline boundaries, history retention, and service visibility/order on actual Chrome and Edge installations before claiming live-account acceptance. Keep the Site's existing audience unless the user explicitly changes it. See the [Japanese detailed specification](#ja) and [requirements ledger](spec/requirements.json) for every acceptance case.
 
@@ -53,11 +53,11 @@ Human-readable documentation must start in English and place Japanese in the lat
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.7.0
+対象製品版: 1.8.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
-公開Webアプリ: `https://ai-usage-glance.ntusnog.chatgpt.site/`
+公開Webアプリ: `https://llmsmonitor.ntusnog.chatgpt.site/`
 
 ## 1. 文書の目的
 
@@ -719,7 +719,7 @@ Document Picture-in-Pictureには以下の制約がある。
 
 ### 17.2 外部メッセージ
 
-- 本番許可元は `https://ai-usage-glance.ntusnog.chatgpt.site` に限定する。
+- 本番許可元は `https://llmsmonitor.ntusnog.chatgpt.site` に限定する。
 - 開発時にlocalhostを使う場合は、開発専用Manifestと明示的な許可元を使い、本番パッケージへ混入させない。
 - `sender.url` から安全にoriginを取得し、完全一致で照合する。
 - 外部から `SNAPSHOT` や任意URLを開く操作を許可しない。
@@ -785,7 +785,7 @@ Document Picture-in-Pictureには以下の制約がある。
 
 - ストア提出ZIPの形式は `LLMs-Token-Usage-Monitor-v{semver}.zip` とする。
 - 旧名称をZIP、拡張機能名、HTMLタイトルに使わない。
-- 対象版では `LLMs-Monitor-v1.7.0.zip` とする。
+- 対象版では `LLMs-Monitor-v1.8.0.zip` とする。
 - Manifest、UI定数、HTMLフッター、ダウンロードリンク、版別CSS、ZIP名のバージョンを一致させる。
 - バージョンはSemantic Versioningを使う。
 
@@ -814,7 +814,7 @@ Document Picture-in-Pictureには以下の制約がある。
 ### 20.4 Webアプリのデプロイ
 
 - `dist/` を静的サイトとしてデプロイする。
-- 本番URLは `https://ai-usage-glance.ntusnog.chatgpt.site/` とする。
+- 本番URLは `https://llmsmonitor.ntusnog.chatgpt.site/` とする。
 - Webサーバーは使用量を受信するAPIを持たない。
 - 本番デプロイ前に、拡張機能の許可origin、HTML内ZIPリンク、バージョン、プライバシーページを確認する。
 - 公開範囲を変更するときは、ホスティング設定とプライバシー文書を同じリリースで更新する。
@@ -1031,7 +1031,7 @@ README、本仕様、AGENTS、PRIVACY、ストア提出資料、Webプライバ�
 3. 実アカウントでのChrome/Edge手動確認を終える。
 4. 通常画面、フルスクリーン、サイト内パネル、通常小窓、PiPの表示を確認する。
 5. プライバシー文書とストア権限説明が実装と一致する。
-6. `LLMs-Monitor-v1.7.0.zip` が再現可能に生成され、内容を検査済みである。
+6. `LLMs-Monitor-v1.8.0.zip` が再現可能に生成され、内容を検査済みである。
 7. 公開Webアプリとストア提出パッケージの名称、バージョン、接続originが一致する。
 
 
@@ -1115,3 +1115,11 @@ Claude's five-hour window distinguishes four states. A missing or null current w
 ### 日本語
 
 Claudeの5時間枠は4状態を区別する。有効な使用状況レスポンス内で現在枠が欠落またはnullなら未使用とし、100%と「最初のメッセージから開始します」を表示する。信頼できるリセット時刻が過去なら、取得失敗時に復元したキャッシュを含め同じ未使用状態へ正規化する。取得失敗時に期限前の前回値があれば値と取得時刻を保持し、前回値がなければ未取得を表示する。公式使用率が100%でリセット期限が未来の場合だけ残り0%を維持する。
+
+## 36. v1.8.0 beta: renamed companion origin
+
+The hosted monitor origin is `https://llmsmonitor.ntusnog.chatgpt.site`. The Manifest V3 `externally_connectable` allowlist and the background message-origin validator must contain that same origin. Every hosted link, privacy statement, store checklist, and regression test must remain synchronized. Because this trust-boundary change modifies the extension package, it is released as v1.8.0. Existing v1.7.0 installations must be updated before they can connect from the renamed URL.
+
+### 日本語
+
+公開モニターのoriginを `https://llmsmonitor.ntusnog.chatgpt.site` とする。Manifest V3の `externally_connectable` とbackgroundのメッセージ送信元検証は同じoriginを許可し、Web内リンク、プライバシー文書、ストア資料、回帰テストも同期する。この信頼境界の変更は拡張機能パッケージを変更するためv1.8.0として公開する。既存のv1.7.0拡張機能は、新URLから接続する前に更新が必要である。

@@ -4,6 +4,11 @@
 
 <a id="en"></a>
 
+## 1.8.0 beta
+
+- Updated the extension's externally connectable allowlist and companion links for `https://llmsmonitor.ntusnog.chatgpt.site`.
+- Added a regression check so a future URL rename cannot silently break extension connectivity.
+
 ## 1.7.0 beta
 
 - Fixed inactive or expired Claude five-hour windows incorrectly appearing as 0% remaining.
@@ -24,6 +29,11 @@ Version 1.5.3 and earlier focused on plan retrieval, persistent change history, 
 ---
 
 <a id="ja"></a>
+
+## 1.8.0 β
+
+- 拡張機能の外部接続許可とコンパニオン画面へのリンクを `https://llmsmonitor.ntusnog.chatgpt.site` に統一しました。
+- URL変更時の接続不良を再発させない自動検査を追加しました。
 
 ## 1.7.0 β
 

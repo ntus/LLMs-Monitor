@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "default_locale": "ja",
   "name": "__MSG_extensionName__",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "description": "__MSG_extensionDescription__",
   "permissions": [
     "storage",
@@ -57,7 +57,7 @@
   ],
   "externally_connectable": {
     "matches": [
-      "https://ai-usage-glance.ntusnog.chatgpt.site/*"
+      "https://llmsmonitor.ntusnog.chatgpt.site/*"
     ]
   },
   "content_security_policy": {

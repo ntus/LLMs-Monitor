@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs トークン残量モニタ",
     "name_en": "LLMs Token Usage Monitor",
-    "version": "1.7.0",
-    "package_filename": "LLMs-Monitor-v1.7.0.zip",
+    "version": "1.8.0",
+    "package_filename": "LLMs-Monitor-v1.8.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -18,7 +18,7 @@
       "claude",
       "gemini"
     ],
-    "production_companion_origin": "https://ai-usage-glance.ntusnog.chatgpt.site"
+    "production_companion_origin": "https://llmsmonitor.ntusnog.chatgpt.site"
   },
   "normative_language": {
     "MUST": "必須。未達の場合はリリース不可。",
@@ -2947,6 +2947,39 @@
           "type": "automated",
           "coverage": "documentation.test.cjs",
           "procedure": "Verify canonical future hostname is retained in durable instructions and specification."
+        }
+      ]
+    },
+    {
+      "id": "COMPANION-002",
+      "category": "browser_integration",
+      "introduced_in": "1.8.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "公開WebアプリのURLを変更する場合、manifest.externally_connectable、backgroundの接続元検証、Webリンク、プライバシー文書、仕様書、ストア資料を同じHTTPS originへ同期し、ストアパッケージをマイナーリリースとして再生成する。",
+      "source_requirements": [
+        "User report: renamed companion URL displayed an extension connection required error"
+      ],
+      "acceptance_criteria": [
+        "manifest.externally_connectableとbackground ALLOWEDがhttps://llmsmonitor.ntusnog.chatgpt.siteに一致する。",
+        "公開Web画面、配布文書、テストが旧ai-usage-glance originを参照しない。",
+        "ストア提出ZIPをv1.8.0として再生成する。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/manifest.json",
+          "symbol": "externally_connectable"
+        },
+        {
+          "path": "extension/background.js",
+          "symbol": "ALLOWED"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "requirements.test.cjs / product-site.test.cjs",
+          "procedure": "Verify that the manifest, background validator, generated web UI, and requirements ledger use the same production origin."
         }
       ]
     },

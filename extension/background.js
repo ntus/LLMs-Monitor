@@ -1,7 +1,7 @@
 importScripts('preferences.js','provider-status.js','state.js','history.js','fetchers.js','notification-batch.js');
 const URLS={chatgpt:'https://chatgpt.com/settings/usage?tab=overview',claude:'https://claude.ai/settings/usage',gemini:'https://gemini.google.com/usage'};
 const HOSTS={chatgpt:'chatgpt.com',claude:'claude.ai',gemini:'gemini.google.com'};
-const ALLOWED=new Set(['https://ai-usage-glance.ntusnog.chatgpt.site']);
+const ALLOWED=new Set(['https://llmsmonitor.ntusnog.chatgpt.site']);
 const DEFAULT_SETTINGS={opacity:55,position:'bottom-right',enabled:true,theme:'dark',sound:true,volume:18,serviceOrder:GlancePreferences.SERVICES,hiddenServices:[]};
 const FETCHERS={chatgpt:()=>GlanceFetchers.fetchChatGPT(),claude:async()=>{const saved=await chrome.storage.local.get('claudeOrganizationId'),snapshot=await GlanceFetchers.fetchClaude(fetch,saved.claudeOrganizationId||'');if(snapshot.organizationId)await chrome.storage.local.set({claudeOrganizationId:snapshot.organizationId});return snapshot;},gemini:()=>GlanceFetchers.fetchGemini()};
 let queue=Promise.resolve(),dataQueue=Promise.resolve(),historyQueue=Promise.resolve(),soundTimer=null,monitorCloseTimer=null,monitorNavigationId='',monitorTabId=null,historyViewCache={version:null,history:{},meta:{total:0,loaded:0,firstAt:null,lastAt:null,truncated:false,elapsedMs:0,limit:GlanceHistory.LOAD_LIMIT,budgetMs:2600}};

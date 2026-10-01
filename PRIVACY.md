@@ -12,7 +12,7 @@ For ChatGPT usage retrieval, the extension temporarily uses the access token exp
 
 Usage snapshots, change history (up to 10,000 changed values per usage window), the selected Claude organization identifier, and display preferences are stored locally through the browser extension storage API. Historical logs remain available after logout and extension updates; the comparison baseline is reset before the next signed-in snapshot. This information is not uploaded to NT MicroSystems,Inc. or sold, shared, or used for advertising, profiling, credit decisions, or unrelated purposes.
 
-The extension communicates only with the official service domains listed in its manifest and its companion monitor page at `https://ai-usage-glance.ntusnog.chatgpt.site`. When the user connects that page with the extension ID, the extension returns the plan, usage, credit, history, and display-setting fields required to render the monitor locally in the browser. The companion has no application code that uploads these values to NT MicroSystems,Inc. The extension does not submit prompts, purchase credits, exercise reset entitlements, or change account settings.
+The extension communicates only with the official service domains listed in its manifest and its companion monitor page at `https://llmsmonitor.ntusnog.chatgpt.site`. When the user connects that page with the extension ID, the extension returns the plan, usage, credit, history, and display-setting fields required to render the monitor locally in the browser. The companion has no application code that uploads these values to NT MicroSystems,Inc. The extension does not submit prompts, purchase credits, exercise reset entitlements, or change account settings.
 
 The extension also requests public incident feeds from OpenAI Status, Claude Status, and Google Workspace Status approximately every ten minutes. These requests omit browser credentials and do not include usage history, plans, account identifiers, or prompts. The last service-status summary is stored locally.
 
@@ -36,7 +36,7 @@ ChatGPTの使用量取得では、公式ページがログイン中のアカウ�
 
 使用量スナップショット、利用枠ごとに最大10,000件の変化履歴、選択したClaude組織ID、表示設定をブラウザーの拡張機能ストレージに保存します。ログアウトや拡張機能の更新後も履歴を維持し、再ログイン後の比較基準だけをリセットします。これらをNT MicroSystems,Inc.へアップロードしたり、販売、共有、広告、プロファイリング、信用判断、無関係な目的に利用したりしません。
 
-拡張機能はManifestに記載した公式ドメインとコンパニオン画面 `https://ai-usage-glance.ntusnog.chatgpt.site` だけと通信します。利用者が拡張機能IDでその画面を接続した場合、表示に必要なプラン、使用量、クレジット、履歴、設定が同じブラウザー内の画面へ返されます。その値を運営者のサーバーへアップロードする処理はありません。プロンプト送信、クレジット購入、リセット権行使、アカウント設定変更を自動実行しません。
+拡張機能はManifestに記載した公式ドメインとコンパニオン画面 `https://llmsmonitor.ntusnog.chatgpt.site` だけと通信します。利用者が拡張機能IDでその画面を接続した場合、表示に必要なプラン、使用量、クレジット、履歴、設定が同じブラウザー内の画面へ返されます。その値を運営者のサーバーへアップロードする処理はありません。プロンプト送信、クレジット購入、リセット権行使、アカウント設定変更を自動実行しません。
 
 保存データは拡張機能のアンインストール、または拡張機能ストレージの消去で削除できます。
 
