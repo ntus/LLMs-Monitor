@@ -4,7 +4,7 @@
 
 <a id="en"></a>
 
-Document revision: 1.0 · Product version: **1.10.0** · Web companion: `https://llmsmonitor.ntusnog.chatgpt.site/`
+Document revision: 1.0 · Product version: **1.11.0** · Web companion: `https://llmsmonitor.ntusnog.chatgpt.site/`
 
 This English section defines the implementation contract for the beta. The [Japanese section](#ja) contains the full historical and field-level acceptance criteria. Implementers must read both sections and every ID in [`spec/requirements.json`](spec/requirements.json); neither translation overrides the other.
 
@@ -36,7 +36,7 @@ Tips and NEWS must include the primary-source HTTPS link, publisher, and date. R
 
 ## 5. Code, build, and release contract
 
-`extension/` is authoritative. `background.js`, `fetchers.js`, `parser.js`, `state.js`, and `history.js` acquire and normalize data; `shared.js`, `preferences.js`, `locale.js`, `advice.js`, and CSS render the common surfaces. `build.py` copies shared assets to `dist/`, synchronizes documentation into the extension package, cache-busts public assets, and creates `dist/LLMs-Monitor-v1.10.0.zip`. Manifest, UI, ZIP, specification, and store checklist versions must agree. Chrome Web Store/Edge Add-ons review is necessary for installation without developer mode; the ZIP alone does not provide that. Future native macOS, Windows, iOS, and Android apps should reuse the normalized data contracts and analysis rules through platform-specific authentication/window adapters; those apps are not part of this release.
+`extension/` is authoritative. `background.js`, `fetchers.js`, `parser.js`, `state.js`, and `history.js` acquire and normalize data; `shared.js`, `preferences.js`, `locale.js`, `advice.js`, and CSS render the common surfaces. `build.py` copies shared assets to `dist/`, synchronizes documentation into the extension package, cache-busts public assets, and creates `dist/LLMs-Monitor-v1.11.0.zip`. Manifest, UI, ZIP, specification, and store checklist versions must agree. Chrome Web Store/Edge Add-ons review is necessary for installation without developer mode; the ZIP alone does not provide that. Future native macOS, Windows, iOS, and Android apps should reuse the normalized data contracts and analysis rules through platform-specific authentication/window adapters; those apps are not part of this release.
 
 Run `node --test tests/*.test.cjs`, `python3 build.py --package`, ZIP-content and version checks, and UI smoke checks. Test sign-in/sign-out, refresh fallback, every display surface, language/theme/opacity, deadline boundaries, history retention, and service visibility/order on actual Chrome and Edge installations before claiming live-account acceptance. Keep the Site's existing audience unless the user explicitly changes it. See the [Japanese detailed specification](#ja) and [requirements ledger](spec/requirements.json) for every acceptance case.
 
@@ -53,7 +53,7 @@ Human-readable documentation must start in English and place Japanese in the lat
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.10.0
+対象製品版: 1.11.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -785,7 +785,7 @@ Document Picture-in-Pictureには以下の制約がある。
 
 - ストア提出ZIPの形式は `LLMs-Token-Usage-Monitor-v{semver}.zip` とする。
 - 旧名称をZIP、拡張機能名、HTMLタイトルに使わない。
-- 対象版では `LLMs-Monitor-v1.10.0.zip` とする。
+- 対象版では `LLMs-Monitor-v1.11.0.zip` とする。
 - Manifest、UI定数、HTMLフッター、ダウンロードリンク、版別CSS、ZIP名のバージョンを一致させる。
 - バージョンはSemantic Versioningを使う。
 
@@ -1031,7 +1031,7 @@ README、本仕様、AGENTS、PRIVACY、ストア提出資料、Webプライバ�
 3. 実アカウントでのChrome/Edge手動確認を終える。
 4. 通常画面、フルスクリーン、サイト内パネル、通常小窓、PiPの表示を確認する。
 5. プライバシー文書とストア権限説明が実装と一致する。
-6. `LLMs-Monitor-v1.10.0.zip` が再現可能に生成され、内容を検査済みである。
+6. `LLMs-Monitor-v1.11.0.zip` が再現可能に生成され、内容を検査済みである。
 7. 公開Webアプリとストア提出パッケージの名称、バージョン、接続originが一致する。
 
 
@@ -1147,3 +1147,11 @@ Live activation requires an approved X developer bearer token, a server-side cac
 X bearer tokenはサーバー実行環境のSecretだけに保存し、拡張機能、公開Site、リポジトリ、レスポンス、ブラウザー保存領域、ログへ入れてはならない。拡張機能はキャッシュ済み中継を1分ごとに確認し、初回成功結果は無音の基準値として保存し、その後に初めて見つかった投稿IDだけを画面通知と通知音の対象にする。外部文面はエスケープし、リンクはXとBridgeBenchのHTTPS hostだけを許可する。取得失敗時は前回速報を保持し、利用残量、履歴、公式障害監視に影響させない。NerfBenchは発売時比90〜110%を通常変動とし、公開値が90%未満の場合を重大警戒とする。検証済みの公開結果APIがないため、v1.10.0ではBridgeMind／BridgeBenchの関連X発信を監視し、Cloudflare保護されたボードをスクレイピングしない。
 
 実運用には、承認済みX Developer bearer token、サーバー側キャッシュ、1分cron、monitor originの`/api/intelligence.json`へのworker配置が必要である。外部設定が完了するまでは接続待ちと表示し、既存のmonitor機能はすべて通常どおり動作する。
+
+## 39. v1.11.0 beta: ChatGPT/Codex reset-expiry retrieval
+
+The ChatGPT/Codex complete-reset entitlement reads its deadline from either labelled attributes, ordinary visible Japanese or English text, or known API aliases including `valid_through`, `use_by`, `redeem_by`, and `deadline`. Reset-window timestamps are not accepted as entitlement expiry. If an available entitlement has no reliable deadline, the UI keeps “expiry unavailable” rather than inventing a date or converting it to zero availability.
+
+### 日本語
+
+ChatGPT／Codex完全リセット権の有効期限は、ラベル付き属性、通常の可視テキスト、または `valid_through`、`use_by`、`redeem_by`、`deadline` など既知のAPI別名から取得する。利用枠のリセット時刻を利用権期限として誤認しない。利用可能な権利に信頼できる期限が見つからない場合、日付を推測したり利用不可へ変換したりせず「期限未取得」と表示する。公式画面上の「有効期限：10月30日」は10月30日の期限として正規化する。

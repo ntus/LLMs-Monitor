@@ -4,6 +4,12 @@
 
 <a id="en"></a>
 
+## 1.11.0 beta
+
+- Fixed ChatGPT/Codex complete-reset expiry retrieval when the official page exposes “Valid until” only as visible text.
+- Added API expiry aliases such as `valid_through`, `use_by`, `redeem_by`, and `deadline`.
+- Kept an available reset explicit as “expiry unavailable” when no reliable deadline is present.
+
 ## 1.10.0 beta
 
 - Added a server-relayed, one-minute intelligence feed for Tibo, selected official provider X accounts, and BridgeMind/BridgeBench.
@@ -43,6 +49,12 @@ Version 1.5.3 and earlier focused on plan retrieval, persistent change history, 
 ---
 
 <a id="ja"></a>
+
+## 1.11.0 β
+
+- 公式画面の「有効期限：10月30日」が通常テキストだけで表示される場合も、ChatGPT／Codex完全リセット権の期限を取得できるよう修正しました。
+- API側の `valid_through`、`use_by`、`redeem_by`、`deadline` 形式にも対応しました。
+- 信頼できる期限が見つからない場合は、0や推測日ではなく「期限未取得」を維持します。
 
 ## 1.10.0 β
 

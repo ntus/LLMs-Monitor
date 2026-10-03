@@ -16,7 +16,7 @@ test('extension contains no X credential and obtains only a normalized relay fee
 });
 
 test('all display surfaces load and render the intelligence module',()=>{
- const manifest=JSON.parse(read('extension/manifest.json'));assert.equal(manifest.version,'1.10.0');assert(manifest.content_scripts[0].js.includes('intelligence.js'));
+ const manifest=JSON.parse(read('extension/manifest.json'));assert.match(manifest.version,/^1\.(?:1[0-9]|[2-9][0-9])\.0$/);assert(manifest.content_scripts[0].js.includes('intelligence.js'));
  for(const file of ['extension/index.html','extension/floating.html'])assert(read(file).includes('intelligence.js'));
  for(const file of ['extension/app.js','extension/content.js','extension/floating.js'])assert(read(file).includes('intelligenceFeed'));
 });

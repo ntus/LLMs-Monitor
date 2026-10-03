@@ -48,7 +48,7 @@ if '--package' in sys.argv:
         if legacy != package: legacy.unlink()
     with zipfile.ZipFile(package, 'w', zipfile.ZIP_DEFLATED) as archive:
         for path in sorted((root / 'extension').rglob('*')):
-            if path.is_file(): archive.write(path, path.relative_to(root / 'extension'))
+            if path.is_file() and path.name != '.DS_Store': archive.write(path, path.relative_to(root / 'extension'))
     print(f'LLMs Monitor v{version} package created.')
 else:
     print(f'LLMs Monitor web assets built; store package v{version} preserved.')

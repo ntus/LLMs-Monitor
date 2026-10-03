@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs トークン残量モニタ",
     "name_en": "LLMs Token Usage Monitor",
-    "version": "1.10.0",
-    "package_filename": "LLMs-Monitor-v1.10.0.zip",
+    "version": "1.11.0",
+    "package_filename": "LLMs-Monitor-v1.11.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -3113,6 +3113,43 @@
       "known_limitations": [
         "Live X monitoring remains unconfigured until an approved X developer credential, KV binding, one-minute cron, and same-origin worker deployment are supplied.",
         "NerfBench currently exposes no verified public API or dedicated result feed; v1.10.0 uses relevant BridgeMind/BridgeBench X announcements and does not scrape its Cloudflare-protected page."
+      ]
+    },
+    {
+      "id": "CHATGPT-RESET-002",
+      "category": "chatgpt_usage",
+      "introduced_in": "1.11.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "ChatGPT／Codexの利用上限リセット権について、公式画面の属性付き期限だけでなく通常の可視テキストおよび既知のAPI期限別名から有効期限を取得し、確認できない期限を推測してはならない。",
+      "source_requirements": [
+        "User report: CODEX complete reset expiry October 30 was not retrieved"
+      ],
+      "acceptance_criteria": [
+        "「有効期限：10月30日」が通常テキストだけで表示されても10月30日を期限として正規化する。",
+        "APIのvalid_through、use_by、redeem_by、deadlineを期限候補として扱う。",
+        "reset/window時刻をリセット権の有効期限と誤認しない。",
+        "利用可能でも信頼できる期限がない場合は「期限未取得」と表示する。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/parser.js",
+          "symbol": "chatGPTReset/visibleExpiry/scopeExpiry"
+        },
+        {
+          "path": "extension/fetchers.js",
+          "symbol": "findExpiry/chatGPTReset"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "parser.test.cjs / fetchers.test.cjs / release-1110.test.cjs",
+          "procedure": "Verify visible Japanese expiry text, API alias fields, and release-version consistency with synthetic data."
+        }
+      ],
+      "known_limitations": [
+        "Live account rendering remains subject to official ChatGPT page/API changes and requires manual browser verification."
       ]
     }
   ]
