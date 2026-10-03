@@ -3,14 +3,13 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const read=path=>fs.readFileSync(path,'utf8');
 
-test('v1.11.0 release surfaces and package contract agree',()=>{
+test('v1.11.0 reset-expiry contract remains in later releases',()=>{
  const manifest=JSON.parse(read('extension/manifest.json'));
  const requirements=JSON.parse(read('spec/requirements.json'));
- assert.equal(manifest.version,'1.11.0');
- assert.equal(requirements.product.version,'1.11.0');
- assert.equal(requirements.product.package_filename,'LLMs-Monitor-v1.11.0.zip');
- assert(read('extension/shared.js').includes("const APP_VERSION='1.11.0'"));
- assert(read('extension/index.html').includes('LLMs-Monitor-v1.11.0.zip'));
+ assert(Number(manifest.version.split('.')[1])>=11);
+ assert.equal(requirements.product.version,manifest.version);
+ assert.equal(requirements.product.package_filename,`LLMs-Monitor-v${manifest.version}.zip`);
+ assert(requirements.requirements.some(item=>item.id==='CHATGPT-RESET-002'));
 });
 
 test('store package builder excludes macOS metadata',()=>{

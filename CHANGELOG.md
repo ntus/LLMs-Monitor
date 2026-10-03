@@ -4,6 +4,11 @@
 
 <a id="en"></a>
 
+## 1.12.0 beta
+
+- Stopped ChatGPT DOM usage values from overwriting the background API values and oscillating between two percentages.
+- Kept DOM retrieval for reset-entitlement type and expiry while treating the API as the authoritative usage source.
+
 ## 1.11.0 beta
 
 - Fixed ChatGPT/Codex complete-reset expiry retrieval when the official page exposes “Valid until” only as visible text.
@@ -49,6 +54,11 @@ Version 1.5.3 and earlier focused on plan retrieval, persistent change history, 
 ---
 
 <a id="ja"></a>
+
+## 1.12.0 β
+
+- ChatGPTのDOM残量がバックグラウンドAPI値を上書きし、2つの割合を往復する問題を修正しました。
+- 残量はAPIを正本とし、DOMはリセット権の種別・期限など補足情報だけを統合します。
 
 ## 1.11.0 β
 

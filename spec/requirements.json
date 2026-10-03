@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs トークン残量モニタ",
     "name_en": "LLMs Token Usage Monitor",
-    "version": "1.11.0",
-    "package_filename": "LLMs-Monitor-v1.11.0.zip",
+    "version": "1.12.0",
+    "package_filename": "LLMs-Monitor-v1.12.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -3150,6 +3150,36 @@
       ],
       "known_limitations": [
         "Live account rendering remains subject to official ChatGPT page/API changes and requires manual browser verification."
+      ]
+    },
+    {
+      "id": "CHATGPT-RESET-003",
+      "category": "chatgpt_usage",
+      "introduced_in": "1.12.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "ChatGPTの残量はバックグラウンドAPIを正本とし、使用量画面DOMはリセット権期限など補足情報だけを追加して、同じ利用枠を交互に上書きしてはならない。",
+      "source_requirements": [
+        "User report: ChatGPT remaining alternated between 52% and 69% after reset-expiry fix"
+      ],
+      "acceptance_criteria": [
+        "ChatGPT DOM SNAPSHOTのwindowsは保存対象から除外する。",
+        "DOMのリセット権種別・有効期限・プランはAPIスナップショットへ統合する。",
+        "ChatGPTの履歴へAPI値とDOM値が交互に記録されない。",
+        "ClaudeとGeminiのDOM利用枠取得は従来どおり維持する。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/background.js",
+          "symbol": "SNAPSHOT/parsedWindows"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "release-1120.test.cjs",
+          "procedure": "Verify ChatGPT DOM windows are excluded while DOM extras remain accepted."
+        }
       ]
     }
   ]
