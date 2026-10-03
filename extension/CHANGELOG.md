@@ -4,6 +4,12 @@
 
 <a id="en"></a>
 
+## 1.14.0 beta
+
+- Preserved a verified ChatGPT reset-entitlement expiry across partial DOM/API snapshots while clearing it on an explicit zero count.
+- Restored the ticket icon only for available reset entitlements and matched the reset-row font size to other details.
+- Linked credit-related details for ChatGPT, Claude, and Gemini to each provider’s official usage settings.
+
 ## 1.13.0 beta
 
 - Linked ChatGPT credit labels and balances to the official usage settings.
@@ -60,6 +66,12 @@ Version 1.5.3 and earlier focused on plan retrieval, persistent change history, 
 ---
 
 <a id="ja"></a>
+
+## 1.14.0 β
+
+- 確認済みのChatGPTリセット権期限をDOM／APIの部分更新後も保持し、公式の0件取得時だけ破棄します。
+- 🎫を利用可能時だけ表示し、リセット行の文字サイズを他の補足情報と統一しました。
+- ChatGPT／Claude／Geminiのクレジット関連情報を各社公式設定へリンクしました。
 
 ## 1.13.0 β
 

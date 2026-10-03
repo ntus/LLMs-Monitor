@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs トークン残量モニタ",
     "name_en": "LLMs Token Usage Monitor",
-    "version": "1.13.0",
-    "package_filename": "LLMs-Monitor-v1.13.0.zip",
+    "version": "1.14.0",
+    "package_filename": "LLMs-Monitor-v1.14.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -3210,6 +3210,45 @@
           "type": "automated",
           "coverage": "release-1130.test.cjs",
           "procedure": "Verify linked available/none states, linked credit fields, exact compact label, no emoji, and no capture timestamp."
+        }
+      ]
+    },
+    {
+      "id": "CHATGPT-RESET-005",
+      "category": "chatgpt_usage",
+      "introduced_in": "1.14.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "ChatGPTの既知の利用上限リセット期限を部分更新で失わず、利用可能時だけチケットアイコンを表示し、全サービスのクレジット関連情報を公式設定へリンクする。",
+      "source_requirements": [
+        "User report: reset expiry regressed to unavailable; request ticket icon only when available, normal font size, and Claude/Gemini credit links"
+      ],
+      "acceptance_criteria": [
+        "未来の既知期限はAPIまたはDOMの期限欠落・件数不明更新後も保持する。",
+        "公式の利用可能数0は古い期限を保持しない。",
+        "利用可能なリセット権だけに🎫を表示する。",
+        "リセット行は他の補足情報と同じフォントサイズを継承する。",
+        "ClaudeとGeminiを含むクレジット関連名・値を各社公式設定へリンクする。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/state.js",
+          "symbol": "accept/reset metadata merge"
+        },
+        {
+          "path": "extension/parser.js",
+          "symbol": "chatGPTReset/bodyExpiry"
+        },
+        {
+          "path": "extension/shared.js",
+          "symbol": "extras/provider credit links"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "state.test.cjs / parser.test.cjs / release-1140.test.cjs",
+          "procedure": "Verify durable expiry, explicit zero clearing, full-page fallback, conditional icon, inherited font size, and provider-specific credit links."
         }
       ]
     }
