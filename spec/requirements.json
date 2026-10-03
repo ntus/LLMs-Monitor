@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs トークン残量モニタ",
     "name_en": "LLMs Token Usage Monitor",
-    "version": "1.14.0",
-    "package_filename": "LLMs-Monitor-v1.14.0.zip",
+    "version": "1.15.0",
+    "package_filename": "LLMs-Monitor-v1.15.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -3250,6 +3250,53 @@
           "coverage": "state.test.cjs / parser.test.cjs / release-1140.test.cjs",
           "procedure": "Verify durable expiry, explicit zero clearing, full-page fallback, conditional icon, inherited font size, and provider-specific credit links."
         }
+      ]
+    },
+    {
+      "id": "UI-RESET-006",
+      "category": "presentation",
+      "introduced_in": "1.15.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "リセット期限の警告枠を重ねず、ゲージ内のリセット時刻と残り時間を狭い幅でも重ならないよう表示する。ChatGPTリセット権期限は公式DOMの表示文と期限属性にある日本語・英語・ISO・epoch形式から取得し、期限が欠落した部分更新では既知の未来期限を保つ。",
+      "source_requirements": [
+        "User report: gauge reset label and countdown overlap intermittently",
+        "User report: reset date and countdown receive duplicate warning outlines",
+        "User report: ChatGPT reset entitlement expiry repeatedly displays as unavailable"
+      ],
+      "acceptance_criteria": [
+        "Near-deadline styling creates one warning frame around the countdown and never a second surrounding reset container frame.",
+        "The gauge reset timestamp and countdown fit within the inner dial width at narrow and fullscreen sizes without crossing the gauge ring or value text.",
+        "ChatGPT reset expiry is parsed from Japanese and English visible text, ISO date text, aria/title/datetime and expiry data attributes, and epoch seconds or milliseconds when associated with expiry attributes.",
+        "An API or DOM partial update missing an expiry retains the previously verified future expiry; an official zero entitlement clears it."
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/shared.js",
+          "symbol": "resetSuffix/decorate/widget reset markup"
+        },
+        {
+          "path": "extension/style-v1150.css",
+          "symbol": "single countdown alert frame and bounded gauge reset layout"
+        },
+        {
+          "path": "extension/parser.js",
+          "symbol": "expiryTime/chatGPTReset"
+        },
+        {
+          "path": "extension/state.js",
+          "symbol": "reset entitlement merge"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "parser.test.cjs / state.test.cjs / release-1150.test.cjs",
+          "procedure": "Use synthetic DOM and state snapshots to cover locale/date attribute parsing, epoch formats, retained expiry, zero entitlement clearing, and single-frame reset styles across shared surfaces."
+        }
+      ],
+      "known_limitations": [
+        "Live ChatGPT account markup and the actual expiry visible in the user account were not available to this build session; verify the provider renders one of the supported visible text or attribute formats in Chrome/Edge."
       ]
     }
   ]
