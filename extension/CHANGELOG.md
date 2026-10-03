@@ -4,6 +4,12 @@
 
 <a id="en"></a>
 
+## 1.13.0 beta
+
+- Linked ChatGPT credit labels and balances to the official usage settings.
+- Shortened the full-reset row to `Full reset (week+5h)`, linked both reset actions, and added an explicit linked no-entitlement state.
+- Removed the decorative ticket emoji and redundant per-card capture timestamp.
+
 ## 1.12.0 beta
 
 - Stopped ChatGPT DOM usage values from overwriting the background API values and oscillating between two percentages.
@@ -54,6 +60,12 @@ Version 1.5.3 and earlier focused on plan retrieval, persistent change history, 
 ---
 
 <a id="ja"></a>
+
+## 1.13.0 β
+
+- ChatGPTのクレジット名・残高を公式使用量設定へリンクしました。
+- 完全リセットを `完全リセット(週+5h)` の1行へ短縮し、リセット権なしもリンク付きで明示します。
+- チケット絵文字と重複する取得日時を削除しました。
 
 ## 1.12.0 β
 

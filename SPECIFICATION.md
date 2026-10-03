@@ -4,7 +4,7 @@
 
 <a id="en"></a>
 
-Document revision: 1.0 · Product version: **1.12.0** · Web companion: `https://llmsmonitor.ntusnog.chatgpt.site/`
+Document revision: 1.0 · Product version: **1.13.0** · Web companion: `https://llmsmonitor.ntusnog.chatgpt.site/`
 
 This English section defines the implementation contract for the beta. The [Japanese section](#ja) contains the full historical and field-level acceptance criteria. Implementers must read both sections and every ID in [`spec/requirements.json`](spec/requirements.json); neither translation overrides the other.
 
@@ -36,7 +36,7 @@ Tips and NEWS must include the primary-source HTTPS link, publisher, and date. R
 
 ## 5. Code, build, and release contract
 
-`extension/` is authoritative. `background.js`, `fetchers.js`, `parser.js`, `state.js`, and `history.js` acquire and normalize data; `shared.js`, `preferences.js`, `locale.js`, `advice.js`, and CSS render the common surfaces. `build.py` copies shared assets to `dist/`, synchronizes documentation into the extension package, cache-busts public assets, and creates `dist/LLMs-Monitor-v1.12.0.zip`. Manifest, UI, ZIP, specification, and store checklist versions must agree. Chrome Web Store/Edge Add-ons review is necessary for installation without developer mode; the ZIP alone does not provide that. Future native macOS, Windows, iOS, and Android apps should reuse the normalized data contracts and analysis rules through platform-specific authentication/window adapters; those apps are not part of this release.
+`extension/` is authoritative. `background.js`, `fetchers.js`, `parser.js`, `state.js`, and `history.js` acquire and normalize data; `shared.js`, `preferences.js`, `locale.js`, `advice.js`, and CSS render the common surfaces. `build.py` copies shared assets to `dist/`, synchronizes documentation into the extension package, cache-busts public assets, and creates `dist/LLMs-Monitor-v1.13.0.zip`. Manifest, UI, ZIP, specification, and store checklist versions must agree. Chrome Web Store/Edge Add-ons review is necessary for installation without developer mode; the ZIP alone does not provide that. Future native macOS, Windows, iOS, and Android apps should reuse the normalized data contracts and analysis rules through platform-specific authentication/window adapters; those apps are not part of this release.
 
 Run `node --test tests/*.test.cjs`, `python3 build.py --package`, ZIP-content and version checks, and UI smoke checks. Test sign-in/sign-out, refresh fallback, every display surface, language/theme/opacity, deadline boundaries, history retention, and service visibility/order on actual Chrome and Edge installations before claiming live-account acceptance. Keep the Site's existing audience unless the user explicitly changes it. See the [Japanese detailed specification](#ja) and [requirements ledger](spec/requirements.json) for every acceptance case.
 
@@ -53,7 +53,7 @@ Human-readable documentation must start in English and place Japanese in the lat
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.12.0
+対象製品版: 1.13.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -785,7 +785,7 @@ Document Picture-in-Pictureには以下の制約がある。
 
 - ストア提出ZIPの形式は `LLMs-Token-Usage-Monitor-v{semver}.zip` とする。
 - 旧名称をZIP、拡張機能名、HTMLタイトルに使わない。
-- 対象版では `LLMs-Monitor-v1.12.0.zip` とする。
+- 対象版では `LLMs-Monitor-v1.13.0.zip` とする。
 - Manifest、UI定数、HTMLフッター、ダウンロードリンク、版別CSS、ZIP名のバージョンを一致させる。
 - バージョンはSemantic Versioningを使う。
 
@@ -1031,7 +1031,7 @@ README、本仕様、AGENTS、PRIVACY、ストア提出資料、Webプライバ�
 3. 実アカウントでのChrome/Edge手動確認を終える。
 4. 通常画面、フルスクリーン、サイト内パネル、通常小窓、PiPの表示を確認する。
 5. プライバシー文書とストア権限説明が実装と一致する。
-6. `LLMs-Monitor-v1.12.0.zip` が再現可能に生成され、内容を検査済みである。
+6. `LLMs-Monitor-v1.13.0.zip` が再現可能に生成され、内容を検査済みである。
 7. 公開Webアプリとストア提出パッケージの名称、バージョン、接続originが一致する。
 
 
@@ -1163,3 +1163,12 @@ ChatGPT usage windows use the background `wham/usage` response as their authorit
 ### 日本語
 
 ChatGPTの現在枠・週間枠は、バックグラウンドの `wham/usage` 応答を正本とする。公式使用量画面のDOMスナップショットは、契約プラン、リセット権種別、可視テキストの有効期限など補足情報を追加できるが、現在枠・週間枠の割合を上書きしない。これによりAPI値とDOM値の交互観測による偽の数値変化、通知音、履歴追加を防止する。ClaudeとGeminiのDOM利用枠処理は変更しない。
+
+
+## 41. v1.13.0 beta: concise linked ChatGPT details
+
+The ChatGPT details section links the credit label and value to the official usage settings. An available full reset is rendered on one compact line as `Full reset (week+5h)`, the linked availability action, and its compact expiry. When no entitlement exists, the section explicitly shows a linked `No usage-limit reset` state. Decorative ticket emoji and the redundant per-card capture timestamp are omitted.
+
+### 日本語
+
+ChatGPTの補足情報では、クレジット名と残高を公式使用量設定へリンクする。利用可能な完全リセットは `完全リセット(週+5h)`、リンク付きの利用可能表示、短縮期限を1行にまとめる。権利がない場合は、公式設定へのリンク付きで「利用上限のリセットなし」と明示する。装飾用のチケット絵文字と、カード内で重複する取得日時は表示しない。

@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs トークン残量モニタ",
     "name_en": "LLMs Token Usage Monitor",
-    "version": "1.12.0",
-    "package_filename": "LLMs-Monitor-v1.12.0.zip",
+    "version": "1.13.0",
+    "package_filename": "LLMs-Monitor-v1.13.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -3179,6 +3179,37 @@
           "type": "automated",
           "coverage": "release-1120.test.cjs",
           "procedure": "Verify ChatGPT DOM windows are excluded while DOM extras remain accepted."
+        }
+      ]
+    },
+    {
+      "id": "CHATGPT-RESET-004",
+      "category": "chatgpt_usage",
+      "introduced_in": "1.13.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "ChatGPTのクレジットと利用上限リセット状態を公式使用量設定へのリンク付きで簡潔に表示し、権利がない状態を明示して、重複する取得日時を表示しない。",
+      "source_requirements": [
+        "User request: compact linked reset state, linked credits, explicit no-entitlement state, and no capture timestamp"
+      ],
+      "acceptance_criteria": [
+        "完全リセットを「完全リセット(週+5h)」と表示し、装飾用チケット絵文字を表示しない。",
+        "完全リセット名と［利用可能］を同じ公式設定先へリンクする。",
+        "権利が0件または存在しない場合は「利用上限のリセットなし」を公式設定先へのリンク付きで表示する。",
+        "ChatGPTのクレジット名と値を公式設定先へリンクする。",
+        "補足情報末尾の取得日時を表示しない。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/shared.js",
+          "symbol": "extras/compactExpiry"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "release-1130.test.cjs",
+          "procedure": "Verify linked available/none states, linked credit fields, exact compact label, no emoji, and no capture timestamp."
         }
       ]
     }
