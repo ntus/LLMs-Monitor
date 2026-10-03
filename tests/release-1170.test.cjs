@@ -4,11 +4,12 @@ const fs=require('node:fs');
 const read=path=>fs.readFileSync(path,'utf8');
 require('../extension/parser.js');
 require('../extension/intelligence.js');
-test('existing ChatGPT usage tabs are reloaded once after package update',()=>{
+test('existing ChatGPT usage tabs with a missing reader are recovered only when the API lacks the expiry',()=>{
  const background=read('extension/background.js');
- assert.match(background,/details\.reason==='update'/);
+ assert.match(background,/needsChatGPTEntitlementRead\(snapshot\)/);
  assert.match(background,/chrome\.tabs\.query\(\{url:'https:\/\/chatgpt\.com\/settings\/usage\*'\}\)/);
  assert.match(background,/chrome\.tabs\.reload\(tab\.id\)/);
+ assert.match(background,/readerReloadedAt\.get\(tab\.id\)/);
 });
 test('floating primary changed digits inherit their full size in normal and pinned windows',()=>{
  const css=read('extension/style-v152.css');
@@ -20,7 +21,8 @@ test('AI tools reuse LLM cards and hide only in fullscreen',()=>{
  const before=html.slice(html.indexOf('class="llm-directory tool-directory"'),html.indexOf('aria-labelledby="llm-directory-title"'));
  assert(before.includes('>各種AIツール</h2>'));
  assert(before.includes('class="llm-directory-grid tool-directory-grid"'));
- assert.equal((before.match(/<article>/g)||[]).length,11);
+ assert.equal((before.match(/<article>/g)||[]).length,10);
+ assert(!before.includes('https://www.bridgebench.ai/leaderboard'));
  assert(before.includes('https://www.bridgebench.ai/nerf-bench'));
  assert.match(before,/<h3><a href="https:\/\/www\.bridgebench\.ai\/nerf-bench"/);
  assert.match(css,/html:fullscreen \.tool-directory\{display:none!important\}/);
@@ -31,4 +33,9 @@ test('ChatGPT official card wording remains parseable',()=>{
  const tab={id:'a',textContent:'利用可能 1'},panel={id:'p',innerText:'完全リセット（週間＋5 時間） 有効期限：10月30日',getAttribute:key=>key==='aria-labelledby'?'a':null,querySelectorAll:()=>[]};
  const page={querySelectorAll:s=>s==='[role="tab"]'?[tab]:s==='[role="tabpanel"]'?[panel]:[],body:{innerText:'利用上限のリセット 利用可能 1'}};
  assert.match(GlanceParser.chatGPTReset(page).officialText,/10月30日/);
+});
+test('dormant ChatGPT usage tabs are recovered and expiry can be read without a permanently open tab',()=>{
+ const background=read('extension/background.js'),content=read('extension/content.js');
+ for(const token of ['needsChatGPTEntitlementRead','GLANCE_USAGE_READER_PING','GLANCE_USAGE_READER_READ','chrome.tabs.reload(tab.id)','chrome.tabs.create({url:URLS.chatgpt,active:false})','closeTemporaryUsageTab'])assert(background.includes(token));
+ for(const token of ['GLANCE_USAGE_READER_PING','GLANCE_USAGE_READER_READ'])assert(content.includes(token));
 });

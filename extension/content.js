@@ -26,6 +26,7 @@ async function read(){pending=false;if(Date.now()-lastRead<1500)return;lastRead=
  const sig=JSON.stringify({windows,extras,plan,status,path:location.href});if(sig===lastSignature)return;lastSignature=sig;
  try{await chrome.runtime.sendMessage({type:'SNAPSHOT',service,windows,extras,plan,status})}catch{}
 }
+chrome.runtime.onMessage.addListener((message,_,reply)=>{if(message?.type==='GLANCE_USAGE_READER_PING'){reply({ready:true,usagePage:onUsage()});return false}if(message?.type==='GLANCE_USAGE_READER_READ'){lastRead=0;lastSignature='';read().then(()=>reply({ready:true}),()=>reply({ready:false}));return true}return false});
 const observer=new MutationObserver(()=>{if(!pending){pending=true;setTimeout(read,1800)}});observer.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['aria-valuenow','aria-valuetext']});
 window.addEventListener('hashchange',()=>{lastSignature='';read()});const interval=setInterval(()=>{draw();read()},2000);draw();setTimeout(read,2500);
 })();

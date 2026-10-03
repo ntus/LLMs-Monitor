@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs トークン残量モニタ",
     "name_en": "LLMs Token Usage Monitor",
-    "version": "1.17.1",
-    "package_filename": "LLMs-Monitor-v1.17.1.zip",
+    "version": "1.18.0",
+    "package_filename": "LLMs-Monitor-v1.18.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -3483,7 +3483,7 @@
       "introduced_in": "1.17.0",
       "status": "implemented",
       "priority": "SHOULD",
-      "normative_requirement": "各種LLM欄の前に「各種AIツール」を同じレスポンシブカード構造で表示し、10件の編集上のおすすめとNerf Benchを11番目に掲載する。フルスクリーンではツール欄を非表示にする。Nerf Bench速報監視は停止する。",
+      "normative_requirement": "各種LLM欄の前に「各種AIツール」を同じレスポンシブカード構造で表示し、おすすめ9件とNerf Benchを10番目に掲載する。フルスクリーンではツール欄を非表示にする。Nerf Bench速報監視は停止する。",
       "source_requirements": [
         "User request for top ten tool links, individual icons and Nerf Bench link-only."
       ],
@@ -3516,7 +3516,7 @@
         {
           "type": "automated",
           "coverage": "release-1170.test.cjs / intelligence-worker.test.mjs",
-          "procedure": "Verify eleven cards, shared grid, fullscreen hide rule, and no Nerf monitoring."
+          "procedure": "Verify ten cards, shared grid, fullscreen hide rule, and no Nerf monitoring."
         }
       ]
     },
@@ -3532,7 +3532,7 @@
       ],
       "acceptance_criteria": [
         "見出しは「各種AIツール」。",
-        "通常画面では11カードを表示する。",
+        "通常画面では10カードを表示する。",
         "フルスクリーンではツール欄を隠し、残量カードと履歴は維持する。"
       ],
       "implementation_evidence": [
@@ -3549,7 +3549,74 @@
         {
           "type": "automated",
           "coverage": "release-1170.test.cjs",
-          "procedure": "Verify title, 11 cards, shared layout classes, and fullscreen selector."
+          "procedure": "Verify title, 10 cards, shared layout classes, and fullscreen selector."
+        }
+      ]
+    },
+    {
+      "id": "CHATGPT-RESET-009",
+      "category": "acquisition",
+      "introduced_in": "1.18.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "ChatGPTのリセット権が利用可能なのにAPIが期限を返さないとき、開いている公式使用状況タブのDOM読み取りを確認して復旧し、タブがない場合は一時的な非アクティブタブから公式原文と期限を取得する。期限を推測しない。",
+      "source_requirements": [
+        "User report: reset entitlement expiry remains unavailable despite a visible official expiry."
+      ],
+      "acceptance_criteria": [
+        "読み取りスクリプトのない既存の使用状況タブは1回再読込して復旧する。",
+        "既存タブに読み取りスクリプトがあれば再読取を依頼する。",
+        "タブがない場合は一時的な公式タブを取得後または45秒後に閉じる。",
+        "期限未取得を推測値に置き換えない。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/background.js",
+          "symbol": "ensureChatGPTUsageReader"
+        },
+        {
+          "path": "extension/content.js",
+          "symbol": "GLANCE_USAGE_READER_PING/READ"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "release-1170.test.cjs / parser.test.cjs",
+          "procedure": "Verify recovery controls and realistic official reset wording."
+        }
+      ]
+    },
+    {
+      "id": "AI-TOOLS-003",
+      "category": "directory",
+      "introduced_in": "1.18.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "各種AIツールは1～9位と10番目のNerf Benchの計10カードとし、旧10番目のBridgeBench単独カードを削除する。",
+      "source_requirements": [
+        "User request: remove item ten and put NerfBench after the top nine."
+      ],
+      "acceptance_criteria": [
+        "カード数は10件。",
+        "Nerf Benchが10番目。",
+        "BridgeBench leaderboardカードは存在しない。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/index.html",
+          "symbol": "tool-directory-grid"
+        },
+        {
+          "path": "extension/locale.js",
+          "symbol": "tool10Description"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "release-1170.test.cjs",
+          "procedure": "Verify ten cards and Nerf Bench tenth."
         }
       ]
     }
