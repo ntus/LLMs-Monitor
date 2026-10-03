@@ -1,17 +1,16 @@
 const ACCOUNTS={
  OpenAI:{provider:'openai',role:'official'},OpenAIDevs:{provider:'openai',role:'official'},ChatGPTapp:{provider:'openai',role:'official'},OpenAINewsroom:{provider:'openai',role:'official'},
- thsottiaux:{provider:'openai',role:'staff'},AnthropicAI:{provider:'anthropic',role:'official'},claudeai:{provider:'anthropic',role:'official'},GoogleAI:{provider:'google',role:'official'},GeminiApp:{provider:'google',role:'official'},
- bridgemindai:{provider:'bridgebench',role:'independent'},bridgebench:{provider:'bridgebench',role:'independent'}
+ thsottiaux:{provider:'openai',role:'staff'},AnthropicAI:{provider:'anthropic',role:'official'},claudeai:{provider:'anthropic',role:'official'},GoogleAI:{provider:'google',role:'official'},GeminiApp:{provider:'google',role:'official'}
 };
 const QUERY=`(${Object.keys(ACCOUNTS).map(name=>`from:${name}`).join(' OR ')}) -is:retweet`;
-const SIGNALS={reset:/\breset(?:s|ting)?\b|リセット|refresh(?:ed)?\s+(?:the\s+)?(?:limit|quota)/i,usage:/usage\s+(?:limit|cap|quota)|rate\s*limit|token\s+(?:limit|cap|quota)|credit(?:s)?|利用(?:量|枠|上限)|上限|クレジット|quota|allowance/i,nerf:/\bnerf(?:ed|ing)?\b|nerf\s*bench|launch\s+power|model\s+power|性能(?:低下|劣化)/i,recovery:/\brecover(?:ed|y)?\b|restor(?:ed|ing)|復旧|回復/i};
+const SIGNALS={reset:/\breset(?:s|ting)?\b|リセット|refresh(?:ed)?\s+(?:the\s+)?(?:limit|quota)/i,usage:/usage\s+(?:limit|cap|quota)|rate\s*limit|token\s+(?:limit|cap|quota)|credit(?:s)?|利用(?:量|枠|上限)|上限|クレジット|quota|allowance/i,recovery:/\brecover(?:ed|y)?\b|restor(?:ed|ing)|復旧|回復/i};
 const clean=value=>String(value??'').replace(/\s+/g,' ').trim().slice(0,360);
 function power(text){for(const match of String(text).matchAll(/(\d{2,3}(?:\.\d+)?)\s*%/g)){const value=Number(match[1]);if(value>=0&&value<=200)return value}return null}
 function classify(post,user,now=Date.now()){
  const text=clean(post.text),account=String(user?.username||''),config=ACCOUNTS[account];if(!config)return null;
- let kind='';if(config.provider==='bridgebench'&&SIGNALS.nerf.test(text))kind='nerf';else if(SIGNALS.reset.test(text))kind='reset';else if(SIGNALS.usage.test(text))kind='usage';else if(SIGNALS.recovery.test(text)&&(SIGNALS.usage.test(text)||SIGNALS.nerf.test(text)))kind='recovery';else return null;
- const currentPower=kind==='nerf'?power(text):null,severity=kind==='nerf'&&currentPower!==null&&currentPower<90?'critical':kind==='nerf'||kind==='reset'||kind==='usage'?'warning':'info';
- return {id:String(post.id),provider:config.provider,kind,severity,account:`@${account}${config.role==='staff'?' · OpenAI staff':config.role==='independent'?' · independent benchmark':' · official'}`,title:kind==='nerf'?'NerfBench model-power update':kind==='reset'?'Usage reset update':'Usage-limit update',summary:text,url:`https://x.com/${account}/status/${post.id}`,publishedAt:Date.parse(post.created_at)||now,detectedAt:now,currentPower};
+ let kind='';if(SIGNALS.reset.test(text))kind='reset';else if(SIGNALS.usage.test(text))kind='usage';else if(SIGNALS.recovery.test(text)&&SIGNALS.usage.test(text))kind='recovery';else return null;
+ const currentPower=null,severity=kind==='reset'||kind==='usage'?'warning':'info';
+ return {id:String(post.id),provider:config.provider,kind,severity,account:`@${account}${config.role==='staff'?' · OpenAI staff':' · official'}`,title:kind==='reset'?'Usage reset update':'Usage-limit update',summary:text,url:`https://x.com/${account}/status/${post.id}`,publishedAt:Date.parse(post.created_at)||now,detectedAt:now,currentPower};
 }
 async function readFeed(env){const value=await env.INTELLIGENCE_CACHE?.get('feed','json');return value&&Array.isArray(value.alerts)?value:{status:'unconfigured',checkedAt:0,alerts:[]}}
 async function refresh(env){

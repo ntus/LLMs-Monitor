@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs トークン残量モニタ",
     "name_en": "LLMs Token Usage Monitor",
-    "version": "1.16.0",
-    "package_filename": "LLMs-Monitor-v1.16.0.zip",
+    "version": "1.17.0",
+    "package_filename": "LLMs-Monitor-v1.17.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -3059,7 +3059,7 @@
       "id": "INTELLIGENCE-001",
       "category": "notification",
       "introduced_in": "1.10.0",
-      "status": "external_action_required",
+      "status": "superseded_in_part",
       "priority": "MUST",
       "normative_requirement": "Tibo氏、OpenAI・Anthropic・Googleの公式Xアカウント、BridgeMind / BridgeBenchをサーバー側X APIで1分ごとに確認し、リセット、利用枠、クレジット、NerfBenchのモデル性能変化に関係する新着だけを通知しなければならない。Tibo氏はOpenAIスタッフ、NerfBenchは独立ベンチマークと表示し、公式利用量と混同してはならない。",
       "source_requirements": [
@@ -3112,7 +3112,8 @@
       ],
       "known_limitations": [
         "Live X monitoring remains unconfigured until an approved X developer credential, KV binding, one-minute cron, and same-origin worker deployment are supplied.",
-        "NerfBench currently exposes no verified public API or dedicated result feed; v1.10.0 uses relevant BridgeMind/BridgeBench X announcements and does not scrape its Cloudflare-protected page."
+        "NerfBench currently exposes no verified public API or dedicated result feed; v1.10.0 uses relevant BridgeMind/BridgeBench X announcements and does not scrape its Cloudflare-protected page.",
+        "As of v1.17.0 the Nerf Bench monitoring clauses are superseded by AI-TOOLS-001; only a direct link remains. Provider/Tibo X usage alerts remain unchanged."
       ]
     },
     {
@@ -3306,11 +3307,38 @@
       "status": "implemented",
       "priority": "MUST",
       "normative_requirement": "ChatGPT公式画面で確認したリセット権の種別と有効期限の原文を利用可能件数の下に1行表示し、期限を欠く部分更新では未来の原文と期限を保持する。",
-      "source_requirements": ["User report: reset entitlement repeatedly loses expiry and asks for the exact official wording on a second line"],
-      "acceptance_criteria": ["公式画面の原文は1行で表示され、全文はtitle属性から確認できる。", "API部分更新で原文を消さず、公式の利用可能数0では消す。", "原文未取得時に期限を推測しない。"],
-      "implementation_evidence": [{"path":"extension/parser.js","symbol":"chatGPTReset/officialText"},{"path":"extension/state.js","symbol":"accept/reset metadata merge"},{"path":"extension/shared.js","symbol":"extras/entitlement-official"}],
-      "test_evidence": [{"type":"automated","coverage":"parser.test.cjs / state.test.cjs / release-1160.test.cjs","procedure":"Synthetic official wording, partial API refresh, explicit zero and second-line rendering."}],
-      "known_limitations": ["The exact visible wording requires the official ChatGPT usage page to render in a signed-in browser tab."]
+      "source_requirements": [
+        "User report: reset entitlement repeatedly loses expiry and asks for the exact official wording on a second line"
+      ],
+      "acceptance_criteria": [
+        "公式画面の原文は1行で表示され、全文はtitle属性から確認できる。",
+        "API部分更新で原文を消さず、公式の利用可能数0では消す。",
+        "原文未取得時に期限を推測しない。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/parser.js",
+          "symbol": "chatGPTReset/officialText"
+        },
+        {
+          "path": "extension/state.js",
+          "symbol": "accept/reset metadata merge"
+        },
+        {
+          "path": "extension/shared.js",
+          "symbol": "extras/entitlement-official"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "parser.test.cjs / state.test.cjs / release-1160.test.cjs",
+          "procedure": "Synthetic official wording, partial API refresh, explicit zero and second-line rendering."
+        }
+      ],
+      "known_limitations": [
+        "The exact visible wording requires the official ChatGPT usage page to render in a signed-in browser tab."
+      ]
     },
     {
       "id": "CLAUDE-005",
@@ -3319,11 +3347,34 @@
       "status": "implemented",
       "priority": "MUST",
       "normative_requirement": "同じ有効セッションでClaude公式画面が正の残量を示している間、矛盾するAPIの0%で現在値を上書きせず、履歴や通知を生成しない。",
-      "source_requirements": ["User screenshots show 0% in the monitor while the official usage page shows 2% used, followed by 98% in the monitor."],
-      "acceptance_criteria": ["API 0%と公式DOM 98%が競合した場合は98%を保持する。", "公式DOMも0%を示した場合は0%を表示する。", "抑止された0%は履歴や通知の対象としない。"],
-      "implementation_evidence": [{"path":"extension/state.js","symbol":"accept/Claude API zero conflict"},{"path":"extension/background.js","symbol":"accept/changeLevel after merge"}],
-      "test_evidence": [{"type":"automated","coverage":"state.test.cjs","procedure":"Replay a 98% DOM snapshot, a contradictory 0% API snapshot, and an official 0% confirmation."}],
-      "known_limitations": ["The private account API response was not available to this build; the exact upstream reason for the conflict is unverified."]
+      "source_requirements": [
+        "User screenshots show 0% in the monitor while the official usage page shows 2% used, followed by 98% in the monitor."
+      ],
+      "acceptance_criteria": [
+        "API 0%と公式DOM 98%が競合した場合は98%を保持する。",
+        "公式DOMも0%を示した場合は0%を表示する。",
+        "抑止された0%は履歴や通知の対象としない。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/state.js",
+          "symbol": "accept/Claude API zero conflict"
+        },
+        {
+          "path": "extension/background.js",
+          "symbol": "accept/changeLevel after merge"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "state.test.cjs",
+          "procedure": "Replay a 98% DOM snapshot, a contradictory 0% API snapshot, and an official 0% confirmation."
+        }
+      ],
+      "known_limitations": [
+        "The private account API response was not available to this build; the exact upstream reason for the conflict is unverified."
+      ]
     },
     {
       "id": "SOUND-002",
@@ -3332,10 +3383,136 @@
       "status": "implemented",
       "priority": "MUST",
       "normative_requirement": "数値変化後の残量が5%以下または1%以下の場合、通常音とは異なる穏やかな二音の警告を段階別に最大3回鳴らす。",
-      "source_requirements": ["User request: distinct non-harsh sounds at 5% and 1% remaining"],
-      "acceptance_criteria": ["5%以下と1%以下で異なる音程を使う。", "1イベント最大3回、1秒間隔、既存の音量とミュートを維持する。", "同時変化は最も厳しい閾値を採用し、音送出後に新値を公開する。"],
-      "implementation_evidence": [{"path":"extension/offscreen.js","symbol":"changeBeat"},{"path":"extension/sound.js","symbol":"beep"},{"path":"extension/changes.js","symbol":"alertLevel"}],
-      "test_evidence": [{"type":"automated","coverage":"release-1160.test.cjs / release-190.test.cjs","procedure":"Check threshold selection, tone variants and sound-before-publish ordering."}]
+      "source_requirements": [
+        "User request: distinct non-harsh sounds at 5% and 1% remaining"
+      ],
+      "acceptance_criteria": [
+        "5%以下と1%以下で異なる音程を使う。",
+        "1イベント最大3回、1秒間隔、既存の音量とミュートを維持する。",
+        "同時変化は最も厳しい閾値を採用し、音送出後に新値を公開する。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/offscreen.js",
+          "symbol": "changeBeat"
+        },
+        {
+          "path": "extension/sound.js",
+          "symbol": "beep"
+        },
+        {
+          "path": "extension/changes.js",
+          "symbol": "alertLevel"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "release-1160.test.cjs / release-190.test.cjs",
+          "procedure": "Check threshold selection, tone variants and sound-before-publish ordering."
+        }
+      ]
+    },
+    {
+      "id": "CHATGPT-RESET-008",
+      "category": "chatgpt_usage",
+      "introduced_in": "1.17.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "拡張機能更新前から開いているChatGPT使用状況タブでは更新時に一度だけ再読込し、新しい期限取得コードで公式原文を再取得する。確認できない期限を推測しない。",
+      "source_requirements": [
+        "User reports official expiration wording remains pending after more than one hour despite visible provider page."
+      ],
+      "acceptance_criteria": [
+        "更新時に既存の使用状況タブだけを再読込する。",
+        "新規に開いたタブは通常のcontent scriptで読み取る。",
+        "未来の確認済み期限は部分更新で保持する。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/background.js",
+          "symbol": "onInstalled update usage-tab reload"
+        },
+        {
+          "path": "extension/parser.js",
+          "symbol": "chatGPTReset/officialText"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "release-1170.test.cjs / parser.test.cjs / state.test.cjs",
+          "procedure": "Check update-only reload and official card parsing."
+        }
+      ],
+      "known_limitations": [
+        "A closed ChatGPT usage page does not expose its React-rendered entitlement wording through the existing background API. The expiry remains pending until an official usage tab renders it."
+      ]
+    },
+    {
+      "id": "UI-FLOATING-CHANGED-FONT-001",
+      "category": "presentation",
+      "introduced_in": "1.17.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "通常小窓と最前面小窓では数値変化時の点滅spanが親の主数値と同じフォントサイズを維持する。",
+      "source_requirements": [
+        "User report: changed digits shrink only while blinking in floating modes."
+      ],
+      "acceptance_criteria": [
+        "主数値内の点滅spanが親フォントを継承する。",
+        "10秒の数値限定点滅は維持する。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/style-v152.css",
+          "symbol": "floating/pip changed-number specificity"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "release-1170.test.cjs",
+          "procedure": "Check both floating-mode selectors and inherited font declaration."
+        }
+      ]
+    },
+    {
+      "id": "AI-TOOLS-001",
+      "category": "directory",
+      "introduced_in": "1.17.0",
+      "status": "implemented",
+      "priority": "SHOULD",
+      "normative_requirement": "各種LLM欄の前にコンパクトなAIツールリンク集を1サービス1行で表示し、10件の編集上のおすすめとNerf Benchを11番目に掲載する。Nerf Bench速報監視は停止する。",
+      "source_requirements": [
+        "User request for top ten tool links, individual icons and Nerf Bench link-only."
+      ],
+      "acceptance_criteria": [
+        "各行にアイコン、外部製品リンク、短い説明を表示する。",
+        "日英を切り替える。",
+        "BridgeBench/NerfのX投稿を速報対象から除外する。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/index.html",
+          "symbol": "tool-directory"
+        },
+        {
+          "path": "extension/locale.js",
+          "symbol": "tool descriptions"
+        },
+        {
+          "path": "server/intelligence-worker.mjs",
+          "symbol": "ACCOUNTS/QUERY"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "release-1170.test.cjs / intelligence-worker.test.mjs",
+          "procedure": "Verify 11 links and no Nerf monitoring."
+        }
+      ]
     }
   ]
 }

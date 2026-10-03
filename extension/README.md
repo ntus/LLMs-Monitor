@@ -12,9 +12,9 @@
 
 This browser companion checks usage from your signed-in provider sessions about once a minute. Large gauges and bars show current and weekly limits, reset times, plans, and available credits. Your change history stays in your browser, with up to 10,000 entries per limit. The interface supports English and Japanese, light and dark themes, fullscreen viewing, and compact floating panels.
 
-Version **1.16.0 beta** shows verified ChatGPT reset-entitlement wording on a separate line, guards Claude's session balance against a contradictory API zero when the official usage page shows a positive balance, and adds distinct gentle alerts at 5% and 1% remaining.
+Version **1.17.0 beta** adds a compact AI-tool directory, keeps Nerf Bench link-only, refreshes already-open ChatGPT usage tabs after extension updates, and fixes shrinking numbers during floating alerts. The prior release shows verified ChatGPT reset-entitlement wording on a separate line, guards Claude's session balance against a contradictory API zero when the official usage page shows a positive balance, and adds distinct gentle alerts at 5% and 1% remaining.
 
-[Product site](https://llmsmonitor.ntusnog.chatgpt.site/product.html) · [Open the monitor](https://llmsmonitor.ntusnog.chatgpt.site/) · [Download the beta extension package](dist/LLMs-Monitor-v1.16.0.zip) · [Detailed specification](SPECIFICATION.md) · [Privacy](PRIVACY.md) · [Follow @ntus on X](https://x.com/ntus)
+[Product site](https://llmsmonitor.ntusnog.chatgpt.site/product.html) · [Open the monitor](https://llmsmonitor.ntusnog.chatgpt.site/) · [Download the beta extension package](dist/LLMs-Monitor-v1.17.0.zip) · [Detailed specification](SPECIFICATION.md) · [Privacy](PRIVACY.md) · [Follow @ntus on X](https://x.com/ntus)
 
 ## Basic specifications
 
@@ -30,7 +30,7 @@ Version **1.16.0 beta** shows verified ChatGPT reset-entitlement wording on a se
 ## Quick start
 
 1. Sign in to the services you want to monitor on their official [ChatGPT](https://chatgpt.com/), [Claude](https://claude.ai/), and [Gemini](https://gemini.google.com/) sites in the same Chrome or Edge profile. Enter credentials only on those sites.
-2. Before store approval, run `python3 build.py --package`, unpack `dist/LLMs-Monitor-v1.16.0.zip`, and load the unpacked extension from the browser's extension management page for beta testing. Installing without developer mode requires Chrome Web Store or Edge Add-ons review and publication.
+2. Before store approval, run `python3 build.py --package`, unpack `dist/LLMs-Monitor-v1.17.0.zip`, and load the unpacked extension from the browser's extension management page for beta testing. Installing without developer mode requires Chrome Web Store or Edge Add-ons review and publication.
 3. Open the extension or the [web monitor](https://llmsmonitor.ntusnog.chatgpt.site/). The web monitor asks for your extension ID once. The providers' usage tabs do not need to remain open.
 4. Use **Show and arrange services** to choose and reorder cards. Hidden services continue collecting history. Adjust language, theme, opacity, volume, and fullscreen mode from the controls.
 
@@ -51,11 +51,15 @@ For contributors and future AI-assisted changes, read [AGENTS.md](AGENTS.md), th
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
+## 1.17.0 β
+
+ChatGPTの使用状況画面を開いたまま拡張機能を更新したときは、該当タブを一度再読込してリセット権期限の原文を取り直します。フローティング画面の点滅中も主数値の大きさを維持し、各種LLMの前に便利なAIツール11件のリンク集を追加しました。Nerf Benchは11番目のリンクのみです。
+
 ## 1.16.0 β
 
 ChatGPTのリセット権は、公式画面で確認できた種別と期限の原文を利用可能件数の下に表示します。Claudeの公式画面で残量があるのにAPIだけが0%を返した場合は、矛盾する0%を表示・通知しません。残量5%以下と1%以下には段階別の穏やかな警告音を用意しました。
 
-前版で追加したTibo氏、各社公式X、BridgeMind／NerfBenchの1分周期速報も維持します。X認証情報は拡張機能へ入れず、サーバー側Secretだけで扱います。実データ接続にはX Developer bearer token、サーバーキャッシュ、1分cronの設定が必要です。
+Tibo氏と各社公式Xの1分周期速報を維持します。X認証情報は拡張機能へ入れず、サーバー側Secretだけで扱います。実データ接続にはX Developer bearer token、サーバーキャッシュ、1分cronの設定が必要です。
 
 ## 1.9.0 β
 
@@ -83,7 +87,7 @@ v1.6.4では履歴読込結果と通知音説明を左右ボタン付きのス�
 ### 使い方
 
 1. 同じChromeまたはEdgeプロファイルで [ChatGPT](https://chatgpt.com/)、[Claude](https://claude.ai/)、[Gemini](https://gemini.google.com/) に必要な分だけログインします。パスワードは公式サイトで入力します。
-2. ストア公開前は、このリポジトリで `python3 build.py --package` を実行し、`dist/LLMs-Monitor-v1.16.0.zip` を展開して、ブラウザーの拡張機能管理画面から開発用として読み込みます。一般ユーザーがデベロッパーモードなしで導入するには、Chrome Web Store / Edge Add-ons の審査・公開が必要です。
+2. ストア公開前は、このリポジトリで `python3 build.py --package` を実行し、`dist/LLMs-Monitor-v1.17.0.zip` を展開して、ブラウザーの拡張機能管理画面から開発用として読み込みます。一般ユーザーがデベロッパーモードなしで導入するには、Chrome Web Store / Edge Add-ons の審査・公開が必要です。
 3. 拡張機能の画面、または [公開モニター](https://llmsmonitor.ntusnog.chatgpt.site/) を開きます。公開モニターでは拡張機能IDを一度登録してください。各サービスの使用量タブを開いたままにする必要はありません。
 4. 「表示サービス」からチェックと上下ボタンで表示数・順序を変更します。非表示中も取得と履歴保存は続きます。音、テーマ、言語、透明度、フルスクリーンも画面上で変更できます。
 5. 残量とリセット時刻は公式サービスが返す範囲で表示されます。リセット権は利用可能なら公式利用量ページへ移動できますが、アプリから自動行使しません。出典のあるTips／NEWSはリンクで原文を確認できます。

@@ -5,13 +5,13 @@
  <meta name="viewport" content="width=device-width,initial-scale=1">
  <meta name="theme-color" content="#11151e">
  <title>LLMs モニター</title>
- <link rel="stylesheet" href="style.css?v=1160">
- <link rel="stylesheet" href="style-v151.css?v=1160">
- <link rel="stylesheet" href="style-v152.css?v=1160">
- <link rel="stylesheet" href="style-v153.css?v=1160">
- <link rel="stylesheet" href="style-v160.css?v=1160">
- <link rel="stylesheet" href="style-v161.css?v=1160"><link rel="stylesheet" href="style-v162.css?v=1160"><link rel="stylesheet" href="style-v163.css?v=1160"><link rel="stylesheet" href="style-v164.css?v=1160"><link rel="stylesheet" href="style-v1140.css?v=1160"><link rel="stylesheet" href="style-v1150.css?v=1160"><link rel="stylesheet" href="style-v1160.css?v=1160">
-<link rel="stylesheet" href="app-web.css?v=1160"></head>
+ <link rel="stylesheet" href="style.css?v=1170">
+ <link rel="stylesheet" href="style-v151.css?v=1170">
+ <link rel="stylesheet" href="style-v152.css?v=1170">
+ <link rel="stylesheet" href="style-v153.css?v=1170">
+ <link rel="stylesheet" href="style-v160.css?v=1170">
+ <link rel="stylesheet" href="style-v161.css?v=1170"><link rel="stylesheet" href="style-v162.css?v=1170"><link rel="stylesheet" href="style-v163.css?v=1170"><link rel="stylesheet" href="style-v164.css?v=1170"><link rel="stylesheet" href="style-v1140.css?v=1170"><link rel="stylesheet" href="style-v1150.css?v=1170"><link rel="stylesheet" href="style-v1170.css?v=1170">
+<link rel="stylesheet" href="app-web.css?v=1170"></head>
 <body>
  <header>
   <a class="brand" href="./"><span class="brandmark">◔</span><span><b data-i18n="appTitle">LLMs モニター</b><small>LLMs MONITOR</small></span></a>
@@ -48,6 +48,22 @@
    </div>
    <div class="preview"><div class="preview-toolbar"><span>● ● ●</span><span>LIVE PREVIEW</span></div><div class="preview-paper"><span class="preview-caption" data-i18n="previewCaption">集中を切らさず、残量と履歴を確認。</span><div class="paper-line"></div><div class="paper-line short"></div></div><div id="widget" class="widget bottom-right"></div></div>
   </section>
+  <section class="tool-directory" aria-labelledby="tool-directory-title">
+   <div class="directory-head"><div><p class="eyebrow">AI TOOLKIT</p><h2 id="tool-directory-title" data-i18n="toolDirectory">役立つAIツール</h2><p class="sub" data-i18n="toolDirectoryNote">モデル比較・評価・開発に使えるリンク集。順位は編集上のおすすめ順です。</p></div></div>
+   <ol class="tool-directory-list">
+    <li><span class="tool-rank">01</span><span class="tool-icon" aria-hidden="true">⚔</span><a href="https://arena.ai/leaderboard" target="_blank" rel="noopener noreferrer">LM Arena ↗</a><span class="tool-description" data-i18n="tool1Description">競技形式の投票でモデルの回答品質を比較。</span></li>
+    <li><span class="tool-rank">02</span><span class="tool-icon" aria-hidden="true">◫</span><a href="https://artificialanalysis.ai/" target="_blank" rel="noopener noreferrer">Artificial Analysis ↗</a><span class="tool-description" data-i18n="tool2Description">性能・速度・価格を横断比較。</span></li>
+    <li><span class="tool-rank">03</span><span class="tool-icon" aria-hidden="true">⇄</span><a href="https://openrouter.ai/compare" target="_blank" rel="noopener noreferrer">OpenRouter ↗</a><span class="tool-description" data-i18n="tool3Description">多数のモデルの価格・仕様を比較。</span></li>
+    <li><span class="tool-rank">04</span><span class="tool-icon" aria-hidden="true">🤗</span><a href="https://huggingface.co/models" target="_blank" rel="noopener noreferrer">Hugging Face ↗</a><span class="tool-description" data-i18n="tool4Description">公開モデルを検索・評価・入手。</span></li>
+    <li><span class="tool-rank">05</span><span class="tool-icon" aria-hidden="true">⌂</span><a href="https://ollama.com/" target="_blank" rel="noopener noreferrer">Ollama ↗</a><span class="tool-description" data-i18n="tool5Description">オープンモデルをローカルで実行。</span></li>
+    <li><span class="tool-rank">06</span><span class="tool-icon" aria-hidden="true">✓</span><a href="https://www.promptfoo.dev/" target="_blank" rel="noopener noreferrer">Promptfoo ↗</a><span class="tool-description" data-i18n="tool6Description">プロンプト評価と安全性テストを自動化。</span></li>
+    <li><span class="tool-rank">07</span><span class="tool-icon" aria-hidden="true">⌁</span><a href="https://langfuse.com/" target="_blank" rel="noopener noreferrer">Langfuse ↗</a><span class="tool-description" data-i18n="tool7Description">LLMアプリの実行を追跡・評価。</span></li>
+    <li><span class="tool-rank">08</span><span class="tool-icon" aria-hidden="true">✦</span><a href="https://aistudio.google.com/" target="_blank" rel="noopener noreferrer">Google AI Studio ↗</a><span class="tool-description" data-i18n="tool8Description">GeminiのプロンプトとAPIを試す。</span></li>
+    <li><span class="tool-rank">09</span><span class="tool-icon" aria-hidden="true">▤</span><a href="https://notebooklm.google.com/" target="_blank" rel="noopener noreferrer">NotebookLM ↗</a><span class="tool-description" data-i18n="tool9Description">手元の資料を根拠に要約・質問。</span></li>
+    <li><span class="tool-rank">10</span><span class="tool-icon" aria-hidden="true">⌘</span><a href="https://www.bridgebench.ai/leaderboard" target="_blank" rel="noopener noreferrer">BridgeBench ↗</a><span class="tool-description" data-i18n="tool10Description">AIコーディングモデルの比較表。</span></li>
+    <li><span class="tool-rank">11</span><span class="tool-icon" aria-hidden="true">↘</span><a href="https://www.bridgebench.ai/nerf-bench" target="_blank" rel="noopener noreferrer">Nerf Bench ↗</a><span class="tool-description" data-i18n="tool11Description">公開後のモデル性能変化を見る。</span></li>
+   </ol>
+  </section>
   <section class="llm-directory" aria-labelledby="llm-directory-title">
    <div class="directory-head"><div><p class="eyebrow">LLM DIRECTORY</p><h2 id="llm-directory-title" data-i18n="llmDirectory">各種LLM</h2><p class="sub" data-i18n="llmDirectoryNote">公開Webトラフィックを中心にした利用規模の目安順。組込み利用は順位に反映されにくいため、厳密な市場シェアではありません。</p></div><a href="https://www.similarweb.com/corp/reports/2026-generative-ai-landscape/" target="_blank" rel="noopener noreferrer" class="directory-source" data-i18n="marketSource">順位参考: Similarweb 2026 ↗</a></div>
    <div class="llm-directory-grid">
@@ -64,13 +80,13 @@
    </div>
   </section>
   <section id="setup" class="setup">
-   <div><p class="eyebrow">EXTENSION PACKAGE</p><h2 data-i18n="packageTitle">ストア公開用パッケージ。</h2><p class="sub" data-i18n="desktopFor">Chrome / Edge デスクトップ版。macOS・Windows・Linux共通です。</p><a class="button primary" href="LLMs-Monitor-v1.16.0.zip" download>LLMs Monitor v1.16.0 ↓</a><p class="fine" data-i18n="storeNotice">デベロッパーモードなしの導入には、Chrome Web StoreまたはMicrosoft Edge Add-onsでの審査・公開が必要です。</p></div>
+   <div><p class="eyebrow">EXTENSION PACKAGE</p><h2 data-i18n="packageTitle">ストア公開用パッケージ。</h2><p class="sub" data-i18n="desktopFor">Chrome / Edge デスクトップ版。macOS・Windows・Linux共通です。</p><a class="button primary" href="LLMs-Monitor-v1.17.0.zip" download>LLMs Monitor v1.17.0 ↓</a><p class="fine" data-i18n="storeNotice">デベロッパーモードなしの導入には、Chrome Web StoreまたはMicrosoft Edge Add-onsでの審査・公開が必要です。</p></div>
    <ol><li><strong data-i18n="installStore">ストアから拡張機能を追加</strong></li><li><strong data-i18n="loginOfficial">公式サイトへログイン</strong><form id="connect-form"><input id="extension-id" aria-label="拡張機能ID" placeholder="拡張機能ID（32文字）" pattern="[a-p]{32}" required><button type="submit" data-i18n="connect">接続</button></form></li><li><strong data-i18n="backgroundUpdate">バックグラウンドで自動更新</strong></li></ol>
   </section>
-  <footer><div id="intelligence-main" class="intelligence-host" aria-live="polite"></div><div id="provider-status-main" class="provider-status-host" aria-live="polite"></div><span><a href="https://github.com/ntus/LLMs-Monitor" target="_blank" rel="noopener noreferrer" class="product-link">LLMs MONITOR v1.16.0</a> - Copyright (C) 2026 <a href="https://ntus.info" target="_blank" rel="noopener">NT MicroSystems,Inc.</a></span><span><a href="https://x.com/ntus" target="_blank" rel="noopener noreferrer" class="social-link" data-i18n="followX">𝕏 @ntusで更新情報を見る</a> · <a href="https://llmsmonitor.ntusnog.chatgpt.site/product.html" target="_blank" rel="noopener noreferrer" data-i18n="productPage">製品紹介</a> · <a href="https://github.com/ntus/LLMs-Monitor#quick-start" target="_blank" rel="noopener noreferrer" data-i18n="manual">取扱説明</a> · <a href="privacy.html" data-i18n="privacy">プライバシーポリシー</a> · <span data-i18n="delayNote">公式画面の更新には遅延がある場合があります。</span></span></footer>
+  <footer><div id="intelligence-main" class="intelligence-host" aria-live="polite"></div><div id="provider-status-main" class="provider-status-host" aria-live="polite"></div><span><a href="https://github.com/ntus/LLMs-Monitor" target="_blank" rel="noopener noreferrer" class="product-link">LLMs MONITOR v1.17.0</a> - Copyright (C) 2026 <a href="https://ntus.info" target="_blank" rel="noopener">NT MicroSystems,Inc.</a></span><span><a href="https://x.com/ntus" target="_blank" rel="noopener noreferrer" class="social-link" data-i18n="followX">𝕏 @ntusで更新情報を見る</a> · <a href="https://llmsmonitor.ntusnog.chatgpt.site/product.html" target="_blank" rel="noopener noreferrer" data-i18n="productPage">製品紹介</a> · <a href="https://github.com/ntus/LLMs-Monitor#quick-start" target="_blank" rel="noopener noreferrer" data-i18n="manual">取扱説明</a> · <a href="privacy.html" data-i18n="privacy">プライバシーポリシー</a> · <span data-i18n="delayNote">公式画面の更新には遅延がある場合があります。</span></span></footer>
  </main>
  <aside id="advisor" class="advisor" hidden aria-label="Usage advice"><div class="advisor-head"><span class="advisor-spark">✦</span><span id="advisor-service">MONITOR</span></div><strong id="advisor-title"></strong><p id="advisor-text"></p><small id="advisor-evidence"></small><a id="advisor-source" target="_blank" rel="noopener noreferrer" hidden></a><div id="advisor-dots" class="advisor-dots" aria-hidden="true"></div><button id="advisor-next" type="button" title="Next advice" aria-label="Next advice">›</button></aside>
  <div id="toast" role="status" aria-live="polite"></div>
- <script src="locale.js?v=1160"></script><script src="preferences.js?v=1160"></script><script src="provider-status.js?v=1160"></script><script src="intelligence.js?v=1160"></script><script src="changes.js?v=1160"></script><script src="shared.js?v=1160"></script><script src="sound.js?v=1160"></script><script src="advice.js?v=1160"></script><script src="app.js?v=1160"></script>
-<script src="app-web.js?v=1160"></script></body>
+ <script src="locale.js?v=1170"></script><script src="preferences.js?v=1170"></script><script src="provider-status.js?v=1170"></script><script src="intelligence.js?v=1170"></script><script src="changes.js?v=1170"></script><script src="shared.js?v=1170"></script><script src="sound.js?v=1170"></script><script src="advice.js?v=1170"></script><script src="app.js?v=1170"></script>
+<script src="app-web.js?v=1170"></script></body>
 </html>

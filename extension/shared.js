@@ -1,5 +1,5 @@
 (function(root){
- const APP_VERSION='1.16.0',HISTORY_LIMIT=10000,L=root.GlanceLocale||{language:()=> 'ja',t:key=>key,label:value=>String(value??''),locale:()=> 'ja-JP'},P=root.GlancePreferences||{visible:()=>['chatgpt','claude','gemini']},S=root.GlanceProviderStatus||{view:()=>''},I=root.GlanceIntelligence||{view:()=>''};
+ const APP_VERSION='1.17.0',HISTORY_LIMIT=10000,L=root.GlanceLocale||{language:()=> 'ja',t:key=>key,label:value=>String(value??''),locale:()=> 'ja-JP'},P=root.GlancePreferences||{visible:()=>['chatgpt','claude','gemini']},S=root.GlanceProviderStatus||{view:()=>''},I=root.GlanceIntelligence||{view:()=>''};
  const services={chatgpt:{name:'ChatGPT',color:'#6dd8bf',mark:'◎',url:'https://chatgpt.com/settings/usage?tab=overview'},claude:{name:'Claude',color:'#eda681',mark:'✳',url:'https://claude.ai/settings/usage'},gemini:{name:'Gemini',color:'#93b3ff',mark:'✦',url:'https://gemini.google.com/usage'}};
  const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  function fresh(s){return !!s?.capturedAt && Date.now()-s.capturedAt<125000;}

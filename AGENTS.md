@@ -27,9 +27,11 @@ This file is the starting point for every future Codex or LLM edit. Follow the u
 - Decide the version before building. If the store package changes, increment the minor component `y` in `x.y.z` and reset `z` to zero. If only lightweight non-package content changes, increment `z`; an explicitly version-neutral content update keeps the current version. Keep all changed release surfaces consistent and preserve the existing Site audience when deploying.
 - Treat `https://aimon.ntus.info/` as the canonical hostname for the future public production release. Any extension allowlist, CSP, redirects, documentation, and hosting configuration introduced for that release must use this exact HTTPS origin. Publishing the product page on GitHub Pages may precede that migration.
 - Any interim Site slug or origin change must update `manifest.externally_connectable`, the background `ALLOWED` set, Web links, privacy and release documents, and regression tests in one package release before the renamed URL is reported usable.
-- X/Nerf intelligence must remain isolated from private usage state. Never add an X token to client code or repository; preserve silent first baseline, post-ID deduplication, source-role labels, and one-minute polling tests.
+- X intelligence must remain isolated from private usage state. Never add an X token to client code or repository; preserve silent first baseline, post-ID deduplication, source-role labels, and one-minute polling tests.
 - A numeric-change alert must dispatch its sound before the changed snapshot becomes visible to renderers; keep provider-status polling at one minute and cover both rules with regression tests.
 - Preserve the exact official ChatGPT reset entitlement wording when it contains a verified expiry. A partial API refresh must not replace that wording with an unavailable deadline. When Claude API reports 0% but the currently open official usage page reports a positive balance for the same active session, suppress the contradictory 0% and its history/sound event.
+
+- Keep Nerf Bench link-only unless the user explicitly restores monitoring; older v1.10 requirements are superseded in v1.17.0. Test flashing primary digits in both floating layouts at their inherited full font size. On package updates, recheck already-open ChatGPT usage tabs for rendered reset expiry without inventing dates.
 
 ## Every deliverable
 
@@ -66,10 +68,12 @@ Keep this `AGENTS.md` in the repository and update it when a new acceptance rule
 - ビルド前に版を判定する。ストア公開用パッケージが変わる場合は `x.y.z` の `y` を1増やして `z=0`、パッケージを変えない軽微な変更は `z` を1増やす。ただし利用者が版据え置きを明示したコンテンツ更新は現行版を維持する。変更対象の版表記をそろえ、既存の公開範囲を保ってサイトを更新する。
 - 将来の正式公開URLは `https://aimon.ntus.info/` を正本とする。その公開時に追加する拡張機能の接続許可、CSP、リダイレクト、文書、ホスティング設定は、このHTTPSオリジンへ統一する。商品説明ページのGitHub Pages先行公開は可能とする。
 - 正式公開前のSitesスラッグまたはoriginを変更する場合も、`manifest.externally_connectable`、backgroundの`ALLOWED`、Webリンク、プライバシー・リリース文書、回帰テストを同じパッケージリリースで同時更新し、新URLの利用可否を報告する前に接続整合を確認する。
-- X／Nerf速報は個人の利用量状態から分離する。X tokenをclient codeやリポジトリへ入れず、初回無音基準、投稿ID重複防止、出典区分、1分周期のテストを維持する。
+- X速報は個人の利用量状態から分離する。X tokenをclient codeやリポジトリへ入れず、初回無音基準、投稿ID重複防止、出典区分、1分周期のテストを維持する。
 - 数値変化の通知は、新しいスナップショットを描画側へ公開する前に通知音を送出する。公式障害情報の確認周期は1分を維持し、両方を回帰テストで固定する。
 - ChatGPTの公式画面に出たリセット権の期限原文は確認できた時点で保持し、API部分更新による「期限未取得」への後退を防ぐ。Claudeの同じ有効セッションで公式画面が正の残量を示す間、矛盾するAPIの0%で上書き・履歴追加・通知しない。
 - 期限警告の枠は1つだけにする。カウントダウンまたは親要素のどちらか一方に警告装飾を付け、両方を囲まない。ゲージ内のリセット文は円の内側幅に収め、狭幅・全画面表示をテストする。ChatGPTリセット権の確認済み未来期限は部分更新で維持し、ロケール別表示文と期限属性を推測なしで解析する。
+
+- Nerf Benchはリンクのみとし、利用者が明示的に再開を指示しない限り速報監視を戻さない。点滅する主残量は通常小窓・最前面小窓で同じ文字サイズを保つ回帰テストを行う。更新前から開いたChatGPT使用状況タブはパッケージ更新時に公式期限を再取得する。
 
 ## 毎回の成果物
 
