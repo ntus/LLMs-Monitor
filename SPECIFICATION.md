@@ -4,7 +4,7 @@
 
 <a id="en"></a>
 
-Document revision: 1.0 · Product version: **1.17.0** · Web companion: `https://llmsmonitor.ntusnog.chatgpt.site/`
+Document revision: 1.0 · Product version: **1.17.1** · Web companion: `https://llmsmonitor.ntusnog.chatgpt.site/`
 
 This English section defines the implementation contract for the beta. The [Japanese section](#ja) contains the full historical and field-level acceptance criteria. Implementers must read both sections and every ID in [`spec/requirements.json`](spec/requirements.json); neither translation overrides the other.
 
@@ -36,7 +36,7 @@ Tips and NEWS must include the primary-source HTTPS link, publisher, and date. R
 
 ## 5. Code, build, and release contract
 
-`extension/` is authoritative. `background.js`, `fetchers.js`, `parser.js`, `state.js`, and `history.js` acquire and normalize data; `shared.js`, `preferences.js`, `locale.js`, `advice.js`, and CSS render the common surfaces. `build.py` copies shared assets to `dist/`, synchronizes documentation into the extension package, cache-busts public assets, and creates `dist/LLMs-Monitor-v1.17.0.zip`. Manifest, UI, ZIP, specification, and store checklist versions must agree. Chrome Web Store/Edge Add-ons review is necessary for installation without developer mode; the ZIP alone does not provide that. Future native macOS, Windows, iOS, and Android apps should reuse the normalized data contracts and analysis rules through platform-specific authentication/window adapters; those apps are not part of this release.
+`extension/` is authoritative. `background.js`, `fetchers.js`, `parser.js`, `state.js`, and `history.js` acquire and normalize data; `shared.js`, `preferences.js`, `locale.js`, `advice.js`, and CSS render the common surfaces. `build.py` copies shared assets to `dist/`, synchronizes documentation into the extension package, cache-busts public assets, and creates `dist/LLMs-Monitor-v1.17.1.zip`. Manifest, UI, ZIP, specification, and store checklist versions must agree. Chrome Web Store/Edge Add-ons review is necessary for installation without developer mode; the ZIP alone does not provide that. Future native macOS, Windows, iOS, and Android apps should reuse the normalized data contracts and analysis rules through platform-specific authentication/window adapters; those apps are not part of this release.
 
 Run `node --test tests/*.test.cjs`, `python3 build.py --package`, ZIP-content and version checks, and UI smoke checks. Test sign-in/sign-out, refresh fallback, every display surface, language/theme/opacity, deadline boundaries, history retention, and service visibility/order on actual Chrome and Edge installations before claiming live-account acceptance. Keep the Site's existing audience unless the user explicitly changes it. See the [Japanese detailed specification](#ja) and [requirements ledger](spec/requirements.json) for every acceptance case.
 
@@ -53,7 +53,7 @@ Human-readable documentation must start in English and place Japanese in the lat
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.17.0
+対象製品版: 1.17.1
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -785,7 +785,7 @@ Document Picture-in-Pictureには以下の制約がある。
 
 - ストア提出ZIPの形式は `LLMs-Token-Usage-Monitor-v{semver}.zip` とする。
 - 旧名称をZIP、拡張機能名、HTMLタイトルに使わない。
-- 対象版では `LLMs-Monitor-v1.17.0.zip` とする。
+- 対象版では `LLMs-Monitor-v1.17.1.zip` とする。
 - Manifest、UI定数、HTMLフッター、ダウンロードリンク、版別CSS、ZIP名のバージョンを一致させる。
 - バージョンはSemantic Versioningを使う。
 
@@ -1031,7 +1031,7 @@ README、本仕様、AGENTS、PRIVACY、ストア提出資料、Webプライバ�
 3. 実アカウントでのChrome/Edge手動確認を終える。
 4. 通常画面、フルスクリーン、サイト内パネル、通常小窓、PiPの表示を確認する。
 5. プライバシー文書とストア権限説明が実装と一致する。
-6. `LLMs-Monitor-v1.17.0.zip` が再現可能に生成され、内容を検査済みである。
+6. `LLMs-Monitor-v1.17.1.zip` が再現可能に生成され、内容を検査済みである。
 7. 公開Webアプリとストア提出パッケージの名称、バージョン、接続originが一致する。
 
 
@@ -1211,3 +1211,12 @@ Changed digits in the floating and always-on-top primary values inherit the same
 拡張機能更新前から開いているChatGPT使用状況タブでは旧content scriptが残り得る。更新時のみ該当タブを一度再読込して新しい解析コードで公式画面のリセット権原文と期限を取得する。期日は推測しない。タブが閉じていてバックグラウンドAPIに期限がない場合は、公式画面が描画されるまで原文を取得できない。確認済み期限はAPIの部分更新で保持する。
 
 通常小窓・最前面小窓の残量数値は、点滅中も親のフォントサイズを継承する。「各種LLM」の直前に日英対応の11行ツール集を追加し、編集上のおすすめ10件と11番目のNerf Benchをアイコン・製品リンク・短文で表示する。Nerf Benchはリンクのみとし、BridgeMind／BridgeBenchのX監視、Nerf分類、旧キャッシュのNerf通知を除外する。他社公式／Tibo氏の利用枠X速報は従来の外部設定条件のまま維持する。
+
+
+## 46. v1.17.1 beta: AI tool directory cards and fullscreen behavior
+
+The user explicitly selected patch version 1.17.1 for this presentation release; this overrides the default package-version increment rule for this release only. The “AI tool directory” uses the same section and responsive card-grid classes as the LLM directory. Ten editorial recommendations and Nerf Bench remain in their previous order. Every card keeps its icon, concise bilingual description, linked product name, and product action. At desktop widths the grid has five columns, then three, two, and one as available width narrows. Tool cards use reduced padding, icon size, heading margin, and description line height to keep the directory compact. The AI tool directory is hidden while the monitor is in fullscreen; usage cards, bars, history, advice, and service status remain visible. This is a presentation-only change to the directory, with no change to acquisition, history, alert, or privacy contracts.
+
+## 46. v1.17.1 β：各種AIツールのカード表示と全画面
+
+今回の表示調整版は利用者の個別指定により1.17.1とし、通常のパッケージ版番号規則より優先する。「各種AIツール」は「各種LLM」と同じセクション・レスポンシブカードグリッドを使う。編集上のおすすめ10件と11番目のNerf Benchは従来の順番を維持する。各カードにアイコン、短い日英説明、リンク付き製品名、製品リンクを表示する。通常画面の列数は幅に応じて5・3・2・1列とし、カードの余白、アイコン、見出し間隔、説明文の行間を詰める。フルスクリーンではツール欄を非表示にし、残量カード、バー、履歴、アドバイス、サービス障害情報は表示する。取得・履歴・通知・プライバシーの仕様は変更しない。

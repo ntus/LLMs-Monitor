@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs トークン残量モニタ",
     "name_en": "LLMs Token Usage Monitor",
-    "version": "1.17.0",
-    "package_filename": "LLMs-Monitor-v1.17.0.zip",
+    "version": "1.17.1",
+    "package_filename": "LLMs-Monitor-v1.17.1.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -3483,12 +3483,14 @@
       "introduced_in": "1.17.0",
       "status": "implemented",
       "priority": "SHOULD",
-      "normative_requirement": "各種LLM欄の前にコンパクトなAIツールリンク集を1サービス1行で表示し、10件の編集上のおすすめとNerf Benchを11番目に掲載する。Nerf Bench速報監視は停止する。",
+      "normative_requirement": "各種LLM欄の前に「各種AIツール」を同じレスポンシブカード構造で表示し、10件の編集上のおすすめとNerf Benchを11番目に掲載する。フルスクリーンではツール欄を非表示にする。Nerf Bench速報監視は停止する。",
       "source_requirements": [
         "User request for top ten tool links, individual icons and Nerf Bench link-only."
       ],
       "acceptance_criteria": [
-        "各行にアイコン、外部製品リンク、短い説明を表示する。",
+        "各カードにアイコン、外部製品リンク、短い説明を表示する。",
+        "各種LLMと同じ5/3/2/1列のレスポンシブ配置を使う。",
+        "フルスクリーンではツール欄のみ非表示にし、利用残量と履歴を保つ。",
         "日英を切り替える。",
         "BridgeBench/NerfのX投稿を速報対象から除外する。"
       ],
@@ -3504,13 +3506,50 @@
         {
           "path": "server/intelligence-worker.mjs",
           "symbol": "ACCOUNTS/QUERY"
+        },
+        {
+          "path": "extension/style-v1171.css",
+          "symbol": "tool-directory-grid/fullscreen"
         }
       ],
       "test_evidence": [
         {
           "type": "automated",
           "coverage": "release-1170.test.cjs / intelligence-worker.test.mjs",
-          "procedure": "Verify 11 links and no Nerf monitoring."
+          "procedure": "Verify eleven cards, shared grid, fullscreen hide rule, and no Nerf monitoring."
+        }
+      ]
+    },
+    {
+      "id": "AI-TOOLS-002",
+      "category": "presentation",
+      "introduced_in": "1.17.1",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "「各種AIツール」は「各種LLM」と同じカード型とレスポンシブ配置を用い、フルスクリーンモードでは表示しない。",
+      "source_requirements": [
+        "User request: rename useful AI tools, match LLM directory design, hide in fullscreen."
+      ],
+      "acceptance_criteria": [
+        "見出しは「各種AIツール」。",
+        "通常画面では11カードを表示する。",
+        "フルスクリーンではツール欄を隠し、残量カードと履歴は維持する。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/index.html",
+          "symbol": "tool-directory-grid"
+        },
+        {
+          "path": "extension/style-v1171.css",
+          "symbol": "html:fullscreen .tool-directory"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "release-1170.test.cjs",
+          "procedure": "Verify title, 11 cards, shared layout classes, and fullscreen selector."
         }
       ]
     }
