@@ -4,7 +4,7 @@
 
 <a id="en"></a>
 
-Document revision: 1.0 · Product version: **1.15.0** · Web companion: `https://llmsmonitor.ntusnog.chatgpt.site/`
+Document revision: 1.0 · Product version: **1.16.0** · Web companion: `https://llmsmonitor.ntusnog.chatgpt.site/`
 
 This English section defines the implementation contract for the beta. The [Japanese section](#ja) contains the full historical and field-level acceptance criteria. Implementers must read both sections and every ID in [`spec/requirements.json`](spec/requirements.json); neither translation overrides the other.
 
@@ -36,7 +36,7 @@ Tips and NEWS must include the primary-source HTTPS link, publisher, and date. R
 
 ## 5. Code, build, and release contract
 
-`extension/` is authoritative. `background.js`, `fetchers.js`, `parser.js`, `state.js`, and `history.js` acquire and normalize data; `shared.js`, `preferences.js`, `locale.js`, `advice.js`, and CSS render the common surfaces. `build.py` copies shared assets to `dist/`, synchronizes documentation into the extension package, cache-busts public assets, and creates `dist/LLMs-Monitor-v1.15.0.zip`. Manifest, UI, ZIP, specification, and store checklist versions must agree. Chrome Web Store/Edge Add-ons review is necessary for installation without developer mode; the ZIP alone does not provide that. Future native macOS, Windows, iOS, and Android apps should reuse the normalized data contracts and analysis rules through platform-specific authentication/window adapters; those apps are not part of this release.
+`extension/` is authoritative. `background.js`, `fetchers.js`, `parser.js`, `state.js`, and `history.js` acquire and normalize data; `shared.js`, `preferences.js`, `locale.js`, `advice.js`, and CSS render the common surfaces. `build.py` copies shared assets to `dist/`, synchronizes documentation into the extension package, cache-busts public assets, and creates `dist/LLMs-Monitor-v1.16.0.zip`. Manifest, UI, ZIP, specification, and store checklist versions must agree. Chrome Web Store/Edge Add-ons review is necessary for installation without developer mode; the ZIP alone does not provide that. Future native macOS, Windows, iOS, and Android apps should reuse the normalized data contracts and analysis rules through platform-specific authentication/window adapters; those apps are not part of this release.
 
 Run `node --test tests/*.test.cjs`, `python3 build.py --package`, ZIP-content and version checks, and UI smoke checks. Test sign-in/sign-out, refresh fallback, every display surface, language/theme/opacity, deadline boundaries, history retention, and service visibility/order on actual Chrome and Edge installations before claiming live-account acceptance. Keep the Site's existing audience unless the user explicitly changes it. See the [Japanese detailed specification](#ja) and [requirements ledger](spec/requirements.json) for every acceptance case.
 
@@ -53,7 +53,7 @@ Human-readable documentation must start in English and place Japanese in the lat
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.15.0
+対象製品版: 1.16.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -785,7 +785,7 @@ Document Picture-in-Pictureには以下の制約がある。
 
 - ストア提出ZIPの形式は `LLMs-Token-Usage-Monitor-v{semver}.zip` とする。
 - 旧名称をZIP、拡張機能名、HTMLタイトルに使わない。
-- 対象版では `LLMs-Monitor-v1.15.0.zip` とする。
+- 対象版では `LLMs-Monitor-v1.16.0.zip` とする。
 - Manifest、UI定数、HTMLフッター、ダウンロードリンク、版別CSS、ZIP名のバージョンを一致させる。
 - バージョンはSemantic Versioningを使う。
 
@@ -1031,7 +1031,7 @@ README、本仕様、AGENTS、PRIVACY、ストア提出資料、Webプライバ�
 3. 実アカウントでのChrome/Edge手動確認を終える。
 4. 通常画面、フルスクリーン、サイト内パネル、通常小窓、PiPの表示を確認する。
 5. プライバシー文書とストア権限説明が実装と一致する。
-6. `LLMs-Monitor-v1.15.0.zip` が再現可能に生成され、内容を検査済みである。
+6. `LLMs-Monitor-v1.16.0.zip` が再現可能に生成され、内容を検査済みである。
 7. 公開Webアプリとストア提出パッケージの名称、バージョン、接続originが一致する。
 
 
@@ -1190,3 +1190,11 @@ The reset deadline countdown is the sole urgency badge; its surrounding reset ro
 ### 日本語
 
 リセット期限のカウントダウンだけを警告バッジで囲み、親のリセット行は囲まない。ゲージ内のリセット文字列は円の内側幅に制限し、折り返しても円周や残量数値と重ならないようにする。ChatGPTリセット権期限は日本語日付、英語月名、ISO日時、ページの可視文、期限関連DOM属性、および期限属性に付いたepoch秒・ミリ秒を解析する。期限を欠く部分更新では確認済みの未来期限を維持し、公式に利用可能数0を取得した場合は破棄する。
+
+## 44. v1.16.0 beta: official reset wording, Claude conflict guard, low-balance sounds
+
+ChatGPTの利用上限リセット権は、公式使用状況画面で「完全リセット（週間＋5 時間） 有効期限：10月30日」のように種別と期限が同時に表示された原文を `officialText` として保存する。画面では「リセット権 [利用可能] ×件数」の次行に原文を1行で表示する。幅が不足するときは末尾を省略し、全原文はtitle属性から確認できる。公式原文を未取得なら推測値を作らず、公式画面の期限表示待ちを示す。APIの部分更新が期限を欠く場合でも、未来の確認済み原文と期限は保持し、利用可能数0が確認された場合に消去する。公式画面の描画が遅い場合は描画完了後のDOMスナップショットで補完する。画面を開かずAPIだけからは原文を得られない場合がある。
+
+Claudeの現在セッションでは、同じ有効リセット枠について公式使用量画面が正の残量を示した後、バックグラウンドAPIだけが0%を返した場合、公式画面値を維持して競合を記録する。この抑止された0%は変化履歴や通知音の対象にしない。公式画面も0%を示した場合、および公式画面からの正の値がない場合は、確認されたAPIの0%を表示できる。実アカウントのAPIレスポンス内容はこのセッションから取得できないため、競合の根本原因は未確定とする。
+
+残量の数値変化で新値が5%以下なら低残量音、1%以下ならより強い低残量音とし、通常音とは異なる柔らかい下降2音を鳴らす。音は従来どおり最大3回・1秒間隔で、設定された音量とミュートを守る。同時更新の通知は約180msでまとめ、最も厳しい閾値を採用してから新値を公開する。ブラウザーのWeb Audio制限により、Web単独画面では初回操作前に音を鳴らせない。

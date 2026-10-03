@@ -1,13 +1,13 @@
 {
   "schema_version": "1.0.0",
   "ledger_id": "llms-token-usage-monitor-requirements",
-  "last_updated": "2026-10-03",
+  "last_updated": "2026-10-04",
   "authoritative": true,
   "product": {
     "name_ja": "LLMs トークン残量モニタ",
     "name_en": "LLMs Token Usage Monitor",
-    "version": "1.15.0",
-    "package_filename": "LLMs-Monitor-v1.15.0.zip",
+    "version": "1.16.0",
+    "package_filename": "LLMs-Monitor-v1.16.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -3298,6 +3298,44 @@
       "known_limitations": [
         "Live ChatGPT account markup and the actual expiry visible in the user account were not available to this build session; verify the provider renders one of the supported visible text or attribute formats in Chrome/Edge."
       ]
+    },
+    {
+      "id": "CHATGPT-RESET-007",
+      "category": "chatgpt_usage",
+      "introduced_in": "1.16.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "ChatGPT公式画面で確認したリセット権の種別と有効期限の原文を利用可能件数の下に1行表示し、期限を欠く部分更新では未来の原文と期限を保持する。",
+      "source_requirements": ["User report: reset entitlement repeatedly loses expiry and asks for the exact official wording on a second line"],
+      "acceptance_criteria": ["公式画面の原文は1行で表示され、全文はtitle属性から確認できる。", "API部分更新で原文を消さず、公式の利用可能数0では消す。", "原文未取得時に期限を推測しない。"],
+      "implementation_evidence": [{"path":"extension/parser.js","symbol":"chatGPTReset/officialText"},{"path":"extension/state.js","symbol":"accept/reset metadata merge"},{"path":"extension/shared.js","symbol":"extras/entitlement-official"}],
+      "test_evidence": [{"type":"automated","coverage":"parser.test.cjs / state.test.cjs / release-1160.test.cjs","procedure":"Synthetic official wording, partial API refresh, explicit zero and second-line rendering."}],
+      "known_limitations": ["The exact visible wording requires the official ChatGPT usage page to render in a signed-in browser tab."]
+    },
+    {
+      "id": "CLAUDE-005",
+      "category": "claude_usage",
+      "introduced_in": "1.16.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "同じ有効セッションでClaude公式画面が正の残量を示している間、矛盾するAPIの0%で現在値を上書きせず、履歴や通知を生成しない。",
+      "source_requirements": ["User screenshots show 0% in the monitor while the official usage page shows 2% used, followed by 98% in the monitor."],
+      "acceptance_criteria": ["API 0%と公式DOM 98%が競合した場合は98%を保持する。", "公式DOMも0%を示した場合は0%を表示する。", "抑止された0%は履歴や通知の対象としない。"],
+      "implementation_evidence": [{"path":"extension/state.js","symbol":"accept/Claude API zero conflict"},{"path":"extension/background.js","symbol":"accept/changeLevel after merge"}],
+      "test_evidence": [{"type":"automated","coverage":"state.test.cjs","procedure":"Replay a 98% DOM snapshot, a contradictory 0% API snapshot, and an official 0% confirmation."}],
+      "known_limitations": ["The private account API response was not available to this build; the exact upstream reason for the conflict is unverified."]
+    },
+    {
+      "id": "SOUND-002",
+      "category": "notifications",
+      "introduced_in": "1.16.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "数値変化後の残量が5%以下または1%以下の場合、通常音とは異なる穏やかな二音の警告を段階別に最大3回鳴らす。",
+      "source_requirements": ["User request: distinct non-harsh sounds at 5% and 1% remaining"],
+      "acceptance_criteria": ["5%以下と1%以下で異なる音程を使う。", "1イベント最大3回、1秒間隔、既存の音量とミュートを維持する。", "同時変化は最も厳しい閾値を採用し、音送出後に新値を公開する。"],
+      "implementation_evidence": [{"path":"extension/offscreen.js","symbol":"changeBeat"},{"path":"extension/sound.js","symbol":"beep"},{"path":"extension/changes.js","symbol":"alertLevel"}],
+      "test_evidence": [{"type":"automated","coverage":"release-1160.test.cjs / release-190.test.cjs","procedure":"Check threshold selection, tone variants and sound-before-publish ordering."}]
     }
   ]
 }

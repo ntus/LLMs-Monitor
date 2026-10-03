@@ -21,7 +21,7 @@ test('変化音の再生要求を完了してから新しい値を公開する',
  const start=background.indexOf('async function accept');
  const end=background.indexOf('function timebox',start);
  const accept=background.slice(start,end);
- assert(accept.indexOf("await (typeof notify==='function'?notify():playChangeSound())")<accept.indexOf('data[id]=next'));
- assert(!background.includes('},180)'));
- assert(background.includes('soundPromise??=playChangeSound()'));
+ assert(accept.indexOf("await (typeof notify==='function'?notify(level):playChangeSound(level))")<accept.indexOf('data[id]=next'));
+ assert(background.includes('playChangeSound(bestLevel)'));
+ assert(background.includes('setTimeout(()=>resolve(playChangeSound(bestLevel)),180)'));
 });

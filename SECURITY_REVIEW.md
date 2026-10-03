@@ -1,23 +1,23 @@
-# Security review — v1.15.0 beta
+# Security review — v1.16.0 beta
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 <a id="en"></a>
 
-This review records the checks performed for the 1.15.0 beta; it is not a guarantee that no vulnerabilities exist. A release owner should also test the packaged extension in current Chrome and Edge with real accounts and submit it to store review.
+This review records the checks performed for the 1.16.0 beta; it is not a guarantee that no vulnerabilities exist. A release owner should also test the packaged extension in current Chrome and Edge with real accounts and submit it to store review.
 
 ## Attack surface and controls
 
 - **Origins and permissions:** `externally_connectable` permits only the published HTTPS monitor. Provider content scripts run only on the three official AI sites. Public status feeds have fixed HTTPS URLs and credential-free requests. The only added permissions are `notifications` and the three status hosts.
 - **Message validation:** service snapshots are accepted only from the matching provider origin. The arrays, percentages, labels, and counts are bounded before storage. State-changing settings and window commands require the extension's own origin or the approved monitor origin.
-- **Untrusted content:** incident text and provider-derived labels are escaped before HTML rendering. Links are fixed to official HTTPS status pages. No remote scripts, `eval`, or arbitrary URL navigation are used for status content.
+- **Untrusted content:** incident text, provider-derived labels, and the new ChatGPT reset wording are length-bounded and escaped before HTML rendering. Links are fixed to official HTTPS pages. No remote scripts, `eval`, or arbitrary URL navigation are used for status content.
 - **X intelligence boundary:** the extension receives only normalized public-post data from the fixed companion endpoint. X credentials remain a server runtime secret. External links are restricted to X and BridgeBench HTTPS hosts; the first successful feed is a silent baseline and IDs prevent repeat alerts.
 - **Network and storage:** status responses have an 8-second timeout and a 3 MB cap. Incident requests omit credentials. Account data, history, and the last status summary remain in browser storage; no developer analytics endpoint receives them. Existing stored history is not migrated or deleted.
 - **Notification behavior:** a new issue signature triggers one browser popup and one audio sequence. Repeated one-minute checks of the same signature do not retrigger. Unknown source state is shown as unavailable, not as healthy. Recovery is based only on a subsequent official healthy response and is retained for ten minutes.
 
 ## Verification and limits
 
-`node --test tests/*.test.cjs` exercises the status parser, hostile summary escaping, service filtering, duplicate-incident signature, and existing regression contracts. `python3 build.py --package` checks version alignment and packages only the `extension/` tree. The regression suite also distinguishes missing, expired, failed, and genuinely exhausted Claude sessions. The server credential, KV binding, cron, and live X responses remain externally unconfigured and require manual verification. This is static and unit-level review; live provider responses, browser permission dialogs, accessibility, and store policy acceptance still require manual review. Google's Workspace status feed may not report every Gemini consumer issue. False negatives remain possible when providers omit incidents or change their feeds.
+`node --test tests/*.test.cjs` exercises the status parser, hostile summary escaping, service filtering, duplicate-incident signature, and existing regression contracts. `python3 build.py --package` checks version alignment and packages only the `extension/` tree. The regression suite distinguishes missing, expired, failed, and genuinely exhausted Claude sessions and guards a contradictory API zero against a positive official-page value. The server credential, KV binding, cron, and live X responses remain externally unconfigured and require manual verification. This is static and unit-level review; live provider responses, browser permission dialogs, accessibility, audio quality, and store policy acceptance still require manual review. Google's Workspace status feed may not report every Gemini consumer issue. False negatives remain possible when providers omit incidents or change their feeds.
 
 ---
 
@@ -27,7 +27,7 @@ This review records the checks performed for the 1.15.0 beta; it is not a guaran
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
-v1.15.0 βで確認した範囲の記録です。「脆弱性が存在しない」という保証ではありません。正式公開前には最新版Chrome／Edgeの実アカウントで配布ZIPを確認し、ストア審査を受けてください。
+v1.16.0 βで確認した範囲の記録です。「脆弱性が存在しない」という保証ではありません。正式公開前には最新版Chrome／Edgeの実アカウントで配布ZIPを確認し、ストア審査を受けてください。
 
 外部接続先は公開モニターのHTTPS origin、ページ内スクリプトは3社の公式サイトに限定しています。障害情報は固定した公式HTTPS URLから認証情報なしで取得し、8秒でタイムアウト、3 MB超の応答を拒否します。受信したスナップショットの型・件数・数値範囲を検証します。障害の文章はHTML表示時にエスケープし、リンク先は公式URLに固定します。新しい障害だけ通知し、同じ障害を1分ごとに鳴らし直しません。取得失敗は正常扱いせず「確認できません」と表示します。
 

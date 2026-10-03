@@ -1,0 +1,4 @@
+/* v1.16.0: the official reset wording lives on its own compact line. */
+.entitlement-line{grid-template-columns:minmax(0,1fr) auto;gap:8px}
+.entitlement-official{display:block;max-width:100%;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:clamp(9px,.85vw,12px);letter-spacing:-.03em;color:var(--muted,#aebbd0)}
+.widget .entitlement-official{font-size:9px}
