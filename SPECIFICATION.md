@@ -4,7 +4,7 @@
 
 <a id="en"></a>
 
-Document revision: 1.0 · Product version: **1.9.0** · Web companion: `https://llmsmonitor.ntusnog.chatgpt.site/`
+Document revision: 1.0 · Product version: **1.10.0** · Web companion: `https://llmsmonitor.ntusnog.chatgpt.site/`
 
 This English section defines the implementation contract for the beta. The [Japanese section](#ja) contains the full historical and field-level acceptance criteria. Implementers must read both sections and every ID in [`spec/requirements.json`](spec/requirements.json); neither translation overrides the other.
 
@@ -36,7 +36,7 @@ Tips and NEWS must include the primary-source HTTPS link, publisher, and date. R
 
 ## 5. Code, build, and release contract
 
-`extension/` is authoritative. `background.js`, `fetchers.js`, `parser.js`, `state.js`, and `history.js` acquire and normalize data; `shared.js`, `preferences.js`, `locale.js`, `advice.js`, and CSS render the common surfaces. `build.py` copies shared assets to `dist/`, synchronizes documentation into the extension package, cache-busts public assets, and creates `dist/LLMs-Monitor-v1.9.0.zip`. Manifest, UI, ZIP, specification, and store checklist versions must agree. Chrome Web Store/Edge Add-ons review is necessary for installation without developer mode; the ZIP alone does not provide that. Future native macOS, Windows, iOS, and Android apps should reuse the normalized data contracts and analysis rules through platform-specific authentication/window adapters; those apps are not part of this release.
+`extension/` is authoritative. `background.js`, `fetchers.js`, `parser.js`, `state.js`, and `history.js` acquire and normalize data; `shared.js`, `preferences.js`, `locale.js`, `advice.js`, and CSS render the common surfaces. `build.py` copies shared assets to `dist/`, synchronizes documentation into the extension package, cache-busts public assets, and creates `dist/LLMs-Monitor-v1.10.0.zip`. Manifest, UI, ZIP, specification, and store checklist versions must agree. Chrome Web Store/Edge Add-ons review is necessary for installation without developer mode; the ZIP alone does not provide that. Future native macOS, Windows, iOS, and Android apps should reuse the normalized data contracts and analysis rules through platform-specific authentication/window adapters; those apps are not part of this release.
 
 Run `node --test tests/*.test.cjs`, `python3 build.py --package`, ZIP-content and version checks, and UI smoke checks. Test sign-in/sign-out, refresh fallback, every display surface, language/theme/opacity, deadline boundaries, history retention, and service visibility/order on actual Chrome and Edge installations before claiming live-account acceptance. Keep the Site's existing audience unless the user explicitly changes it. See the [Japanese detailed specification](#ja) and [requirements ledger](spec/requirements.json) for every acceptance case.
 
@@ -53,7 +53,7 @@ Human-readable documentation must start in English and place Japanese in the lat
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.9.0
+対象製品版: 1.10.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -785,7 +785,7 @@ Document Picture-in-Pictureには以下の制約がある。
 
 - ストア提出ZIPの形式は `LLMs-Token-Usage-Monitor-v{semver}.zip` とする。
 - 旧名称をZIP、拡張機能名、HTMLタイトルに使わない。
-- 対象版では `LLMs-Monitor-v1.9.0.zip` とする。
+- 対象版では `LLMs-Monitor-v1.10.0.zip` とする。
 - Manifest、UI定数、HTMLフッター、ダウンロードリンク、版別CSS、ZIP名のバージョンを一致させる。
 - バージョンはSemantic Versioningを使う。
 
@@ -1031,7 +1031,7 @@ README、本仕様、AGENTS、PRIVACY、ストア提出資料、Webプライバ�
 3. 実アカウントでのChrome/Edge手動確認を終える。
 4. 通常画面、フルスクリーン、サイト内パネル、通常小窓、PiPの表示を確認する。
 5. プライバシー文書とストア権限説明が実装と一致する。
-6. `LLMs-Monitor-v1.9.0.zip` が再現可能に生成され、内容を検査済みである。
+6. `LLMs-Monitor-v1.10.0.zip` が再現可能に生成され、内容を検査済みである。
 7. 公開Webアプリとストア提出パッケージの名称、バージョン、接続originが一致する。
 
 
@@ -1131,3 +1131,19 @@ Official provider-status feeds remain scheduled once per minute. Claude weekly a
 ### 日本語
 
 各社の公式障害情報は1分ごとに確認する。Claudeの週間枠とクラウドセッションクレジットのバーには現在セッション単位の区切りを描画し、学習済み履歴がない場合は視認可能な8%間隔を使う。クラウドセッションクレジットの残額は表示時に小数点以下2桁へ丸める。数値変化時は、background workerがローカル通知音の送出完了を待ってから変更後スナップショットを保存し、描画側の10秒間の赤色点滅が音より先に始まらないようにする。同じ更新で複数サービスが変化しても3音の通知は1組だけとする。
+
+## 38. v1.10.0 beta: X and NerfBench intelligence alerts
+
+A server-side relay checks selected public X accounts once per minute and returns a bounded, normalized feed. The account list covers OpenAI's official accounts, Tibo as an OpenAI staff source, Anthropic and Google product/company accounts, and BridgeMind/BridgeBench as an independent benchmark source. Only posts about resets, usage limits, quotas, credits, or measured model-power changes enter the feed. Tibo must never be labelled as an official company account, and NerfBench must never be presented as an official provider measurement.
+
+The X bearer token is a server runtime secret and must never be stored in the extension, public Site, repository, response, browser storage, or logs. The extension checks the cached relay once per minute, establishes the first successful result as a silent baseline, then shows and sounds only unseen post IDs. Alert text is escaped, URLs are restricted to X and BridgeBench HTTPS hosts, and failures retain the last feed without affecting usage refresh, history, or provider-status monitoring. NerfBench treats 90–110% of launch power as normal variance and marks a published value below 90% as critical. Because no verified public NerfBench result API is currently available, the release watches relevant BridgeMind/BridgeBench X announcements and does not scrape the Cloudflare-protected board.
+
+Live activation requires an approved X developer bearer token, a server-side cache binding, a one-minute cron trigger, and deployment of `/api/intelligence.json` at the monitor origin. Until those external actions are complete, the UI reports setup required and all existing monitor features continue normally.
+
+### 日本語
+
+サーバー側中継は、選定した公開Xアカウントを1分ごとに確認し、件数と型を制限した正規化済み速報を返す。対象はOpenAI公式アカウント、OpenAIスタッフ情報としてのTibo氏、Anthropic／Googleの製品・会社アカウント、独立ベンチマーク情報としてのBridgeMind／BridgeBenchとする。リセット、利用枠、quota、クレジット、測定されたモデル性能変化に関係する投稿だけを採用する。Tibo氏を会社公式アカウントと表示せず、NerfBenchを各社公式測定値として扱わない。
+
+X bearer tokenはサーバー実行環境のSecretだけに保存し、拡張機能、公開Site、リポジトリ、レスポンス、ブラウザー保存領域、ログへ入れてはならない。拡張機能はキャッシュ済み中継を1分ごとに確認し、初回成功結果は無音の基準値として保存し、その後に初めて見つかった投稿IDだけを画面通知と通知音の対象にする。外部文面はエスケープし、リンクはXとBridgeBenchのHTTPS hostだけを許可する。取得失敗時は前回速報を保持し、利用残量、履歴、公式障害監視に影響させない。NerfBenchは発売時比90〜110%を通常変動とし、公開値が90%未満の場合を重大警戒とする。検証済みの公開結果APIがないため、v1.10.0ではBridgeMind／BridgeBenchの関連X発信を監視し、Cloudflare保護されたボードをスクレイピングしない。
+
+実運用には、承認済みX Developer bearer token、サーバー側キャッシュ、1分cron、monitor originの`/api/intelligence.json`へのworker配置が必要である。外部設定が完了するまでは接続待ちと表示し、既存のmonitor機能はすべて通常どおり動作する。

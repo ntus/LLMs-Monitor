@@ -4,6 +4,13 @@
 
 <a id="en"></a>
 
+## 1.10.0 beta
+
+- Added a server-relayed, one-minute intelligence feed for Tibo, selected official provider X accounts, and BridgeMind/BridgeBench.
+- Added silent first-run baselining, post-ID deduplication, source links, and defensive escaping.
+- Kept X credentials out of the extension and marked live activation as requiring an approved X API secret, cache binding, cron, and worker deployment.
+- Kept NerfBench explicitly labelled as an independent benchmark and treated published power below 90% as critical.
+
 ## 1.9.0 beta
 
 - Kept official provider-status checks at one-minute intervals.
@@ -36,6 +43,13 @@ Version 1.5.3 and earlier focused on plan retrieval, persistent change history, 
 ---
 
 <a id="ja"></a>
+
+## 1.10.0 β
+
+- Tibo氏、選定した各社公式X、BridgeMind／BridgeBenchを1分ごとに確認するサーバー中継速報を追加しました。
+- 初回無音基準、投稿ID重複防止、出典リンク、外部文面のエスケープを追加しました。
+- X認証情報を拡張機能へ含めず、実運用には承認済みX API Secret、cache、cron、worker配置が必要です。
+- NerfBenchを独立ベンチマークと明示し、公開されたlaunch powerが90%未満の場合を重大警戒とします。
 
 ## 1.9.0 β
 

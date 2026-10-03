@@ -1,13 +1,13 @@
 {
   "schema_version": "1.0.0",
   "ledger_id": "llms-token-usage-monitor-requirements",
-  "last_updated": "2026-09-29",
+  "last_updated": "2026-10-03",
   "authoritative": true,
   "product": {
     "name_ja": "LLMs トークン残量モニタ",
     "name_en": "LLMs Token Usage Monitor",
-    "version": "1.9.0",
-    "package_filename": "LLMs-Monitor-v1.9.0.zip",
+    "version": "1.10.0",
+    "package_filename": "LLMs-Monitor-v1.10.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -3053,6 +3053,66 @@
           "coverage": "fetchers.test.cjs / state.test.cjs",
           "procedure": "Exercise missing, null, expired, failed, and genuinely exhausted Claude windows with synthetic data."
         }
+      ]
+    },
+    {
+      "id": "INTELLIGENCE-001",
+      "category": "notification",
+      "introduced_in": "1.10.0",
+      "status": "external_action_required",
+      "priority": "MUST",
+      "normative_requirement": "Tibo氏、OpenAI・Anthropic・Googleの公式Xアカウント、BridgeMind / BridgeBenchをサーバー側X APIで1分ごとに確認し、リセット、利用枠、クレジット、NerfBenchのモデル性能変化に関係する新着だけを通知しなければならない。Tibo氏はOpenAIスタッフ、NerfBenchは独立ベンチマークと表示し、公式利用量と混同してはならない。",
+      "source_requirements": [
+        "User request: one-minute Tibo and official-provider X alerts",
+        "User request: NerfBench breaking alerts from BridgeMind article"
+      ],
+      "acceptance_criteria": [
+        "X API credential is held only by the server-side secret store and never included in the extension, repository, response, or logs.",
+        "The relay polls once per minute and the extension polls the cached relay once per minute.",
+        "The first successful response establishes a baseline without sounding; only unseen post IDs notify afterward.",
+        "NerfBench below 90% is critical, 90–110% is normal variance, and the notice links to the original source.",
+        "Fetch failure preserves prior alerts and cannot affect usage snapshots, history, or provider-status polling.",
+        "External text and URLs are validated and escaped before rendering."
+      ],
+      "implementation_evidence": [
+        {
+          "path": "server/intelligence-worker.mjs",
+          "symbol": "scheduled/refresh/classify"
+        },
+        {
+          "path": "extension/intelligence.js",
+          "symbol": "normalize/newAlerts/view"
+        },
+        {
+          "path": "extension/background.js",
+          "symbol": "refreshIntelligence/llms-intelligence alarm"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "required",
+          "path": "tests/intelligence.test.cjs"
+        },
+        {
+          "type": "automated",
+          "coverage": "required",
+          "path": "tests/intelligence-worker.test.mjs"
+        },
+        {
+          "type": "automated",
+          "coverage": "required",
+          "path": "tests/release-1100.test.cjs"
+        },
+        {
+          "type": "manual",
+          "coverage": "required",
+          "procedure": "Configure X_BEARER_TOKEN and INTELLIGENCE_CACHE in the server runtime, inject one matching test post after baseline, and verify one popup, one sound sequence, the source link, and no repeated notification on later polls."
+        }
+      ],
+      "known_limitations": [
+        "Live X monitoring remains unconfigured until an approved X developer credential, KV binding, one-minute cron, and same-origin worker deployment are supplied.",
+        "NerfBench currently exposes no verified public API or dedicated result feed; v1.10.0 uses relevant BridgeMind/BridgeBench X announcements and does not scrape its Cloudflare-protected page."
       ]
     }
   ]

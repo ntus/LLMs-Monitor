@@ -6,17 +6,19 @@ version = manifest['version']
 version_css = 'style-v' + version.replace('.', '') + '.css'
 for legacy_css in (root / 'dist').glob('style-v*.css'):
     if legacy_css.name not in {version_css, 'style-v151.css', 'style-v152.css', 'style-v153.css', 'style-v160.css', 'style-v161.css', 'style-v162.css', 'style-v163.css', 'style-v164.css'}: legacy_css.unlink()
-for name in ['index.html', 'privacy.html', 'style.css', 'style-v151.css', 'style-v152.css', 'style-v153.css', 'style-v160.css', 'style-v161.css', 'style-v162.css', 'style-v163.css', version_css, 'locale.js', 'preferences.js', 'provider-status.js', 'changes.js', 'shared.js', 'sound.js', 'advice.js', 'app.js']:
+for name in ['index.html', 'privacy.html', 'style.css', 'style-v151.css', 'style-v152.css', 'style-v153.css', 'style-v160.css', 'style-v161.css', 'style-v162.css', 'style-v163.css', version_css, 'locale.js', 'preferences.js', 'provider-status.js', 'intelligence.js', 'changes.js', 'shared.js', 'sound.js', 'advice.js', 'app.js']:
     shutil.copy2(root / 'extension' / name, root / 'dist' / name)
 # Standalone bilingual product page and its promotional artwork.
 for name in ['product.html', 'product.css', 'product.js', 'app-web.css', 'app-web.js']:
     shutil.copy2(root / 'web' / name, root / 'dist' / name)
 (root / 'dist' / 'promotional').mkdir(exist_ok=True)
 shutil.copy2(root / 'assets' / 'promotional' / 'llms-monitor-a4-landscape-flyer-v1.png', root / 'dist' / 'promotional' / 'llms-monitor-a4-landscape-flyer-v1.png')
+(root / 'dist' / 'api').mkdir(exist_ok=True)
+(root / 'dist' / 'api' / 'intelligence.json').write_text(json.dumps({'status':'unconfigured','checkedAt':0,'alerts':[]}, separators=(',', ':')) + '\n')
 for html_name in ['index.html', 'privacy.html']:
     target = root / 'dist' / html_name
     html = target.read_text()
-    for asset in ['style.css', 'style-v151.css', 'style-v152.css', 'style-v153.css', 'style-v160.css', 'style-v161.css', 'style-v162.css', 'style-v163.css', version_css, 'locale.js', 'preferences.js', 'provider-status.js', 'changes.js', 'shared.js', 'sound.js', 'advice.js', 'app.js']:
+    for asset in ['style.css', 'style-v151.css', 'style-v152.css', 'style-v153.css', 'style-v160.css', 'style-v161.css', 'style-v162.css', 'style-v163.css', version_css, 'locale.js', 'preferences.js', 'provider-status.js', 'intelligence.js', 'changes.js', 'shared.js', 'sound.js', 'advice.js', 'app.js']:
         html = html.replace(f'"{asset}"', f'"{asset}?v={version.replace(".", "")}"')
     if html_name == 'index.html':
         html = html.replace('</head>', f'<link rel="stylesheet" href="app-web.css?v={version.replace('.', '')}"></head>')

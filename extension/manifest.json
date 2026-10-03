@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "default_locale": "ja",
   "name": "__MSG_extensionName__",
-  "version": "1.9.0",
+  "version": "1.10.0",
   "description": "__MSG_extensionDescription__",
   "permissions": [
     "storage",
@@ -17,7 +17,8 @@
     "https://one.google.com/*",
     "https://status.openai.com/*",
     "https://status.claude.com/*",
-    "https://www.google.com/appsstatus/dashboard/*"
+    "https://www.google.com/appsstatus/dashboard/*",
+    "https://llmsmonitor.ntusnog.chatgpt.site/*"
   ],
   "background": {
     "service_worker": "background.js"
@@ -46,6 +47,7 @@
         "locale.js",
         "preferences.js",
         "provider-status.js",
+        "intelligence.js",
         "changes.js",
         "shared.js",
         "advice.js",
