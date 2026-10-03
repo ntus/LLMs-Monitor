@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs トークン残量モニタ",
     "name_en": "LLMs Token Usage Monitor",
-    "version": "1.8.0",
-    "package_filename": "LLMs-Monitor-v1.8.0.zip",
+    "version": "1.9.0",
+    "package_filename": "LLMs-Monitor-v1.9.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -1102,7 +1102,7 @@
         },
         {
           "path": "extension/background.js",
-          "symbol": "numericChanged/ensureOffscreen/queueChangeSound"
+          "symbol": "numericChanged/ensureOffscreen/playChangeSound"
         },
         {
           "path": "extension/offscreen.html",
@@ -2947,6 +2947,44 @@
           "type": "automated",
           "coverage": "documentation.test.cjs",
           "procedure": "Verify canonical future hostname is retained in durable instructions and specification."
+        }
+      ]
+    },
+    {
+      "id": "RELEASE-190",
+      "category": "usage_display_and_notifications",
+      "introduced_in": "1.9.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "公式障害情報を1分ごとに確認し、Claude週間枠とクラウドセッションクレジットへセッション区切りを表示する。クラウドセッション残額は小数点以下2桁に丸め、数値変化では通知音の送出完了後に変更値を保存・点滅表示する。",
+      "source_requirements": [
+        "User request: one-minute status checks, Claude separators, two-decimal cloud balance, and sound before blink"
+      ],
+      "acceptance_criteria": [
+        "llms-provider-status alarmのperiodInMinutesは1である。",
+        "Claudeの週間枠とクラウドセッションクレジットのバーにweekly-track区切りを適用する。",
+        "クラウドセッションクレジット残額を小数点以下2桁で表示する。",
+        "変化音をawaitした後にdata[id]へ変更スナップショットを保存し、同一更新の複数変化は1通知へまとめる。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/background.js",
+          "symbol": "playChangeSound/accept/refresh"
+        },
+        {
+          "path": "extension/shared.js",
+          "symbol": "segmentPercent/extras/decorate"
+        },
+        {
+          "path": "extension/fetchers.js",
+          "symbol": "cloudCredit"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "release-190.test.cjs / fetchers.test.cjs / sound.test.cjs",
+          "procedure": "Verify the one-minute alarm, Claude guide markup, two-decimal rounding, sound-before-store ordering, and three-tone batching."
         }
       ]
     },

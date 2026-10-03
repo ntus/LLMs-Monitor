@@ -4,6 +4,13 @@
 
 <a id="en"></a>
 
+## 1.9.0 beta
+
+- Kept official provider-status checks at one-minute intervals.
+- Added session-scale separators to Claude weekly and cloud-session-credit bars.
+- Rounded Claude cloud-session remaining balances to two decimal places.
+- Changed update ordering so the notification sound starts before the red numeric highlight is published.
+
 ## 1.8.0 beta
 
 - Updated the extension's externally connectable allowlist and companion links for `https://llmsmonitor.ntusnog.chatgpt.site`.
@@ -29,6 +36,13 @@ Version 1.5.3 and earlier focused on plan retrieval, persistent change history, 
 ---
 
 <a id="ja"></a>
+
+## 1.9.0 β
+
+- 各社の公式障害情報を1分ごとに確認する設定を維持しました。
+- Claudeの週間枠とクラウドセッションクレジットのバーへ、現在セッション単位の区切りを追加しました。
+- Claudeのクラウドセッション残額を小数点以下2桁に丸めました。
+- 残量変化時は通知音を開始してから赤色点滅を公開する順序へ変更しました。
 
 ## 1.8.0 β
 
