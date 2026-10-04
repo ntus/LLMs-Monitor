@@ -9,6 +9,14 @@
 
 <a id="en"></a>
 
+## 1.20.0 beta — 2026-10-04
+
+- One shared localized floating header, title fit and independent width/height controls; updates preserve user-selected size and expanded history.
+- Optional per-provider API credit integration with official billing links and a separate balance row in all views. Existing required permissions and usage/history storage are unchanged.
+- Missing, zero, negative, postpaid and ambiguous billing balances are distinguished. No password, API key or payment data is collected.
+- OpenAI billing label verified directly; signed-in Claude/Gemini billing verification remains pending.
+
+
 ## 1.14.0 beta
 
 - Preserved a verified ChatGPT reset-entitlement expiry across partial DOM/API snapshots while clearing it on an explicit zero count.
@@ -71,6 +79,14 @@ Version 1.5.3 and earlier focused on plan retrieval, persistent change history, 
 ---
 
 <a id="ja"></a>
+
+## 1.20.0 β — 2026-10-04
+
+- 外窓のタイトルと言語更新を共通化。1行に調整し、↔メニューで縦横を個別調整。更新で寸法・履歴開閉状態を戻さない。
+- 事業者ごとの任意権限によるAPI残高連携と公式請求リンクを追加。必須権限・既存の利用枠・履歴を維持。
+- 未取得・0・負残高・後払い・複数残高を区別。パスワード・APIキー・決済情報を収集しない。
+- OpenAI実画面を確認。Claude／Gemini請求アカウントでの実測は未完了。
+
 
 ## 1.14.0 β
 

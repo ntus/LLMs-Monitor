@@ -9,9 +9,9 @@ require('../extension/intelligence.js');
 require('../extension/changes.js');
 require('../extension/shared.js');
 
-test('v1.15.0 release sources and shared surfaces stay in sync',()=>{
+test('release sources and shared surfaces stay in sync',()=>{
  const manifest=JSON.parse(read('extension/manifest.json')),requirements=JSON.parse(read('spec/requirements.json'));
- assert.equal(manifest.version,'1.19.0');assert.equal(requirements.product.version,manifest.version);assert.equal(requirements.product.package_filename,'LLMs-Monitor-v1.19.0.zip');assert.equal(Glance.APP_VERSION,manifest.version);
+ assert.match(manifest.version,/^\d+\.\d+\.\d+$/);assert.equal(requirements.product.version,manifest.version);assert.equal(requirements.product.package_filename,`LLMs-Monitor-v${manifest.version}.zip`);assert.equal(Glance.APP_VERSION,manifest.version);
  for(const file of ['extension/index.html','extension/floating.html','extension/app.js'])assert(read(file).includes('style-v1150.css'));
 });
 

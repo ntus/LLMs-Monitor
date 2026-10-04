@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs トークン残量モニタ",
     "name_en": "LLMs Token Usage Monitor",
-    "version": "1.19.0",
-    "package_filename": "LLMs-Monitor-v1.19.0.zip",
+    "version": "1.20.0",
+    "package_filename": "LLMs-Monitor-v1.20.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -3695,6 +3695,99 @@
           "coverage": "changes.test.cjs / release-1190.test.cjs",
           "procedure": "Verify collapsible widget markup and sizing CSS."
         }
+      ]
+    },
+    {
+      "id": "FLOAT-006",
+      "category": "ui",
+      "introduced_in": "1.20.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "通常小窓とPiPの製品名見出しを共通化し、言語とdocument.titleを同期する。1行に自動調整し、縦横独立のリサイズ操作を備え、自動更新で利用者の寸法を戻さない。ネイティブURL表示は変更不可と明記する。",
+      "source_requirements": [
+        "User request 2026-10-04: floating title/resizing and API credit balances."
+      ],
+      "acceptance_criteria": [
+        "製品名は外窓に1個。日英切替で可視タイトルが変わる。",
+        "縦横の±操作は利用者のクリック内だけで実行。",
+        "外枠ドラッグで高さ変更可能。OS／ブラウザ上限は区別して説明。",
+        "既存の履歴開閉状態・テーマ・透明度・終了連動を維持。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/floating-chrome.js",
+          "symbol": "floating-chrome.js"
+        },
+        {
+          "path": "extension/style-v1200.css",
+          "symbol": "style-v1200.css"
+        },
+        {
+          "path": "tests/floating-chrome.test.cjs",
+          "symbol": "floating-chrome.test.cjs"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "tests/floating-chrome.test.cjs",
+          "procedure": "Verify title/language/resize or isolated balances, missing/postpaid/zero and message boundaries."
+        }
+      ],
+      "known_limitations": [
+        "Browser-owned PiP origin and window bounds cannot be overridden."
+      ]
+    },
+    {
+      "id": "API-CREDIT-001",
+      "category": "data",
+      "introduced_in": "1.20.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "API残高は公式請求画面から事業者ごとの任意権限で取得し、プラン枠と別に表示・保存する。未取得・後払い・真正0を区別し、既存履歴・リセット権・通知を変更しない。",
+      "source_requirements": [
+        "User request 2026-10-04: floating title/resizing and API credit balances."
+      ],
+      "acceptance_criteria": [
+        "初期状態OFF。拡張機能画面の直接クリックで選択ホスト+scriptingのみ許可。",
+        "公式請求origin/パス/トップフレーム/有効事業者に限定。",
+        "残高ラベルと通貨金額のみ解析し、予算／支出／複数残高から推測しない。",
+        "APIキー・パスワード・決済情報・ページ全文を送信・保存しない。",
+        "apiCreditsへ独立保存。60秒ごと開いた請求画面の表示値を確認。",
+        "125秒以上古い値は薄く表示。取得失敗は0にしない。",
+        "OpenAI実画面確認、Claude/Gemini実請求アカウント検証は未完了と記録。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/api-credits.js",
+          "symbol": "api-credits.js"
+        },
+        {
+          "path": "extension/api-credit-reader.js",
+          "symbol": "api-credit-reader.js"
+        },
+        {
+          "path": "extension/api-credit-background.js",
+          "symbol": "api-credit-background.js"
+        },
+        {
+          "path": "extension/api-setup.js",
+          "symbol": "api-setup.js"
+        },
+        {
+          "path": "tests/api-credits.test.cjs",
+          "symbol": "api-credits.test.cjs"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "tests/api-credits.test.cjs",
+          "procedure": "Verify title/language/resize or isolated balances, missing/postpaid/zero and message boundaries."
+        }
+      ],
+      "known_limitations": [
+        "Requires an open signed-in billing page and optional permission. Claude/Gemini live billing account verification is pending."
       ]
     }
   ]

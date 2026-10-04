@@ -39,6 +39,9 @@ This file is the starting point for every future Codex or LLM edit. Follow the u
 - A ChatGPT reset entitlement can expose its expiry only in the rendered official usage page. When a verified API entitlement lacks an expiry, check that an open usage tab actually has the extension reader; recover a missing reader and close any temporary acquisition tab. Never equate an open tab with an injected reader.
 - The AI tool directory is nine editorial picks followed by Nerf Bench at position 10. Keep the separate BridgeBench leaderboard card removed.
 
+- Floating application titles must use the shared `floating-chrome.js` header in both popup and PiP. Language changes must update the visible and document titles; refresh must never reset a user-selected window size. Browser-owned origin text is not replaceable. Include a behavioral test for both language directions and independent height/width resize actions.
+- Keep API billing balances in `apiCredits`, separate from plan quotas, reset rights and history. API host access and scripting are optional and granted only through a user click in an extension page. Reject non-billing routes, child frames, unapproved origins, disabled providers and ambiguous balances. Never infer balance from budget/spend or collect passwords, API keys or payment data. Document adapters that lack signed-in live verification.
+
 ## Every deliverable
 
 Keep this `AGENTS.md` in the repository and update it when a new acceptance rule or failure-prevention step arises. In the final report, link this file, the detailed specification, and the distribution package; distinguish verified behavior from live-account checks that remain unverified.
@@ -90,3 +93,7 @@ Keep this `AGENTS.md` in the repository and update it when a new acceptance rule
 ## 毎回の成果物
 
 `AGENTS.md` 自体をリポジトリに残し、新しい受入規則や失敗防止策が生じたら更新する。最終報告では、このファイル、詳細仕様書、配布物へリンクし、確認済み事項と実機で未確認の事項を区別する。
+
+外窓の製品名は `floating-chrome.js` に共通化し、言語変更を可視タイトルとdocument.titleの両方へ反映してください。描画・自動更新で利用者の寸法を戻してはなりません。ネイティブURL表示は変更不可として説明し、縦横の独立リサイズと言語切替を動作テストに含めてください。
+
+API請求残高は `apiCredits` に隔離し、月額プラン枠・リセット権・変化履歴へ混入させないでください。事業者ごとの任意権限は拡張機能画面の直接クリックで要求します。請求以外のパス、子フレーム、不許可origin、無効事業者、複数残高を拒否し、予算からの残高推測やパスワード／APIキー／決済情報の収集を禁止します。実請求アカウントで未検証の取得処理を明記してください。

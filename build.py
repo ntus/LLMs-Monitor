@@ -5,8 +5,8 @@ manifest = json.loads((root / 'extension' / 'manifest.json').read_text())
 version = manifest['version']
 version_css = 'style-v' + version.replace('.', '') + '.css'
 for legacy_css in (root / 'dist').glob('style-v*.css'):
-    if legacy_css.name not in {version_css, 'style-v151.css', 'style-v152.css', 'style-v153.css', 'style-v160.css', 'style-v161.css', 'style-v162.css', 'style-v163.css', 'style-v164.css', 'style-v170.css', 'style-v1140.css', 'style-v1150.css', 'style-v1160.css', 'style-v1170.css', 'style-v1171.css', 'style-v1180.css'}: legacy_css.unlink()
-for name in ['index.html', 'privacy.html', 'style.css', 'style-v151.css', 'style-v152.css', 'style-v153.css', 'style-v160.css', 'style-v161.css', 'style-v162.css', 'style-v163.css', 'style-v164.css', 'style-v170.css', 'style-v1140.css', 'style-v1150.css', 'style-v1160.css', 'style-v1170.css', 'style-v1171.css', version_css, 'locale.js', 'preferences.js', 'provider-status.js', 'intelligence.js', 'changes.js', 'shared.js', 'sound.js', 'advice.js', 'app.js']:
+    if legacy_css.name not in {version_css, 'style-v151.css', 'style-v152.css', 'style-v153.css', 'style-v160.css', 'style-v161.css', 'style-v162.css', 'style-v163.css', 'style-v164.css', 'style-v170.css', 'style-v1140.css', 'style-v1150.css', 'style-v1160.css', 'style-v1170.css', 'style-v1171.css', 'style-v1180.css','style-v1190.css'}: legacy_css.unlink()
+for name in ['index.html', 'privacy.html', 'style.css', 'style-v151.css', 'style-v152.css', 'style-v153.css', 'style-v160.css', 'style-v161.css', 'style-v162.css', 'style-v163.css', 'style-v164.css', 'style-v170.css', 'style-v1140.css', 'style-v1150.css', 'style-v1160.css', 'style-v1170.css', 'style-v1171.css', 'style-v1180.css', 'style-v1190.css', version_css, 'locale.js', 'preferences.js', 'provider-status.js', 'intelligence.js', 'changes.js', 'shared.js', 'api-credits.js', 'floating-chrome.js', 'sound.js', 'advice.js', 'app.js']:
     shutil.copy2(root / 'extension' / name, root / 'dist' / name)
 # Standalone bilingual product page and its promotional artwork.
 for name in ['product.html', 'product.css', 'product.js', 'app-web.css', 'app-web.js']:
@@ -18,7 +18,7 @@ shutil.copy2(root / 'assets' / 'promotional' / 'llms-monitor-a4-landscape-flyer-
 for html_name in ['index.html', 'privacy.html']:
     target = root / 'dist' / html_name
     html = target.read_text()
-    for asset in ['style.css', 'style-v151.css', 'style-v152.css', 'style-v153.css', 'style-v160.css', 'style-v161.css', 'style-v162.css', 'style-v163.css', 'style-v164.css', 'style-v170.css', 'style-v1140.css', 'style-v1150.css', 'style-v1160.css', 'style-v1170.css', 'style-v1171.css', version_css, 'locale.js', 'preferences.js', 'provider-status.js', 'intelligence.js', 'changes.js', 'shared.js', 'sound.js', 'advice.js', 'app.js']:
+    for asset in ['style.css', 'style-v151.css', 'style-v152.css', 'style-v153.css', 'style-v160.css', 'style-v161.css', 'style-v162.css', 'style-v163.css', 'style-v164.css', 'style-v170.css', 'style-v1140.css', 'style-v1150.css', 'style-v1160.css', 'style-v1170.css', 'style-v1171.css', 'style-v1180.css', 'style-v1190.css', version_css, 'locale.js', 'preferences.js', 'provider-status.js', 'intelligence.js', 'changes.js', 'shared.js', 'api-credits.js', 'floating-chrome.js', 'sound.js', 'advice.js', 'app.js']:
         html = html.replace(f'"{asset}"', f'"{asset}?v={version.replace(".", "")}"')
     if html_name == 'index.html':
         html = html.replace('</head>', f'<link rel="stylesheet" href="app-web.css?v={version.replace('.', '')}"></head>')

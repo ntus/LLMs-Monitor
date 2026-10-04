@@ -1,5 +1,5 @@
 (function(root){
- const APP_VERSION='1.19.0',HISTORY_LIMIT=10000,L=root.GlanceLocale||{language:()=> 'ja',t:key=>key,label:value=>String(value??''),locale:()=> 'ja-JP'},P=root.GlancePreferences||{visible:()=>['chatgpt','claude','gemini']},S=root.GlanceProviderStatus||{view:()=>''},I=root.GlanceIntelligence||{view:()=>''};
+ const APP_VERSION='1.20.0',HISTORY_LIMIT=10000,L=root.GlanceLocale||{language:()=> 'ja',t:key=>key,label:value=>String(value??''),locale:()=> 'ja-JP'},P=root.GlancePreferences||{visible:()=>['chatgpt','claude','gemini']},S=root.GlanceProviderStatus||{view:()=>''},I=root.GlanceIntelligence||{view:()=>''};
  const services={chatgpt:{name:'ChatGPT',color:'#6dd8bf',mark:'◎',url:'https://chatgpt.com/settings/usage?tab=overview'},claude:{name:'Claude',color:'#eda681',mark:'✳',url:'https://claude.ai/settings/usage'},gemini:{name:'Gemini',color:'#93b3ff',mark:'✦',url:'https://gemini.google.com/usage'}};
  const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  function fresh(s){return !!s?.capturedAt && Date.now()-s.capturedAt<125000;}
@@ -31,7 +31,7 @@
    const creditLink=/(?:クレジット|credits?|Google AI 契約プラン)/i.test(e.label),shownLabel=creditLink?`<a class="extra-action" href="${services[id].url}" target="_blank" rel="noopener noreferrer">${escape(extraLabel(e.label))}</a>`:escape(extraLabel(e.label)),shownValue=creditLink?`<a class="extra-action" href="${services[id].url}" target="_blank" rel="noopener noreferrer">${numeric(id,'extra:'+e.label,extraValue(e.value))}</a>`:shown;
    return `<div class="extra-row${urgent?' urgent':''}${level?' '+level:''}"><div class="extra-line"><span>${shownLabel}</span><b>${warning}${shownValue}</b></div>${bar}${detail?`<div class="extra-detail">${escape(detail)}</div>`:''}${previous(e)}</div>`;
   });
-  return `<div class="extras"><div class="extras-title">${escape(L.t('supplement'))}</div>`+(entries.length?entries.join(''):`<div class="extra-detail">${escape(L.t('creditMissing'))}</div>`)+`</div>`;
+  return `<div class="extras"><div class="extras-title">${escape(L.t('supplement'))}</div>`+(entries.length?entries.join(''):`<div class="extra-detail">${escape(L.t('creditMissing'))}</div>`)+ (root.GlanceApiCredits?.view(id)||'') +`</div>`;
  }
  function extraLabel(value){if(L.language()==='ja')return value;return ({'クレジット':'Credits','追加クレジット':'Additional credits','使用クレジット':'Usage credits','利用権期限':'Access expiration','利用上限のリセット':'Usage-limit reset','クラウドセッションクレジット':'Cloud session credits','追加使用クレジット':'Extra usage credits','プロジェクトセットアップクレジット':'Project setup credits','Google AI 契約プラン':'Google AI plan'})[value]||value;}
  function extraValue(value){if(L.language()==='ja')return value;return displayText(value).replaceAll('残り','Remaining').replaceAll('無効','Disabled');}

@@ -4,7 +4,7 @@
 
 <a id="en"></a>
 
-Last updated: 2026-10-03
+Last updated: 2026-10-04
 
 The extension reads plan names, usage limits, remaining percentages, reset times, and related credit balances from the official ChatGPT, Claude, Gemini, and Google One services for accounts already signed in within the browser profile. Google One is queried only to identify the current Google AI membership name when Gemini does not expose it directly.
 
@@ -20,6 +20,8 @@ The optional intelligence feed requests only a normalized cache at the companion
 
 Users can remove all stored data by uninstalling the extension or clearing its extension storage.
 
+API credit connections are optional and disabled by default. A user click in the extension requests access to the selected official API billing host (OpenAI Platform, Claude Platform or Google AI Studio) and optional scripting. On billing routes only, the local reader extracts explicitly labelled currency balances. It stores amount, currency, acquisition status, an account-scope fingerprint and observation time under a separate local key. It does not read input fields, API keys, passwords or payment details, and does not send page text or account names. Keep the billing page open; the reader checks displayed values about once a minute. Disconnect removes the host permission. API balances remain separate from subscription limits and existing history.
+
 Contact: NT MicroSystems,Inc.
 
 ---
@@ -30,7 +32,7 @@ Contact: NT MicroSystems,Inc.
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
-最終更新: 2026-10-03
+最終更新: 2026-10-04
 
 本拡張機能は、同じブラウザープロファイルでログイン済みのChatGPT、Claude、Gemini、Google Oneの公式サービスから、契約プラン名、利用枠、残量、リセット日時、関連クレジットを取得します。Gemini側で現在の契約名を取得できない場合に限り、Google Oneで現在のGoogle AIメンバーシップ名を確認します。
 
@@ -43,6 +45,8 @@ ChatGPTの使用量取得では、公式ページがログイン中のアカウ�
 任意のAI速報機能はコンパニオンoriginの正規化済みcacheだけを取得します。サーバー側workerは運営者がSecretとして管理するX API認証情報で、選定した公開X投稿を取得できます。このSecretは拡張機能へ送信・保存しません。中継には各社アカウント情報、プロンプト、利用量、端末内履歴を送らず、重複通知防止に必要な公開投稿の要約とIDだけを制限付きで保存します。
 
 保存データは拡張機能のアンインストール、または拡張機能ストレージの消去で削除できます。
+
+APIクレジット連携は任意で初期状態は無効です。拡張機能内のボタンを押したときだけ、選択した公式API請求ホスト（OpenAI Platform／Claude Platform／Google AI Studio）とscriptingの任意権限を要求します。請求パスで明示された通貨残高を読み取り、金額・通貨・取得状態・請求範囲の指紋・観測時刻のみを別のローカルキーへ保存します。入力欄、APIキー、パスワード、決済情報は読み取らず、ページ全文やアカウント名を送信しません。請求画面を開いておくと約1分ごとに表示値を確認します。解除時にホスト権限を削除します。API残高を月額プラン枠や既存履歴へ混入させません。
 
 お問い合わせ: NT MicroSystems,Inc.
 

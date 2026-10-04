@@ -1,17 +1,17 @@
-# Store submission checklist — v1.19.0
+# Store submission checklist — v1.20.0
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 <a id="en"></a>
 
-`dist/LLMs-Monitor-v1.19.0.zip` is the Chrome Web Store and Microsoft Edge Add-ons submission package. Its manifest and complete runtime UI are localized as “LLMs モニター” in Japanese and “LLMs Monitor” in English.
+`dist/LLMs-Monitor-v1.20.0.zip` is the Chrome Web Store and Microsoft Edge Add-ons submission package. Its manifest and complete runtime UI are localized as “LLMs モニター” in Japanese and “LLMs Monitor” in English.
 
 Developer-mode-free installation requires the owner to complete both stores' account, review, and publication process. Building or hosting the ZIP does not publish an installable store extension.
 
 ## Required owner actions
 
 1. Register the owner developer accounts and enable two-step verification where required.
-2. Upload `LLMs-Monitor-v1.19.0.zip`, the 128px icon, screenshots, Japanese and English descriptions, and reviewer test instructions.
+2. Upload `LLMs-Monitor-v1.20.0.zip`, the 128px icon, screenshots, Japanese and English descriptions, and reviewer test instructions.
 3. Use the deployed privacy policy at `https://llmsmonitor.ntusnog.chatgpt.site/privacy.html` and verify that it is reachable without sign-in.
 4. Submit for manual review in each store. After approval, replace the website package-only guidance with the approved store URLs.
 
@@ -30,6 +30,8 @@ Developer-mode-free installation requires the owner to complete both stores' acc
 - Official status hosts (`status.openai.com`, `status.claude.com`, `www.google.com/appsstatus/dashboard`): fetch public incident summaries without credentials or user usage data.
 - `externally_connectable`: limited to `https://llmsmonitor.ntusnog.chatgpt.site/*`; localhost is excluded from the production package.
 
+- Optional `scripting` plus a separately requested official billing host (`platform.openai.com`, `platform.claude.com` or `aistudio.google.com`): reads only labelled API credit balance fields on billing routes after the user clicks Connect on the extension's API setup page. No broad `tabs` permission is added. No API keys, payment fields or full page text are transmitted or stored. Disconnect revokes that host.
+
 ## Reviewer test flow
 
 1. Sign in to one or more of ChatGPT, Claude, and Gemini in the same browser profile.
@@ -40,17 +42,19 @@ Developer-mode-free installation requires the owner to complete both stores' acc
 6. Confirm that startup does not open a popup, the popup button opens one freely resizable normal popup, and “Always on top” opens Document Picture-in-Picture after a user click.
 7. Confirm that the production companion page connects only after a valid 32-character extension ID is entered.
 
+8. Use API connections to enable one billing provider; approve the optional host access, keep its signed-in billing page open, and verify the balance in both main and floating cards. Test missing/zero/postpaid and revoke access. Claude/Gemini live balance parsing is not yet verified.
+
 Before uploading, run `node --test tests/*.test.cjs`, `python3 build.py --package`, inspect the ZIP contents, and perform the manual acceptance checklist in `SPECIFICATION.md`.
 
 ---
 
 <a id="ja"></a>
 
-# 日本語 — ストア提出チェックリスト v1.19.0
+# 日本語 — ストア提出チェックリスト v1.20.0
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
-提出物は `dist/LLMs-Monitor-v1.19.0.zip` です。拡張機能名と画面は日本語「LLMs モニター」、英語「LLMs MONITOR」に対応します。デベロッパーモード不要の導入には、所有者がChrome Web StoreとMicrosoft Edge Add-onsでアカウント、審査、公開を完了する必要があります。ZIPの作成やWeb配布だけではストア公開になりません。
+提出物は `dist/LLMs-Monitor-v1.20.0.zip` です。拡張機能名と画面は日本語「LLMs モニター」、英語「LLMs MONITOR」に対応します。デベロッパーモード不要の導入には、所有者がChrome Web StoreとMicrosoft Edge Add-onsでアカウント、審査、公開を完了する必要があります。ZIPの作成やWeb配布だけではストア公開になりません。
 
 ## 所有者が行う提出作業
 
@@ -87,3 +91,5 @@ v1.17.0: Existing ChatGPT usage tabs are reloaded once after an extension update
 
 
 v1.17.1: The AI tool directory uses static HTTPS links in the existing card layout and is hidden in fullscreen. No permissions, data collection, storage, or network polling changed.
+
+API連携は初期状態で無効です。拡張機能画面で事業者を選択したときだけ、scriptingと該当の公式API請求ホストへの任意権限を要求します。請求画面の残高表示だけを取得し、APIキーや決済情報を保存しません。解除時に該当ホストの権限を削除します。

@@ -3,30 +3,31 @@
 <head>
  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
  <meta name="theme-color" content="#11151e"><title>Privacy Policy · LLMs Monitor</title>
- <link rel="stylesheet" href="style.css?v=1190"><link rel="stylesheet" href="style-v151.css?v=1190">
+ <link rel="stylesheet" href="style.css?v=1200"><link rel="stylesheet" href="style-v151.css?v=1200">
  <style>.policy{max-width:820px;padding-bottom:60px}.policy h1{margin-top:8px}.policy h2{margin-top:32px}.policy p,.policy li{color:var(--muted);font-size:14px;line-height:1.9}.policy a{color:var(--accent)}.policy code{color:var(--text)}.policy section{scroll-margin-top:20px}.lang-links{display:flex;gap:12px}.lang-links a{display:inline-block;padding:5px 10px;border:1px solid var(--line);border-radius:8px;text-decoration:none}</style>
 </head>
 <body><header><a class="brand" href="./"><span class="brandmark">◔</span><span>LLMs MONITOR<small>PRIVACY POLICY / プライバシーポリシー</small></span></a></header>
 <main class="policy">
  <nav class="lang-links" aria-label="Language"><a href="#en">🌍 EN</a><a href="#ja">🇯🇵 JP</a></nav>
  <section id="en" lang="en">
-  <p class="eyebrow">LAST UPDATED 2026-09-29</p><h1>Privacy Policy</h1>
+  <p class="eyebrow">LAST UPDATED 2026-10-04</p><h1>Privacy Policy</h1>
   <p>The extension reads plan names, usage limits, remaining percentages, reset times, and related credits from the official ChatGPT, Claude, Gemini, and Google One services already signed in within the same browser profile. Google One is queried only when Gemini does not expose the current Google AI membership name.</p>
   <h2>Authentication</h2><p>For ChatGPT usage requests, an access token exposed to the signed-in official page is held only in memory during the request. It is never saved, logged, displayed, or sent to the developer or a third party. Passwords and prompt contents are never read.</p>
   <h2>Local data</h2><p>Usage snapshots, up to 10,000 changed values per usage window, the selected Claude organization identifier, and display preferences are stored in <code>chrome.storage.local</code>. History survives sign-out, browser restart, and extension updates. The comparison baseline resets after signing in again. Uninstall the extension or clear its extension storage to delete the data.</p>
   <h2>Companion web page</h2><p>When you connect the extension ID to <code>https://llmsmonitor.ntusnog.chatgpt.site</code>, the extension returns only the plan, usage, credit, history, and preference fields needed to render the monitor locally in that browser. The page does not upload those values to NT MicroSystems,Inc.</p>
   <h2>Sharing and automated actions</h2><p>Data is not sold or shared for advertising, profiling, credit decisions, or unrelated purposes. The extension does not send prompts, buy credits, change subscriptions, or exercise reset entitlements. Any final action after following a usage link takes place on the provider's official site under the user's control.</p>
   <h2>Contact</h2><p><a href="https://ntus.info" target="_blank" rel="noopener">NT MicroSystems,Inc.</a></p>
- </section>
+ <h2>Optional API balances</h2><p>API credit connections are optional and disabled by default. A user click in the extension requests access to the selected official API billing host (OpenAI Platform, Claude Platform or Google AI Studio) and optional scripting. On billing routes only, the local reader extracts explicitly labelled currency balances. It stores amount, currency, acquisition status, an account-scope fingerprint and observation time under a separate local key. It does not read input fields, API keys, passwords or payment details, and does not send page text or account names. Keep the billing page open; the reader checks displayed values about once a minute. Disconnect removes the host permission. API balances remain separate from subscription limits and existing history.</p></section>
  <hr>
  <section id="ja" lang="ja">
   <nav class="lang-links" aria-label="言語"><a href="#en">🌍 EN</a><a href="#ja">🇯🇵 JP</a></nav>
-  <p class="eyebrow">最終更新 2026-09-29</p><h1>プライバシーポリシー</h1>
+  <p class="eyebrow">最終更新 2026-10-04</p><h1>プライバシーポリシー</h1>
   <p>本拡張機能は、同じブラウザープロファイルでログイン済みのChatGPT、Claude、Gemini、Google Oneの公式サービスから、契約プラン名、利用枠、残り割合、リセット日時、関連クレジットを取得します。Gemini側で現在のGoogle AI契約名を取得できない場合に限り、Google Oneを照会します。</p>
   <h2>認証情報</h2><p>ChatGPTの使用量要求では、公式ページが現在のログインに提供するアクセストークンを要求中だけメモリー内で使用します。保存、ログ出力、表示、開発者や第三者への送信はしません。パスワードとプロンプト本文は読み取りません。</p>
   <h2>端末内に保存する情報</h2><p>使用量スナップショット、利用枠ごとに最大10,000件の変化履歴、選択したClaude組織識別子、表示設定を <code>chrome.storage.local</code> に保存します。ログアウト、ブラウザー再起動、拡張機能の更新後も履歴は維持され、再ログイン後の比較基準だけをリセットします。削除するには拡張機能をアンインストールするか、拡張機能ストレージを消去してください。</p>
   <h2>コンパニオンWeb画面</h2><p>拡張機能IDを <code>https://llmsmonitor.ntusnog.chatgpt.site</code> に接続した場合、表示に必要な契約、使用量、クレジット、履歴、設定だけを同じブラウザー内の画面へ返します。それらをNT MicroSystems,Inc.のサーバーへアップロードする処理はありません。</p>
   <h2>外部提供と自動操作</h2><p>データを販売したり、広告、プロファイリング、信用判断、無関係な目的に共有したりしません。プロンプト送信、クレジット購入、契約変更、リセット権行使を自動実行しません。利用リンクの先での最終操作は利用者が公式サイトで行います。</p>
+  <h2>任意のAPI残高連携</h2><p>APIクレジット連携は任意で初期状態は無効です。拡張機能内のボタンを押したときだけ、選択した公式API請求ホスト（OpenAI Platform／Claude Platform／Google AI Studio）とscriptingの任意権限を要求します。請求パスで明示された通貨残高を読み取り、金額・通貨・取得状態・請求範囲の指紋・観測時刻のみを別のローカルキーへ保存します。入力欄、APIキー、パスワード、決済情報は読み取らず、ページ全文やアカウント名を送信しません。請求画面を開いておくと約1分ごとに表示値を確認します。解除時にホスト権限を削除します。API残高を月額プラン枠や既存履歴へ混入させません。</p>
   <h2>お問い合わせ</h2><p><a href="https://ntus.info" target="_blank" rel="noopener">NT MicroSystems,Inc.</a></p>
  </section>
 </main></body></html>

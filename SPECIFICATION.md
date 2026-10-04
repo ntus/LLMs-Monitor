@@ -4,7 +4,7 @@
 
 <a id="en"></a>
 
-Document revision: 1.0 · Product version: **1.19.0** · Web companion: `https://llmsmonitor.ntusnog.chatgpt.site/`
+Document revision: 1.0 · Product version: **1.20.0** · Web companion: `https://llmsmonitor.ntusnog.chatgpt.site/`
 
 This English section defines the implementation contract for the beta. The [Japanese section](#ja) contains the full historical and field-level acceptance criteria. Implementers must read both sections and every ID in [`spec/requirements.json`](spec/requirements.json); neither translation overrides the other.
 
@@ -46,6 +46,20 @@ Human-readable documentation must start in English and place Japanese in the lat
 
 ---
 
+## Current release: v1.20.0 — floating window chrome and optional API balances
+
+The same `floating-chrome.js` component owns the normal popup and Document PiP application header. It mounts once, displays one localized product title with no version badge, updates the document title and visible title after language changes, and measures the text to fit the available width. Only the redundant widget title is hidden in external floating windows. The header remains visible during scrolling. Existing theme, opacity, service order, lifecycle and expanded-history preservation remain intact.
+
+The resize menu provides independent width ±60 px and height ±120 px actions through `window.resizeBy()` inside a user click. Rendering and refresh never resize the window. There is no application minimum/maximum width or height; native browser/OS limits still apply. A 2026-10-04 Chrome/macOS native-edge test changed the PiP viewport height from 860 to 678 px. The native title bar is browser-owned and must identify its originating site; changing `document.title` cannot remove that URL. This restriction is not a title parsing failure.
+
+API balances are separate from ChatGPT/Codex, Claude cloud-session credits and Google AI subscription quotas. The toolbar opens the extension's `api-setup.html`. Each provider is disabled by default. A direct user click requests optional `scripting` and only the selected official host: OpenAI Platform, Claude Platform or Google AI Studio. The background dynamically registers the local balance reader and recovers it in already-open billing tabs. `API_CREDITS_CONFIGURE` is accepted only from an extension page; `API_CREDIT_SNAPSHOT` requires the exact permitted billing origin, approved billing path, top frame and an enabled provider. Revoking permission stops acquisition.
+
+The reader uses only explicitly labelled currency balances on the official billing page, not a monthly budget minus spending. `apiCredits` is a new isolated storage key and `GET` field; it never updates existing `data`, usage windows, history, reset entitlements or notification sounds. Amount, currency, status, scope fingerprint and local observation time are the only stored fields. Passwords, API keys, page text, account names and payment information are not sent or saved. Unsupported/missing formats show —; a genuine displayed zero stays zero; Postpay is labelled separately; negative official balances are retained. Multiple balances are not summed. An unavailable response may retain a previous amount/time only within an identified matching billing scope. Values older than 125 seconds are dimmed and labelled for refresh.
+
+Keep the selected official billing page open. Its display is reread approximately once a minute and after relevant DOM changes; this does not force the provider to recalculate billing or bypass its own reporting delay. OpenAI's signed-in “API credit balance” label was verified directly; Claude/Gemini adapters have synthetic coverage, but their signed-in billing accounts still need live validation. API setup is optional and the original required permissions remain unchanged.
+
+Primary references: [Document PiP](https://developer.chrome.com/docs/web-platform/document-picture-in-picture), [optional permissions](https://developer.chrome.com/docs/extensions/reference/api/permissions), [Claude billing](https://platform.claude.com/settings/billing), [Gemini billing](https://ai.google.dev/gemini-api/docs/billing), [OpenAI billing](https://platform.openai.com/settings/organization/billing/overview).
+
 <a id="ja"></a>
 
 # 日本語 — LLMs モニター 詳細仕様書
@@ -53,7 +67,7 @@ Human-readable documentation must start in English and place Japanese in the lat
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.19.0
+対象製品版: 1.20.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -1241,3 +1255,21 @@ A Claude five-hour `0% remaining` from the background API is provisional. If the
 ## 48. v1.19.0 β：Claude残量0の確認とフローティング履歴
 
 バックグラウンドAPIが返したClaudeの5時間枠「残り0%」は暫定値とする。同じ有効セッションに前回の正値があれば確認中の表示とともに保持し、なければ未取得表示にする。非アクティブの公式Claude使用状況タブを短時間開いて直接確認し、画面から読めた値を優先する。公式画面で確定した0%のみ上限到達として表示する。未確認0%は変化履歴・通知音に記録しない。現在セッションのリセット（例20:50）と週間リセット（例21:00）は別々に保つ。フローティングの履歴は初期状態で閉じ、自動更新を挟んでも開閉状態を維持する。CSS上の最大高さ制限を外すが、ウィンドウサイズはブラウザ・OSの許容範囲に従う。PiP内には製品名を表示する。ブラウザのネイティブタイトルバーに表示されるURL／オリジンはDocument Picture-in-Picture APIから変更できない。Claude Desktopとの実アカウント一致は手動検証が必要。
+
+## 49. v1.20.0：外窓の共通タイトルと任意のAPIクレジット連携
+
+通常小窓・最前面PiPの見出しは `floating-chrome.js` に共通化し、一度だけ作成する。製品名は1か所、バージョンは見出しに表示しない。言語変更時に可視タイトルとdocument.titleを同期し、実測して1行に収める。スクロール中も見出しを維持する。外窓に限り重複するwidget見出しを隠し、既存のテーマ・透明度・配置・終了連動・履歴開閉保持は変更しない。
+
+サイズメニューは利用者のクリック内で `resizeBy()` を呼び、幅を±60px、高さを±120px調整する。更新処理から勝手に寸法を戻さない。アプリ側の縦横最小・最大寸法を設けず、OS／ブラウザの範囲に従う。2026-10-04のChrome/macOS実機で外枠をドラッグし、PiP表示高さが860→678pxへ変わることを確認した。ネイティブタイトルバーのURL／オリジンはブラウザの安全表示であり、Webアプリから製品名に置換できない。アプリ内では常に製品名を表示する。
+
+上部の「API連携」から拡張機能内の設定を開く。OpenAI API・Claude API・Gemini APIは初期状態で無効で、利用者のクリック時だけ選んだ公式請求ホストへの任意アクセスとscripting権限を要求する。パスワード・APIキー・決済情報の入力欄は追加しない。許可後、請求画面の残高ラベルと通貨金額を読み取る。設定変更メッセージは拡張機能内のみ、取得メッセージは該当請求origin・パス・トップフレーム・許可済み事業者に限定する。
+
+`apiCredits` を独立保存し、従来の利用枠 `data`・履歴・リセット権・通知音へ混入させない。保存項目は金額、通貨、状態、請求範囲の指紋、観測時刻のみ。未取得は—、正しく取得した0は0、後払いは「後払い」、公式画面の負残高は負値で表示する。複数残高は合算しない。取得失敗時の前回値は識別できた同じ請求範囲に限定する。125秒以上古い残高は薄くして更新を促す。
+
+公式請求画面を開いておく必要がある。約60秒ごと及びDOM変更後に画面表示値を再読取するが、請求元の集計遅延は解消できない。OpenAIの実画面ラベル・残高を確認済み。Claude／Geminiの取得は模擬データで検証し、ログイン済み請求アカウントでの確認は未完了として扱う。既存の必須権限は変更せず、API連携を有効にしなくても従来機能は動作する。
+
+### v1.20.0 verification / 検証記録
+
+EN: 165 automated tests passed, including release alignment, API balance parsing/isolation, floating title localization and user-triggered resizing. In Chrome PiP, the viewport grew from 266×738 to 266×871 and returned, then from 266×738 to 333×738 and returned. Japanese/English titles synchronized without opening a new window. Updating the existing extension in place preserved its ID and all three providers’ plans, usage values and prior history. The agent’s browser policy blocks navigating to extension-internal pages; API permission activation and signed-in Claude/Gemini billing validation remain unverified.
+
+JP: 自動テスト165件通過。版整合、API残高の解析・分離、小窓タイトルの言語同期、利用者操作によるサイズ変更を検証した。Chromeの最前面窓で266×738→266×871→266×738、次に333×738→266×738へ変更できた。窓を開き直さず日本語／英語のタイトルが同期した。既存拡張機能を同じ読込元で更新し、接続IDと3社の契約・残量・過去履歴が保持された。検証ツールのブラウザポリシーが拡張機能内部ページへの移動を禁止しているため、API権限の有効化とClaude／Geminiのログイン中請求画面の実機検証は未確認。

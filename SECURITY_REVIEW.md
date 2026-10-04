@@ -1,20 +1,22 @@
-# Security review — v1.19.0 beta
+# Security review — v1.20.0 beta
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 <a id="en"></a>
 
-This review records the checks performed for the 1.19.0 beta; it is not a guarantee that no vulnerabilities exist. A release owner should also test the packaged extension in current Chrome and Edge with real accounts and submit it to store review.
+This review records the checks performed for the 1.20.0 beta; it is not a guarantee that no vulnerabilities exist. A release owner should also test the packaged extension in current Chrome and Edge with real accounts and submit it to store review.
 
 ## Attack surface and controls
 
-- **Origins and permissions:** `externally_connectable` permits only the published HTTPS monitor. Provider content scripts run only on the three official AI sites. Public status feeds have fixed HTTPS URLs and credential-free requests. The only added permissions are `notifications` and the three status hosts.
+- **Origins and permissions:** `externally_connectable` permits only the published HTTPS monitor. Provider content scripts run only on the three official AI sites. Public status feeds have fixed HTTPS URLs and credential-free requests. API billing support adds only optional `scripting` and three optional billing hosts, enabled individually through a direct extension-page gesture. Existing required permissions are unchanged.
 - **Message validation:** service snapshots are accepted only from the matching provider origin. The arrays, percentages, labels, and counts are bounded before storage. State-changing settings and window commands require the extension's own origin or the approved monitor origin.
 - **Untrusted content:** incident text, provider-derived labels, and the new ChatGPT reset wording are length-bounded and escaped before HTML rendering. Links are fixed to official HTTPS pages. No remote scripts, `eval`, or arbitrary URL navigation are used for status content.
 - **X intelligence boundary:** the extension receives only normalized public-post data from the fixed companion endpoint. X credentials remain a server runtime secret. External links are restricted to X and BridgeBench HTTPS hosts; the first successful feed is a silent baseline and IDs prevent repeat alerts.
 - **Network and storage:** status responses have an 8-second timeout and a 3 MB cap. Incident requests omit credentials. Account data, history, and the last status summary remain in browser storage; no developer analytics endpoint receives them. Existing stored history is not migrated or deleted.
 - **Reset-expiry recovery:** only a verified available entitlement with no expiry triggers a check of the already-permitted ChatGPT usage origin. A pre-existing tab is reloaded only when its content reader is absent, with a five-minute per-tab cooldown. If no tab exists, an inactive official tab is opened briefly and closed after acquisition or at a 45-second alarm. Only its tab ID is temporarily stored for cleanup; no new host or broad `tabs` permission is requested.
 - **Notification behavior:** a new issue signature triggers one browser popup and one audio sequence. Repeated one-minute checks of the same signature do not retrigger. Unknown source state is shown as unavailable, not as healthy. Recovery is based only on a subsequent official healthy response and is retained for ten minutes.
+
+- **API billing isolation:** a new `apiCredits` key holds only bounded amount/currency/status, a billing-scope fingerprint and observation time. Incoming values require an enabled provider, granted host, exact HTTPS billing origin/path and top frame. Configuration changes are extension-page-only. The reader never collects input fields, API keys or payment details and never navigates or purchases automatically. It does not alter usage, history, reset rights or sounds. Multiple balances, absent data and postpaid are not fabricated as zero. Disconnect removes host access.
 
 ## Verification and limits
 
@@ -28,7 +30,7 @@ This review records the checks performed for the 1.19.0 beta; it is not a guaran
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
-v1.19.0 βで確認した範囲の記録です。「脆弱性が存在しない」という保証ではありません。正式公開前には最新版Chrome／Edgeの実アカウントで配布ZIPを確認し、ストア審査を受けてください。
+v1.20.0 βで確認した範囲の記録です。「脆弱性が存在しない」という保証ではありません。正式公開前には最新版Chrome／Edgeの実アカウントで配布ZIPを確認し、ストア審査を受けてください。
 
 外部接続先は公開モニターのHTTPS origin、ページ内スクリプトは3社の公式サイトに限定しています。障害情報は固定した公式HTTPS URLから認証情報なしで取得し、8秒でタイムアウト、3 MB超の応答を拒否します。受信したスナップショットの型・件数・数値範囲を検証します。障害の文章はHTML表示時にエスケープし、リンク先は公式URLに固定します。新しい障害だけ通知し、同じ障害を1分ごとに鳴らし直しません。取得失敗は正常扱いせず「確認できません」と表示します。
 
@@ -39,3 +41,5 @@ v1.17.0: Existing ChatGPT usage tabs are reloaded once after an extension update
 
 
 v1.17.1: The AI tool directory uses static HTTPS links in the existing card layout and is hidden in fullscreen. No permissions, data collection, storage, or network polling changed.
+
+API請求連携は任意の事業者別ホスト権限とscriptingのみを追加します。正規の請求パス・トップフレーム・許可済みかつ有効な事業者のみ受理し、金額・通貨・状態・請求範囲の指紋・観測時刻を独立保存します。入力欄や決済情報は収集せず、既存の利用枠・履歴・リセット権・通知音は変更しません。未取得と後払いを0円にしません。Claude／Geminiのログイン済み請求画面は引き続き手動検証が必要です。
