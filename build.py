@@ -5,7 +5,7 @@ manifest = json.loads((root / 'extension' / 'manifest.json').read_text())
 version = manifest['version']
 version_css = 'style-v' + version.replace('.', '') + '.css'
 for legacy_css in (root / 'dist').glob('style-v*.css'):
-    if legacy_css.name not in {version_css, 'style-v151.css', 'style-v152.css', 'style-v153.css', 'style-v160.css', 'style-v161.css', 'style-v162.css', 'style-v163.css', 'style-v164.css', 'style-v170.css', 'style-v1140.css', 'style-v1150.css', 'style-v1160.css', 'style-v1170.css', 'style-v1171.css'}: legacy_css.unlink()
+    if legacy_css.name not in {version_css, 'style-v151.css', 'style-v152.css', 'style-v153.css', 'style-v160.css', 'style-v161.css', 'style-v162.css', 'style-v163.css', 'style-v164.css', 'style-v170.css', 'style-v1140.css', 'style-v1150.css', 'style-v1160.css', 'style-v1170.css', 'style-v1171.css', 'style-v1180.css'}: legacy_css.unlink()
 for name in ['index.html', 'privacy.html', 'style.css', 'style-v151.css', 'style-v152.css', 'style-v153.css', 'style-v160.css', 'style-v161.css', 'style-v162.css', 'style-v163.css', 'style-v164.css', 'style-v170.css', 'style-v1140.css', 'style-v1150.css', 'style-v1160.css', 'style-v1170.css', 'style-v1171.css', version_css, 'locale.js', 'preferences.js', 'provider-status.js', 'intelligence.js', 'changes.js', 'shared.js', 'sound.js', 'advice.js', 'app.js']:
     shutil.copy2(root / 'extension' / name, root / 'dist' / name)
 # Standalone bilingual product page and its promotional artwork.

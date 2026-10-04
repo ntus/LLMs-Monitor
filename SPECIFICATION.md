@@ -4,7 +4,7 @@
 
 <a id="en"></a>
 
-Document revision: 1.0 · Product version: **1.18.0** · Web companion: `https://llmsmonitor.ntusnog.chatgpt.site/`
+Document revision: 1.0 · Product version: **1.19.0** · Web companion: `https://llmsmonitor.ntusnog.chatgpt.site/`
 
 This English section defines the implementation contract for the beta. The [Japanese section](#ja) contains the full historical and field-level acceptance criteria. Implementers must read both sections and every ID in [`spec/requirements.json`](spec/requirements.json); neither translation overrides the other.
 
@@ -36,7 +36,7 @@ Tips and NEWS must include the primary-source HTTPS link, publisher, and date. R
 
 ## 5. Code, build, and release contract
 
-`extension/` is authoritative. `background.js`, `fetchers.js`, `parser.js`, `state.js`, and `history.js` acquire and normalize data; `shared.js`, `preferences.js`, `locale.js`, `advice.js`, and CSS render the common surfaces. `build.py` copies shared assets to `dist/`, synchronizes documentation into the extension package, cache-busts public assets, and creates `dist/LLMs-Monitor-v1.18.0.zip`. Manifest, UI, ZIP, specification, and store checklist versions must agree. Chrome Web Store/Edge Add-ons review is necessary for installation without developer mode; the ZIP alone does not provide that. Future native macOS, Windows, iOS, and Android apps should reuse the normalized data contracts and analysis rules through platform-specific authentication/window adapters; those apps are not part of this release.
+`extension/` is authoritative. `background.js`, `fetchers.js`, `parser.js`, `state.js`, and `history.js` acquire and normalize data; `shared.js`, `preferences.js`, `locale.js`, `advice.js`, and CSS render the common surfaces. `build.py` copies shared assets to `dist/`, synchronizes documentation into the extension package, cache-busts public assets, and creates `dist/LLMs-Monitor-v1.19.0.zip`. Manifest, UI, ZIP, specification, and store checklist versions must agree. Chrome Web Store/Edge Add-ons review is necessary for installation without developer mode; the ZIP alone does not provide that. Future native macOS, Windows, iOS, and Android apps should reuse the normalized data contracts and analysis rules through platform-specific authentication/window adapters; those apps are not part of this release.
 
 Run `node --test tests/*.test.cjs`, `python3 build.py --package`, ZIP-content and version checks, and UI smoke checks. Test sign-in/sign-out, refresh fallback, every display surface, language/theme/opacity, deadline boundaries, history retention, and service visibility/order on actual Chrome and Edge installations before claiming live-account acceptance. Keep the Site's existing audience unless the user explicitly changes it. See the [Japanese detailed specification](#ja) and [requirements ledger](spec/requirements.json) for every acceptance case.
 
@@ -53,7 +53,7 @@ Human-readable documentation must start in English and place Japanese in the lat
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.18.0
+対象製品版: 1.19.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -785,7 +785,7 @@ Document Picture-in-Pictureには以下の制約がある。
 
 - ストア提出ZIPの形式は `LLMs-Token-Usage-Monitor-v{semver}.zip` とする。
 - 旧名称をZIP、拡張機能名、HTMLタイトルに使わない。
-- 対象版では `LLMs-Monitor-v1.18.0.zip` とする。
+- 対象版では `LLMs-Monitor-v1.19.0.zip` とする。
 - Manifest、UI定数、HTMLフッター、ダウンロードリンク、版別CSS、ZIP名のバージョンを一致させる。
 - バージョンはSemantic Versioningを使う。
 
@@ -1031,7 +1031,7 @@ README、本仕様、AGENTS、PRIVACY、ストア提出資料、Webプライバ�
 3. 実アカウントでのChrome/Edge手動確認を終える。
 4. 通常画面、フルスクリーン、サイト内パネル、通常小窓、PiPの表示を確認する。
 5. プライバシー文書とストア権限説明が実装と一致する。
-6. `LLMs-Monitor-v1.18.0.zip` が再現可能に生成され、内容を検査済みである。
+6. `LLMs-Monitor-v1.19.0.zip` が再現可能に生成され、内容を検査済みである。
 7. 公開Webアプリとストア提出パッケージの名称、バージョン、接続originが一致する。
 
 
@@ -1232,3 +1232,12 @@ The AI tool directory now contains editorial recommendations 1–9 and Nerf Benc
 ログイン済みのChatGPT公式使用状況画面にはリセット権と期限が表示されても、バックグラウンドAPIに期限がない場合がある。2026-10-04の調査では、開いたままの公式タブに「完全リセット（週間＋5 時間）」「有効期限：10月30日」が存在した一方、拡張機能の読み取りスクリプトが注入されていなかった。そのタブの再読込後、モニターに期限が即時反映された。今後は利用可能な権利に期限がない場合、既存の使用状況タブの読み取りスクリプトを確認し、再読取または未注入タブの再読込を行う。該当タブがない場合は非アクティブな公式タブを一時的に開き、取得後または45秒後に閉じる。確認は最短1分間隔、同一タブの再読込は5分以上空ける。利用率は従来どおりAPI、リセット権の原文と期限は公式表示から取得し、期日を推測しない。
 
 各種AIツールはおすすめ1～9位と10番目のNerf Benchに変更し、BridgeBenchの別のランキングカードを削除する。1.17.1は今回限りの例外だったため、このパッケージ変更では従来の中間番号を上げて末尾を0にする規則を適用した。
+
+
+## 48. v1.19.0 beta: Claude zero verification and floating history
+
+A Claude five-hour `0% remaining` from the background API is provisional. If the same active session has a positive last verified value, the monitor retains it with a verification notice; otherwise it shows an unavailable value. A short-lived inactive official Claude usage tab is used to seek direct page evidence, and its parsed value takes priority. Only a verified official page zero can confirm exhaustion. A provisional zero produces no history or change sound. The current-session reset (for example 20:50) remains distinct from the weekly reset (for example 21:00). Floating history is collapsed by default; open state survives refreshes. Application CSS has no maximum height, subject to the browser/OS window bounds. The application title is shown inside the PiP window; browser-owned native title-bar origin text cannot be replaced through the Document Picture-in-Picture API. Live-account parity with Claude Desktop requires manual confirmation.
+
+## 48. v1.19.0 β：Claude残量0の確認とフローティング履歴
+
+バックグラウンドAPIが返したClaudeの5時間枠「残り0%」は暫定値とする。同じ有効セッションに前回の正値があれば確認中の表示とともに保持し、なければ未取得表示にする。非アクティブの公式Claude使用状況タブを短時間開いて直接確認し、画面から読めた値を優先する。公式画面で確定した0%のみ上限到達として表示する。未確認0%は変化履歴・通知音に記録しない。現在セッションのリセット（例20:50）と週間リセット（例21:00）は別々に保つ。フローティングの履歴は初期状態で閉じ、自動更新を挟んでも開閉状態を維持する。CSS上の最大高さ制限を外すが、ウィンドウサイズはブラウザ・OSの許容範囲に従う。PiP内には製品名を表示する。ブラウザのネイティブタイトルバーに表示されるURL／オリジンはDocument Picture-in-Picture APIから変更できない。Claude Desktopとの実アカウント一致は手動検証が必要。

@@ -33,7 +33,7 @@ This file is the starting point for every future Codex or LLM edit. Follow the u
 
 - Keep Nerf Bench link-only unless the user explicitly restores monitoring; older v1.10 requirements are superseded in v1.17.0. Test flashing primary digits in both floating layouts at their inherited full font size. On package updates, recheck already-open ChatGPT usage tabs for rendered reset expiry without inventing dates.
 
-- The AI tool directory uses the LLM card layout and is hidden in fullscreen. Preserve its eleven links and bilingual descriptions; keep usage cards and history visible in fullscreen.
+- The AI tool directory uses the LLM card layout and is hidden in fullscreen. Preserve its ten links and bilingual descriptions; keep usage cards and history visible in fullscreen.
 
 - Version 1.17.1 is a one-time user-requested exception. After this release, resume the normal rule: any store-package change increments the middle number and resets the last number to zero. Do not infer a permanent rule change from this exception.
 - A ChatGPT reset entitlement can expose its expiry only in the rendered official usage page. When a verified API entitlement lacks an expiry, check that an open usage tab actually has the extension reader; recover a missing reader and close any temporary acquisition tab. Never equate an open tab with an injected reader.
@@ -76,12 +76,12 @@ Keep this `AGENTS.md` in the repository and update it when a new acceptance rule
 - 正式公開前のSitesスラッグまたはoriginを変更する場合も、`manifest.externally_connectable`、backgroundの`ALLOWED`、Webリンク、プライバシー・リリース文書、回帰テストを同じパッケージリリースで同時更新し、新URLの利用可否を報告する前に接続整合を確認する。
 - X速報は個人の利用量状態から分離する。X tokenをclient codeやリポジトリへ入れず、初回無音基準、投稿ID重複防止、出典区分、1分周期のテストを維持する。
 - 数値変化の通知は、新しいスナップショットを描画側へ公開する前に通知音を送出する。公式障害情報の確認周期は1分を維持し、両方を回帰テストで固定する。
-- ChatGPTの公式画面に出たリセット権の期限原文は確認できた時点で保持し、API部分更新による「期限未取得」への後退を防ぐ。Claudeの同じ有効セッションで公式画面が正の残量を示す間、矛盾するAPIの0%で上書き・履歴追加・通知しない。
+- ChatGPTの公式画面に出たリセット権の期限原文は確認できた時点で保持し、API部分更新による「期限未取得」への後退を防ぐ。Claude APIの0%は公式使用状況画面で裏付けられるまで確定せず、前回の正値を保つか未取得を表示する。未確認の0%を履歴・通知に含めず、公式画面を再読取する。公式で確認した0%だけ表示し、現在セッションと週間のリセット時刻を独立して保つ。
 - 期限警告の枠は1つだけにする。カウントダウンまたは親要素のどちらか一方に警告装飾を付け、両方を囲まない。ゲージ内のリセット文は円の内側幅に収め、狭幅・全画面表示をテストする。ChatGPTリセット権の確認済み未来期限は部分更新で維持し、ロケール別表示文と期限属性を推測なしで解析する。
 
 - Nerf Benchはリンクのみとし、利用者が明示的に再開を指示しない限り速報監視を戻さない。点滅する主残量は通常小窓・最前面小窓で同じ文字サイズを保つ回帰テストを行う。更新前から開いたChatGPT使用状況タブはパッケージ更新時に公式期限を再取得する。
 
-- 「各種AIツール」は各種LLMと同じカード配置を用い、全画面では非表示にする。11件のリンクと日英説明を維持し、残量カードと履歴は全画面で表示する。
+- 「各種AIツール」は各種LLMと同じカード配置を用い、全画面では非表示にする。10件のリンクと日英説明を維持し、残量カードと履歴は全画面で表示する。
 
 - 1.17.1は今回だけの利用者指定による例外。次回以降、ストア公開用パッケージを変更する際は従来どおり中間番号を上げ、末尾を0に戻す。今回の例外を恒久的な規則変更として扱わない。
 - ChatGPTのリセット権期限は公式使用状況画面の描画後にしか存在しない場合がある。APIで権利を確認できても期限が欠けるときは、タブが存在するだけで安心せず、読み取りスクリプトの注入と受信まで確認する。一時取得タブは必ず閉じる。

@@ -9,6 +9,12 @@ function parse(doc,service){
  const windows=[];
  if(service==='gemini')for(const [selector,name]of [['[data-test-id="gxu-currently"]','現在のセッション'],['[data-test-id="gxu-weekly"]','週間']]){const e=doc.querySelector(selector);if(!e)continue;const v=used(e.innerText),resetText=reset(e.innerText);if(v!==null)windows.push({label:name,remaining:v,reset:resetText,resetAt:resetTime(resetText)});}
  if(service==='claude')for(const e of doc.querySelectorAll('[role="meter"],[role="progressbar"]')){const l=label(e,doc);if(!/^(現在のセッション|今週|Current session|Weekly limits|All models|すべてのモデル)$/i.test(l))continue;const val=e.getAttribute('aria-valuenow');if(val===null||!Number.isFinite(Number(val))||Number(val)<0||Number(val)>100)continue;const t=e.getAttribute('aria-valuetext')||'';const v=remaining(t)??used(t);if(v===null)continue;const name=/今週|Weekly|All models|すべて/i.test(l)?'週間':'現在のセッション',resetText=reset(vicinity(e)),shown=resetText||(name==='現在のセッション'&&v===100?'最初のメッセージから開始します':'');windows.push({label:name,remaining:v,reset:shown,resetAt:resetTime(resetText)});}
+ if(service==='claude'&&!windows.some(w=>w.label==='現在のセッション')){
+  const body=String(doc.body?.innerText||''),start=body.search(/(?:^|\n)\s*(?:現在のセッション|Current session)\s*(?:\n|$)/i);
+  if(start>=0){const section=body.slice(start,start+350).split(/(?:^|\n)\s*(?:今週|This week|Weekly limits|今週のFable|上限のリセット)\s*(?:\n|$)/i)[0],v=remaining(section)??used(section),resetText=reset(section);
+   if(v!==null)windows.unshift({label:'現在のセッション',remaining:v,reset:resetText||(v===100?'最初のメッセージから開始します':''),resetAt:resetTime(resetText)});
+  }
+ }
  if(service==='chatgpt')for(const e of doc.querySelectorAll('progress,[role="progressbar"]')){const l=label(e,doc);if(!/残りの利用可能量|remaining/i.test(l))continue;const text=vicinity(e,true);const v=remaining(text);if(v===null)continue;const weekly=/週|week/i.test(text),five=/5\s*時間|5.hour|five.hour/i.test(text),resetText=reset(text);if(!weekly&&!five||weekly&&five)continue;windows.push({label:weekly?'週間 (Work / Codex)':'Work / Codex · 5時間',remaining:v,reset:resetText,resetAt:resetTime(resetText)});}
  return windows.slice(0,6);
 }

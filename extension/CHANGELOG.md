@@ -1,3 +1,8 @@
+## 1.19.0 beta / β
+
+- EN: Verify Claude API zero against the official usage page; suppress unverified zero history and alerts. Collapse floating history by default and remove its CSS height cap.
+- JP: Claude APIの未確認0%を公式使用状況画面で確認し、誤った履歴・通知を抑止。フローティング履歴を初期状態で折りたたみ、CSSの高さ制限を解除。
+
 # Revision history / 改訂履歴
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)

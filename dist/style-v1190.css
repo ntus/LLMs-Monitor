@@ -1,0 +1,3 @@
+/* v1.19.0: keep floating content scrollable at any browser-allowed window height. */
+.floating-body .widget,.pip-body .widget{max-height:none!important;overflow:visible!important}
+.floating-body,.pip-body{min-height:0!important;height:auto!important;overflow:auto!important}

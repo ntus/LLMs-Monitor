@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs トークン残量モニタ",
     "name_en": "LLMs Token Usage Monitor",
-    "version": "1.18.0",
-    "package_filename": "LLMs-Monitor-v1.18.0.zip",
+    "version": "1.19.0",
+    "package_filename": "LLMs-Monitor-v1.19.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -3617,6 +3617,83 @@
           "type": "automated",
           "coverage": "release-1170.test.cjs",
           "procedure": "Verify ten cards and Nerf Bench tenth."
+        }
+      ]
+    },
+    {
+      "id": "CLAUDE-006",
+      "category": "acquisition",
+      "introduced_in": "1.19.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "Claudeの5時間枠のAPIが0%残量を返しても、同じセッションの公式画面で上限到達を確認できるまでは確定0%として表示・履歴化・通知しない。公式画面の正値を優先し、正値がない場合は未取得表示として公式使用状況画面を再読取する。リセット時刻は公式取得値を維持する。",
+      "source_requirements": [
+        "User screenshot 2026-10-04: API-derived monitor showed 0% while official Claude Desktop showed 1% used and reset at 20:50."
+      ],
+      "acceptance_criteria": [
+        "APIのみの0%は数値未確認となり、前回の正値があれば保持する。",
+        "公式使用状況画面の1%使用済みは99%残りとして取得する。",
+        "公式画面が同じ枠で0%残りを示す場合だけ0%を確定する。",
+        "未確認値を変化履歴と音通知に記録しない。",
+        "現在セッションの20:50と週間の21:00は別のリセット時刻として保持する。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/state.js",
+          "symbol": "api-zero-unverified"
+        },
+        {
+          "path": "extension/background.js",
+          "symbol": "ensureClaudeUsageReader"
+        },
+        {
+          "path": "extension/parser.js",
+          "symbol": "Claude visible-text fallback"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "state.test.cjs / parser.test.cjs / history.test.cjs",
+          "procedure": "Synthetic contradictory and verified usage states."
+        }
+      ]
+    },
+    {
+      "id": "UI-FLOATING-002",
+      "category": "ui",
+      "introduced_in": "1.19.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "フローティング表示のCSS高さ制限を取り除き、変化履歴は初期状態で折りたたみ、開いた状態を自動更新間で保持する。アプリ内タイトルは製品名とする。OS/ブラウザが描画するPiPネイティブタイトルバーのURL表示はWebアプリから変更できないことを明記する。",
+      "source_requirements": [
+        "User request 2026-10-04: freely expand vertical size, product title, collapsed history."
+      ],
+      "acceptance_criteria": [
+        "CSSのmax-height制限を解除し、ブラウザ許容範囲内で縦にリサイズ可能。",
+        "履歴はデフォルト閉、開閉状態は再描画後も継続。",
+        "主画面の履歴は開いたままである。",
+        "PiP内のアプリタイトルには製品名を表示。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/style-v1190.css",
+          "symbol": "max-height:none"
+        },
+        {
+          "path": "extension/shared.js",
+          "symbol": "widget-history"
+        },
+        {
+          "path": "extension/app.js",
+          "symbol": "openHistory"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "changes.test.cjs / release-1190.test.cjs",
+          "procedure": "Verify collapsible widget markup and sizing CSS."
         }
       ]
     }
