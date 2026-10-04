@@ -40,8 +40,11 @@ This file is the starting point for every future Codex or LLM edit. Follow the u
 - A ChatGPT reset entitlement can expose its expiry only in the rendered official usage page. When a verified API entitlement lacks an expiry, check that an open usage tab actually has the extension reader; recover a missing reader and close any temporary acquisition tab. Never equate an open tab with an injected reader.
 - The AI tool directory is nine editorial picks followed by Nerf Bench at position 10. Keep the separate BridgeBench leaderboard card removed.
 
-- Floating application titles must use the shared `floating-chrome.js` header in both popup and PiP. Language changes must update the visible and document titles; refresh must never reset a user-selected window size. Browser-owned origin text is not replaceable. Include a behavioral test for both language directions and independent height/width resize actions.
+- v1.22.0 supersedes the v1.20.0 floating header: no custom title or ± resize menu in popup/PiP. Keep three service rows visible at narrow width, with independent scrolling for details, and never reset a user-selected window size. Browser-owned origin text is not replaceable.
 - Keep API billing balances in `apiCredits`, separate from plan quotas, reset rights and history. API host access and scripting are optional and granted only through a user click in an extension page. Reject non-billing routes, child frames, unapproved origins, disabled providers and ambiguous balances. Never infer balance from budget/spend or collect passwords, API keys or payment data. Document adapters that lack signed-in live verification.
+
+- Keep bounded diagnostic events in a separate local IndexedDB database. Never log credentials, API payloads, full page text or account identifiers. Log failures must not block usage updates. Export requires a user click in an extension page; do not expose logs through the Web GET response.
+- Keep the language selection stable against stale refreshes and open usage/API setup pages in a normal browser window even when a floating popup is focused.
 
 ## Every deliverable
 
@@ -92,10 +95,13 @@ Keep this `AGENTS.md` in the repository and update it when a new acceptance rule
 - ChatGPTのリセット権期限は公式使用状況画面の描画後にしか存在しない場合がある。APIで権利を確認できても期限が欠けるときは、タブが存在するだけで安心せず、読み取りスクリプトの注入と受信まで確認する。一時取得タブは必ず閉じる。
 - 各種AIツールはおすすめ9件と10番目のNerf Bench。BridgeBench単独のランキングカードを復活させない。
 
+- 診断ログは変化履歴と分離した容量・期間上限付きIndexedDBに置き、認証情報・生API応答・ページ全文・アカウント識別子を残さない。ログ保存失敗で残量更新を妨げず、書出しは拡張機能内の利用者操作に限る。WebのGET応答にログを含めない。
+- 言語切替を古い同期応答で戻さず、使用量・API連携画面はフローティング窓が前面でも通常窓に開く。
+
 ## 毎回の成果物
 
 `AGENTS.md` 自体をリポジトリに残し、新しい受入規則や失敗防止策が生じたら更新する。最終報告では、このファイル、詳細仕様書、配布物へリンクし、確認済み事項と実機で未確認の事項を区別する。
 
-外窓の製品名は `floating-chrome.js` に共通化し、言語変更を可視タイトルとdocument.titleの両方へ反映してください。描画・自動更新で利用者の寸法を戻してはなりません。ネイティブURL表示は変更不可として説明し、縦横の独立リサイズと言語切替を動作テストに含めてください。
+v1.22.0で旧外窓ヘッダー仕様を明示的に上書きしました。独自タイトルと±サイズ操作は表示せず、狭幅でも3社の欄を常時見せ、詳細は各欄内でスクロール可能にします。描画・更新で利用者の窓サイズを戻さず、ネイティブURL表示はブラウザ仕様として残します。
 
 API請求残高は `apiCredits` に隔離し、月額プラン枠・リセット権・変化履歴へ混入させないでください。事業者ごとの任意権限は拡張機能画面の直接クリックで要求します。請求以外のパス、子フレーム、不許可origin、無効事業者、複数残高を拒否し、予算からの残高推測やパスワード／APIキー／決済情報の収集を禁止します。実請求アカウントで未検証の取得処理を明記してください。

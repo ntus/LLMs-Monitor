@@ -4,7 +4,7 @@
 
 <a id="en"></a>
 
-Last updated: 2026-10-04
+Last updated: 2026-10-05
 
 The extension reads plan names, usage limits, remaining percentages, reset times, and related credit balances from the official ChatGPT, Claude, Gemini, and Google One services for accounts already signed in within the browser profile. Google One is queried only to identify the current Google AI membership name when Gemini does not expose it directly.
 
@@ -25,6 +25,11 @@ API credit connections are optional and disabled by default. A user click in the
 Contact: NT MicroSystems,Inc.
 
 ---
+
+## Diagnostic logs (v1.22.0)
+
+The extension stores bounded numeric acquisition diagnostics locally in IndexedDB: provider, window type, source, raw numeric utilization where available, normalized and displayed percentages, reset timestamp, decision code, elapsed time and fixed error category. It does not store credentials, account identifiers, full API responses or page text in diagnostics. Ordinary samples expire after 72 hours; incidents after 30 days, with a 6,000-event / approximately 3 MB cap. Users may export JSONL or clear this log from an extension page. Diagnostics are not uploaded automatically and are separate from usage change history.
+
 
 <a id="ja"></a>
 
@@ -51,3 +56,7 @@ APIクレジット連携は任意で初期状態は無効です。拡張機能�
 お問い合わせ: NT MicroSystems,Inc.
 
 公開障害情報の要求には個人の使用データを含めません。
+
+## 診断ログ（v1.22.0）
+
+拡張機能は、取得元・枠・数値の換算・表示判断・所要時間・固定エラー種別だけをIndexedDBへ保存します。認証情報、アカウント識別子、生API応答、ページ全文は保存しません。通常記録は72時間、異常記録は30日、最大6,000件・概算3MBです。拡張機能画面から手動でJSONLを書き出し、または消去できます。自動アップロードせず、変化履歴とは分離します。

@@ -4,7 +4,7 @@
 
 <a id="en"></a>
 
-Document revision: 1.0 · Product version: **1.21.0** · Web companion: `https://llmsmonitor.ntusnog.chatgpt.site/`
+Document revision: 1.0 · Product version: **1.22.0** · Web companion: `https://llmsmonitor.ntusnog.chatgpt.site/`
 
 This English section defines the implementation contract for the beta. The [Japanese section](#ja) contains the full historical and field-level acceptance criteria. Implementers must read both sections and every ID in [`spec/requirements.json`](spec/requirements.json); neither translation overrides the other.
 
@@ -46,7 +46,13 @@ Human-readable documentation must start in English and place Japanese in the lat
 
 ---
 
-## Current release: v1.21.0 — Claude weekly zero verification
+## Current release: v1.22.0 — bounded diagnostics and stable controls
+
+The extension writes numeric diagnostic events into a separate IndexedDB database. Each event records provider/window, API or official-page source, raw numeric utilization when available, normalized input, displayed value, reset timestamp, conflict decision, duration and a fixed error category. Authentication material, full API responses, page text and account identifiers are excluded. Ordinary samples expire after 72 hours; incidents after 30 days. Pruning caps the log at 6,000 entries and approximately 3 MB. A failed or slow diagnostic write cannot stop a usage refresh; the previous 10,000-entry change history is untouched. The extension-only diagnostics page previews the latest events, exports JSONL on request and can erase diagnostics alone. The Web companion only opens that extension page; it cannot read logs through GET.
+
+API connection controls are in each API credit section. Usage and API setup pages open in a normal browser window even when a floating popup has focus. The main page holds a user-selected language through stale two-second refresh responses and anchors the language button beside the subtitle. Floating popup and PiP remove the custom title and resize menu. Their three service rows share available height and scroll individually, keeping all three visible at narrow widths while preserving detailed information and collapsible history. Native browser title bars and OS size limits remain browser controlled.
+
+## Previous release: v1.21.0 — Claude weekly zero verification
 
 A Claude primary weekly API result of zero remaining is provisional until the signed-in official usage page corroborates the same active window. Keep a prior positive value, or show unavailable if none exists, and prompt a background read of the usage page. The visible weekly percentage is interpreted as used (1% used = 99% remaining); weekday reset labels resolve to the next matching day. A zero confirmed by the official page remains zero. Provisional zeros do not enter history or trigger sound. Synthetic regression tests cover both outcomes. The raw live API response for the user’s incident was unavailable, so whether `utilization: 1` meant 1% or 100% in that response remains unverified.
 
@@ -75,7 +81,7 @@ Primary references: [Document PiP](https://developer.chrome.com/docs/web-platfor
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.21.0
+対象製品版: 1.22.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -1283,3 +1289,9 @@ A Claude five-hour `0% remaining` from the background API is provisional. If the
 ## 50. v1.21.0：Claude週間枠の誤った残り0%を防止
 
 Claude週間枠のAPI由来0%は、公式使用状況画面で同じ有効枠の上限到達を確認できるまで未確定とする。既知の正値を保持し、なければ未取得表示とし、公式画面をバックグラウンド再読取する。公式画面の「1%使用済み」は残り99%へ変換し、日曜21:00のような曜日付きリセット時刻を次の該当曜日へ解釈する。未確認0%を履歴・音通知へ記録しない。公式画面で本当に0%を確認した場合は表示する。今回の実API応答本文は取得できていないため、`utilization: 1`の表現単位は未確認。模擬値による自動テストで偽0、真0、曜日付き期限を確認した。
+
+## 51. v1.22.0：診断ログと表示・操作の安定化
+
+診断ログは変化履歴と分離したIndexedDBに保存する。API／公式画面の数値、換算値、表示値、判断理由、リセット時刻、所要時間、固定エラー種別だけを記録し、認証情報・API応答本文・ページ全文・アカウント識別子は保存しない。通常記録72時間、異常記録30日、最大6,000件・概算3MBに制限する。保存が遅い／失敗した場合も残量更新を継続する。拡張機能内の診断ページからのみプレビュー・JSONL書出し・診断ログ単独消去ができる。Web側はログを直接取得しない。
+
+API連携を各カードのAPIクレジット残高欄に移す。使用量画面とAPI連携画面は、外窓が前面でも通常のブラウザ窓に新規タブとして開く。利用状況確認ボタンは「利用状況確認の画面を開く」とする。言語選択は古い2秒同期応答で戻さず、切替ボタンを副題の横に固定する。外窓の独自タイトルと±サイズ操作を廃止し、3社の欄を縦に常時表示する。各欄は独立スクロールで情報量を維持し、変化点滅時の数字サイズも維持する。ネイティブのURL表示・サイズ上限はOS／ブラウザ依存。模擬値・ボタン再操作・言語競合・容量制限・全既存テストで回帰確認する。

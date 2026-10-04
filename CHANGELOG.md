@@ -1,3 +1,9 @@
+## 1.22.0
+
+- Add bounded local diagnostic logging and manual JSONL export, isolated from usage history.
+- Move API setup into API credit sections, stabilize language selection and reopen pages in normal tabs.
+- Remove custom floating headers and size controls; keep three compact service rows visible.
+
 ## 1.21.0
 
 - Guard Claude primary weekly API 0% until the official usage page confirms exhaustion.
@@ -146,6 +152,12 @@ Version 1.5.3 and earlier focused on plan retrieval, persistent change history, 
 
 
 # 日本語 — 改訂履歴
+
+## 1.22.0
+
+- 容量制限付きの端末内診断ログと手動JSONL書出しを追加。変化履歴とは分離。
+- API連携をAPIクレジット欄へ移し、言語切替と通常窓での画面再表示を安定化。
+- 小窓の独自見出し・サイズ操作を廃止し、3社を同時表示。
 
 ## 1.6.4 の変更
 

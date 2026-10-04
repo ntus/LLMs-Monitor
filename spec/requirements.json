@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs トークン残量モニタ",
     "name_en": "LLMs Token Usage Monitor",
-    "version": "1.21.0",
-    "package_filename": "LLMs-Monitor-v1.21.0.zip",
+    "version": "1.22.0",
+    "package_filename": "LLMs-Monitor-v1.22.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -3703,7 +3703,7 @@
       "introduced_in": "1.20.0",
       "status": "implemented",
       "priority": "MUST",
-      "normative_requirement": "通常小窓とPiPの製品名見出しを共通化し、言語とdocument.titleを同期する。1行に自動調整し、縦横独立のリサイズ操作を備え、自動更新で利用者の寸法を戻さない。ネイティブURL表示は変更不可と明記する。",
+      "normative_requirement": "v1.20.0時点の旧外窓仕様。利用者のv1.22.0指示により独自タイトルと±操作を廃止し、FLOAT-007で上書き。",
       "source_requirements": [
         "User request 2026-10-04: floating title/resizing and API credit balances."
       ],
@@ -3715,8 +3715,8 @@
       ],
       "implementation_evidence": [
         {
-          "path": "extension/floating-chrome.js",
-          "symbol": "floating-chrome.js"
+          "path": "SPECIFICATION.md",
+          "symbol": "v1.20.0 historical floating-chrome specification"
         },
         {
           "path": "extension/style-v1200.css",
@@ -3736,7 +3736,9 @@
       ],
       "known_limitations": [
         "Browser-owned PiP origin and window bounds cannot be overridden."
-      ]
+      ],
+      "superseded_by": "FLOAT-007",
+      "active": false
     },
     {
       "id": "API-CREDIT-001",
@@ -3831,6 +3833,164 @@
       "known_limitations": [
         "Claude Desktop実アカウントの生API応答は未取得。`utilization: 1` が1%か100%か曖昧なため公式画面確認を使う。"
       ]
+    },
+    {
+      "id": "DIAG-001",
+      "category": "data",
+      "introduced_in": "1.22.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "数値・取得元・判断理由・固定エラー区分のみを端末内IndexedDBに記録し、72時間/30日・6,000件・概算3MBで自動削除する。失敗時も利用量取得を止めず、拡張機能画面からのみ手動書出し・単独消去する。",
+      "source_requirements": [
+        "User request 2026-10-05: diagnostic log, compact floating view, language, navigation and API setup."
+      ],
+      "acceptance_criteria": [
+        "認証情報・生API応答・ページ全文・アカウント識別子を保存しない。",
+        "変化履歴は維持する。",
+        "容量不足やIndexedDB無効時も残量更新を継続する。",
+        "Web GETに診断ログを含めない。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/diagnostics.js",
+          "symbol": "diagnostics.js"
+        },
+        {
+          "path": "extension/diagnostics-page.js",
+          "symbol": "diagnostics-page.js"
+        },
+        {
+          "path": "extension/background.js",
+          "symbol": "background.js"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "tests/diagnostics.test.cjs",
+          "procedure": "Synthetic regression coverage for the stated acceptance criteria."
+        }
+      ],
+      "known_limitations": []
+    },
+    {
+      "id": "FLOAT-007",
+      "category": "ui",
+      "introduced_in": "1.22.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "通常小窓とPiPの独自タイトル・±リサイズ操作を廃止し、狭幅でも表示対象の最大3社を常時表示する。詳細は各欄の独立スクロールで閲覧可能にし、点滅時の主数字の大きさと透明度・テーマ・履歴開閉を維持する。",
+      "source_requirements": [
+        "User request 2026-10-05: diagnostic log, compact floating view, language, navigation and API setup."
+      ],
+      "acceptance_criteria": [
+        "3社の見出しが同時に見える。",
+        "上部独自タイトルとサイズ操作は存在しない。",
+        "各社の詳細・履歴は閲覧できる。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/floating.js",
+          "symbol": "floating.js"
+        },
+        {
+          "path": "extension/app.js",
+          "symbol": "app.js"
+        },
+        {
+          "path": "extension/style-v1220.css",
+          "symbol": "style-v1220.css"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "tests/floating-chrome.test.cjs",
+          "procedure": "Synthetic regression coverage for the stated acceptance criteria."
+        }
+      ],
+      "known_limitations": [
+        "Native browser origin/title bar and OS window bounds are outside application control."
+      ]
+    },
+    {
+      "id": "UI-LANG-002",
+      "category": "ui",
+      "introduced_in": "1.22.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "ユーザーが選んだEN/JPを古い同期応答で上書きせず、切替ボタンを翻訳文の長さに左右されない位置へ固定する。",
+      "source_requirements": [
+        "User request 2026-10-05: diagnostic log, compact floating view, language, navigation and API setup."
+      ],
+      "acceptance_criteria": [
+        "切替後に2秒同期を重ねても言語が戻らない。",
+        "EN/JPで切替ボタン位置が安定する。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/app.js",
+          "symbol": "app.js"
+        },
+        {
+          "path": "extension/index.html",
+          "symbol": "index.html"
+        },
+        {
+          "path": "extension/style-v1220.css",
+          "symbol": "style-v1220.css"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "tests/diagnostics.test.cjs",
+          "procedure": "Synthetic regression coverage for the stated acceptance criteria."
+        }
+      ],
+      "known_limitations": []
+    },
+    {
+      "id": "NAV-001",
+      "category": "ui",
+      "introduced_in": "1.22.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "使用量画面およびAPI連携画面を、外窓が前面でも通常ブラウザ窓へ毎回開く。API連携ボタンはAPIクレジット欄に配置し、使用量ボタンを「利用状況確認の画面を開く」と表記する。",
+      "source_requirements": [
+        "User request 2026-10-05: diagnostic log, compact floating view, language, navigation and API setup."
+      ],
+      "acceptance_criteria": [
+        "閉じた後も再度開ける。",
+        "通常窓にタブを作る。",
+        "各表示対象のAPIクレジット欄から設定へ進める。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/window-open.js",
+          "symbol": "window-open.js"
+        },
+        {
+          "path": "extension/background.js",
+          "symbol": "background.js"
+        },
+        {
+          "path": "extension/api-credits.js",
+          "symbol": "api-credits.js"
+        },
+        {
+          "path": "extension/locale.js",
+          "symbol": "locale.js"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "tests/diagnostics.test.cjs",
+          "procedure": "Synthetic regression coverage for the stated acceptance criteria."
+        }
+      ],
+      "known_limitations": []
     }
   ]
 }

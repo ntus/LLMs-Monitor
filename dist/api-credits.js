@@ -34,12 +34,12 @@
  }
  function format(row,language){return new Intl.NumberFormat(language==='ja'?'ja-JP':'en-US',{style:'currency',currency:row.currency,minimumFractionDigits:2,maximumFractionDigits:2}).format(row.amount)}
  let state={};function set(value){state=value&&typeof value==='object'?value:{}}
- function view(id){
+ function view(id,showAction=false){
   if(!Object.hasOwn(PROVIDERS,id))return '';const p=PROVIDERS[id];const ja=root.GlanceLocale?.language()!=='en',row=state[id]||{},enabled=row.enabled===true,stale=Date.now()-(row.capturedAt||0)>125000;
   const title=ja?'APIクレジット残高':'API credit balance',value=enabled&&row.status==='ready'&&typeof row.amount==='number'?format(row,ja?'ja':'en'):row.status==='postpaid'&&enabled?(ja?'後払い':'Postpaid'):'—';
   const note=!enabled?(ja?'API連携から個別に有効化':'Enable each provider in API connections'):row.status==='login'?(ja?'公式API請求画面でログイン':'Sign in on the official API billing page'):row.status==='postpaid'?(ja?'前払い残高は適用されません':'Prepaid balance does not apply'):row.status==='ready'&&!stale?(ja?'請求画面の表示値（プラン枠とは別）':'Billing page value; separate from plan limits'):(ja?'請求画面を開いて更新してください':'Open the billing page to update');
   const last=enabled&&row.previous?`<small>${esc(ja?'前回':'Previous')} ${esc(format(row.previous,ja?'ja':'en'))} · ${esc(new Date(row.previous.capturedAt).toLocaleString(ja?'ja-JP':'en-US',{hour12:false}))}</small>`:'';
-  return `<div class="api-credit-row" data-api-provider="${id}"><div class="extra-line"><a href="${p.url}" target="_blank" rel="noopener noreferrer">${esc(title)} <small>${esc(p.name)}</small></a><b${stale&&enabled&&row.status==='ready'?' class="api-credit-stale"':''}>${esc(value)}</b></div><small>${esc(note)}</small>${last}</div>`;
+  return `<div class="api-credit-row" data-api-provider="${id}"><div class="extra-line"><a href="${p.url}" target="_blank" rel="noopener noreferrer">${esc(title)} <small>${esc(p.name)}</small></a><b${stale&&enabled&&row.status==='ready'?' class="api-credit-stale"':''}>${esc(value)}</b></div><small>${esc(note)}</small>${last}${showAction?`<button type="button" class="api-connections-button" data-api-setup>${esc(root.GlanceLocale?.t('apiConnections')||'API connections')} ↗</button>`:''}</div>`;
  }
  root.GlanceApiCredits={PROVIDERS,provider,money,parse,sanitize,accept,format,set,view};
  if(typeof module!=='undefined')module.exports=root.GlanceApiCredits;
