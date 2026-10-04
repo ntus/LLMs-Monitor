@@ -1,8 +1,3 @@
-## 1.19.0 beta / β
-
-- EN: Verify Claude API zero against the official usage page; suppress unverified zero history and alerts. Collapse floating history by default and remove its CSS height cap.
-- JP: Claude APIの未確認0%を公式使用状況画面で確認し、誤った履歴・通知を抑止。フローティング履歴を初期状態で折りたたみ、CSSの高さ制限を解除。
-
 # Revision history / 改訂履歴
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
@@ -16,6 +11,10 @@
 - Missing, zero, negative, postpaid and ambiguous billing balances are distinguished. No password, API key or payment data is collected.
 - OpenAI billing label verified directly; signed-in Claude/Gemini billing verification remains pending.
 
+
+## 1.19.0 beta
+
+- Verify Claude API zero against the official usage page; suppress unverified zero history and alerts. Collapse floating history by default and remove its CSS height cap.
 
 ## 1.14.0 beta
 
@@ -87,6 +86,10 @@ Version 1.5.3 and earlier focused on plan retrieval, persistent change history, 
 - 未取得・0・負残高・後払い・複数残高を区別。パスワード・APIキー・決済情報を収集しない。
 - OpenAI実画面を確認。Claude／Gemini請求アカウントでの実測は未完了。
 
+
+## 1.19.0 β
+
+- Claude APIの未確認0%を公式使用状況画面で確認し、誤った履歴・通知を抑止。フローティング履歴を初期状態で折りたたみ、CSSの高さ制限を解除。
 
 ## 1.14.0 β
 

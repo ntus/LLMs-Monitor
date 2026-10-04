@@ -60,6 +60,10 @@ Keep the selected official billing page open. Its display is reread approximatel
 
 Primary references: [Document PiP](https://developer.chrome.com/docs/web-platform/document-picture-in-picture), [optional permissions](https://developer.chrome.com/docs/extensions/reference/api/permissions), [Claude billing](https://platform.claude.com/settings/billing), [Gemini billing](https://ai.google.dev/gemini-api/docs/billing), [OpenAI billing](https://platform.openai.com/settings/organization/billing/overview).
 
+### v1.20.0 verification
+
+165 automated tests passed, including release alignment, API balance parsing/isolation, floating title localization and user-triggered resizing. In Chrome PiP, the viewport grew from 266×738 to 266×871 and returned, then from 266×738 to 333×738 and returned. Japanese/English titles synchronized without opening a new window. Updating the existing extension in place preserved its ID and all three providers’ plans, usage values and prior history. The agent’s browser policy blocks navigating to extension-internal pages; API permission activation and signed-in Claude/Gemini billing validation remain unverified.
+
 <a id="ja"></a>
 
 # 日本語 — LLMs モニター 詳細仕様書
@@ -1268,8 +1272,6 @@ A Claude five-hour `0% remaining` from the background API is provisional. If the
 
 公式請求画面を開いておく必要がある。約60秒ごと及びDOM変更後に画面表示値を再読取するが、請求元の集計遅延は解消できない。OpenAIの実画面ラベル・残高を確認済み。Claude／Geminiの取得は模擬データで検証し、ログイン済み請求アカウントでの確認は未完了として扱う。既存の必須権限は変更せず、API連携を有効にしなくても従来機能は動作する。
 
-### v1.20.0 verification / 検証記録
+### v1.20.0 検証記録
 
-EN: 165 automated tests passed, including release alignment, API balance parsing/isolation, floating title localization and user-triggered resizing. In Chrome PiP, the viewport grew from 266×738 to 266×871 and returned, then from 266×738 to 333×738 and returned. Japanese/English titles synchronized without opening a new window. Updating the existing extension in place preserved its ID and all three providers’ plans, usage values and prior history. The agent’s browser policy blocks navigating to extension-internal pages; API permission activation and signed-in Claude/Gemini billing validation remain unverified.
-
-JP: 自動テスト165件通過。版整合、API残高の解析・分離、小窓タイトルの言語同期、利用者操作によるサイズ変更を検証した。Chromeの最前面窓で266×738→266×871→266×738、次に333×738→266×738へ変更できた。窓を開き直さず日本語／英語のタイトルが同期した。既存拡張機能を同じ読込元で更新し、接続IDと3社の契約・残量・過去履歴が保持された。検証ツールのブラウザポリシーが拡張機能内部ページへの移動を禁止しているため、API権限の有効化とClaude／Geminiのログイン中請求画面の実機検証は未確認。
+自動テスト165件通過。版整合、API残高の解析・分離、小窓タイトルの言語同期、利用者操作によるサイズ変更を検証した。Chromeの最前面窓で266×738→266×871→266×738、次に333×738→266×738へ変更できた。窓を開き直さず日本語／英語のタイトルが同期した。既存拡張機能を同じ読込元で更新し、接続IDと3社の契約・残量・過去履歴が保持された。検証ツールのブラウザポリシーが拡張機能内部ページへの移動を禁止しているため、API権限の有効化とClaude／Geminiのログイン中請求画面の実機検証は未確認。
