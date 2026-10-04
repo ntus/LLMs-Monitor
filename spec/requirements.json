@@ -1,13 +1,13 @@
 {
   "schema_version": "1.0.0",
   "ledger_id": "llms-token-usage-monitor-requirements",
-  "last_updated": "2026-10-04",
+  "last_updated": "2026-10-05",
   "authoritative": true,
   "product": {
     "name_ja": "LLMs トークン残量モニタ",
     "name_en": "LLMs Token Usage Monitor",
-    "version": "1.20.0",
-    "package_filename": "LLMs-Monitor-v1.20.0.zip",
+    "version": "1.21.0",
+    "package_filename": "LLMs-Monitor-v1.21.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -3788,6 +3788,48 @@
       ],
       "known_limitations": [
         "Requires an open signed-in billing page and optional permission. Claude/Gemini live billing account verification is pending."
+      ]
+    },
+    {
+      "id": "CLAUDE-007",
+      "category": "acquisition",
+      "introduced_in": "1.21.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "Claudeの主週間枠でAPI由来の残り0%は公式使用状況画面が同一枠の上限到達を確認するまで確定しない。前回の正値を保持し、なければ未取得とする。公式画面の1%使用済みは99%残りとし、曜日付き週次リセット時刻を正しく解釈する。",
+      "source_requirements": [
+        "User screenshots 2026-10-05: monitor weekly 0%, official Claude Desktop weekly 1% used."
+      ],
+      "acceptance_criteria": [
+        "週間のAPIのみの0%は未確認で、前回の正値があれば維持する。",
+        "公式画面の週間1%使用済みは99%残りとなる。",
+        "同一週間枠の公式画面0%残りだけ真の0%として認める。",
+        "未確認の0%を履歴と通知音へ送らない。",
+        "週間の曜日付き時刻を現在セッションとは独立して解釈する。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/state.js",
+          "symbol": "claudeProtectedLabel"
+        },
+        {
+          "path": "extension/background.js",
+          "symbol": "ensureClaudeUsageReader"
+        },
+        {
+          "path": "extension/parser.js",
+          "symbol": "Claude weekly visible-text fallback"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "tests/state.test.cjs / tests/parser.test.cjs",
+          "procedure": "Synthetic false and confirmed weekly zeros, visible weekly 1% usage and Sunday reset."
+        }
+      ],
+      "known_limitations": [
+        "Claude Desktop実アカウントの生API応答は未取得。`utilization: 1` が1%か100%か曖昧なため公式画面確認を使う。"
       ]
     }
   ]

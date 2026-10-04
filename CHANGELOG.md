@@ -1,3 +1,9 @@
+## 1.21.0
+
+- Guard Claude primary weekly API 0% until the official usage page confirms exhaustion.
+- Read the official weekly used percentage and weekday reset; protect history and sound from unverified zeros.
+- Cover false and genuine weekly zero with regression tests.
+
 # Revision history / 改訂履歴
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)

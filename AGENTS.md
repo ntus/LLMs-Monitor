@@ -28,6 +28,7 @@ This file is the starting point for every future Codex or LLM edit. Follow the u
 - Treat `https://aimon.ntus.info/` as the canonical hostname for the future public production release. Any extension allowlist, CSP, redirects, documentation, and hosting configuration introduced for that release must use this exact HTTPS origin. Publishing the product page on GitHub Pages may precede that migration.
 - Any interim Site slug or origin change must update `manifest.externally_connectable`, the background `ALLOWED` set, Web links, privacy and release documents, and regression tests in one package release before the renamed URL is reported usable.
 - X intelligence must remain isolated from private usage state. Never add an X token to client code or repository; preserve silent first baseline, post-ID deduplication, source-role labels, and one-minute polling tests.
+- Claude weekly API zero follows the same official-page confirmation rule as the five-hour window. Parse the visible weekly used percentage and weekday reset separately; never record an unverified zero in history or alerts.
 - A numeric-change alert must dispatch its sound before the changed snapshot becomes visible to renderers; keep provider-status polling at one minute and cover both rules with regression tests.
 - Preserve the exact official ChatGPT reset entitlement wording when it contains a verified expiry. A partial API refresh must not replace that wording with an unavailable deadline. When Claude API reports 0% but the currently open official usage page reports a positive balance for the same active session, suppress the contradictory 0% and its history/sound event.
 
@@ -78,6 +79,7 @@ Keep this `AGENTS.md` in the repository and update it when a new acceptance rule
 - 将来の正式公開URLは `https://aimon.ntus.info/` を正本とする。その公開時に追加する拡張機能の接続許可、CSP、リダイレクト、文書、ホスティング設定は、このHTTPSオリジンへ統一する。商品説明ページのGitHub Pages先行公開は可能とする。
 - 正式公開前のSitesスラッグまたはoriginを変更する場合も、`manifest.externally_connectable`、backgroundの`ALLOWED`、Webリンク、プライバシー・リリース文書、回帰テストを同じパッケージリリースで同時更新し、新URLの利用可否を報告する前に接続整合を確認する。
 - X速報は個人の利用量状態から分離する。X tokenをclient codeやリポジトリへ入れず、初回無音基準、投稿ID重複防止、出典区分、1分周期のテストを維持する。
+- Claudeの週間枠にも5時間枠と同じAPI 0%の公式画面照合を適用する。公式画面の週間使用率と曜日付きリセット時刻を別途読み、未確認0%を履歴・通知に入れない。
 - 数値変化の通知は、新しいスナップショットを描画側へ公開する前に通知音を送出する。公式障害情報の確認周期は1分を維持し、両方を回帰テストで固定する。
 - ChatGPTの公式画面に出たリセット権の期限原文は確認できた時点で保持し、API部分更新による「期限未取得」への後退を防ぐ。Claude APIの0%は公式使用状況画面で裏付けられるまで確定せず、前回の正値を保つか未取得を表示する。未確認の0%を履歴・通知に含めず、公式画面を再読取する。公式で確認した0%だけ表示し、現在セッションと週間のリセット時刻を独立して保つ。
 - 期限警告の枠は1つだけにする。カウントダウンまたは親要素のどちらか一方に警告装飾を付け、両方を囲まない。ゲージ内のリセット文は円の内側幅に収め、狭幅・全画面表示をテストする。ChatGPTリセット権の確認済み未来期限は部分更新で維持し、ロケール別表示文と期限属性を推測なしで解析する。

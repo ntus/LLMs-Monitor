@@ -1,5 +1,5 @@
 (function(root){
- const APP_VERSION='1.20.0',HISTORY_LIMIT=10000,L=root.GlanceLocale||{language:()=> 'ja',t:key=>key,label:value=>String(value??''),locale:()=> 'ja-JP'},P=root.GlancePreferences||{visible:()=>['chatgpt','claude','gemini']},S=root.GlanceProviderStatus||{view:()=>''},I=root.GlanceIntelligence||{view:()=>''};
+ const APP_VERSION='1.21.0',HISTORY_LIMIT=10000,L=root.GlanceLocale||{language:()=> 'ja',t:key=>key,label:value=>String(value??''),locale:()=> 'ja-JP'},P=root.GlancePreferences||{visible:()=>['chatgpt','claude','gemini']},S=root.GlanceProviderStatus||{view:()=>''},I=root.GlanceIntelligence||{view:()=>''};
  const services={chatgpt:{name:'ChatGPT',color:'#6dd8bf',mark:'◎',url:'https://chatgpt.com/settings/usage?tab=overview'},claude:{name:'Claude',color:'#eda681',mark:'✳',url:'https://claude.ai/settings/usage'},gemini:{name:'Gemini',color:'#93b3ff',mark:'✦',url:'https://gemini.google.com/usage'}};
  const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  function fresh(s){return !!s?.capturedAt && Date.now()-s.capturedAt<125000;}
@@ -7,7 +7,7 @@
  function value(v){return percent(v)===null?'—':`${Math.round(v)}%`;}
  function label(v){return L.label(v);}
  function updating(s){return !!s?.refreshing&&Date.now()-(s.refreshStartedAt||0)<45000;}
- function status(s){if(!s)return L.t('notConnected');if(s.status==='login')return L.t('loginRequired');if(updating(s))return L.t('updating');if(s.status==='loading'||s.status==='error'||s.windows?.[0]?.conflict?.startsWith('api-zero'))return L.t('waitingPrevious');if(!fresh(s))return L.t('waiting');return typeof s.windows?.[0]?.remaining==='number'?L.t('acquired'):L.t('valueMissing');}
+ function status(s){if(!s)return L.t('notConnected');if(s.status==='login')return L.t('loginRequired');if(updating(s))return L.t('updating');if(s.status==='loading'||s.status==='error'||s.windows?.some(w=>w.conflict?.startsWith('api-zero')))return L.t('waitingPrevious');if(!fresh(s))return L.t('waiting');return typeof s.windows?.[0]?.remaining==='number'?L.t('acquired'):L.t('valueMissing');}
  function date(t){return t?new Date(t).toLocaleString(L.locale(),{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}):L.t('dateMissing');}
  function resetLevel(w,now=Date.now()){const ms=Number(w?.resetAt)-now;if(!w?.resetAt||!Number.isFinite(ms)||ms<=0)return '';const weekly=/(?:週間|今週|week)/i.test(String(w.label||''));return ms<3600000?'deadline-critical':ms<(weekly?86400000:7200000)?'deadline-near':'';}
  function resetUrgent(w){return !!resetLevel(w);}

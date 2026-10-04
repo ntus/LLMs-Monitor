@@ -4,7 +4,7 @@
 
 <a id="en"></a>
 
-Document revision: 1.0 · Product version: **1.20.0** · Web companion: `https://llmsmonitor.ntusnog.chatgpt.site/`
+Document revision: 1.0 · Product version: **1.21.0** · Web companion: `https://llmsmonitor.ntusnog.chatgpt.site/`
 
 This English section defines the implementation contract for the beta. The [Japanese section](#ja) contains the full historical and field-level acceptance criteria. Implementers must read both sections and every ID in [`spec/requirements.json`](spec/requirements.json); neither translation overrides the other.
 
@@ -46,7 +46,11 @@ Human-readable documentation must start in English and place Japanese in the lat
 
 ---
 
-## Current release: v1.20.0 — floating window chrome and optional API balances
+## Current release: v1.21.0 — Claude weekly zero verification
+
+A Claude primary weekly API result of zero remaining is provisional until the signed-in official usage page corroborates the same active window. Keep a prior positive value, or show unavailable if none exists, and prompt a background read of the usage page. The visible weekly percentage is interpreted as used (1% used = 99% remaining); weekday reset labels resolve to the next matching day. A zero confirmed by the official page remains zero. Provisional zeros do not enter history or trigger sound. Synthetic regression tests cover both outcomes. The raw live API response for the user’s incident was unavailable, so whether `utilization: 1` meant 1% or 100% in that response remains unverified.
+
+## Previous release: v1.20.0 — floating window chrome and optional API balances
 
 The same `floating-chrome.js` component owns the normal popup and Document PiP application header. It mounts once, displays one localized product title with no version badge, updates the document title and visible title after language changes, and measures the text to fit the available width. Only the redundant widget title is hidden in external floating windows. The header remains visible during scrolling. Existing theme, opacity, service order, lifecycle and expanded-history preservation remain intact.
 
@@ -71,7 +75,7 @@ Primary references: [Document PiP](https://developer.chrome.com/docs/web-platfor
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.20.0
+対象製品版: 1.21.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -1275,3 +1279,7 @@ A Claude five-hour `0% remaining` from the background API is provisional. If the
 ### v1.20.0 検証記録
 
 自動テスト165件通過。版整合、API残高の解析・分離、小窓タイトルの言語同期、利用者操作によるサイズ変更を検証した。Chromeの最前面窓で266×738→266×871→266×738、次に333×738→266×738へ変更できた。窓を開き直さず日本語／英語のタイトルが同期した。既存拡張機能を同じ読込元で更新し、接続IDと3社の契約・残量・過去履歴が保持された。検証ツールのブラウザポリシーが拡張機能内部ページへの移動を禁止しているため、API権限の有効化とClaude／Geminiのログイン中請求画面の実機検証は未確認。
+
+## 50. v1.21.0：Claude週間枠の誤った残り0%を防止
+
+Claude週間枠のAPI由来0%は、公式使用状況画面で同じ有効枠の上限到達を確認できるまで未確定とする。既知の正値を保持し、なければ未取得表示とし、公式画面をバックグラウンド再読取する。公式画面の「1%使用済み」は残り99%へ変換し、日曜21:00のような曜日付きリセット時刻を次の該当曜日へ解釈する。未確認0%を履歴・音通知へ記録しない。公式画面で本当に0%を確認した場合は表示する。今回の実API応答本文は取得できていないため、`utilization: 1`の表現単位は未確認。模擬値による自動テストで偽0、真0、曜日付き期限を確認した。
