@@ -74,6 +74,10 @@ Primary references: [Document PiP](https://developer.chrome.com/docs/web-platfor
 
 165 automated tests passed, including release alignment, API balance parsing/isolation, floating title localization and user-triggered resizing. In Chrome PiP, the viewport grew from 266×738 to 266×871 and returned, then from 266×738 to 333×738 and returned. Japanese/English titles synchronized without opening a new window. Updating the existing extension in place preserved its ID and all three providers’ plans, usage values and prior history. The agent’s browser policy blocks navigating to extension-internal pages; API permission activation and signed-in Claude/Gemini billing validation remain unverified.
 
+## Web update: v1.22.1 — installation link
+
+The Web installation step links to the user-supplied `https://llmsmonitor.ntus.info/` in a new tab with `noopener noreferrer`. `web/store-install-link.html` keeps the localized `strong` inside the anchor so English/Japanese translation preserves its destination. `build.py` replaces exactly one original label and fails if the source no longer matches. The Web footer and supplemental asset cache use 1.22.1; the shared protocol, extension manifest and existing store ZIP remain 1.22.0. This destination is a supplied publication URL, not evidence of an approved browser-store listing. Existing acquisition, history, alerts and floating-view behavior are untouched. Validation: all 167 existing tests passed; generated HTML, both translation labels and cache versions were inspected; store ZIP integrity and identical SHA-256 were confirmed. No signed-in provider or browser-store installation was exercised for this link-only update.
+
 <a id="ja"></a>
 
 # 日本語 — LLMs モニター 詳細仕様書
@@ -1295,3 +1299,9 @@ Claude週間枠のAPI由来0%は、公式使用状況画面で同じ有効枠の
 診断ログは変化履歴と分離したIndexedDBに保存する。API／公式画面の数値、換算値、表示値、判断理由、リセット時刻、所要時間、固定エラー種別だけを記録し、認証情報・API応答本文・ページ全文・アカウント識別子は保存しない。通常記録72時間、異常記録30日、最大6,000件・概算3MBに制限する。保存が遅い／失敗した場合も残量更新を継続する。拡張機能内の診断ページからのみプレビュー・JSONL書出し・診断ログ単独消去ができる。Web側はログを直接取得しない。
 
 API連携を各カードのAPIクレジット残高欄に移す。使用量画面とAPI連携画面は、外窓が前面でも通常のブラウザ窓に新規タブとして開く。利用状況確認ボタンは「利用状況確認の画面を開く」とする。言語選択は古い2秒同期応答で戻さず、切替ボタンを副題の横に固定する。外窓の独自タイトルと±サイズ操作を廃止し、3社の欄を縦に常時表示する。各欄は独立スクロールで情報量を維持し、変化点滅時の数字サイズも維持する。ネイティブのURL表示・サイズ上限はOS／ブラウザ依存。模擬値・ボタン再操作・言語競合・容量制限・全既存テストで回帰確認する。
+
+## 52. Web版 v1.22.1：ストア導入案内のリンク
+
+Web画面の「ストアから拡張機能を追加」は、利用者指定の `https://llmsmonitor.ntus.info/` を別タブで開く。`noopener noreferrer` を付け、翻訳対象のstrongをアンカーの内側に保持することで日英切替でもリンクを維持する。正本は `web/store-install-link.html`。ビルドは元の文言1か所を置換し、文言が変わって置換不能なら失敗して未反映を防ぐ。Webのフッター・追加資産キャッシュだけ1.22.1とし、拡張機能manifest、互換性判定用共通コード、既存ZIPは1.22.0のまま。リンク先は掲載URLであり、ストア審査完了を示すものではない。残量取得・履歴・通知音・外窓の動作は変更しない。
+
+検証記録（2026-10-08）：既存自動テスト167件通過。生成HTMLのリンク先・別タブ・安全属性、日英の翻訳対象、Web／互換性版、ZIP整合性を確認。ストアZIPのSHA-256は変更前後とも `0bbd62e9144b157fa7f39e5ed8b4d5f8dad3dd9c35a5229be70aecce06ab37d7`。このリンク更新では実アカウント取得やストアからのインストールは実施していない。

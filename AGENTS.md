@@ -46,6 +46,8 @@ This file is the starting point for every future Codex or LLM edit. Follow the u
 - Keep bounded diagnostic events in a separate local IndexedDB database. Never log credentials, API payloads, full page text or account identifiers. Log failures must not block usage updates. Export requires a user click in an extension page; do not expose logs through the Web GET response.
 - Keep the language selection stable against stale refreshes and open usage/API setup pages in a normal browser window even when a floating popup is focused.
 
+- Keep Web release/cache versions separate from extension compatibility versions for Web-only patches. Installation links must wrap the localized child so language updates preserve the anchor; never rebuild the store ZIP for this Web-only change.
+
 ## Every deliverable
 
 Keep this `AGENTS.md` in the repository and update it when a new acceptance rule or failure-prevention step arises. In the final report, link this file, the detailed specification, and the distribution package; distinguish verified behavior from live-account checks that remain unverified.
@@ -97,6 +99,8 @@ Keep this `AGENTS.md` in the repository and update it when a new acceptance rule
 
 - 診断ログは変化履歴と分離した容量・期間上限付きIndexedDBに置き、認証情報・生API応答・ページ全文・アカウント識別子を残さない。ログ保存失敗で残量更新を妨げず、書出しは拡張機能内の利用者操作に限る。WebのGET応答にログを含めない。
 - 言語切替を古い同期応答で戻さず、使用量・API連携画面はフローティング窓が前面でも通常窓に開く。
+
+- Web限定パッチの表示・キャッシュ版は拡張機能の互換性判定版と分離する。導入リンクは翻訳対象の子要素を囲み、言語変更でアンカーを消さない。このWeb限定変更でストアZIPを再生成しない。
 
 ## 毎回の成果物
 

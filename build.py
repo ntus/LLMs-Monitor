@@ -3,6 +3,8 @@ import json, shutil, zipfile, sys
 root = Path(__file__).resolve().parent
 manifest = json.loads((root / 'extension' / 'manifest.json').read_text())
 version = manifest['version']
+requirements = json.loads((root / 'spec' / 'requirements.json').read_text())
+web_version = requirements['product'].get('web_version', version)
 version_css = 'style-v' + version.replace('.', '') + '.css'
 (root / 'dist' / 'floating-chrome.js').unlink(missing_ok=True)
 for legacy_css in (root / 'dist').glob('style-v*.css'):
@@ -22,10 +24,14 @@ for html_name in ['index.html', 'privacy.html']:
     for asset in ['style.css', 'style-v151.css', 'style-v152.css', 'style-v153.css', 'style-v160.css', 'style-v161.css', 'style-v162.css', 'style-v163.css', 'style-v164.css', 'style-v170.css', 'style-v1140.css', 'style-v1150.css', 'style-v1160.css', 'style-v1170.css', 'style-v1171.css', 'style-v1180.css', 'style-v1190.css', 'style-v1200.css', 'style-v1210.css', version_css, 'locale.js', 'preferences.js', 'provider-status.js', 'intelligence.js', 'changes.js', 'shared.js', 'api-credits.js', 'sound.js', 'advice.js', 'app.js']:
         html = html.replace(f'"{asset}"', f'"{asset}?v={version.replace(".", "")}"')
     if html_name == 'index.html':
-        html = html.replace('</head>', f'<link rel="stylesheet" href="app-web.css?v={version.replace('.', '')}"></head>')
-        html = html.replace('</body>', f'<script src="app-web.js?v={version.replace('.', '')}"></script></body>')
+        install_label = '<strong data-i18n="installStore">ストアから拡張機能を追加</strong>'
+        if html.count(install_label) != 1:
+            raise SystemExit('Web store installation label must appear exactly once')
+        html = html.replace(install_label, (root / 'web' / 'store-install-link.html').read_text().strip(), 1)
+        html = html.replace(f'LLMs MONITOR v{version}</a>', f'LLMs MONITOR v{web_version}</a>', 1)
+        html = html.replace('</head>', f'<link rel="stylesheet" href="app-web.css?v={web_version.replace('.', '')}"></head>')
+        html = html.replace('</body>', f'<script src="app-web.js?v={web_version.replace('.', '')}"></script></body>')
     target.write_text(html)
-requirements = json.loads((root / 'spec' / 'requirements.json').read_text())
 checks = {
     'dist/index.html': [version, version_css, f'LLMs-Monitor-v{version}.zip'],
     'dist/shared.js': [f"const APP_VERSION='{version}'"],

@@ -16,6 +16,8 @@ Version **1.22.0 beta** adds bounded, local diagnostic logs, stable language sel
 
 [Product site](https://llmsmonitor.ntusnog.chatgpt.site/product.html) · [Open the monitor](https://llmsmonitor.ntusnog.chatgpt.site/) · [Download the beta extension package](dist/LLMs-Monitor-v1.22.0.zip) · [Detailed specification](SPECIFICATION.md) · [Privacy](PRIVACY.md) · [Follow @ntus on X](https://x.com/ntus)
 
+Web update **1.22.1** adds the installation-step link to the supplied [publication URL](https://llmsmonitor.ntus.info/). The extension package remains **1.22.0**.
+
 ## Basic specifications
 
 - **Platforms:** static web monitor plus a Manifest V3 extension for desktop Chrome and Edge. The extension supplies data from currently signed-in official provider accounts.
@@ -41,6 +43,8 @@ For contributors and future AI-assisted changes, read [AGENTS.md](AGENTS.md), th
 ---
 
 <a id="ja"></a>
+
+Web版 **1.22.1** はストア導入案内から指定の[掲載URL](https://llmsmonitor.ntus.info/)へのリンクを追加。拡張機能パッケージは **1.22.0** のままです。
 # 日本語 — LLMs モニター
 
 **ChatGPT/Claude/Geminiのトークン利用残量をリアルタイム表示**

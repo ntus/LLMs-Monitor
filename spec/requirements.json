@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0.0",
   "ledger_id": "llms-token-usage-monitor-requirements",
-  "last_updated": "2026-10-05",
+  "last_updated": "2026-10-08",
   "authoritative": true,
   "product": {
     "name_ja": "LLMs トークン残量モニタ",
@@ -18,7 +18,8 @@
       "claude",
       "gemini"
     ],
-    "production_companion_origin": "https://llmsmonitor.ntusnog.chatgpt.site"
+    "production_companion_origin": "https://llmsmonitor.ntusnog.chatgpt.site",
+    "web_version": "1.22.1"
   },
   "normative_language": {
     "MUST": "必須。未達の場合はリリース不可。",
@@ -3991,6 +3992,47 @@
         }
       ],
       "known_limitations": []
+    },
+    {
+      "id": "NAV-002",
+      "category": "ui",
+      "introduced_in": "1.22.1",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "Web画面の「ストアから拡張機能を追加」を利用者指定URL https://llmsmonitor.ntus.info/ へのリンクにする。日英切替後もリンクを保持し、別タブで開く。拡張機能パッケージと互換性判定版は1.22.0を維持する。",
+      "source_requirements": [
+        "User request 2026-10-08: add store installation link; supplied destination https://llmsmonitor.ntus.info/."
+      ],
+      "acceptance_criteria": [
+        "指定URLをhrefに使う。",
+        "言語切替はリンク内のstrongのみ翻訳し、アンカーを消さない。",
+        "target=_blank と rel=noopener noreferrer を付ける。",
+        "Web版の表示とWeb追加資産キャッシュは1.22.1、拡張機能ZIPと共通実行コードは1.22.0のまま。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "web/store-install-link.html",
+          "symbol": "store-install-link"
+        },
+        {
+          "path": "build.py",
+          "symbol": "web_version"
+        },
+        {
+          "path": "web/app-web.css",
+          "symbol": ".store-install-link"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "manual",
+          "coverage": "dist/index.html and ZIP SHA-256 comparison",
+          "procedure": "Inspect generated anchor and locale dictionary, retain localized child, verify Web asset query/version, run all existing tests, and compare store ZIP SHA-256 before/after build."
+        }
+      ],
+      "known_limitations": [
+        "リンク先は利用者指定の掲載URL。Chrome Web Store / Edge Add-onsの個別掲載URLやストア審査の完了を意味しない。"
+      ]
     }
   ]
 }
