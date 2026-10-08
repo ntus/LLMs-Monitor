@@ -12,11 +12,13 @@
 
 This browser companion checks usage from your signed-in provider sessions about once a minute. Large gauges and bars show current and weekly limits, reset times, plans, and available credits. Your change history stays in your browser, with up to 10,000 entries per limit. The interface supports English and Japanese, light and dark themes, fullscreen viewing, and compact floating panels.
 
-Version **1.22.0 beta** adds bounded, local diagnostic logs, stable language selection, reliable usage/API page opening, and a compact floating view with all three services visible. API billing balances remain optional and separate from subscription quotas. OpenAI billing-page extraction was verified; Claude/Gemini live billing accounts still need validation. Earlier changes are in the [changelog](CHANGELOG.md).
+Version **1.23.0 beta** fixes extension pairing on the custom monitor domain and retains the previous Site URL. It includes bounded local diagnostic logs, stable language selection, reliable usage/API page opening, and a compact floating view with all three services visible. API billing balances remain optional and separate from subscription quotas. OpenAI billing-page extraction was verified; Claude/Gemini live billing accounts still need validation. Earlier changes are in the [changelog](CHANGELOG.md).
 
-[Product site](https://llmsmonitor.ntusnog.chatgpt.site/product.html) · [Open the monitor](https://llmsmonitor.ntusnog.chatgpt.site/) · [Download the beta extension package](dist/LLMs-Monitor-v1.22.0.zip) · [Detailed specification](SPECIFICATION.md) · [Privacy](PRIVACY.md) · [Follow @ntus on X](https://x.com/ntus)
+[Product site](https://llmsmonitor.ntus.info/product.html) · [Open the monitor](https://llmsmonitor.ntus.info/) · [Download the beta extension package](dist/LLMs-Monitor-v1.23.0.zip) · [Detailed specification](SPECIFICATION.md) · [Privacy](PRIVACY.md) · [Follow @ntus on X](https://x.com/ntus)
 
-Web update **1.22.1** adds the installation-step link to the supplied [publication URL](https://llmsmonitor.ntus.info/). The extension package remains **1.22.0**.
+### Custom domain connection
+
+Version **1.23.0** adds extension access for [llmsmonitor.ntus.info](https://llmsmonitor.ntus.info/), preserving the previous Site URL. Update the existing extension in place, reload the monitor, and enter the same extension ID once on the new domain. Browser localStorage is separated by origin; extension-stored history and settings are retained. Do not uninstall to update. Store installations need the approved store update; the packaged ZIP is available for beta testing.
 
 ## Basic specifications
 
@@ -32,8 +34,8 @@ Web update **1.22.1** adds the installation-step link to the supplied [publicati
 ## Quick start
 
 1. Sign in to the services you want to monitor on their official [ChatGPT](https://chatgpt.com/), [Claude](https://claude.ai/), and [Gemini](https://gemini.google.com/) sites in the same Chrome or Edge profile. Enter credentials only on those sites.
-2. Before store approval, run `python3 build.py --package`, unpack `dist/LLMs-Monitor-v1.22.0.zip`, and load the unpacked extension from the browser's extension management page for beta testing. Installing without developer mode requires Chrome Web Store or Edge Add-ons review and publication.
-3. Open the extension or the [web monitor](https://llmsmonitor.ntusnog.chatgpt.site/). The web monitor asks for your extension ID once. The providers' usage tabs do not need to remain open.
+2. Before store approval, run `python3 build.py --package`, unpack `dist/LLMs-Monitor-v1.23.0.zip`, and load the unpacked extension from the browser's extension management page for beta testing. Installing without developer mode requires Chrome Web Store or Edge Add-ons review and publication.
+3. Open the extension or the [web monitor](https://llmsmonitor.ntus.info/). The web monitor asks for your extension ID once. The providers' usage tabs do not need to remain open.
 4. Use **Show and arrange services** to choose and reorder cards. Hidden services continue collecting history. Adjust language, theme, opacity, volume, and fullscreen mode from the controls.
 
 The monitor never asks for provider passwords and never exercises a reset entitlement automatically. A reset link opens the official usage page when an entitlement is available. If a provider does not expose a reliable plan or deadline, the app shows it as unavailable rather than guessing. Document Picture-in-Picture can keep a panel on top in supported browsers; OS-wide window transparency and native mobile apps are outside this beta.
@@ -44,7 +46,9 @@ For contributors and future AI-assisted changes, read [AGENTS.md](AGENTS.md), th
 
 <a id="ja"></a>
 
-Web版 **1.22.1** はストア導入案内から指定の[掲載URL](https://llmsmonitor.ntus.info/)へのリンクを追加。拡張機能パッケージは **1.22.0** のままです。
+## 独自ドメインへの接続
+
+**1.23.0** で [llmsmonitor.ntus.info](https://llmsmonitor.ntus.info/) を接続許可に追加し、旧URLも継続利用できます。既存の拡張機能を同じ読込元のまま更新し、Web画面を再読込して、同じ拡張機能IDを新ドメインで一度登録してください。ブラウザーのlocalStorageはURLのoriginごとに分かれますが、拡張機能内の履歴・設定は保持されます。更新のためにアンインストールしないでください。ストア版は審査・公開された更新が必要です。β検証用ZIPも配布します。
 # 日本語 — LLMs モニター
 
 **ChatGPT/Claude/Geminiのトークン利用残量をリアルタイム表示**
@@ -55,7 +59,9 @@ Web版 **1.22.1** はストア導入案内から指定の[掲載URL](https://llm
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
-## 1.22.0 β
+## 1.23.0 β
+
+独自ドメインからの接続許可を修正し、旧URLも引き続き利用可能にしました。
 
 診断ログを変化履歴とは別に端末内へ保存し、必要なときだけJSONLで書き出せます。言語切替、利用状況・API連携画面の再表示、3社を同時に見せる小窓を改善しました。API連携はAPIクレジット欄から開きます。
 
@@ -110,8 +116,8 @@ v1.6.4では履歴読込結果と通知音説明を左右ボタン付きのス�
 ### 使い方
 
 1. 同じChromeまたはEdgeプロファイルで [ChatGPT](https://chatgpt.com/)、[Claude](https://claude.ai/)、[Gemini](https://gemini.google.com/) に必要な分だけログインします。パスワードは公式サイトで入力します。
-2. ストア公開前は、このリポジトリで `python3 build.py --package` を実行し、`dist/LLMs-Monitor-v1.22.0.zip` を展開して、ブラウザーの拡張機能管理画面から開発用として読み込みます。一般ユーザーがデベロッパーモードなしで導入するには、Chrome Web Store / Edge Add-ons の審査・公開が必要です。
-3. 拡張機能の画面、または [公開モニター](https://llmsmonitor.ntusnog.chatgpt.site/) を開きます。公開モニターでは拡張機能IDを一度登録してください。各サービスの使用量タブを開いたままにする必要はありません。
+2. ストア公開前は、このリポジトリで `python3 build.py --package` を実行し、`dist/LLMs-Monitor-v1.23.0.zip` を展開して、ブラウザーの拡張機能管理画面から開発用として読み込みます。一般ユーザーがデベロッパーモードなしで導入するには、Chrome Web Store / Edge Add-ons の審査・公開が必要です。
+3. 拡張機能の画面、または [公開モニター](https://llmsmonitor.ntus.info/) を開きます。公開モニターでは拡張機能IDを一度登録してください。各サービスの使用量タブを開いたままにする必要はありません。
 4. 「表示サービス」からチェックと上下ボタンで表示数・順序を変更します。非表示中も取得と履歴保存は続きます。音、テーマ、言語、透明度、フルスクリーンも画面上で変更できます。
 5. 残量とリセット時刻は公式サービスが返す範囲で表示されます。リセット権は利用可能なら公式利用量ページへ移動できますが、アプリから自動行使しません。出典のあるTips／NEWSはリンクで原文を確認できます。
 

@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "default_locale": "ja",
   "name": "__MSG_extensionName__",
-  "version": "1.22.0",
+  "version": "1.23.0",
   "description": "__MSG_extensionDescription__",
   "permissions": [
     "storage",
@@ -18,7 +18,8 @@
     "https://status.openai.com/*",
     "https://status.claude.com/*",
     "https://www.google.com/appsstatus/dashboard/*",
-    "https://llmsmonitor.ntusnog.chatgpt.site/*"
+    "https://llmsmonitor.ntusnog.chatgpt.site/*",
+    "https://llmsmonitor.ntus.info/*"
   ],
   "background": {
     "service_worker": "background.js"
@@ -60,6 +61,7 @@
   ],
   "externally_connectable": {
     "matches": [
+      "https://llmsmonitor.ntus.info/*",
       "https://llmsmonitor.ntusnog.chatgpt.site/*"
     ]
   },

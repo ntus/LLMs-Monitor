@@ -48,6 +48,8 @@ This file is the starting point for every future Codex or LLM edit. Follow the u
 
 - Keep Web release/cache versions separate from extension compatibility versions for Web-only patches. Installation links must wrap the localized child so language updates preserve the anchor; never rebuild the store ZIP for this Web-only change.
 
+- The current companion is `https://llmsmonitor.ntus.info`; retain the previous Site origin for compatibility. Keep the exact origin set aligned in manifest, background validation, ledger and tests. A link alone never enables extension messaging on a new origin; verify both browser gating and runtime validation and document first-time extension-ID pairing.
+
 ## Every deliverable
 
 Keep this `AGENTS.md` in the repository and update it when a new acceptance rule or failure-prevention step arises. In the final report, link this file, the detailed specification, and the distribution package; distinguish verified behavior from live-account checks that remain unverified.
@@ -101,6 +103,8 @@ Keep this `AGENTS.md` in the repository and update it when a new acceptance rule
 - 言語切替を古い同期応答で戻さず、使用量・API連携画面はフローティング窓が前面でも通常窓に開く。
 
 - Web限定パッチの表示・キャッシュ版は拡張機能の互換性判定版と分離する。導入リンクは翻訳対象の子要素を囲み、言語変更でアンカーを消さない。このWeb限定変更でストアZIPを再生成しない。
+
+- 現行コンパニオンは `https://llmsmonitor.ntus.info` とし、旧Sites originも互換性のため維持する。manifest・background・台帳・テストの厳密origin集合を一致させる。リンク追加だけでは新URLから接続できないため、ブラウザー側の許可と実行時の検証を確認し、初回ID登録も案内する。
 
 ## 毎回の成果物
 

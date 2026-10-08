@@ -26,8 +26,8 @@ test('製品版・ZIP名・CSS・画面表示・仕様書が同期している',
 
 test('本番manifestの外部接続先と権限を最小範囲に保つ',()=>{
  const manifest=JSON.parse(read('extension/manifest.json'));
- assert.deepEqual(manifest.externally_connectable.matches,['https://llmsmonitor.ntusnog.chatgpt.site/*']);
- assert(read('extension/background.js').includes("const ALLOWED=new Set(['https://llmsmonitor.ntusnog.chatgpt.site'])"));
+ assert.deepEqual(manifest.externally_connectable.matches,['https://llmsmonitor.ntus.info/*','https://llmsmonitor.ntusnog.chatgpt.site/*']);
+ assert(read('extension/background.js').includes("const ALLOWED=new Set(['https://llmsmonitor.ntus.info','https://llmsmonitor.ntusnog.chatgpt.site'])"));
  assert(!read('extension/background.js').includes('ai-usage-glance.ntusnog.chatgpt.site'));
  assert.deepEqual(manifest.permissions,['storage','alarms','offscreen','notifications']);
  assert(!JSON.stringify(manifest).includes('localhost'));

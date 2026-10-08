@@ -1,5 +1,5 @@
 (function(root){
- const FEED_URL='https://llmsmonitor.ntusnog.chatgpt.site/api/intelligence.json';
+ const FEED_URL='https://llmsmonitor.ntus.info/api/intelligence.json';
  const SOURCE_HOSTS=new Set(['x.com']);
  const providers={openai:'OpenAI',anthropic:'Anthropic',google:'Google'};
  const clean=value=>String(value??'').replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim().slice(0,360);

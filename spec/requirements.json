@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs トークン残量モニタ",
     "name_en": "LLMs Token Usage Monitor",
-    "version": "1.22.0",
-    "package_filename": "LLMs-Monitor-v1.22.0.zip",
+    "version": "1.23.0",
+    "package_filename": "LLMs-Monitor-v1.23.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -18,8 +18,12 @@
       "claude",
       "gemini"
     ],
-    "production_companion_origin": "https://llmsmonitor.ntusnog.chatgpt.site",
-    "web_version": "1.22.1"
+    "production_companion_origin": "https://llmsmonitor.ntus.info",
+    "web_version": "1.23.0",
+    "companion_origins": [
+      "https://llmsmonitor.ntus.info",
+      "https://llmsmonitor.ntusnog.chatgpt.site"
+    ]
   },
   "normative_language": {
     "MUST": "必須。未達の場合はリリース不可。",
@@ -1794,13 +1798,13 @@
       "introduced_in": "1.0.0",
       "status": "implemented",
       "priority": "MUST",
-      "normative_requirement": "content scriptのSNAPSHOTは対応する公式originからだけ受け入れ、windowは最大6、extraは最大8、文字長と数値範囲を検証する。外部Web messagingはproduction companion originだけを許可し、localhostをproduction packageへ含めてはならない。",
+      "normative_requirement": "content scriptのSNAPSHOTは対応する公式originからだけ受け入れ、windowは最大6、extraは最大8、文字長と数値範囲を検証する。外部Web messagingは承認済みproduction companion originsだけを許可し、localhostをproduction packageへ含めてはならない。",
       "source_requirements": [
         "v1.5.0 production-origin-only requirement",
         "STORE_SUBMISSION host permission disclosure"
       ],
       "acceptance_criteria": [
-        "manifest.externally_connectableとbackground ALLOWEDが同じproduction origin一件だけである。",
+        "manifest.externally_connectableとbackground ALLOWEDが同じ承認済みHTTPS origin集合に一致する。v1.23.0では独自ドメインと旧URLの2件だけを許可し、ワイルドカードや他のサブドメインを許可しない。",
         "未知originのexternal messageを拒否する。",
         "provider originとservice IDが一致しないSNAPSHOTを拒否する。",
         "範囲外remaining、過剰配列、過長文字列を破棄またはtruncateする。"
@@ -1820,6 +1824,11 @@
           "type": "manual",
           "coverage": "not_automated",
           "procedure": "Send GET, SNAPSHOT and mutating messages from the production origin, localhost, an unrelated origin and mismatched provider origins; inspect accept/reject results."
+        },
+        {
+          "type": "automated",
+          "coverage": "tests/companion-origin.test.cjs",
+          "procedure": "Real external message handler accepts both approved origins and rejects unrelated origins, HTTP, lookalike domains, alternate ports and localhost for GET and SETTINGS."
         }
       ]
     },
@@ -2995,14 +3004,14 @@
       "introduced_in": "1.8.0",
       "status": "implemented",
       "priority": "MUST",
-      "normative_requirement": "公開WebアプリのURLを変更する場合、manifest.externally_connectable、backgroundの接続元検証、Webリンク、プライバシー文書、仕様書、ストア資料を同じHTTPS originへ同期し、ストアパッケージをマイナーリリースとして再生成する。",
+      "normative_requirement": "公開WebアプリのURLを変更する場合、manifest.externally_connectable、backgroundの接続元検証、Webリンク、プライバシー文書、仕様書、ストア資料を承認済みHTTPS origin集合へ同期し、ストアパッケージをマイナーリリースとして再生成する。v1.23.0では新独自ドメインを正本とし、旧URLの互換接続を維持する。",
       "source_requirements": [
         "User report: renamed companion URL displayed an extension connection required error"
       ],
       "acceptance_criteria": [
-        "manifest.externally_connectableとbackground ALLOWEDがhttps://llmsmonitor.ntusnog.chatgpt.siteに一致する。",
+        "manifest.externally_connectableとbackground ALLOWEDがhttps://llmsmonitor.ntus.infoとhttps://llmsmonitor.ntusnog.chatgpt.siteに一致する。",
         "公開Web画面、配布文書、テストが旧ai-usage-glance originを参照しない。",
-        "ストア提出ZIPをv1.8.0として再生成する。"
+        "接続先変更を含むストア提出ZIPは中間番号を上げて再生成する（v1.23.0）。"
       ],
       "implementation_evidence": [
         {
@@ -3999,7 +4008,7 @@
       "introduced_in": "1.22.1",
       "status": "implemented",
       "priority": "MUST",
-      "normative_requirement": "Web画面の「ストアから拡張機能を追加」を利用者指定URL https://llmsmonitor.ntus.info/ へのリンクにする。日英切替後もリンクを保持し、別タブで開く。拡張機能パッケージと互換性判定版は1.22.0を維持する。",
+      "normative_requirement": "v1.22.1のWeb限定変更でストア導入案内のリンクを利用者指定URL https://llmsmonitor.ntus.info/ に追加し、日英切替後も別タブ導線を保持する。版据置の条件はv1.22.1時点の履歴であり、v1.23.0のCOMPANION-003で接続許可を含むパッケージ更新に上書きする。",
       "source_requirements": [
         "User request 2026-10-08: add store installation link; supplied destination https://llmsmonitor.ntus.info/."
       ],
@@ -4007,7 +4016,7 @@
         "指定URLをhrefに使う。",
         "言語切替はリンク内のstrongのみ翻訳し、アンカーを消さない。",
         "target=_blank と rel=noopener noreferrer を付ける。",
-        "Web版の表示とWeb追加資産キャッシュは1.22.1、拡張機能ZIPと共通実行コードは1.22.0のまま。"
+        "v1.22.1時点ではZIPと共通コードは1.22.0を保持した。v1.23.0以降はCOMPANION-003の接続互換性と版整合を適用する。"
       ],
       "implementation_evidence": [
         {
@@ -4032,6 +4041,53 @@
       ],
       "known_limitations": [
         "リンク先は利用者指定の掲載URL。Chrome Web Store / Edge Add-onsの個別掲載URLやストア審査の完了を意味しない。"
+      ]
+    },
+    {
+      "id": "COMPANION-003",
+      "category": "browser_integration",
+      "introduced_in": "1.23.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "独自ドメイン https://llmsmonitor.ntus.info から拡張機能へ接続可能にし、旧URLの既存接続・保存履歴・設定を維持する。ドメイン固有のlocalStorageに拡張機能IDがない初回は再登録が必要であり、他originのlocalStorageを読み取らない。",
+      "source_requirements": [
+        "User report 2026-10-08: custom domain shows extension connection required."
+      ],
+      "acceptance_criteria": [
+        "manifestとbackgroundの許可originは独自ドメインと旧URLの2件に一致。",
+        "未知ドメイン、HTTP、紛らわしいサブドメイン、別port、localhostからGETとSETTINGSを拒否。",
+        "両URLからGETとSETTINGSを処理し、拡張機能保存の履歴を保持。",
+        "Web、ZIP、共通互換性判定版を1.23.0へそろえ、既存のstorageキーを変えない。",
+        "初回ID登録と旧拡張機能の更新が必要なことを文書化。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/manifest.json",
+          "symbol": "externally_connectable.matches"
+        },
+        {
+          "path": "extension/background.js",
+          "symbol": "ALLOWED / handle"
+        },
+        {
+          "path": "extension/intelligence.js",
+          "symbol": "FEED_URL"
+        },
+        {
+          "path": "README.md",
+          "symbol": "Custom domain connection"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "tests/companion-origin.test.cjs",
+          "procedure": "Execute the real external message handler with mock Chrome storage/events; verify accepted/rejected messages and unchanged history."
+        }
+      ],
+      "known_limitations": [
+        "実ブラウザのインストール済み拡張機能を1.23.0へ更新する必要がある。ストア反映は審査・公開後。",
+        "localStorageはoriginごとに分離されるため新ドメインで拡張機能IDを一度入力する。実アカウントの独自ドメイン接続は未検証。"
       ]
     }
   ]

@@ -1,3 +1,9 @@
+## 1.23.0
+
+- Allow extension messaging from the custom monitor domain and retain the previous Site origin.
+- Align Web links, privacy and package versions; preserve extension storage and usage history.
+- Add actual external-message tests for approved and hostile origins.
+
 ## 1.22.0
 
 - Add bounded local diagnostic logging and manual JSONL export, isolated from usage history.
@@ -90,6 +96,12 @@ Version 1.5.3 and earlier focused on plan retrieval, persistent change history, 
 ---
 
 <a id="ja"></a>
+
+## 1.23.0
+
+- 独自ドメインから拡張機能へ接続可能にし、旧URLとの互換接続を維持。
+- Webリンク・プライバシー・版番号を同期し、拡張機能内の履歴と設定を維持。
+- 許可済みoriginと紛らわしい別originの外部メッセージテストを追加。
 
 ## 1.20.0 β — 2026-10-04
 

@@ -4,7 +4,7 @@
 
 <a id="en"></a>
 
-Document revision: 1.0 · Product version: **1.22.0** · Web companion: `https://llmsmonitor.ntusnog.chatgpt.site/`
+Document revision: 1.0 · Product version: **1.23.0** · Web companion: `https://llmsmonitor.ntus.info/` (previous Site origin retained for compatibility)
 
 This English section defines the implementation contract for the beta. The [Japanese section](#ja) contains the full historical and field-level acceptance criteria. Implementers must read both sections and every ID in [`spec/requirements.json`](spec/requirements.json); neither translation overrides the other.
 
@@ -46,7 +46,13 @@ Human-readable documentation must start in English and place Japanese in the lat
 
 ---
 
-## Current release: v1.22.0 — bounded diagnostics and stable controls
+## Current release: v1.23.0 — custom-domain connection
+
+The old package allowed external messaging only from `https://llmsmonitor.ntusnog.chatgpt.site`; it could not connect from the new `https://llmsmonitor.ntus.info`. Add the custom origin to both `manifest.externally_connectable.matches` and the background exact-origin allowlist, retaining the previous origin to avoid breaking existing installations. Align current Web links, public intelligence host access/endpoint, privacy and store documents. Reject other origins, HTTP, lookalike hosts, alternate ports and localhost. No provider-acquisition, storage key, quota, history or floating layout changes are introduced.
+
+Package and Web compatibility versions become 1.23.0 according to the minor-version rule. Update an existing extension in place rather than uninstalling. Enter the same extension ID once on the custom domain because localStorage is isolated by origin; the usage history and settings remain in extension storage. A store-installed extension needs a store-approved package update. Unit tests execute the actual external listener with synthetic Chrome storage/events. Validation on 2026-10-08: all 170 tests passed (167 existing and three new origin tests); generated assets and packaged manifest/CSS were inspected, and the ZIP integrity check passed. Live custom-domain pairing remains a manual check. Site access remains private; unauthenticated HTTP 401 is separate from extension pairing.
+
+## Previous release: v1.22.0 — bounded diagnostics and stable controls
 
 The extension writes numeric diagnostic events into a separate IndexedDB database. Each event records provider/window, API or official-page source, raw numeric utilization when available, normalized input, displayed value, reset timestamp, conflict decision, duration and a fixed error category. Authentication material, full API responses, page text and account identifiers are excluded. Ordinary samples expire after 72 hours; incidents after 30 days. Pruning caps the log at 6,000 entries and approximately 3 MB. A failed or slow diagnostic write cannot stop a usage refresh; the previous 10,000-entry change history is untouched. The extension-only diagnostics page previews the latest events, exports JSONL on request and can erase diagnostics alone. The Web companion only opens that extension page; it cannot read logs through GET.
 
@@ -85,7 +91,7 @@ The Web installation step links to the user-supplied `https://llmsmonitor.ntus.i
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.22.0
+対象製品版: 1.23.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -1305,3 +1311,11 @@ API連携を各カードのAPIクレジット残高欄に移す。使用量画�
 Web画面の「ストアから拡張機能を追加」は、利用者指定の `https://llmsmonitor.ntus.info/` を別タブで開く。`noopener noreferrer` を付け、翻訳対象のstrongをアンカーの内側に保持することで日英切替でもリンクを維持する。正本は `web/store-install-link.html`。ビルドは元の文言1か所を置換し、文言が変わって置換不能なら失敗して未反映を防ぐ。Webのフッター・追加資産キャッシュだけ1.22.1とし、拡張機能manifest、互換性判定用共通コード、既存ZIPは1.22.0のまま。リンク先は掲載URLであり、ストア審査完了を示すものではない。残量取得・履歴・通知音・外窓の動作は変更しない。
 
 検証記録（2026-10-08）：既存自動テスト167件通過。生成HTMLのリンク先・別タブ・安全属性、日英の翻訳対象、Web／互換性版、ZIP整合性を確認。ストアZIPのSHA-256は変更前後とも `0bbd62e9144b157fa7f39e5ed8b4d5f8dad3dd9c35a5229be70aecce06ab37d7`。このリンク更新では実アカウント取得やストアからのインストールは実施していない。
+
+## 53. v1.23.0：独自ドメインからの拡張機能接続
+
+原因は、旧パッケージの外部接続許可が旧URLだけだったこと。独自ドメイン `https://llmsmonitor.ntus.info` をmanifestのexternally_connectableとbackgroundの厳密origin判定に追加し、旧URLも互換性のため維持する。2つのHTTPS originだけを許可し、HTTP、似た別ドメイン、別port、localhost、ワイルドカードは許可しない。現行Webリンク、公開速報feedのホスト許可・URL、プライバシー、ストア資料を同期する。残量取得・保存キー・履歴・警告・外窓レイアウトは変更しない。
+
+パッケージ・Web・互換性判定版は1.23.0。既存拡張機能を同じ読込元で更新し、アンインストールしない。新ドメインのlocalStorageは旧URLと別領域なので、同じ拡張機能IDを一度入力する。履歴と設定は拡張機能内で維持する。ストア導入済みの利用者には承認済みストア更新が必要。実際の外部メッセージ処理を模擬Chrome環境で検証するが、実ブラウザーでの独自ドメイン接続は未確認。サイトの公開範囲は維持し、未認証HTTP 401と拡張機能の接続許可は別の条件として扱う。
+
+検証記録（2026-10-08）：既存167件と新規origin接続3件、計170件の自動テスト通過。ZIPの整合性、配布manifestの2origin、版、共有ソース、CSSの収録を確認。実ブラウザーでの更新・ID再登録後の接続は未確認。
