@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0.0",
   "ledger_id": "llms-token-usage-monitor-requirements",
-  "last_updated": "2026-10-08",
+  "last_updated": "2026-10-09",
   "authoritative": true,
   "product": {
     "name_ja": "LLMs トークン残量モニタ",
@@ -19,7 +19,7 @@
       "gemini"
     ],
     "production_companion_origin": "https://llmsmonitor.ntus.info",
-    "web_version": "1.23.0",
+    "web_version": "1.23.1",
     "companion_origins": [
       "https://llmsmonitor.ntus.info",
       "https://llmsmonitor.ntusnog.chatgpt.site"
@@ -87,6 +87,26 @@
       "volume": "integer from 1 through 50",
       "serviceOrder": "optional ordered permutation of chatgpt, claude, gemini; defaults to all",
       "hiddenServices": "optional subset of service IDs; defaults to none"
+    },
+    "TaskSnapshot": {
+      "schemaVersion": 1,
+      "service": "chatgpt | claude | gemini, must match selected route",
+      "capturedAt": "ISO timestamp, required",
+      "source": "codex-app | local-export | demo (format label only, not authenticated provenance)",
+      "coverage": "optional bounded description; never claim full-account coverage without evidence",
+      "tasks": "0..500 TaskNode entries, UTF-8 file <= 524288 bytes, depth <= 12; local in-memory only"
+    },
+    "TaskNode": {
+      "id": "unique exact bounded string <=120 chars",
+      "parentId": "optional verified same-project/same-kind node ID, no cycles",
+      "projectId": "optional <=120 chars",
+      "projectTitle": "required when projectId exists, <=100 chars, consistent per ID",
+      "title": "nonempty <=200 chars",
+      "kind": "chat | codex, codex only for chatgpt",
+      "status": "running | idle | waiting | completed | failed | unknown; observation, not live",
+      "updatedAt": "optional ISO timestamp",
+      "summary": "optional <=500 chars",
+      "url": "optional exact provider HTTPS conversation route; reject credentials, port, query, fragment"
     }
   },
   "requirements": [
@@ -4088,6 +4108,154 @@
       "known_limitations": [
         "実ブラウザのインストール済み拡張機能を1.23.0へ更新する必要がある。ストア反映は審査・公開後。",
         "localStorageはoriginごとに分離されるため新ドメインで拡張機能IDを一度入力する。実アカウントの独自ドメイン接続は未検証。"
+      ]
+    },
+    {
+      "id": "TASK-VIEW-001",
+      "category": "task_details_trial",
+      "introduced_in": "1.23.1",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "Webカードの各LLMにタスク詳細を追加し、既存モニターとは別画面・別実装で縦長の小窓へ表示する。",
+      "source_requirements": [
+        "User 2026-10-09: per-LLM task details, separate tall window and isolated internal implementation; no regressions."
+      ],
+      "acceptance_criteria": [
+        "各社ボタンが対応するserviceの独立画面を開く。",
+        "起動時EN/JP・テーマを引き継ぎ、420×780を初期要求する。",
+        "ブロック時は安全な別タブへ戻り、自動起動・強制リサイズ・既存小窓のライフサイクルへの干渉をしない。",
+        "残量取得/RPC/保存/履歴/通知/拡張ソース/ZIPを変更しない。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "web/task-launcher.js",
+          "symbol": "independent task trial"
+        },
+        {
+          "path": "web/tasks.html",
+          "symbol": "independent task trial"
+        },
+        {
+          "path": "web/tasks.css",
+          "symbol": "independent task trial"
+        },
+        {
+          "path": "build.py",
+          "symbol": "independent task trial"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "tests/tasks.test.cjs",
+          "procedure": "Execute launcher, validate inputs, ancestry, hostile links and isolation; run all existing tests."
+        },
+        {
+          "type": "manual",
+          "coverage": "required",
+          "procedure": "Verify tall popups, safe tab fallback, language/theme, narrow rendering, import/clear and main/fullscreen behavior in Chrome/Edge."
+        }
+      ],
+      "known_limitations": [
+        "This trial has no automatic provider task adapter. Snapshots are observations, not live task monitoring. Browser/OS popup bounds apply."
+      ]
+    },
+    {
+      "id": "TASK-DATA-001",
+      "category": "task_details_trial",
+      "introduced_in": "1.23.1",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "試作は端末内JSONを窓内メモリーで読み込み、プロジェクト→チャット・明示された親子を表示する。Codex専用取得機能をWeb自動取得できると主張しない。",
+      "source_requirements": [
+        "User 2026-10-09: per-LLM task details, separate tall window and isolated internal implementation; no regressions."
+      ],
+      "acceptance_criteria": [
+        "通常ChatGPTとCodex/Workを種別で区別する。",
+        "検索、状態絞り込み、親の保持、開閉、テキストコピーを提供する。",
+        "取得時刻・更新日時・範囲を示し、待機を完了とみなさず、5分以上前は過去と表示する。",
+        "架空サンプルと実一覧を区別し、取得失敗/不正入力では前回一覧を保持する。",
+        "各社/Codexの自動取得は未接続、Claude/Gemini実取得は未検証と明示する。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "web/tasks-model.js",
+          "symbol": "independent task trial"
+        },
+        {
+          "path": "web/tasks-page.js",
+          "symbol": "independent task trial"
+        },
+        {
+          "path": "TASK_DETAILS.md",
+          "symbol": "independent task trial"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "tests/tasks.test.cjs",
+          "procedure": "Execute launcher, validate inputs, ancestry, hostile links and isolation; run all existing tests."
+        },
+        {
+          "type": "manual",
+          "coverage": "required",
+          "procedure": "Verify tall popups, safe tab fallback, language/theme, narrow rendering, import/clear and main/fullscreen behavior in Chrome/Edge."
+        }
+      ],
+      "known_limitations": [
+        "This trial has no automatic provider task adapter. Snapshots are observations, not live task monitoring. Browser/OS popup bounds apply."
+      ]
+    },
+    {
+      "id": "TASK-SAFE-001",
+      "category": "task_details_trial",
+      "introduced_in": "1.23.1",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "タスク入力を制限・検証し、第三者送信・永続保存・個人一覧の公開を禁止する。",
+      "source_requirements": [
+        "User 2026-10-09: per-LLM task details, separate tall window and isolated internal implementation; no regressions."
+      ],
+      "acceptance_criteria": [
+        "UTF-8 512KiB・500件・12階層を上限とする。",
+        "循環・重複ID・存在しない親・別サービス/別プロジェクト/別種別の親を拒否する。",
+        "textContent描画、厳密な事業者HTTPSチャットURL、opener切断を使う。",
+        "CSP connect-src none、取得/保存/RPC/通知コードへの依存なし。",
+        "個人一覧はGit/公開資産に含めず、Clear/再読込/終了で破棄する。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "web/tasks-model.js",
+          "symbol": "independent task trial"
+        },
+        {
+          "path": "web/tasks-page.js",
+          "symbol": "independent task trial"
+        },
+        {
+          "path": "web/tasks.html",
+          "symbol": "independent task trial"
+        },
+        {
+          "path": "web/task-launcher.js",
+          "symbol": "independent task trial"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "tests/tasks.test.cjs",
+          "procedure": "Execute launcher, validate inputs, ancestry, hostile links and isolation; run all existing tests."
+        },
+        {
+          "type": "manual",
+          "coverage": "required",
+          "procedure": "Verify tall popups, safe tab fallback, language/theme, narrow rendering, import/clear and main/fullscreen behavior in Chrome/Edge."
+        }
+      ],
+      "known_limitations": [
+        "This trial has no automatic provider task adapter. Snapshots are observations, not live task monitoring. Browser/OS popup bounds apply."
       ]
     }
   ]

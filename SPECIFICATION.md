@@ -4,7 +4,7 @@
 
 <a id="en"></a>
 
-Document revision: 1.0 · Product version: **1.23.0** · Web companion: `https://llmsmonitor.ntus.info/` (previous Site origin retained for compatibility)
+Document revision: 1.0 · Product version: **1.23.0** · Web UI: **1.23.1** · Web companion: `https://llmsmonitor.ntus.info/` (previous Site origin retained for compatibility)
 
 This English section defines the implementation contract for the beta. The [Japanese section](#ja) contains the full historical and field-level acceptance criteria. Implementers must read both sections and every ID in [`spec/requirements.json`](spec/requirements.json); neither translation overrides the other.
 
@@ -83,6 +83,14 @@ Primary references: [Document PiP](https://developer.chrome.com/docs/web-platfor
 ## Web update: v1.22.1 — installation link
 
 The Web installation step links to the user-supplied `https://llmsmonitor.ntus.info/` in a new tab with `noopener noreferrer`. `web/store-install-link.html` keeps the localized `strong` inside the anchor so English/Japanese translation preserves its destination. `build.py` replaces exactly one original label and fails if the source no longer matches. The Web footer and supplemental asset cache use 1.22.1; the shared protocol, extension manifest and existing store ZIP remain 1.22.0. This destination is a supplied publication URL, not evidence of an approved browser-store listing. Existing acquisition, history, alerts and floating-view behavior are untouched. Validation: all 167 existing tests passed; generated HTML, both translation labels and cache versions were inspected; store ZIP integrity and identical SHA-256 were confirmed. No signed-in provider or browser-store installation was exercised for this link-only update.
+
+## Web trial v1.23.1 — isolated task details
+
+The visible service cards acquire a Web-only Task details link. `task-launcher.js` adds that link without changing `extension/`, usage RPC, provider fetchers, state, history, sounds or existing floating modules. It opens `tasks.html?service=…&lang=…&theme=…` after a user click, requesting a 420×780 normal popup; browser blocking falls back to the safe new-tab anchor. No automatic launch, always-on-top claim, window-size reset or shared lifecycle is introduced. Language/theme are initial read-only inputs; the child’s opener is severed immediately.
+
+`tasks.html`, `tasks.css`, `tasks-model.js` and `tasks-page.js` form the independent working surface. They load no monitor scripts, make no requests (`connect-src 'none'`), use no extension messages or storage, and never modify quota state. Search/filter, native project/chat disclosure, explicit parent relationships, timestamps, reported-state badges and text copy operate on a local in-memory snapshot. Imported idle and unknown states are not converted to completed. A historical capture warning appears after five minutes. The optional demo is clearly synthetic. Invalid files preserve the previous list. Reload/close/Clear discard the snapshot. No private snapshot is committed or deployed.
+
+Automatic provider/Codex task fetching remains unconnected in this trial. The Codex desktop connector was observed to return 57 chats (24 ordinary ChatGPT and 33 Codex, pinned plus up to 50 recent unpinned); this is not a full-account inventory or a publicly callable API. A separate private export file supplies the real-account trial. Claude/Gemini task acquisition has not been verified. Full limits, security boundaries, schema, future-adapter requirements and manual gates are in [TASK_DETAILS.md](TASK_DETAILS.md#en). Web release/cache version is 1.23.1; extension compatibility and unchanged ZIP remain 1.23.0.
 
 <a id="ja"></a>
 
@@ -1319,3 +1327,13 @@ Web画面の「ストアから拡張機能を追加」は、利用者指定の `
 パッケージ・Web・互換性判定版は1.23.0。既存拡張機能を同じ読込元で更新し、アンインストールしない。新ドメインのlocalStorageは旧URLと別領域なので、同じ拡張機能IDを一度入力する。履歴と設定は拡張機能内で維持する。ストア導入済みの利用者には承認済みストア更新が必要。実際の外部メッセージ処理を模擬Chrome環境で検証するが、実ブラウザーでの独自ドメイン接続は未確認。サイトの公開範囲は維持し、未認証HTTP 401と拡張機能の接続許可は別の条件として扱う。
 
 検証記録（2026-10-08）：既存167件と新規origin接続3件、計170件の自動テスト通過。ZIPの整合性、配布manifestの2origin、版、共有ソース、CSSの収録を確認。実ブラウザーでの更新・ID再登録後の接続は未確認。
+
+## 54. Web試作 v1.23.1：タスク詳細の独立画面
+
+表示中の各社カードへWeb限定の［タスク詳細］リンクを加える。`task-launcher.js` は利用状況確認ボタンを残して起動導線だけを追加し、`extension/`、残量RPC、取得・状態・履歴・通知音・既存小窓を変更しない。クリック時に `tasks.html?service=…&lang=…&theme=…` を初期420×780の通常小窓として開き、ブロック時は安全な別タブリンクに戻す。自動起動・最前面固定・窓サイズの強制再設定・既存小窓との終了連動は追加しない。起動後のopenerを切り、日英・テーマは起動時の読み取り専用入力とする。
+
+画面・CSS・データ正規化・描画を `tasks.html`、`tasks.css`、`tasks-model.js`、`tasks-page.js` に分離する。モニターのスクリプトを読まず、ネットワーク要求（CSP `connect-src 'none'`）・拡張機能メッセージ・保存領域・通知音を使わない。JSON一覧を窓内のメモリーだけで扱い、検索、状態絞り込み、プロジェクト→チャットと明示的親子の開閉、取得日時・更新日時、ツリーコピーを行う。待機・未確認を完了へ変換しない。5分以上前は過去一覧と明示する。サンプルは架空と明示し、不正ファイルでは前回の一覧を維持する。消去・再読込・窓終了で破棄し、個人の一覧は公開配布物へ含めない。
+
+各社・Codexからの自動取得はこの試作では未接続。Codex専用ツールから取得した57件（通常ChatGPT24件、Codex33件、ピン留め＋直近最大50件）は全アカウント履歴ではなく、そのツールは公開Webから直接呼べない。取得済み一覧は別の非公開ローカルファイルで検証する。Claude/Geminiのタスク実取得は未検証。契約・形式・安全境界・将来の取得アダプターは [TASK_DETAILS.md](TASK_DETAILS.md#ja) に定める。Web表示・キャッシュのみ1.23.1とし、拡張機能互換性・変更しないZIPは1.23.0のまま維持する。
+
+タスク試作の検証記録（2026-10-09）：全178件通過。Webビルド・差分検査・非公開57件一覧の解析に成功。既存拡張機能全68ファイルと配布ZIPは変更前と同一。画面操作は許可回答待ち、独立ヘッドレス起動はサンドボックスで失敗したため、実画面・OSリサイズ・全画面レイアウトは未確認。

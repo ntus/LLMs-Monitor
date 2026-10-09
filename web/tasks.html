@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+ <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+ <meta name="referrer" content="no-referrer">
+ <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+ <title>LLMs Monitor — Tasks</title>
+ <link rel="stylesheet" href="tasks.css?v=1231">
+ <script defer src="tasks-model.js?v=1231"></script><script defer src="tasks-page.js?v=1231"></script>
+</head>
+<body>
+ <header class="task-header"><div class="task-brand">◔ <span>LLMs Monitor</span><span class="beta">β</span></div><div class="task-controls"><button id="language" type="button">🌍EN</button><button id="theme" type="button">☼</button></div></header>
+ <main>
+  <div class="task-heading"><span id="service-mark" aria-hidden="true">◎</span><div><h1 id="heading">ChatGPT</h1><p data-copy="taskDetails">Task details</p></div><span id="count">0</span></div>
+  <div class="task-source"><strong id="source" data-copy="notConnected">Task data not connected</strong><p id="capture"></p><p id="coverage"></p></div>
+  <p class="task-boundary" data-copy="boundary">This trial reads a local JSON snapshot. It does not automatically fetch your chats. Files stay in this window and are not uploaded.</p>
+  <div class="task-import"><label class="task-import-button"><span data-copy="import">Open task list (JSON)</span><input id="task-file" type="file" accept=".json,application/json"></label><button id="demo" type="button" data-copy="demo">Try a demo</button></div>
+  <p id="notice" role="status" aria-live="polite"></p>
+  <div class="task-filters"><input id="search" type="search" maxlength="200" placeholder="Search tasks" aria-label="Search tasks"><select id="status" aria-label="Filter by status"><option value="all">All states</option><option value="running">Running</option><option value="idle">Idle</option><option value="waiting">Waiting</option><option value="completed">Completed</option><option value="failed">Failed</option><option value="unknown">Unknown</option></select></div>
+  <div class="task-actions"><button id="expand" type="button" data-copy="expand">Expand all</button><button id="collapse" type="button" data-copy="collapse">Collapse all</button><button id="copy" type="button" data-copy="copy">Copy tree</button><button id="clear" type="button" data-copy="clear">Clear</button></div>
+  <p class="task-legend" data-copy="legend">States are observations, not live tracking. Idle does not mean the work is finished.</p>
+  <section id="tree" aria-label="Task tree"><p class="task-empty" data-copy="empty">Open a task list to display projects and chats.</p></section>
+ </main>
+ <footer><a href="https://github.com/ntus/LLMs-Monitor" target="_blank" rel="noopener noreferrer">LLMs Monitor v1.23.1</a><span>Copyright (C) 2026 <a href="https://ntus.info" target="_blank" rel="noopener noreferrer">NT MicroSystems,Inc.</a></span></footer>
+</body></html>

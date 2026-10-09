@@ -50,6 +50,8 @@ This file is the starting point for every future Codex or LLM edit. Follow the u
 
 - The current companion is `https://llmsmonitor.ntus.info`; retain the previous Site origin for compatibility. Keep the exact origin set aligned in manifest, background validation, ledger and tests. A link alone never enables extension messaging on a new origin; verify both browser gating and runtime validation and document first-time extension-ID pairing.
 
+- Keep task details in independent Web-only `tasks-*` modules. The main monitor receives only the launcher; never reuse its quota/RPC/audio/floating lifecycle in the task page. Treat imported states as historical observations, label demos, reject invalid ancestry/provider links, and never put private task snapshots in the repository or deployed assets. Automatic task acquisition requires a separately reviewed adapter.
+
 ## Every deliverable
 
 Keep this `AGENTS.md` in the repository and update it when a new acceptance rule or failure-prevention step arises. In the final report, link this file, the detailed specification, and the distribution package; distinguish verified behavior from live-account checks that remain unverified.
@@ -105,6 +107,8 @@ Keep this `AGENTS.md` in the repository and update it when a new acceptance rule
 - Web限定パッチの表示・キャッシュ版は拡張機能の互換性判定版と分離する。導入リンクは翻訳対象の子要素を囲み、言語変更でアンカーを消さない。このWeb限定変更でストアZIPを再生成しない。
 
 - 現行コンパニオンは `https://llmsmonitor.ntus.info` とし、旧Sites originも互換性のため維持する。manifest・background・台帳・テストの厳密origin集合を一致させる。リンク追加だけでは新URLから接続できないため、ブラウザー側の許可と実行時の検証を確認し、初回ID登録も案内する。
+
+- タスク詳細は独立したWeb限定の `tasks-*` 群へ隔離し、主画面には起動導線だけを追加する。残量/RPC/通知音/既存小窓のライフサイクルを流用しない。読込状態は取得時点の観測値とし、サンプルを明示する。不正な親子関係・別事業者リンクを拒否し、個人の一覧をリポジトリ・公開配布物へ入れない。自動取得は別途検証するアダプターで実装する。
 
 ## 毎回の成果物
 

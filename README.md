@@ -44,7 +44,23 @@ For contributors and future AI-assisted changes, read [AGENTS.md](AGENTS.md), th
 
 ---
 
+## Web trial v1.23.1: separate task windows
+
+Each visible ChatGPT, Claude or Gemini card now has **Task details**, opening a separate tall, resizable window (or a new tab if popups are blocked). Search projects/chats, filter reported states, expand the tree, and copy it as text. Language and theme are inherited when opening; controls in the task window affect only that window.
+
+This first trial reads a local JSON snapshot or an explicitly labelled synthetic demo. **Automatic provider/Codex task fetching is not connected.** The Codex app can read both ordinary ChatGPT chats and Codex chats in this workspace; that app-only connector is not callable by the static public website. A manually exported snapshot can be opened with **Open task list (JSON)**. Files stay in memory in the task window and are not uploaded or persisted; clearing/reloading/closing the window removes them. Idle is not a claim that work is complete. See [the task-view contract and file format](TASK_DETAILS.md#en).
+
+The extension and its store ZIP remain **1.23.0**. Quota acquisition, history, alerts and existing floating views are unchanged.
+
 <a id="ja"></a>
+
+## Web試作 v1.23.1：独立したタスク画面
+
+各ChatGPT・Claude・Geminiカードの **［タスク詳細］** から、縦長でサイズ変更可能な別窓を開きます。小窓がブロックされた場合は別タブになります。プロジェクト・チャットの検索、状態の絞り込み、ツリー開閉、テキストコピーに対応します。起動時の言語・テーマを引き継ぎ、別窓内の切替はその窓だけに適用します。
+
+初回試作は端末内JSON一覧の読込と、明示した架空サンプル表示です。**各社・Codexからのタスク自動取得は未接続です。** このCodex内では通常ChatGPTとCodexの両方を取得できましたが、その専用取得機能は静的Webサイトから直接呼べません。手動書出しファイルを［タスク一覧を開く（JSON）］で読み込みます。ファイルは窓のメモリー内のみで扱い、送信・永続保存しません。消去・再読込・終了で破棄します。「待機」を作業完了とみなしません。[詳細仕様とファイル形式](TASK_DETAILS.md#ja)を参照してください。
+
+拡張機能・ストアZIPは **1.23.0のまま** で、残量取得・履歴・通知・既存小窓の処理は変更しません。
 
 ## 独自ドメインへの接続
 

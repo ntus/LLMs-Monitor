@@ -95,7 +95,20 @@ Version 1.5.3 and earlier focused on plan retrieval, persistent change history, 
 
 ---
 
+
+## Web 1.23.1 — independent task-detail trial (2026-10-09)
+
+- Added a per-provider Task details launcher and a separate tall window with bilingual tree navigation, search, state filtering and text copy.
+- Read local JSON snapshots in memory; clearly label demo/historical states. Automatic provider task acquisition remains unconnected.
+- Preserved all extension sources, its 1.23.0 ZIP, quota history/alerts and existing floating views. Added TASK_DETAILS.md and durable isolation requirements.
 <a id="ja"></a>
+
+## Web 1.23.1 — タスク詳細の独立試作（2026-10-09）
+
+- 各社の［タスク詳細］から縦長の別窓を開き、日英ツリー、検索、状態絞り込み、コピーに対応。
+- 端末内JSONをメモリーだけで読み込み、架空サンプル・過去の状態を明示。各社タスクの自動取得は未接続。
+- 拡張機能ソース・1.23.0 ZIP・残量履歴/通知・既存小窓を維持。詳細契約と分離規則を追加。
+
 
 ## 1.23.0
 

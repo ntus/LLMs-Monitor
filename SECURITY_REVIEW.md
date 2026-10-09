@@ -26,6 +26,10 @@ The v1.23.0 origin regression executes the actual external listener: both approv
 
 ---
 
+## Web-only task trial v1.23.1
+
+The new route denies network connections in CSP, loads only its independent local scripts/styles, and handles explicitly selected JSON in memory. Inputs are capped at 512 KiB/500 nodes/12 levels; duplicate IDs, cycles, missing or cross-project/cross-kind parents and mismatched services are rejected. Rendering uses textContent, not HTML injection. Chat links require the selected provider’s exact HTTPS host and a conversation route, with no credentials, port, query or fragment. New windows sever opener; link fallback uses noopener/noreferrer. Demos carry an explicit synthetic label. Private snapshots stay outside the repository/deployment, are not logged, and are cleared by reload/close/Clear. Existing extension permissions, GET fields and ZIP are untouched. Live provider task acquisition is not implemented.
+
 <a id="ja"></a>
 
 # 日本語 — セキュリティ検証記録
@@ -51,3 +55,7 @@ Diagnostic events are restricted to numeric fields and fixed categories in exten
 診断イベントは拡張機能内IndexedDBの数値と固定区分に限定し、書出しは拡張機能画面の手動操作のみとする。容量不足・IndexedDB失敗時も残量更新を止めない。ストア提出前の実アカウント確認は引き続き必要。
 
 1.23.0の接続元テストは実際の外部メッセージ処理を実行し、許可済み2originのGETと設定更新、紛らわしいhost・HTTP・別port・localhostの拒否、履歴の保持を確認する。実Chrome／Edgeでの独自ドメイン接続は手動確認が必要。
+
+## Web限定タスク試作 v1.23.1
+
+新画面はCSPでネットワーク通信を禁止し、独立したローカルスクリプト/CSSだけを読む。選択JSONはメモリー内のみで扱い、512 KiB・500件・12階層以内に限定する。重複ID、循環、存在しない親、別プロジェクト/別種別の親、別サービス入力を拒否する。textContentで描画し、外部文面をHTMLにしない。リンクは対象事業者の厳密なHTTPSホストとチャットパスのみで、認証情報・port・query・fragmentを拒否する。別窓はopenerを切り、別タブへの代替リンクはnoopener/noreferrerを使う。サンプルは架空と明示。個人の一覧はリポジトリ/配布物の外に置き、ログへ記録せず、再読込・終了・消去で破棄する。既存権限・GET・ZIPは変更しない。各社タスクの実取得は未実装。
