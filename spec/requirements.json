@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs トークン残量モニタ",
     "name_en": "LLMs Token Usage Monitor",
-    "version": "1.23.0",
-    "package_filename": "LLMs-Monitor-v1.23.0.zip",
+    "version": "1.24.0",
+    "package_filename": "LLMs-Monitor-v1.24.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -19,7 +19,7 @@
       "gemini"
     ],
     "production_companion_origin": "https://llmsmonitor.ntus.info",
-    "web_version": "1.23.1",
+    "web_version": "1.24.0",
     "companion_origins": [
       "https://llmsmonitor.ntus.info",
       "https://llmsmonitor.ntusnog.chatgpt.site"
@@ -4124,7 +4124,7 @@
         "各社ボタンが対応するserviceの独立画面を開く。",
         "起動時EN/JP・テーマを引き継ぎ、420×780を初期要求する。",
         "ブロック時は安全な別タブへ戻り、自動起動・強制リサイズ・既存小窓のライフサイクルへの干渉をしない。",
-        "残量取得/RPC/保存/履歴/通知/拡張ソース/ZIPを変更しない。"
+        "タスク機能から残量取得/RPC/保存/履歴/通知へ干渉しない。1.23.1試作時の拡張ソース/ZIP据置は履歴であり、1.24.0の別途許可されたSTATUS-FLOAT-001更新を妨げない。"
       ],
       "implementation_evidence": [
         {
@@ -4256,6 +4256,74 @@
       ],
       "known_limitations": [
         "This trial has no automatic provider task adapter. Snapshots are observations, not live task monitoring. Browser/OS popup bounds apply."
+      ]
+    },
+    {
+      "id": "STATUS-FLOAT-001",
+      "category": "ui",
+      "introduced_in": "1.24.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "障害発生中のフローティング障害詳細にはissueのサービスだけを表示し、正常なサービスは省く。主画面の全社確認、復帰表示、取得不能の区別、監視頻度と通知規則を維持する。",
+      "source_requirements": [
+        "User 2026-10-09: floating alert screenshot should display only the affected Claude service."
+      ],
+      "acceptance_criteria": [
+        "Claudeだけissueなら障害詳細はClaudeの1行だけ。利用残量の3社カードは維持。",
+        "複数issueは全て表示し、正常・取得不能・復帰済みを赤い障害詳細に混ぜない。",
+        "issueがない場合は従来の全社確認と緑の復帰表示を保つ。",
+        "主画面は常に全社のステータスを確認可能。",
+        "監視、保存、通知音、incidentKey、正規化処理は変更しない。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/provider-status.js",
+          "symbol": "view options.issuesOnly"
+        },
+        {
+          "path": "extension/shared.js",
+          "symbol": "widget"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "tests/provider-status.test.cjs",
+          "procedure": "Render actual shared widget and main status view; compare incident-only rows, unchanged usage cards, multiple incidents, healthy, recovery and unavailable states."
+        }
+      ]
+    },
+    {
+      "id": "TASK-NARROW-001",
+      "category": "task_details_trial",
+      "introduced_in": "1.24.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "タスク独立画面を狭幅でも読めるように、360px以下で縦配置、十分な文字サイズ、縮小したツリー字下げと折り返しを使う。ブラウザの窓最小寸法は強制しない。",
+      "source_requirements": [
+        "User 2026-10-09: improve task-window readability at the minimum width."
+      ],
+      "acceptance_criteria": [
+        "360px以下で読込/サンプルと検索/状態を各縦配置、操作ボタンは2列。",
+        "タスク名14px、操作・補足13px以上。12階層でも狭幅の字下げは各6px。",
+        "日英・両配色を維持し、横スクロールと文字の重なりを避ける。",
+        "データ、保存、RPC、取得、既存モニターCSSを変更しない。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "web/tasks.css",
+          "symbol": "@media(max-width:360px)"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "manual",
+          "coverage": "isolated-browser viewport review",
+          "procedure": "Inspect 200/240/266/280/320/360/420px widths with long titles, 12-level ancestry, EN/JP, standard/dark and all controls."
+        }
+      ],
+      "known_limitations": [
+        "Native browser/OS minimum width remains outside application control; task acquisition is still import-only."
       ]
     }
   ]

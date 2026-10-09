@@ -4,7 +4,13 @@
 
 <a id="en"></a>
 
-Web UI **1.23.1** · Extension/package **1.23.0**, unchanged.
+Current Web UI and package **1.24.0**. The 1.23.1 trial below describes the original isolation boundary; 1.24.0 changes task CSS and floating incident rendering only.
+
+## v1.24.0 narrow-window update
+
+At ≤360px, import/demo and search/status controls stack vertically; actions use two columns, count moves below the service heading, and tree indentation is 6px per level. Task names remain 14px and supporting controls/text at least 13px. Header controls can wrap. No task script, snapshot contract, network, storage or popup lifecycle change is introduced. Native browser minimum dimensions still apply. The separate monitor alert rendering change is documented in SPECIFICATION.md; it does not enter the task page.
+
+Automated regression: 181 tests pass for v1.24.0. Actual narrow-window visual review is pending user permission; the viewport checklist below is not a claim of completed browser testing.
 
 ## Scope and architecture
 
@@ -95,7 +101,7 @@ Browser checks should cover 420×780, 280×700 and 800×600, both languages/them
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
-Web **1.23.1**。拡張機能・配布ZIPは **1.23.0のまま**。
+現行Web・配布版は **1.24.0**。以下の1.23.1試作時の分離構成を維持し、1.24.0ではタスクCSSとフローティング障害詳細だけを調整する。
 
 ## 分離と起動
 
@@ -134,3 +140,9 @@ CSPはdefault-src none、script/style self、connect-src none、object/base/form
 入力・親子・件数/容量・悪意あるリンク/文字・認証情報破棄・架空表示と、実際の起動スクリプトを再描画/言語/テーマ/ブロック時でテストする。既存全テスト、Webビルド、差分検査、ZIPハッシュ・拡張全ソースの一致を確認する。画面は420×780、280×700、800×600、日英/両テーマ、読込/検索/開閉/コピー/不正入力時保持/消去を確認し、通常/全画面モニターの表示も点検する。ネイティブ小窓の操作性、各社の実取得は別の未確認/未実装事項であり、単体テスト成功を実取得成功と報告しない。
 
 検証記録（2026-10-09）：全178件の回帰テスト、Webビルド、差分検査に合格。取得済み57件の非公開一覧は実際のモデルで解析できた。拡張機能の全68ファイルは変更前と同一で、ZIPのSHA-256は `81c664f12a0b0899127a688c75516700b6d0b75da2229a0c3d53b4f4964570bb` のまま。独立ブラウザーはサンドボックス内で起動に失敗し、画面操作の許可は回答待ちのため、実画面・ネイティブリサイズ・全画面レイアウトは未確認。
+
+## v1.24.0 狭幅調整
+
+360px以下では読込/サンプルと検索/状態を縦配置、操作を2列、件数をサービス名の下にする。ツリー字下げは各6px、タスク名14px、操作と補足13px以上。ヘッダーも必要時に折り返す。タスクスクリプト・形式・通信・保存・終了連動は変更しない。OS/ブラウザの最小寸法は変えられない。別途調整したモニター障害描画はタスク画面へ取り込まない。
+
+1.24.0では全181件の回帰テストが通過。狭幅の実画面は画面操作の許可待ちで未確認であり、以下の確認手順を確認済みと解釈しない。

@@ -22,6 +22,14 @@
 
 <a id="en"></a>
 
+## 1.24.0 beta — narrow task windows and focused floating alerts
+
+- Keep task titles and controls readable at narrow widths with stacked controls, two-column actions and smaller tree indentation.
+- While a floating provider alert is active, list only affected services. Keep normal usage cards, complete main status checks and green recovery behavior.
+- Preserve quota acquisition, history, polling, audio and permissions. Update the existing extension in place; this is a minor package release.
+
+
+
 ## 1.20.0 beta — 2026-10-04
 
 - One shared localized floating header, title fit and independent width/height controls; updates preserve user-selected size and expanded history.
@@ -95,7 +103,28 @@ Version 1.5.3 and earlier focused on plan retrieval, persistent change history, 
 
 ---
 
+
+## Web 1.23.1 — independent task-detail trial (2026-10-09)
+
+- Added a per-provider Task details launcher and a separate tall window with bilingual tree navigation, search, state filtering and text copy.
+- Read local JSON snapshots in memory; clearly label demo/historical states. Automatic provider task acquisition remains unconnected.
+- Preserved all extension sources, its 1.23.0 ZIP, quota history/alerts and existing floating views. Added TASK_DETAILS.md and durable isolation requirements.
 <a id="ja"></a>
+
+## 1.24.0 β — 狭幅タスクとフローティング障害詳細
+
+- 狭いタスク画面を縦配置・2列操作・小さな字下げで読みやすく調整。
+- フローティング障害詳細は障害サービスだけ。通常の残量カード、主画面全社確認、緑の復帰表示は維持。
+- 取得・履歴・監視・音・権限は変更せず、既存拡張機能は同じ読込元で更新。パッケージ変更のため中間版番号を増加。
+
+
+
+## Web 1.23.1 — タスク詳細の独立試作（2026-10-09）
+
+- 各社の［タスク詳細］から縦長の別窓を開き、日英ツリー、検索、状態絞り込み、コピーに対応。
+- 端末内JSONをメモリーだけで読み込み、架空サンプル・過去の状態を明示。各社タスクの自動取得は未接続。
+- 拡張機能ソース・1.23.0 ZIP・残量履歴/通知・既存小窓を維持。詳細契約と分離規則を追加。
+
 
 ## 1.23.0
 

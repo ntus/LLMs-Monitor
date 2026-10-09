@@ -31,7 +31,15 @@ Contact: NT MicroSystems,Inc.
 The extension stores bounded numeric acquisition diagnostics locally in IndexedDB: provider, window type, source, raw numeric utilization where available, normalized and displayed percentages, reset timestamp, decision code, elapsed time and fixed error category. It does not store credentials, account identifiers, full API responses or page text in diagnostics. Ordinary samples expire after 72 hours; incidents after 30 days, with a 6,000-event / approximately 3 MB cap. Users may export JSONL or clear this log from an extension page. Diagnostics are not uploaded automatically and are separate from usage change history.
 
 
+## Web-only task details trial
+
+When you select a task JSON file, the separate task window reads bounded titles, project labels, reported states, timestamps, summaries and approved conversation links. The file is processed only in that window’s memory. It is not uploaded, logged or saved to browser storage; reload, close or Clear discards it. The trial does not automatically read provider chats or Codex files. The demo is synthetic. This Web addition does not change the extension’s stored usage data or permissions.
+
 <a id="ja"></a>
+
+## Web限定タスク詳細の試作
+
+利用者がJSONファイルを選ぶと、独立したタスク窓で件数・文字長を制限した名称、プロジェクト名、報告された状態、日時、要約、許可されたチャットリンクを読み込みます。ファイルはその窓のメモリー内のみで処理し、送信・ログ記録・ブラウザー保存を行いません。再読込・窓終了・消去で破棄します。各社チャットやCodexファイルの自動読取は行いません。サンプルは架空です。このWeb限定追加は、拡張機能の保存済み使用量や権限を変更しません。
 
 # 日本語 — LLMs モニター プライバシーポリシー
 

@@ -52,6 +52,8 @@ This file is the starting point for every future Codex or LLM edit. Follow the u
 
 - Keep task details in independent Web-only `tasks-*` modules. The main monitor receives only the launcher; never reuse its quota/RPC/audio/floating lifecycle in the task page. Treat imported states as historical observations, label demos, reject invalid ancestry/provider links, and never put private task snapshots in the repository or deployed assets. Automatic task acquisition requires a separately reviewed adapter.
 
+- For floating provider alerts, show only `issue` rows while incidents exist; never hide normal usage cards. The main status view remains complete, and no-incident/recovery/unavailable behavior must stay accessible. Keep task narrow-width layout changes in `web/tasks.css`, with readable text and bounded tree indentation.
+
 ## Every deliverable
 
 Keep this `AGENTS.md` in the repository and update it when a new acceptance rule or failure-prevention step arises. In the final report, link this file, the detailed specification, and the distribution package; distinguish verified behavior from live-account checks that remain unverified.
@@ -109,6 +111,8 @@ Keep this `AGENTS.md` in the repository and update it when a new acceptance rule
 - 現行コンパニオンは `https://llmsmonitor.ntus.info` とし、旧Sites originも互換性のため維持する。manifest・background・台帳・テストの厳密origin集合を一致させる。リンク追加だけでは新URLから接続できないため、ブラウザー側の許可と実行時の検証を確認し、初回ID登録も案内する。
 
 - タスク詳細は独立したWeb限定の `tasks-*` 群へ隔離し、主画面には起動導線だけを追加する。残量/RPC/通知音/既存小窓のライフサイクルを流用しない。読込状態は取得時点の観測値とし、サンプルを明示する。不正な親子関係・別事業者リンクを拒否し、個人の一覧をリポジトリ・公開配布物へ入れない。自動取得は別途検証するアダプターで実装する。
+
+- フローティング障害詳細は障害中だけissueのサービスに絞り、正常な利用残量カードは消さない。主画面の全社確認と障害なし／復帰／取得不能の表示を維持する。タスク狭幅調整は `web/tasks.css` 内で、可読文字サイズと小さな字下げを使う。
 
 ## 毎回の成果物
 

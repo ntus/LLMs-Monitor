@@ -4,7 +4,7 @@
 
 <a id="en"></a>
 
-Document revision: 1.0 · Product version: **1.23.0** · Web UI: **1.23.1** · Web companion: `https://llmsmonitor.ntus.info/` (previous Site origin retained for compatibility)
+Document revision: 1.0 · Product version: **1.24.0** · Web UI: **1.24.0** · Web companion: `https://llmsmonitor.ntus.info/` (previous Site origin retained for compatibility)
 
 This English section defines the implementation contract for the beta. The [Japanese section](#ja) contains the full historical and field-level acceptance criteria. Implementers must read both sections and every ID in [`spec/requirements.json`](spec/requirements.json); neither translation overrides the other.
 
@@ -46,7 +46,15 @@ Human-readable documentation must start in English and place Japanese in the lat
 
 ---
 
-## Current release: v1.23.0 — custom-domain connection
+## Current release: v1.24.0 — narrow task windows and focused floating alerts
+
+At widths up to 360px, task details stack import/demo and search/status controls, put actions in two columns, display the count below the service name, and reduce each nested indent to 6px. Task titles remain 14px; controls and supporting text are at least 13px. Header controls wrap as needed. Neither window minimum dimensions nor task data/network/storage behavior changes.
+
+`GlanceProviderStatus.view` gains an optional `issuesOnly` rendering flag. The shared floating widget sets it: when one or more issues exist, only those issue rows appear in the alert details. The normal main status view keeps all providers. With no active issues, full healthy/unavailable/recovery details remain accessible, including the green recovery message. Normal usage cards remain present. Parsing, polling, incident deduplication, audio, history and permissions are untouched. This package change increments the minor version to 1.24.0; an existing installed extension must be updated in place to receive the popup/in-page change.
+
+Validation (2026-10-09): all 181 regression tests passed. ZIP integrity, manifest/runtime/Web alignment, and packaged source equality passed. Acquisition, state/history, notification/audio and floating lifecycle files are byte-identical to the baseline, and manifest permissions are unchanged. Native window/readability and fullscreen visual review are pending screen-operation permission; no live browser acceptance is claimed.
+
+## Previous release: v1.23.0 — custom-domain connection
 
 The old package allowed external messaging only from `https://llmsmonitor.ntusnog.chatgpt.site`; it could not connect from the new `https://llmsmonitor.ntus.info`. Add the custom origin to both `manifest.externally_connectable.matches` and the background exact-origin allowlist, retaining the previous origin to avoid breaking existing installations. Align current Web links, public intelligence host access/endpoint, privacy and store documents. Reject other origins, HTTP, lookalike hosts, alternate ports and localhost. No provider-acquisition, storage key, quota, history or floating layout changes are introduced.
 
@@ -99,7 +107,7 @@ Automatic provider/Codex task fetching remains unconnected in this trial. The Co
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.23.0
+対象製品版: 1.24.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -1337,3 +1345,11 @@ Web画面の「ストアから拡張機能を追加」は、利用者指定の `
 各社・Codexからの自動取得はこの試作では未接続。Codex専用ツールから取得した57件（通常ChatGPT24件、Codex33件、ピン留め＋直近最大50件）は全アカウント履歴ではなく、そのツールは公開Webから直接呼べない。取得済み一覧は別の非公開ローカルファイルで検証する。Claude/Geminiのタスク実取得は未検証。契約・形式・安全境界・将来の取得アダプターは [TASK_DETAILS.md](TASK_DETAILS.md#ja) に定める。Web表示・キャッシュのみ1.23.1とし、拡張機能互換性・変更しないZIPは1.23.0のまま維持する。
 
 タスク試作の検証記録（2026-10-09）：全178件通過。Webビルド・差分検査・非公開57件一覧の解析に成功。既存拡張機能全68ファイルと配布ZIPは変更前と同一。画面操作は許可回答待ち、独立ヘッドレス起動はサンドボックスで失敗したため、実画面・OSリサイズ・全画面レイアウトは未確認。
+
+## 55. v1.24.0：狭幅タスク画面とフローティング障害詳細
+
+タスク画面は360px以下で読込/サンプル、検索/状態を縦に並べ、開閉/コピー/消去は2列にする。件数をサービス名の下に置き、ツリーの字下げを各6pxに抑える。タスク名14px、操作と補足13px以上とし、ヘッダーは必要時に折り返す。窓の最小寸法を強制せず、タスクのデータ・通信・保存処理と主画面CSSは変更しない。
+
+共通ステータス描画に任意のissuesOnly設定を追加し、widgetだけ有効にする。障害がある間、障害詳細にはissueのサービスだけを並べる。Claudeだけ障害ならClaudeだけ表示するが、3社の利用残量カードは維持する。主画面の全社確認は変更せず、障害がなくなれば正常/取得不能/緑の復帰表示を従来どおり確認できる。解析・1分監視・重複抑制・音・保存履歴・権限は変更しない。拡張機能ソース変更を伴うため、ご指定の版規則で1.24.0とし、既存インストールはアンインストールせず更新する。
+
+検証記録（2026-10-09）：全181件通過。配布ZIPの整合性・版一致・ソース収録一致を確認。取得・状態・履歴・通知音・小窓ライフサイクルの各ファイルは変更前と同一で、manifest権限も同じ。画面操作の許可待ちのため、実画面・ネイティブ窓・全画面レイアウトは未確認。

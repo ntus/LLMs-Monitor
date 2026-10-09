@@ -1,6 +1,7 @@
 const {test}=require('node:test');
 const assert=require('node:assert/strict');
 const S=require('../extension/provider-status.js');
+const fs=require('node:fs'),vm=require('node:vm');
 
 test('official Statuspage summary reports an affected service',()=>{
  const report=S.parseStatuspage('claude',{status:{indicator:'major',description:'Partial outage'},components:[{id:'web',name:'Claude Web',status:'degraded_performance'}],incidents:[{name:'Claude Web latency',status:'investigating',components:[{id:'web'}]}]},123);
@@ -35,4 +36,41 @@ test('a temporary status fetch failure does not erase recovery evidence',()=>{
  const issue={gemini:{state:'issue',summary:'Disruption',checkedAt:100}};
  const unknown=S.transition(issue,{gemini:{state:'unknown',summary:'Unavailable',checkedAt:200}},200);
  assert.equal(S.transition(unknown,{gemini:{state:'ok',summary:'Operational',checkedAt:300}},300).gemini.state,'recovered');
+});
+
+test('floating alert details show only incident providers, while the main status view remains complete',()=>{
+ const status={chatgpt:{state:'ok'},claude:{state:'issue',summary:'Elevated errors on platform.claude.com'},gemini:{state:'ok'}},before=structuredClone(status);
+ for(const language of ['ja','en']){
+  const compact=S.view(status,language,true,{issuesOnly:true}),main=S.view(status,language,true);
+  assert.equal((compact.match(/class="provider-status-row/g)||[]).length,1);
+  assert(compact.includes('<strong>Claude</strong>'));assert(!compact.includes('<strong>ChatGPT</strong>'));assert(!compact.includes('<strong>Gemini</strong>'));
+  assert.equal((main.match(/class="provider-status-row/g)||[]).length,3);
+  assert(compact.includes('https://status.claude.com/'));assert(compact.includes('Elevated errors on platform.claude.com'));
+ }
+ const multiple={chatgpt:{state:'issue',summary:'Latency'},claude:{state:'issue',summary:'Errors'},gemini:{state:'recovered'}};
+ assert.equal((S.view(multiple,'en',true,{issuesOnly:true}).match(/class="provider-status-row/g)||[]).length,2);
+ assert(!S.view(multiple,'en',true,{issuesOnly:true}).includes('<strong>Gemini</strong>'));
+ assert.deepEqual(status,before);
+});
+
+test('floating healthy, recovered and unavailable details stay accessible after incidents clear',()=>{
+ for(const state of ['ok','recovered','unknown']){
+  const compact=S.view({claude:{state}},'en',true,{issuesOnly:true});
+  assert.equal((compact.match(/class="provider-status-row/g)||[]).length,3);
+  assert(compact.includes(state==='ok'?'Operational':state==='recovered'?'has-recovery':'Status unavailable'));
+  assert(!compact.includes('has-issue'));
+ }
+ const mixed={claude:{state:'issue',summary:'Errors'},gemini:{state:'unknown'},chatgpt:{state:'ok'}};
+ assert.equal((S.view(mixed,'en',true,{issuesOnly:true}).match(/class="provider-status-row/g)||[]).length,1);
+});
+
+test('the actual shared widget selects incident-only details without removing normal usage cards',()=>{
+ const context=vm.createContext({console,URL,Date});
+ for(const name of ['locale.js','preferences.js','provider-status.js','changes.js','shared.js'])vm.runInContext(fs.readFileSync('extension/'+name,'utf8'),context);
+ const status={chatgpt:{state:'ok'},claude:{state:'issue',summary:'Errors'},gemini:{state:'ok'}};
+ const html=context.Glance.widget({}, {language:'en'}, status,true);
+ assert.equal((html.match(/class="provider-status-row/g)||[]).length,1);
+ assert.equal((html.match(/class="widget-row"/g)||[]).length,3);
+ assert(html.includes('<strong>Claude</strong>'));assert(!html.includes('<strong>ChatGPT</strong>'));
+ assert.equal((context.GlanceProviderStatus.view(status,'en',true).match(/class="provider-status-row/g)||[]).length,3);
 });

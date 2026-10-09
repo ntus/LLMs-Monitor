@@ -12,9 +12,9 @@
 
 This browser companion checks usage from your signed-in provider sessions about once a minute. Large gauges and bars show current and weekly limits, reset times, plans, and available credits. Your change history stays in your browser, with up to 10,000 entries per limit. The interface supports English and Japanese, light and dark themes, fullscreen viewing, and compact floating panels.
 
-Version **1.23.0 beta** fixes extension pairing on the custom monitor domain and retains the previous Site URL. It includes bounded local diagnostic logs, stable language selection, reliable usage/API page opening, and a compact floating view with all three services visible. API billing balances remain optional and separate from subscription quotas. OpenAI billing-page extraction was verified; Claude/Gemini live billing accounts still need validation. Earlier changes are in the [changelog](CHANGELOG.md).
+Version **1.24.0 beta** improves narrow task windows and shows only affected providers in floating incident details. Custom-domain pairing and the previous Site URL remain supported. It includes bounded local diagnostic logs, stable language selection, reliable usage/API page opening, and a compact floating view with all three services visible. API billing balances remain optional and separate from subscription quotas. OpenAI billing-page extraction was verified; Claude/Gemini live billing accounts still need validation. Earlier changes are in the [changelog](CHANGELOG.md).
 
-[Product site](https://llmsmonitor.ntus.info/product.html) · [Open the monitor](https://llmsmonitor.ntus.info/) · [Download the beta extension package](dist/LLMs-Monitor-v1.23.0.zip) · [Detailed specification](SPECIFICATION.md) · [Privacy](PRIVACY.md) · [Follow @ntus on X](https://x.com/ntus)
+[Product site](https://llmsmonitor.ntus.info/product.html) · [Open the monitor](https://llmsmonitor.ntus.info/) · [Download the beta extension package](dist/LLMs-Monitor-v1.24.0.zip) · [Detailed specification](SPECIFICATION.md) · [Privacy](PRIVACY.md) · [Follow @ntus on X](https://x.com/ntus)
 
 ### Custom domain connection
 
@@ -34,7 +34,7 @@ Version **1.23.0** adds extension access for [llmsmonitor.ntus.info](https://llm
 ## Quick start
 
 1. Sign in to the services you want to monitor on their official [ChatGPT](https://chatgpt.com/), [Claude](https://claude.ai/), and [Gemini](https://gemini.google.com/) sites in the same Chrome or Edge profile. Enter credentials only on those sites.
-2. Before store approval, run `python3 build.py --package`, unpack `dist/LLMs-Monitor-v1.23.0.zip`, and load the unpacked extension from the browser's extension management page for beta testing. Installing without developer mode requires Chrome Web Store or Edge Add-ons review and publication.
+2. Before store approval, run `python3 build.py --package`, unpack `dist/LLMs-Monitor-v1.24.0.zip`, and load the unpacked extension from the browser's extension management page for beta testing. Installing without developer mode requires Chrome Web Store or Edge Add-ons review and publication.
 3. Open the extension or the [web monitor](https://llmsmonitor.ntus.info/). The web monitor asks for your extension ID once. The providers' usage tabs do not need to remain open.
 4. Use **Show and arrange services** to choose and reorder cards. Hidden services continue collecting history. Adjust language, theme, opacity, volume, and fullscreen mode from the controls.
 
@@ -44,23 +44,23 @@ For contributors and future AI-assisted changes, read [AGENTS.md](AGENTS.md), th
 
 ---
 
-## Web trial v1.23.1: separate task windows
+## Task trial v1.24.0: separate task windows
 
 Each visible ChatGPT, Claude or Gemini card now has **Task details**, opening a separate tall, resizable window (or a new tab if popups are blocked). Search projects/chats, filter reported states, expand the tree, and copy it as text. Language and theme are inherited when opening; controls in the task window affect only that window.
 
 This first trial reads a local JSON snapshot or an explicitly labelled synthetic demo. **Automatic provider/Codex task fetching is not connected.** The Codex app can read both ordinary ChatGPT chats and Codex chats in this workspace; that app-only connector is not callable by the static public website. A manually exported snapshot can be opened with **Open task list (JSON)**. Files stay in memory in the task window and are not uploaded or persisted; clearing/reloading/closing the window removes them. Idle is not a claim that work is complete. See [the task-view contract and file format](TASK_DETAILS.md#en).
 
-The extension and its store ZIP remain **1.23.0**. Quota acquisition, history, alerts and existing floating views are unchanged.
+The current extension package is **1.24.0**. Task modules remain independent; quota acquisition and saved history are unchanged. Floating incident details now omit healthy providers while an incident is active.
 
 <a id="ja"></a>
 
-## Web試作 v1.23.1：独立したタスク画面
+## タスク試作 v1.24.0：独立したタスク画面
 
 各ChatGPT・Claude・Geminiカードの **［タスク詳細］** から、縦長でサイズ変更可能な別窓を開きます。小窓がブロックされた場合は別タブになります。プロジェクト・チャットの検索、状態の絞り込み、ツリー開閉、テキストコピーに対応します。起動時の言語・テーマを引き継ぎ、別窓内の切替はその窓だけに適用します。
 
 初回試作は端末内JSON一覧の読込と、明示した架空サンプル表示です。**各社・Codexからのタスク自動取得は未接続です。** このCodex内では通常ChatGPTとCodexの両方を取得できましたが、その専用取得機能は静的Webサイトから直接呼べません。手動書出しファイルを［タスク一覧を開く（JSON）］で読み込みます。ファイルは窓のメモリー内のみで扱い、送信・永続保存しません。消去・再読込・終了で破棄します。「待機」を作業完了とみなしません。[詳細仕様とファイル形式](TASK_DETAILS.md#ja)を参照してください。
 
-拡張機能・ストアZIPは **1.23.0のまま** で、残量取得・履歴・通知・既存小窓の処理は変更しません。
+現行の拡張機能・ストアZIPは **1.24.0** です。タスク群は引き続き独立し、残量取得・保存履歴は変更しません。障害発生中のフローティング障害詳細は、該当サービスだけを表示します。
 
 ## 独自ドメインへの接続
 
@@ -75,7 +75,7 @@ The extension and its store ZIP remain **1.23.0**. Quota acquisition, history, a
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
-## 1.23.0 β
+## 1.24.0 β
 
 独自ドメインからの接続許可を修正し、旧URLも引き続き利用可能にしました。
 
@@ -132,7 +132,7 @@ v1.6.4では履歴読込結果と通知音説明を左右ボタン付きのス�
 ### 使い方
 
 1. 同じChromeまたはEdgeプロファイルで [ChatGPT](https://chatgpt.com/)、[Claude](https://claude.ai/)、[Gemini](https://gemini.google.com/) に必要な分だけログインします。パスワードは公式サイトで入力します。
-2. ストア公開前は、このリポジトリで `python3 build.py --package` を実行し、`dist/LLMs-Monitor-v1.23.0.zip` を展開して、ブラウザーの拡張機能管理画面から開発用として読み込みます。一般ユーザーがデベロッパーモードなしで導入するには、Chrome Web Store / Edge Add-ons の審査・公開が必要です。
+2. ストア公開前は、このリポジトリで `python3 build.py --package` を実行し、`dist/LLMs-Monitor-v1.24.0.zip` を展開して、ブラウザーの拡張機能管理画面から開発用として読み込みます。一般ユーザーがデベロッパーモードなしで導入するには、Chrome Web Store / Edge Add-ons の審査・公開が必要です。
 3. 拡張機能の画面、または [公開モニター](https://llmsmonitor.ntus.info/) を開きます。公開モニターでは拡張機能IDを一度登録してください。各サービスの使用量タブを開いたままにする必要はありません。
 4. 「表示サービス」からチェックと上下ボタンで表示数・順序を変更します。非表示中も取得と履歴保存は続きます。音、テーマ、言語、透明度、フルスクリーンも画面上で変更できます。
 5. 残量とリセット時刻は公式サービスが返す範囲で表示されます。リセット権は利用可能なら公式利用量ページへ移動できますが、アプリから自動行使しません。出典のあるTips／NEWSはリンクで原文を確認できます。
