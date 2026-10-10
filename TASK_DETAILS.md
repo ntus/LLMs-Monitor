@@ -29,7 +29,7 @@ Modules: `extension/task-status.js` observes scoped controls; `task-state-backgr
 - `web/task-launcher.js`: adds one link per quota card, preserves existing actions, severs opener, supports tab fallback.
 - `web/tasks-model.js`: normalizes and validates independent schemaVersion 1; project/kind grouping, ancestry-preserving filters, safe URLs and synthetic demo.
 - `web/tasks-page.js` / `tasks.css`: textContent renderer, narrow responsive layout, filters, disclosure, copy, local import and Auto controls.
-- `web/tasks-bridge.js`: dedicated TASKS_READ only, exact origins, existing pairing ID, 26-second response deadline. No usage GET/REFRESH/SETTINGS, audio or persistence.
+- `web/tasks-bridge.js`: independent TASKS_READ (26-second deadline) and TASKS_STATE (5-second deadline), exact origins and existing pairing ID. No usage GET/REFRESH/SETTINGS, audio or persistence.
 - `extension/task-list.js`: pure sidebar metadata extraction; no body/input/textarea reads or provider endpoint guesses.
 - `extension/task-reader.js`: isolated content-script reply to this extension’s TASK_LIST_READ.
 - `extension/task-background.js`: independent acquisition/coalescing/cooldown/cleanup; no quota queue, state, history, sound or persistence.
@@ -64,7 +64,7 @@ ChatGPTは通常/c/と明示的/g/g-p-…/c/。プロジェクト名が不明な
 
 ## モジュールと安全契約
 
-上記7モジュールを独立実装し、Webの専用橋渡しから利用量GET／REFRESH／SETTINGS・音声・保存へ依存しない。拡張機能側は本文・入力欄・認証情報を読まず、非公開APIの推測をしない。
+一覧と状態の各モジュールを独立実装し、Webの専用橋渡しから利用量GET／REFRESH／SETTINGS・音声・保存へ依存しない。拡張機能側は本文・入力値・認証情報を読まず、非公開APIの推測をしない。
 
 JSONは512KiB・500件・12階層以内、schemaVersion=1、対象service一致、ISO取得時刻が必須。IDは厳密な一意120文字以内、タイトル200、projectId/titleの整合、親は同じproject/kindの実在ID、summary500、任意更新時刻と公式リンク。循環・重複・親不在・別project/kind・別serviceは全体拒否し前回を保持。資格情報など未知フィールドは破棄。リンクは厳密HTTPS事業者host・許可チャット経路・認証/port/query/fragmentなし。sourceは形式ラベルであり取得元認証ではなく、読込ファイルは端末内観測値と表示する。
 
