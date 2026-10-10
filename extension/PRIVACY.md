@@ -35,6 +35,11 @@ The extension stores bounded numeric acquisition diagnostics locally in IndexedD
 
 When a user opens Task details, automatic acquisition reads only visible sidebar conversation titles and approved links from fresh inactive official provider home tabs in the same browser profile. It checks once on opening and about once a minute while the task window is visible and automatic mode is enabled. Temporary tabs are closed after acquisition; user chats and drafts are not reloaded. The list is partial, execution state is unknown, and no chat bodies, input fields or credentials are read. Task titles are neither persisted nor logged, and are returned only to the separate task page on an approved companion origin. Imported JSON may contain bounded titles, project labels, reported states, timestamps and summaries; it stays in that window's memory. Import, Demo or Clear pauses automatic acquisition. Reloading or closing discards the list. No task list is uploaded to our server. Existing usage history and required extension permissions remain unchanged.
 
+
+## v1.26.0 task-state boundary
+
+The optional independent task window checks already-open provider conversation tabs approximately every five seconds while visible and Auto ON. It reads only editable-composer presence and scoped button accessibility/test attributes and visibility, not messages, draft values, credentials or account data. States remain in memory and expire after 15 seconds. No tabs are navigated, no new permissions are requested, and no titles or states are stored or uploaded. Tests reject route/account mismatches, stale or conflicting observations and unauthorized RPC senders. Actual installed-extension generation checks remain required after the update; mock fixtures are not account-level proof.
+
 <a id="ja"></a>
 
 # 日本語 — LLMs モニター プライバシーポリシー
@@ -68,3 +73,7 @@ APIクレジット連携は任意で初期状態は無効です。拡張機能�
 ## 独立したタスク詳細（v1.25.0）
 
 ［タスク詳細］を開くと、同じブラウザープロファイルの公式ホームを新しい非アクティブなタブで開き、表示済みサイドバーの会話名と許可されたリンクだけを取得します。起動時と、自動取得が有効で窓が表示されている間の約1分ごとに確認し、一時タブは取得後に閉じます。利用中のチャットや入力途中のタブを再読込しません。一覧は部分的で、実行状態は不明です。チャット本文、入力欄、認証情報は読み取りません。会話名は永続保存・ログ記録せず、許可済みコンパニオンoriginの独立タスク画面だけへ返します。手動JSONの名称・プロジェクト・報告状態・日時・要約も、その窓のメモリー内のみで扱います。読込・サンプル・消去は自動取得を停止し、再読込・終了で一覧を破棄します。運営サーバーへの送信はなく、既存の使用量履歴と必須権限は維持します。
+
+## v1.26.0 タスク状態の保護範囲
+
+独立タスク小窓は表示中かつ自動ONの間、開いている公式会話の入力欄存在と周辺ボタンのアクセシビリティ／テスト属性・可視性だけを約5秒ごとに確認する。本文・入力値・認証情報・アカウント情報は取得しない。状態はメモリー内で15秒後に失効。タブ遷移・追加権限・タイトルや状態の保存／送信を行わない。経路／アカウント不一致、古い観測、複数タブ不一致、不正送信元をテスト。実インストール後の生成中取得は別途確認し、模擬画面を本番成功と扱わない。

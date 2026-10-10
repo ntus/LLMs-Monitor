@@ -22,6 +22,10 @@
 
 <a id="en"></a>
 
+## 1.26.0 — 2026-10-10
+
+Add independent five-second response-state observations from already-open official conversation controls. Distinguish generating, response idle, unopened/unsupported/stale/conflicting states; retain unknown when no evidence exists. No additional permissions, task persistence or changes to quota/history/audio. Update the existing extension in place; refresh official chat tabs manually after saving drafts when needed.
+
 ## 1.25.0 — 2026-10-10
 
 Fix a circular wait between quota refresh and API billing-reader replies; bound reader/audio waits. Mask expired cached quotas without altering history, preserve quota capture times through metadata-only supplements, separate feed/incident disclosures, and add independent automatic sidebar task lists. Existing permissions and storage keys remain unchanged. X feed infrastructure and installed-extension live acceptance remain required external checks.
@@ -327,3 +331,7 @@ Version 1.5.3 and earlier focused on plan retrieval, persistent change history, 
 
 
 [READMEに戻る](README.md#ja)
+
+## 1.26.0 — 日本語
+
+開いている公式会話の操作ボタンから約5秒ごとに応答生成中・応答待機を補足する。閉じた会話・根拠なし・古い観測・複数タブ不一致は未確認。権限追加・タスク永続保存・残量／履歴／音声変更なし。拡張を上書き更新し、必要なら入力を保存後に公式会話タブを手動で再読込する。

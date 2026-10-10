@@ -47,6 +47,11 @@ test('task RPC rejects unrelated origins, routes, child frames and mismatched se
  for(const [url,frameId,service]of [['https://evil.test/tasks.html?service=claude',0,'claude'],['https://llmsmonitor.ntus.info/',0,'claude'],['https://llmsmonitor.ntus.info/tasks.html?service=claude',1,'claude'],['https://llmsmonitor.ntus.info/tasks.html?service=claude',0,'chatgpt']])assert.equal((await b.sendFrom(url,{type:'TASKS_READ',service},frameId)).status,'unavailable');
  assert.equal(reads,0);assert.equal((await b.sendFrom('https://llmsmonitor.ntus.info/tasks.html?service=claude',{type:'TASKS_READ',service:'claude'},0)).status,'ready');assert.equal(reads,1);
 });
+test('state RPC rejects unrelated origins, routes, child frames and mismatched service before reading metadata',async()=>{
+ const b=harness();let reads=0;b.context.LLMTaskStateBackground.read=async()=>{reads++;return {status:'ready'}};
+ for(const [url,frameId,service]of [['https://evil.test/tasks.html?service=claude',0,'claude'],['https://llmsmonitor.ntus.info/',0,'claude'],['https://llmsmonitor.ntus.info/tasks.html?service=claude',1,'claude'],['https://llmsmonitor.ntus.info/tasks.html?service=claude',0,'chatgpt']])assert.equal((await b.sendFrom(url,{type:'TASKS_STATE',service},frameId)).status,'unavailable');
+ assert.equal(reads,0);assert.equal((await b.sendFrom('https://llmsmonitor.ntus.info/tasks.html?service=claude',{type:'TASKS_STATE',service:'claude'},0)).status,'ready');assert.equal(reads,1);
+});
 function audioHarness(resume){let listen,started=0;const timers=[];const param={setValueAtTime(){},exponentialRampToValueAtTime(){}};
  class AudioContext{state='suspended';currentTime=0;destination={};resume=resume;createOscillator(){return {frequency:param,connect(){return this},start(){started++},stop(){}}}createGain(){return {gain:param,connect(){return this}}}}
  const c=vm.createContext({chrome:{runtime:{onMessage:{addListener:f=>listen=f}}},AudioContext,Date,Number,setTimeout:(fn,ms)=>{timers.push({fn,ms});return timers.length},clearTimeout(){}});vm.runInContext(fs.readFileSync(path.join(root,'extension/offscreen.js'),'utf8'),c);
@@ -71,4 +76,9 @@ test('opening provider incident details never expands the unrelated intelligence
 test('loading/failure never manufactures a fresh Claude 100%, but a verified inactive response can show 100%',()=>{
  const old={status:'ready',capturedAt:1000,windows:[{label:'現在のセッション',remaining:82,resetAt:1500}]},loading=S.loading(old,2000),failed=S.accept(loading,{status:'unavailable'},3000,'claude');assert.equal(loading.windows[0].remaining,null);assert.equal(failed.windows[0].remaining,null);assert.equal(S.view(failed,3000).status,'error');assert.equal(failed.capturedAt,1000);
  const inactive=S.accept(failed,{status:'ready',windows:[{label:'現在のセッション',remaining:100,reset:'最初のメッセージから開始します',resetAt:null}]},4000,'claude');assert.equal(inactive.windows[0].remaining,100);assert.equal(inactive.windows[0].expired,undefined);
+});
+
+test('state RPC does not wait for a blocked quota-refresh queue or alter history',async()=>{
+ const b=harness();vm.runInContext('queue=new Promise(()=>{})',b.context);const before=structuredClone(b.stored);b.context.LLMTaskStateBackground.read=async()=>({status:'ready',observations:[]});
+ const r=await within(b.sendFrom('https://llmsmonitor.ntus.info/tasks.html?service=chatgpt',{type:'TASKS_STATE',service:'chatgpt'},0));assert.equal(r.status,'ready');assert.deepEqual(b.stored.history,before.history);
 });

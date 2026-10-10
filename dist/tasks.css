@@ -31,3 +31,6 @@ dialog{background:var(--surface);color:var(--text);border:1px solid var(--line);
 }
 
 .task-auto{display:flex;gap:8px;margin:12px 0}.task-auto button{flex:1;min-width:0;font-size:13px;white-space:normal}
+
+/* State feedback stays legible in narrow independent task windows. */
+.task-state[data-status=idle]{color:var(--accent)}#state-check{border-top:1px solid var(--line);padding-top:6px;font-variant-numeric:tabular-nums}

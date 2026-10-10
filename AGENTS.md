@@ -56,7 +56,7 @@ This file is the starting point for every future Codex or LLM edit. Follow the u
 
 - Billing-reader snapshot replies must bypass the global refresh queue and retain their dedicated validated queue. Test the real nested READ→SNAPSHOT→acknowledgement path, not only parser outputs. Keep optional reader/audio work bounded.
 - Never show an expired cached quota as current or as “reset soon.” Project stale windows without modifying stored baselines/history, and do not refresh quota capture time with metadata-only DOM supplements.
-- Automatic tasks belong to independent metadata-only modules and TASKS_READ. Restrict sender origin, task route, service and top frame. Use fresh inactive provider homes; never reload user chats/drafts. Do not persist or log titles. Keep explicit pause/clear/import behavior, bounded acquisition, unknown execution state and temporary-tab cleanup.
+- Automatic tasks belong to independent metadata-only modules and TASKS_READ/TASKS_STATE. Restrict sender origin, task route, service and top frame. Use fresh inactive provider homes; never reload user chats/drafts. Do not persist or log titles. Keep explicit pause/clear/import behavior, bounded acquisition, unknown execution state and temporary-tab cleanup.
 - Provider incident and AI feed disclosures have independent state on every surface. Do not claim an unconfigured X feed works or let incidents expand the feed panel.
 
 ## Every deliverable
@@ -65,6 +65,8 @@ Keep this `AGENTS.md` in the repository and update it when a new acceptance rule
 
 ---
 
+
+- Task-state polling must remain isolated: scoped button metadata only, no message/draft text; open tabs only, no navigation. Keep 15-second expiry, duplicate-route conflict checks, Gemini account matching, and independent pause/clear/import invalidation. Never infer completion from idle or Code/Cowork input readiness. Preserve all v1.25 quota/history/audio recovery tests.
 <a id="ja"></a>
 
 # 日本語 — LLMs Monitor 作業指示
@@ -121,7 +123,7 @@ Keep this `AGENTS.md` in the repository and update it when a new acceptance rule
 
 - 請求読取のSNAPSHOT応答は全体の更新待ち行列へ戻さず、検証済み請求専用待ち行列へ渡す。解析だけでなく実READ→SNAPSHOT→受領応答の循環待ちをテストし、任意読取・音声を時間制限する。
 - 過去リセット枠を現在残量／「まもなくリセット」にしない。保存履歴と基準値は変更せず表示投影する。補足DOMだけで残量取得時刻を更新しない。
-- タスク自動取得は独立したメタ情報用モジュールとTASKS_READに限定し、送信元origin・タスク経路・service・トップフレームを検証する。新しい非アクティブ公式ホームを使い、既存チャット／入力をリロードしない。一覧タイトルを永続保存・ログへ入れず、停止・消去・読込、時間制限、状態未確認、一時タブ終了を維持する。
+- タスク自動取得は独立したメタ情報用モジュールとTASKS_READ/TASKS_STATEに限定し、送信元origin・タスク経路・service・トップフレームを検証する。新しい非アクティブ公式ホームを使い、既存チャット／入力をリロードしない。一覧タイトルを永続保存・ログへ入れず、停止・消去・読込、時間制限、状態未確認、一時タブ終了を維持する。
 - 障害情報とAI速報の開閉状態を全画面で分離し、障害で速報欄を開かない。未設定X配信を稼働済みとしない。
 
 ## 毎回の成果物
@@ -131,3 +133,5 @@ Keep this `AGENTS.md` in the repository and update it when a new acceptance rule
 v1.22.0で旧外窓ヘッダー仕様を明示的に上書きしました。独自タイトルと±サイズ操作は表示せず、狭幅でも3社の欄を常時見せ、詳細は各欄内でスクロール可能にします。描画・更新で利用者の窓サイズを戻さず、ネイティブURL表示はブラウザ仕様として残します。
 
 API請求残高は `apiCredits` に隔離し、月額プラン枠・リセット権・変化履歴へ混入させないでください。事業者ごとの任意権限は拡張機能画面の直接クリックで要求します。請求以外のパス、子フレーム、不許可origin、無効事業者、複数残高を拒否し、予算からの残高推測やパスワード／APIキー／決済情報の収集を禁止します。実請求アカウントで未検証の取得処理を明記してください。
+
+- タスク状態取得は独立させ、入力欄周辺の操作属性だけを読む。本文・入力値・既存タブの遷移は禁止。15秒の失効、重複タブ不一致、Geminiアカウント一致、停止／消去／読込時の両経路無効化を維持する。応答待機やCode/Cowork入力可否から完了を推測しない。v1.25の残量・履歴・音声回帰テストを残す。

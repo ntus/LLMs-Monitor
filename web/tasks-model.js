@@ -3,7 +3,7 @@
  'use strict';
  const SERVICES=['chatgpt','claude','gemini'];
  const STATUSES=['running','idle','waiting','completed','failed','unknown'];
- const MAX_BYTES=524288,MAX_TASKS=500,MAX_DEPTH=12;
+ const MAX_BYTES=524288,MAX_TASKS=500,MAX_DEPTH=12,STATE_TTL=15000;
  const clean=(v,n)=>typeof v==='string'?v.replace(/[\u0000-\u001f\u007f]/g,' ').slice(0,n).trim():'';
  const reference=v=>{if(v===undefined||v===null||v==='')return null;const id=clean(v,120);if(!id||id!==v)throw Error('reference');return id};
  const date=v=>typeof v==='string'&&/^\d{4}-\d\d-\d\dT/.test(v)&&Number.isFinite(Date.parse(v))?new Date(v).toISOString():null;
@@ -43,6 +43,24 @@
   return snapshot.tasks.filter(t=>visible.has(t.id));
  }
  function groups(tasks){const out=new Map();for(const task of tasks){const key=JSON.stringify([task.kind,task.projectId]);if(!out.has(key))out.set(key,{key,kind:task.kind,projectTitle:task.projectTitle,tasks:[]});out.get(key).tasks.push(task)}return [...out.values()]}
+ function states(snapshot,result,now=Date.now()){
+  if(snapshot?.source!=='official-sidebar')return snapshot;
+  const ready=result?.status==='ready'&&result.service===snapshot.service&&Number.isFinite(result.checkedAt)&&now-result.checkedAt<=STATE_TTL&&result.checkedAt<=now+1000;
+  const observations=ready&&Array.isArray(result.observations)?result.observations.slice(0,40):[];
+  const tasks=snapshot.tasks.map(task=>{
+   const matches=observations.filter(r=>r?.id===task.id&&r.kind===task.kind&&task.url&&safeURL(r.url,snapshot.service)&&(snapshot.service==='chatgpt'?new URL(r.url).pathname.split('/').filter(Boolean).at(-1)===new URL(task.url).pathname.split('/').filter(Boolean).at(-1):r.url.replace(/\/$/,'')===task.url.replace(/\/$/,'')));
+   const fresh=matches.filter(r=>Number.isFinite(r.observedAt)&&now-r.observedAt<=STATE_TTL&&r.observedAt<=now+1000);
+   const validated=fresh.map(r=>({...r,status:r.status==='running'&&r.evidence==='stop-control'?'running':r.status==='idle'&&task.kind==='chat'&&r.evidence==='composer-ready'?'idle':'unknown'}));
+   const conflict=new Set(validated.map(r=>r.status)).size>1;
+   const r=conflict?null:validated[0];
+   return {...task,status:r?.status||'unknown',stateObservedAt:r?.observedAt||null,stateReason:conflict?'conflict':r?.status==='unknown'?'no-signal':r?'':ready?'not-open':'unavailable',stateEvidence:r?.status!=='unknown'&&r?r.evidence:''};
+  });return {...snapshot,tasks,stateCheckedAt:ready?result.checkedAt:null};
+ }
+ function expireStates(snapshot,now=Date.now()){
+  if(snapshot?.source!=='official-sidebar')return snapshot;
+  if(!snapshot.tasks.some(t=>t.stateObservedAt&&now-t.stateObservedAt>STATE_TTL))return snapshot;
+  return {...snapshot,tasks:snapshot.tasks.map(t=>t.stateObservedAt&&now-t.stateObservedAt>STATE_TTL?{...t,status:'unknown',stateObservedAt:null,stateReason:'stale',stateEvidence:''}:t)};
+ }
  function demo(service,now=Date.now()){
   const iso=new Date(now).toISOString();return normalize({schemaVersion:1,service,capturedAt:iso,source:'demo',coverage:'Synthetic example',tasks:[
    {id:'sample-1',title:'Example: website refresh',projectId:'example-project',projectTitle:'Example project',status:'running',updatedAt:iso,summary:'Synthetic data for trying the task tree.'},
@@ -50,6 +68,6 @@
    {id:'sample-3',title:'Example: documentation',projectId:'example-project',projectTitle:'Example project',status:'completed',updatedAt:iso}
   ]},service);
  }
- const api={SERVICES,STATUSES,MAX_BYTES,MAX_TASKS,MAX_DEPTH,normalize,parse,select,groups,safeURL,demo};
+ const api={SERVICES,STATUSES,MAX_BYTES,MAX_TASKS,MAX_DEPTH,STATE_TTL,normalize,parse,select,groups,safeURL,states,expireStates,demo};
  if(typeof module==='object'&&module.exports)module.exports=api;else root.LLMTaskModel=Object.freeze(api);
 })(globalThis);

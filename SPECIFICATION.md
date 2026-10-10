@@ -4,7 +4,7 @@
 
 <a id="en"></a>
 
-Document revision: 1.0 · Product version: **1.25.0** · Web UI: **1.25.0** · Web companion: `https://llmsmonitor.ntus.info/` (previous Site origin retained for compatibility)
+Document revision: 1.0 · Product version: **1.26.0** · Web UI: **1.26.0** · Web companion: `https://llmsmonitor.ntus.info/` (previous Site origin retained for compatibility)
 
 This English section defines the implementation contract for the beta. The [Japanese section](#ja) contains the full historical and field-level acceptance criteria. Implementers must read both sections and every ID in [`spec/requirements.json`](spec/requirements.json); neither translation overrides the other.
 
@@ -114,6 +114,15 @@ The visible service cards acquire a Web-only Task details link. `task-launcher.j
 
 Automatic provider/Codex task fetching remains unconnected in this trial. The Codex desktop connector was observed to return 57 chats (24 ordinary ChatGPT and 33 Codex, pinned plus up to 50 recent unpinned); this is not a full-account inventory or a publicly callable API. A separate private export file supplies the real-account trial. Claude/Gemini task acquisition has not been verified. Full limits, security boundaries, schema, future-adapter requirements and manual gates are in [TASK_DETAILS.md](TASK_DETAILS.md#en). Web release/cache version is 1.23.1; extension compatibility and unchanged ZIP remain 1.23.0.
 
+
+## v1.26.0 — Evidence-based task response states
+
+TASK-STATE-001 supersedes the earlier unconditional unknown state only for verified controls. Independent `TASKS_STATE` polls already-open provider conversation tabs about every five seconds while the task window is visible and Auto ON; `TASKS_READ` lists remain at one minute. A visible enabled stop control scoped to the editable composer indicates generating a response. A normal-chat composer with a recognized send/voice control indicates response idle, never task completion. Claude Code/Cowork require explicit stop evidence; accepting another prompt does not prove idle. Closed chats, unreadable controls, stale responses and conflicting duplicate tabs remain unknown with reasons. Desktop Codex is excluded.
+
+Read only composer presence/editability, button aria-label/data-testid/disabled and visibility; never message text, editable values or credentials. Match current route identity and Gemini account path, limit 40 existing tabs with four workers, 900ms per reply and 3500ms total. States expire after 15 seconds, including when Auto is paused. Sender checks retain exact origins, task path, service and top frame. No quota queue, history, storage, audio, external fetch or tab navigation is used. Each state carries its observation time separately from task updatedAt. Clear/Demo/import invalidate both pending paths. Existing extension installations must update in place; users may need to reload official chat tabs after saving drafts, never automatically.
+
+Modules: `extension/task-status.js` observes scoped controls; `task-state-background.js` bounds existing-tab reads; `task-reader.js` accepts self-extension/top-frame requests; task Web bridge/model/page validate, expire and render. Mock controls and real background message gates are regression-tested. Provider control shapes were inspected read-only; live generation through the installed v1.26.0 extension remains a separate acceptance check.
+
 <a id="ja"></a>
 
 # 日本語 — LLMs モニター 詳細仕様書
@@ -121,7 +130,7 @@ Automatic provider/Codex task fetching remains unconnected in this trial. The Co
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.25.0
+対象製品版: 1.26.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -1381,3 +1390,11 @@ GETおよび共通描画で期限切れ枠は数値未取得／再取得待ち�
 2026-10-10 03:13〜03:17 JSTに公式画面ChatGPT78%／Claude93%に対して、モニターは約163分前の0%／82%を保持し、手動更新も待ち状態だった。実背景処理と読取応答を使う循環待ちテストを追加。新ZIPを既存拡張機能へ上書き更新した後の実比較・音・外窓は別途確認が必要であり、アンインストールは不要。
 
 検証（2026-10-10）: 全195件が成功。循環待ち、更新継続、期限切れ表示、速報の独立開閉、タスクのorigin／frame／service制限、遅延音の取消を含む。タスクサンプルは横幅240pxで日英とも横はみ出しなし。導入済み拡張機能の上書き更新後の残量・自動一覧・音の実機確認は未完了。
+
+## v1.26.0 — 根拠のあるタスク応答状態の取得
+
+TASK-STATE-001は、旧版の一律「状態未確認」を明示的な操作ボタンがある場合だけ上書きする。一覧は引き続き1分ごと、状態はタスク小窓が表示中かつ自動ONの間、専用TASKS_STATEで約5秒ごとに既存の公式会話タブから取得する。入力欄周辺の有効な停止ボタンは「応答生成中」、通常チャットの編集可能な入力欄と既知の送信／音声ボタンは「応答待機」。待機からタスク完了を推測しない。Claude Code/Coworkは次の入力を受け付けても処理が続くため、停止根拠がない場合は未確認を維持する。閉じた会話・読取不能・古い観測・複数タブの不一致は理由付き未確認。デスクトップCodexは対象外。
+
+入力欄の存在・編集可否、ボタンのaria-label/data-testid/disabledと可視性だけを読み、本文・入力値・認証情報は読まない。現在経路のID・種別、Geminiのアカウント経路を照合。最大40タブ、同時4件、応答900ms、全体3500ms。15秒を超える観測は自動OFF中も失効させる。送信元origin・タスク経路・service・トップフレームの検証を維持。残量待ち行列・履歴・保存・音・外部fetch・タブ遷移に依存しない。観測日時はタスク最終更新日時とは別。消去／サンプル／JSON読込は両方の保留応答を無効化。拡張は上書き更新し、公式会話タブは必要なら入力を保存後に利用者が再読込する。自動リロードは禁止。
+
+独立モジュールtask-status.jsが入力欄周辺の操作を観測、task-state-background.jsが時間制限付きタブ読取、task-reader.jsが自拡張・トップフレーム受付、Web専用橋渡し／モデル／画面が検証・失効・表示を担当する。模擬操作ボタンと実backgroundの送信元検証を回帰テスト。公式操作ボタン構造は読み取り確認し、実インストールv1.26.0での生成中取得は別途実機確認する。

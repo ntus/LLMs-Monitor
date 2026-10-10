@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs トークン残量モニタ",
     "name_en": "LLMs Token Usage Monitor",
-    "version": "1.25.0",
-    "package_filename": "LLMs-Monitor-v1.25.0.zip",
+    "version": "1.26.0",
+    "package_filename": "LLMs-Monitor-v1.26.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -19,7 +19,7 @@
       "gemini"
     ],
     "production_companion_origin": "https://llmsmonitor.ntus.info",
-    "web_version": "1.25.0",
+    "web_version": "1.26.0",
     "companion_origins": [
       "https://llmsmonitor.ntus.info",
       "https://llmsmonitor.ntusnog.chatgpt.site"
@@ -4433,6 +4433,9 @@
       ],
       "known_limitations": [
         "Installed-extension live verification remains required; no full account execution-state claim."
+      ],
+      "notes": [
+        "v1.26.0 TASK-STATE-001 supersedes unconditional unknown only where explicit control evidence is available; no completion inference."
       ]
     },
     {
@@ -4467,6 +4470,82 @@
       ],
       "known_limitations": [
         "Installed-extension live verification remains required; no full account execution-state claim."
+      ]
+    },
+    {
+      "id": "TASK-STATE-001",
+      "priority": "MUST",
+      "category": "tasks",
+      "status": "implemented",
+      "title_ja": "開いている会話の操作ボタンから応答状態を観測",
+      "title_en": "Observe response state from open conversation controls",
+      "normative_requirement": "Observe task response states only from verified controls, through isolated existing-tab polling.",
+      "acceptance_criteria": [
+        "Separate TASKS_STATE RPC restricted to approved task origins, route, service and top frame; no quota queue, persistence, audio or tab navigation.",
+        "Every five seconds while task view is visible and Auto ON; list still one minute. Clear/Demo/import invalidate pending list and state replies.",
+        "Visible composer stop control means generating; normal-chat editable composer plus send/voice control means response idle, never task completed. Code/Cowork send controls alone remain unknown.",
+        "Only metadata attributes and visibility are read. No chat text, editable value or credentials. Existing tab routes must match observation IDs and account-prefixed Gemini paths.",
+        "At most 40 tabs, four concurrent readers, 900ms per reply and 3500ms total. Expire observations after 15 seconds; conflicting tabs, unreadable or closed conversations remain unknown with reasons.",
+        "No new permissions, storage keys or network endpoints. Update extension in place; existing official conversation tabs may need a user reload after saving drafts."
+      ],
+      "source_requirements": [
+        "状態を取得する追加実装を"
+      ],
+      "introduced_in": "1.26.0",
+      "implementation_evidence": [
+        {
+          "path": "extension/task-status.js",
+          "symbol": "TASK-STATE-001"
+        },
+        {
+          "path": "extension/task-state-background.js",
+          "symbol": "TASK-STATE-001"
+        },
+        {
+          "path": "extension/task-reader.js",
+          "symbol": "TASK-STATE-001"
+        },
+        {
+          "path": "extension/background.js",
+          "symbol": "TASK-STATE-001"
+        },
+        {
+          "path": "web/tasks-model.js",
+          "symbol": "TASK-STATE-001"
+        },
+        {
+          "path": "web/tasks-bridge.js",
+          "symbol": "TASK-STATE-001"
+        },
+        {
+          "path": "web/tasks-page.js",
+          "symbol": "TASK-STATE-001"
+        },
+        {
+          "path": "web/tasks.css",
+          "symbol": "TASK-STATE-001"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/task-state.test.cjs"
+        },
+        {
+          "type": "automated",
+          "path": "tests/update-recovery.test.cjs"
+        },
+        {
+          "type": "automated",
+          "path": "tests/task-auto.test.cjs"
+        },
+        {
+          "type": "automated",
+          "path": "tests/tasks.test.cjs"
+        }
+      ],
+      "known_limitations": [
+        "Closed conversation execution and Desktop Codex are outside the adapter. Live installed-extension generation must be validated after package update; fixtures do not prove account-wide completion."
       ]
     }
   ]

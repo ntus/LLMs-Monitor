@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "default_locale": "ja",
   "name": "__MSG_extensionName__",
-  "version": "1.25.0",
+  "version": "1.26.0",
   "description": "__MSG_extensionDescription__",
   "permissions": [
     "storage",
@@ -46,6 +46,7 @@
       ],
       "js": [
         "task-list.js",
+        "task-status.js",
         "task-reader.js",
         "locale.js",
         "preferences.js",

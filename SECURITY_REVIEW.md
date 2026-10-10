@@ -1,10 +1,10 @@
-# Security review — v1.25.0 beta
+# Security review — v1.26.0 beta
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 <a id="en"></a>
 
-This review records the checks performed for the 1.25.0 beta; it is not a guarantee that no vulnerabilities exist. A release owner should also test the packaged extension in current Chrome and Edge with real accounts and submit it to store review.
+This review records the checks performed for the 1.26.0 beta; it is not a guarantee that no vulnerabilities exist. A release owner should also test the packaged extension in current Chrome and Edge with real accounts and submit it to store review.
 
 ## v1.25.0 recovery and metadata adapter
 
@@ -39,6 +39,11 @@ The v1.24.0 origin regression executes the actual external listener: both approv
 ## Web-only task trial v1.23.1
 
 The new route denies network connections in CSP, loads only its independent local scripts/styles, and handles explicitly selected JSON in memory. Inputs are capped at 512 KiB/500 nodes/12 levels; duplicate IDs, cycles, missing or cross-project/cross-kind parents and mismatched services are rejected. Rendering uses textContent, not HTML injection. Chat links require the selected provider’s exact HTTPS host and a conversation route, with no credentials, port, query or fragment. New windows sever opener; link fallback uses noopener/noreferrer. Demos carry an explicit synthetic label. Private snapshots stay outside the repository/deployment, are not logged, and are cleared by reload/close/Clear. Existing extension permissions, GET fields and ZIP are untouched. Live provider task acquisition is not implemented.
+
+
+## v1.26.0 task-state boundary
+
+The optional independent task window checks already-open provider conversation tabs approximately every five seconds while visible and Auto ON. It reads only editable-composer presence and scoped button accessibility/test attributes and visibility, not messages, draft values, credentials or account data. States remain in memory and expire after 15 seconds. No tabs are navigated, no new permissions are requested, and no titles or states are stored or uploaded. 208 automated checks pass, including route/account mismatches, stale or conflicting observations, unauthorized RPC senders, bounded tab concurrency, stalled quota queues and old-extension compatibility. The quota/history/parser/audio sources are byte-identical to the previous release; only isolated task dispatch and the display version change. Japanese/English mock state UI was checked at 240px without horizontal overflow. Actual installed-extension generation checks remain required after the update; mock fixtures are not account-level proof.
 
 <a id="ja"></a>
 
@@ -81,3 +86,7 @@ Diagnostic events are restricted to numeric fields and fixed categories in exten
 タスク取得は専用経路・トップフレーム・許可origin・service一致、新しい非アクティブホームのサイドバーリンクのみ。本文・入力・認証を収集せず、一時タブ終了、件数・文字数・URL検証、窓内メモリー、ログ／サーバー／履歴への非混入を確認する。消去／読込／サンプルで自動停止と保留応答無効化。実行状態・全件・デスクトップCodexを取得済みとしない。X配信基盤は未設定。インストール更新後の実取得・アカウント切替・音・外窓の確認は手動項目として残す。
 
 現行1.25.0検証: 195件成功。狭幅240pxの日英サンプルで横はみ出しなし。実インストール後のアカウント比較・自動取得・音声は別途確認する。遅延した音声再開は発音前に取消す。
+
+## v1.26.0 タスク状態の保護範囲
+
+独立タスク小窓は表示中かつ自動ONの間、開いている公式会話の入力欄存在と周辺ボタンのアクセシビリティ／テスト属性・可視性だけを約5秒ごとに確認する。本文・入力値・認証情報・アカウント情報は取得しない。状態はメモリー内で15秒後に失効。タブ遷移・追加権限・タイトルや状態の保存／送信を行わない。自動テスト208件成功。経路／アカウント不一致、古い観測、複数タブ不一致、不正送信元、タブ同時数、残量待ち行列停止、旧拡張互換性を検証。残量／履歴／解析／音声のソースは前版と同一で、独立タスク受付と表示版だけを追加。240px幅の日本語・英語模擬画面で横はみ出しなし。実インストール後の生成中取得は別途確認し、模擬画面を本番成功と扱わない。
