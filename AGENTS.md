@@ -63,6 +63,8 @@ This file is the starting point for every future Codex or LLM edit. Follow the u
 
 Keep this `AGENTS.md` in the repository and update it when a new acceptance rule or failure-prevention step arises. In the final report, link this file, the detailed specification, and the distribution package; distinguish verified behavior from live-account checks that remain unverified.
 
+At the start of work, if the planned build would regenerate unchanged manuals, documentation, or distribution artifacts, first ask whether the user wants an app-only build or those additional artifacts included. Explain which artifacts actually require regeneration. Preserve an explicitly approved scope unless it changes. Do not rebuild or reissue unchanged documents merely to satisfy the deliverable rule above; link existing relevant artifacts instead. Reading the requirements and regression rules remains mandatory and is separate from rebuilding documents. A workflow/documentation-only change does not require an app build, version bump, or package regeneration.
+
 ---
 
 
@@ -129,6 +131,8 @@ Keep this `AGENTS.md` in the repository and update it when a new acceptance rule
 ## 毎回の成果物
 
 `AGENTS.md` 自体をリポジトリに残し、新しい受入規則や失敗防止策が生じたら更新する。最終報告では、このファイル、詳細仕様書、配布物へリンクし、確認済み事項と実機で未確認の事項を区別する。
+
+変更のないマニュアル・文書・配布物まで再生成する予定がある場合は、作業の最初に「本体のみのビルド／文書・配布物も含める」のどちらにするか利用者へ確認し、実際に再生成が必要な成果物を説明する。一度承認された範囲は、範囲が変わらない限り引き継ぐ。上記の成果物規則だけを理由に未変更の文書を再ビルド・再出力せず、必要な既存成果物へのリンクで対応する。デグレ防止のための要件仕様・回帰防止規則の参照は引き続き必須であり、文書の再ビルドとは区別する。作業方針や文書だけの変更では、本体ビルド・バージョン更新・配布パッケージ再生成は不要。
 
 v1.22.0で旧外窓ヘッダー仕様を明示的に上書きしました。独自タイトルと±サイズ操作は表示せず、狭幅でも3社の欄を常時見せ、詳細は各欄内でスクロール可能にします。描画・更新で利用者の窓サイズを戻さず、ネイティブURL表示はブラウザ仕様として残します。
 

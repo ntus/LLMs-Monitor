@@ -23,7 +23,8 @@
   const opened=new Set([...$('tree').querySelectorAll('details[open]')].map(d=>d.dataset.taskId?'task:'+d.dataset.taskId:'group:'+d.dataset.groupId));
   const initialized=$('tree').dataset.rendered==='true';
   document.documentElement.lang=language;document.documentElement.dataset.theme=theme;
-  document.title=`${language==='ja'?'LLMs モニター':'LLMs Monitor'} — ${names[service][0]} ${t('taskDetails')}`;
+  $('task-brand-title').textContent=`LLMs Monitor - ${names[service][0]}`;
+  document.title=$('task-brand-title').textContent;
   document.documentElement.style.setProperty('--provider',names[service][2]);$('heading').textContent=names[service][0];$('service-mark').textContent=names[service][1];
   document.querySelectorAll('[data-copy]').forEach(n=>{n.textContent=t(n.dataset.copy)});$('language').textContent=language==='ja'?'🇯🇵JP':'🌍EN';$('theme').textContent=theme==='dark'?'☼':'◐';$('theme').title=t(theme==='dark'?'light':'dark');$('theme').setAttribute('aria-label',$('theme').title);
   $('search').placeholder=t('search');$('search').setAttribute('aria-label',t('search'));$('status').setAttribute('aria-label',t('filter'));for(const option of $('status').options)option.textContent=snapshot?.source==='official-sidebar'&&['running','idle'].includes(option.value)?t(option.value==='running'?'liveRunning':'liveIdle'):t(option.value);$('tree').setAttribute('aria-label',t('taskDetails'));
