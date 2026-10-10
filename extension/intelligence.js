@@ -14,7 +14,7 @@
  }
  function normalize(feed){
   const alerts=(Array.isArray(feed?.alerts)?feed.alerts:[]).map(normalizeAlert).filter(Boolean).sort((a,b)=>(b.publishedAt||b.detectedAt||0)-(a.publishedAt||a.detectedAt||0)).slice(0,50);
-  return {status:['ready','unavailable','unconfigured'].includes(feed?.status)?feed.status:'unavailable',checkedAt:Number(feed?.checkedAt)||0,alerts};
+  return {status:['ready','unavailable','unconfigured'].includes(feed?.status)?feed.status:'unavailable',checkedAt:Number(feed?.checkedAt)||0,lastReadyAt:Number(feed?.lastReadyAt)||(feed?.status==='ready'?Number(feed?.checkedAt)||0:0),alerts};
  }
  function key(feed){return normalize(feed).alerts.map(row=>row.id).sort().join('|')}
  function newAlerts(previous,current){const before=new Set(normalize(previous).alerts.map(row=>row.id));if(!normalize(previous).checkedAt)return [];return normalize(current).alerts.filter(row=>!before.has(row.id));}
@@ -23,7 +23,7 @@
   const data=normalize(feed),ja=language!=='en',latest=data.alerts[0],state=data.status==='ready'?'ready':data.status==='unconfigured'?'unconfigured':'unavailable';
   const title=latest?`${label(latest,language)} · ${providers[latest.provider]}`:state==='ready'?(ja?'AI速報':'AI intelligence'):state==='unconfigured'?(ja?'AI速報の接続待ち':'AI feed setup required'):(ja?'AI速報を確認できません':'AI feed unavailable');
   const body=latest?`<article class="intelligence-item ${latest.severity}"><div><strong>${escape(latest.title||label(latest,language))}</strong><span>${escape(latest.summary)}</span><small>${escape([latest.account,latest.model].filter(Boolean).join(' · '))}</small></div><a href="${latest.url}" target="_blank" rel="noopener noreferrer">${ja?'出典 ↗':'Source ↗'}</a></article>`:`<p>${escape(state==='ready'?(ja?'該当する新着情報はありません。':'No matching updates.'):(ja?'利用残量の取得には影響しません。':'Usage monitoring is unaffected.'))}</p>`;
-  const note=ja?'1分ごとに確認。X投稿は外部情報であり、各社公式の利用量とは区別して表示します。':'Checked every minute. X posts are external intelligence, separate from official provider usage values.';
+  const note=state==='unconfigured'?(ja?'X速報用サーバーの接続設定が必要です。利用残量や公式障害監視は独立して動作します。':'The X feed requires server configuration. Quota and official incident monitoring operate separately.'):(ja?'1分ごとに確認。X投稿は外部情報であり、各社公式の利用量とは区別して表示します。':'Checked every minute. X posts are external intelligence, separate from official provider usage values.');
   return `<details class="intelligence-feed ${state}${latest?' has-alert':''}"${open?' open':''}><summary>◉ ${escape(title)}${latest&&latest.severity!=='info'?' ⚠︎':''}</summary><div class="intelligence-popover">${body}<small>${escape(note)}</small></div></details>`;
  }
  root.GlanceIntelligence={FEED_URL,providers,clean,safeUrl,normalizeAlert,normalize,key,newAlerts,label,view};if(typeof module!=='undefined')module.exports=root.GlanceIntelligence;

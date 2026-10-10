@@ -1,0 +1,5 @@
+/* Feed and provider incident disclosures are independent; preserve space for usage. */
+.floating-body .intelligence-feed:not([open]),.pip-body .intelligence-feed:not([open]){max-height:32px;padding:4px 6px;font-size:10px}
+.floating-body .intelligence-feed[open],.pip-body .intelligence-feed[open]{max-height:min(100px,18dvh)}
+.floating-body .provider-status[open],.pip-body .provider-status[open]{max-height:min(110px,19dvh)}
+.floating-body .intelligence-feed summary,.pip-body .intelligence-feed summary{overflow-wrap:anywhere;line-height:1.3}

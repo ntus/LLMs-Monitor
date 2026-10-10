@@ -29,3 +29,5 @@ dialog{background:var(--surface);color:var(--text);border:1px solid var(--line);
  .task-meta{padding:1px 4px 10px 12px;font-size:13px}
  footer{font-size:11px;padding:12px 10px}
 }
+
+.task-auto{display:flex;gap:8px;margin:12px 0}.task-auto button{flex:1;min-width:0;font-size:13px;white-space:normal}

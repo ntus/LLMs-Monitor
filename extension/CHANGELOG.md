@@ -22,6 +22,11 @@
 
 <a id="en"></a>
 
+## 1.25.0 — 2026-10-10
+
+Fix a circular wait between quota refresh and API billing-reader replies; bound reader/audio waits. Mask expired cached quotas without altering history, preserve quota capture times through metadata-only supplements, separate feed/incident disclosures, and add independent automatic sidebar task lists. Existing permissions and storage keys remain unchanged. X feed infrastructure and installed-extension live acceptance remain required external checks.
+
+
 ## 1.24.0 beta — narrow task windows and focused floating alerts
 
 - Keep task titles and controls readable at narrow widths with stacked controls, two-column actions and smaller tree indentation.
@@ -110,6 +115,11 @@ Version 1.5.3 and earlier focused on plan retrieval, persistent change history, 
 - Read local JSON snapshots in memory; clearly label demo/historical states. Automatic provider task acquisition remains unconnected.
 - Preserved all extension sources, its 1.23.0 ZIP, quota history/alerts and existing floating views. Added TASK_DETAILS.md and durable isolation requirements.
 <a id="ja"></a>
+
+## 1.25.0 — 2026-10-10
+
+残量更新とAPI請求読取応答の循環待ちを修正し、読取／音声を時間制限。期限切れ保存値を履歴非変更で再取得待ちへ表示し、補足だけで残量取得時刻を更新しない。速報／障害の開閉を分離し、独立した公式サイドバー一覧自動取得を追加。権限と保存キーは維持。X配信基盤と既存拡張機能更新後の実確認は外部／手動項目。
+
 
 ## 1.24.0 β — 狭幅タスクとフローティング障害詳細
 

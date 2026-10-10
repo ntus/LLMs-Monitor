@@ -1,13 +1,13 @@
 {
   "schema_version": "1.0.0",
   "ledger_id": "llms-token-usage-monitor-requirements",
-  "last_updated": "2026-10-09",
+  "last_updated": "2026-10-10",
   "authoritative": true,
   "product": {
     "name_ja": "LLMs トークン残量モニタ",
     "name_en": "LLMs Token Usage Monitor",
-    "version": "1.24.0",
-    "package_filename": "LLMs-Monitor-v1.24.0.zip",
+    "version": "1.25.0",
+    "package_filename": "LLMs-Monitor-v1.25.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -19,7 +19,7 @@
       "gemini"
     ],
     "production_companion_origin": "https://llmsmonitor.ntus.info",
-    "web_version": "1.24.0",
+    "web_version": "1.25.0",
     "companion_origins": [
       "https://llmsmonitor.ntus.info",
       "https://llmsmonitor.ntusnog.chatgpt.site"
@@ -44,11 +44,12 @@
     "ServiceId": "chatgpt | claude | gemini",
     "UsageWindow": {
       "label": "string, maximum 80 characters at the message boundary",
-      "remaining": "finite number from 0 through 100",
+      "remaining": "finite 0..100 or null when unverified/expired",
       "reset": "string, maximum 150 characters at the message boundary",
       "resetAt": "epoch milliseconds or null",
       "previous": "optional { remaining: number, capturedAt: epoch milliseconds }",
-      "_source": "internal api | dom acquisition source used for lossless merge"
+      "_source": "internal api | dom acquisition source used for lossless merge",
+      "expired": "optional read-time flag; storage/history unchanged"
     },
     "Extra": {
       "label": "string, maximum 80 characters",
@@ -71,7 +72,8 @@
       "refreshing": "boolean",
       "refreshStartedAt": "optional epoch milliseconds",
       "accountKey": "optional provider account identifier used only to prevent cross-account state reuse",
-      "history": "attached at read time as Record<window label, HistoryEntry[]>"
+      "history": "attached at read time as Record<window label, HistoryEntry[]>",
+      "metadataAt": "optional metadata observation time; does not refresh quota capture time"
     },
     "HistoryEntry": {
       "capturedAt": "epoch milliseconds",
@@ -92,7 +94,7 @@
       "schemaVersion": 1,
       "service": "chatgpt | claude | gemini, must match selected route",
       "capturedAt": "ISO timestamp, required",
-      "source": "codex-app | local-export | demo (format label only, not authenticated provenance)",
+      "source": "codex-app | local-export | demo | official-sidebar; format label only",
       "coverage": "optional bounded description; never claim full-account coverage without evidence",
       "tasks": "0..500 TaskNode entries, UTF-8 file <= 524288 bytes, depth <= 12; local in-memory only"
     },
@@ -102,7 +104,7 @@
       "projectId": "optional <=120 chars",
       "projectTitle": "required when projectId exists, <=100 chars, consistent per ID",
       "title": "nonempty <=200 chars",
-      "kind": "chat | codex, codex only for chatgpt",
+      "kind": "chat | codex (ChatGPT only) | code | cowork (Claude only)",
       "status": "running | idle | waiting | completed | failed | unknown; observation, not live",
       "updatedAt": "optional ISO timestamp",
       "summary": "optional <=500 chars",
@@ -4158,7 +4160,10 @@
       ],
       "known_limitations": [
         "This trial has no automatic provider task adapter. Snapshots are observations, not live task monitoring. Browser/OS popup bounds apply."
-      ]
+      ],
+      "historical_scope": "Import-only v1.23.1 trial; automatic adapter added in TASK-AUTO-001, with separate metadata RPC and pairing-key read.",
+      "superseded_by": "TASK-AUTO-001",
+      "active": false
     },
     {
       "id": "TASK-DATA-001",
@@ -4205,7 +4210,10 @@
       ],
       "known_limitations": [
         "This trial has no automatic provider task adapter. Snapshots are observations, not live task monitoring. Browser/OS popup bounds apply."
-      ]
+      ],
+      "historical_scope": "Import-only v1.23.1 trial; automatic adapter added in TASK-AUTO-001, with separate metadata RPC and pairing-key read.",
+      "superseded_by": "TASK-AUTO-001",
+      "active": false
     },
     {
       "id": "TASK-SAFE-001",
@@ -4256,7 +4264,10 @@
       ],
       "known_limitations": [
         "This trial has no automatic provider task adapter. Snapshots are observations, not live task monitoring. Browser/OS popup bounds apply."
-      ]
+      ],
+      "historical_scope": "Import-only v1.23.1 trial; automatic adapter added in TASK-AUTO-001, with separate metadata RPC and pairing-key read.",
+      "superseded_by": "TASK-AUTO-001",
+      "active": false
     },
     {
       "id": "STATUS-FLOAT-001",
@@ -4324,6 +4335,138 @@
       ],
       "known_limitations": [
         "Native browser/OS minimum width remains outside application control; task acquisition is still import-only."
+      ]
+    },
+    {
+      "id": "UPDATE-RECOVERY-001",
+      "category": "reliability",
+      "introduced_in": "1.25.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "請求読取応答・音声待ちにより利用量更新を止めない。検証済み請求SNAPSHOTは専用待ち行列へ直接渡し循環待ちを防ぐ。",
+      "source_requirements": [
+        "User 2026-10-09/10: resume, inaccurate quotas, floating/feed, production automatic tasks; no regressions."
+      ],
+      "acceptance_criteria": [
+        "REFRESH中のAPI_CREDIT_READ→SNAPSHOT→応答が完了し次のREFRESHも動く。",
+        "読取応答5秒、請求更新8秒、音声各1.5秒で打切り。保存キー・履歴・権利を維持。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/background.js",
+          "symbol": "UPDATE-RECOVERY-001"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/update-recovery.test.cjs"
+        }
+      ],
+      "known_limitations": [
+        "Installed-extension live verification remains required; no full account execution-state claim."
+      ]
+    },
+    {
+      "id": "QUOTA-EXPIRY-001",
+      "category": "reliability",
+      "introduced_in": "1.25.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "過去リセット枠を現在の残量として示さず、読取投影で未取得と再取得待ちを表示する。",
+      "source_requirements": [
+        "User 2026-10-09/10: resume, inaccurate quotas, floating/feed, production automatic tasks; no regressions."
+      ],
+      "acceptance_criteria": [
+        "GETと旧拡張機能に接続する共通描画で期限切れを区別。",
+        "保存値と履歴を書き換えず100%を捏造しない。",
+        "補足情報だけでChatGPT API残量の取得時刻を更新しない。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/background.js",
+          "symbol": "QUOTA-EXPIRY-001"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/update-recovery.test.cjs"
+        }
+      ],
+      "known_limitations": [
+        "Installed-extension live verification remains required; no full account execution-state claim."
+      ]
+    },
+    {
+      "id": "TASK-AUTO-001",
+      "category": "task_details",
+      "introduced_in": "1.25.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "残量取得とは独立して表示中1分ごとに公式サイドバーのタスク一覧を自動取得する。",
+      "source_requirements": [
+        "User 2026-10-09/10: resume, inaccurate quotas, floating/feed, production automatic tasks; no regressions."
+      ],
+      "acceptance_criteria": [
+        "専用RPCは許可origin＋タスク経路＋トップフレーム＋service一致。",
+        "新しい非アクティブ公式ホームのサイドバーのみ、20秒予算、55秒間隔、取得後タブ終了。",
+        "窓内メモリー・500件上限・本文/入力/認証/実行推測なし。",
+        "失敗時前回一覧維持、消去/サンプル/読込時停止し保留結果無効化。",
+        "デスクトップCodexは未取得と明示し、公式URL以外リンク拒否。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/background.js",
+          "symbol": "TASK-AUTO-001"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/task-auto.test.cjs"
+        },
+        {
+          "type": "automated",
+          "path": "tests/tasks.test.cjs"
+        }
+      ],
+      "known_limitations": [
+        "Installed-extension live verification remains required; no full account execution-state claim."
+      ]
+    },
+    {
+      "id": "FEED-DISCLOSURE-001",
+      "category": "ui",
+      "introduced_in": "1.25.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "公式障害とAI速報の開閉を分離し、速報未接続が障害によって展開しない。",
+      "source_requirements": [
+        "User 2026-10-09/10: resume, inaccurate quotas, floating/feed, production automatic tasks; no regressions."
+      ],
+      "acceptance_criteria": [
+        "全表示面で独立開閉、3社残量維持。",
+        "未接続と確認後の失敗を区別し、未設定X配信を動作済みと主張しない。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/background.js",
+          "symbol": "FEED-DISCLOSURE-001"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/provider-status.test.cjs"
+        },
+        {
+          "type": "automated",
+          "path": "tests/intelligence.test.cjs"
+        }
+      ],
+      "known_limitations": [
+        "Installed-extension live verification remains required; no full account execution-state claim."
       ]
     }
   ]

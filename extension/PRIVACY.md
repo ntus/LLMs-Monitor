@@ -4,7 +4,7 @@
 
 <a id="en"></a>
 
-Last updated: 2026-10-08
+Last updated: 2026-10-10
 
 The extension reads plan names, usage limits, remaining percentages, reset times, and related credit balances from the official ChatGPT, Claude, Gemini, and Google One services for accounts already signed in within the browser profile. Google One is queried only to identify the current Google AI membership name when Gemini does not expose it directly.
 
@@ -31,21 +31,17 @@ Contact: NT MicroSystems,Inc.
 The extension stores bounded numeric acquisition diagnostics locally in IndexedDB: provider, window type, source, raw numeric utilization where available, normalized and displayed percentages, reset timestamp, decision code, elapsed time and fixed error category. It does not store credentials, account identifiers, full API responses or page text in diagnostics. Ordinary samples expire after 72 hours; incidents after 30 days, with a 6,000-event / approximately 3 MB cap. Users may export JSONL or clear this log from an extension page. Diagnostics are not uploaded automatically and are separate from usage change history.
 
 
-## Web-only task details trial
+## Independent task details (v1.25.0)
 
-When you select a task JSON file, the separate task window reads bounded titles, project labels, reported states, timestamps, summaries and approved conversation links. The file is processed only in that window’s memory. It is not uploaded, logged or saved to browser storage; reload, close or Clear discards it. The trial does not automatically read provider chats or Codex files. The demo is synthetic. This Web addition does not change the extension’s stored usage data or permissions.
+When a user opens Task details, automatic acquisition reads only visible sidebar conversation titles and approved links from fresh inactive official provider home tabs in the same browser profile. It checks once on opening and about once a minute while the task window is visible and automatic mode is enabled. Temporary tabs are closed after acquisition; user chats and drafts are not reloaded. The list is partial, execution state is unknown, and no chat bodies, input fields or credentials are read. Task titles are neither persisted nor logged, and are returned only to the separate task page on an approved companion origin. Imported JSON may contain bounded titles, project labels, reported states, timestamps and summaries; it stays in that window's memory. Import, Demo or Clear pauses automatic acquisition. Reloading or closing discards the list. No task list is uploaded to our server. Existing usage history and required extension permissions remain unchanged.
 
 <a id="ja"></a>
-
-## Web限定タスク詳細の試作
-
-利用者がJSONファイルを選ぶと、独立したタスク窓で件数・文字長を制限した名称、プロジェクト名、報告された状態、日時、要約、許可されたチャットリンクを読み込みます。ファイルはその窓のメモリー内のみで処理し、送信・ログ記録・ブラウザー保存を行いません。再読込・窓終了・消去で破棄します。各社チャットやCodexファイルの自動読取は行いません。サンプルは架空です。このWeb限定追加は、拡張機能の保存済み使用量や権限を変更しません。
 
 # 日本語 — LLMs モニター プライバシーポリシー
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
-最終更新: 2026-10-08
+最終更新: 2026-10-10
 
 本拡張機能は、同じブラウザープロファイルでログイン済みのChatGPT、Claude、Gemini、Google Oneの公式サービスから、契約プラン名、利用枠、残量、リセット日時、関連クレジットを取得します。Gemini側で現在の契約名を取得できない場合に限り、Google Oneで現在のGoogle AIメンバーシップ名を確認します。
 
@@ -68,3 +64,7 @@ APIクレジット連携は任意で初期状態は無効です。拡張機能�
 ## 診断ログ（v1.22.0）
 
 拡張機能は、取得元・枠・数値の換算・表示判断・所要時間・固定エラー種別だけをIndexedDBへ保存します。認証情報、アカウント識別子、生API応答、ページ全文は保存しません。通常記録は72時間、異常記録は30日、最大6,000件・概算3MBです。拡張機能画面から手動でJSONLを書き出し、または消去できます。自動アップロードせず、変化履歴とは分離します。
+
+## 独立したタスク詳細（v1.25.0）
+
+［タスク詳細］を開くと、同じブラウザープロファイルの公式ホームを新しい非アクティブなタブで開き、表示済みサイドバーの会話名と許可されたリンクだけを取得します。起動時と、自動取得が有効で窓が表示されている間の約1分ごとに確認し、一時タブは取得後に閉じます。利用中のチャットや入力途中のタブを再読込しません。一覧は部分的で、実行状態は不明です。チャット本文、入力欄、認証情報は読み取りません。会話名は永続保存・ログ記録せず、許可済みコンパニオンoriginの独立タスク画面だけへ返します。手動JSONの名称・プロジェクト・報告状態・日時・要約も、その窓のメモリー内のみで扱います。読込・サンプル・消去は自動取得を停止し、再読込・終了で一覧を破棄します。運営サーバーへの送信はなく、既存の使用量履歴と必須権限は維持します。

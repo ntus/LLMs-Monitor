@@ -1,4 +1,4 @@
-/* Independent task-view contract. No quota state, provider requests or persistence. */
+/* Independent task-view contract. No quota state or persistence. */
 (function(root){
  'use strict';
  const SERVICES=['chatgpt','claude','gemini'];
@@ -10,7 +10,7 @@
  function safeURL(value,service){
   try{const u=new URL(value),host={chatgpt:'chatgpt.com',claude:'claude.ai',gemini:'gemini.google.com'}[service];
    if(u.protocol!=='https:'||u.hostname!==host||u.port||u.username||u.password||u.search||u.hash)return '';
-   const route={chatgpt:/^\/c\/[a-zA-Z0-9_-]+\/?$/,claude:/^\/chat\/[a-zA-Z0-9_-]+\/?$/,gemini:/^\/app\/[a-zA-Z0-9_-]+\/?$/}[service];
+   const route={chatgpt:/^\/(?:g\/g-p-[a-zA-Z0-9_-]+\/)?c\/[a-zA-Z0-9_-]+\/?$/,claude:/^\/(?:chat|cowork)\/[a-zA-Z0-9_-]+\/?$|^\/code\/session_[a-zA-Z0-9_-]+\/?$/,gemini:/^\/(?:u\/\d+\/)?app\/[a-zA-Z0-9_-]+\/?$/}[service];
    return route?.test(u.pathname)?u.href:'';
   }catch{return ''}
  }
@@ -24,7 +24,7 @@
    if(!id||!title||id!==value.id||ids.has(id))throw Error('id');ids.add(id);
    const projectId=reference(value.projectId),projectTitle=projectId?clean(value.projectTitle,100):'';
    if(projectId){if(!projectTitle||projects.has(projectId)&&projects.get(projectId)!==projectTitle)throw Error('project');projects.set(projectId,projectTitle)}
-   return {id,title,parentId,projectId,projectTitle,kind:service==='chatgpt'&&value.kind==='codex'?'codex':'chat',status:STATUSES.includes(value.status)?value.status:'unknown',updatedAt:date(value.updatedAt),summary:clean(value.summary,500),url:safeURL(value.url,service)};
+   return {id,title,parentId,projectId,projectTitle,kind:service==='chatgpt'&&value.kind==='codex'?'codex':service==='claude'&&['code','cowork'].includes(value.kind)?value.kind:'chat',status:STATUSES.includes(value.status)?value.status:'unknown',updatedAt:date(value.updatedAt),summary:clean(value.summary,500),url:safeURL(value.url,service)};
   });
   const byId=new Map(tasks.map(t=>[t.id,t]));
   for(const task of tasks){let cursor=task,seen=new Set(),depth=0;
@@ -32,7 +32,7 @@
     if(!cursor.parentId)break;const parent=byId.get(cursor.parentId);if(!parent||parent.projectId!==task.projectId||parent.kind!==task.kind)throw Error('parent');cursor=parent;
    }
   }
-  return {schemaVersion:1,service,capturedAt,source:['codex-app','local-export','demo'].includes(input.source)?input.source:'local-export',coverage:clean(input.coverage,250),tasks};
+  return {schemaVersion:1,service,capturedAt,source:['codex-app','local-export','demo','official-sidebar'].includes(input.source)?input.source:'local-export',coverage:clean(input.coverage,250),tasks};
  }
  function parse(text,service){if(typeof text!=='string'||new TextEncoder().encode(text).length>MAX_BYTES)throw Error('size');return normalize(JSON.parse(text),service)}
  function select(snapshot,query='',status='all'){

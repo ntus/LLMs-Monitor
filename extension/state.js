@@ -1,7 +1,14 @@
 (function(root){
  function currentLabel(label){return /現在のセッション|current session/i.test(String(label||''));}
  function claudeProtectedLabel(label){return currentLabel(label)||/^(?:週間|今週|This week|Weekly limits)$/i.test(String(label||''));}
- function expireWindows(windows=[],now=Date.now()){return windows.map(window=>window?.resetAt&&Number(window.resetAt)<=now?{...window,remaining:100,reset:currentLabel(window.label)?'最初のメッセージから開始します':'リセット後の更新待ち',resetAt:null}:window);}
+ function expireWindows(windows=[],now=Date.now()){return windows.map(window=>window?.resetAt&&Number(window.resetAt)<=now?{...window,remaining:null,expired:true,reset:'リセット後の更新待ち',resetAt:null}:window);}
+ // Read-time projection never rewrites the stored baseline or manufactures a new quota.
+ function view(snapshot={},now=Date.now()) {
+  let expired=false;
+  const windows=(snapshot.windows||[]).map(w=>{if(w.expired||w.resetAt&&Number(w.resetAt)<=now){expired=true;return {...w,remaining:null,expired:true,reset:'リセット済み · 再取得待ち'};}return {...w};});
+  const stuck=snapshot.refreshing&&now-(snapshot.refreshStartedAt||0)>=45000;
+  return {...snapshot,windows,...(expired||stuck?{status:'error',refreshing:false,note:expired?'リセット済み · 新しい残量を再取得待ち。':'更新が完了していません · 前回取得値を表示しています。'}:{})};
+ }
  function loading(old={},now=Date.now()) {return {...old,windows:expireWindows(old.windows,now),status:'loading',refreshing:true,refreshStartedAt:now,note:'更新中 · 前回取得値を表示しています。'};}
  function accept(old={},incoming,now=Date.now(),service='') {
   if(incoming.status==='login')return {...incoming,windows:[],extras:[],capturedAt:null,refreshing:false};
@@ -22,7 +29,7 @@
   const oldReset=prior.extras?.find(e=>e.label==='利用上限のリセット'),hasReset=extras.some(e=>e.label==='利用上限のリセット');
   if(!hasReset&&oldReset?.expiresAt>now)extras.push(oldReset);
   const plan=incoming.plan&&incoming.plan!=='未取得'?incoming.plan:(prior.plan||'未取得');
-  return {...incoming,plan,windows,extras,note:service==='claude'&&windows.some(w=>w.conflict?.startsWith('api-zero'))?'公式APIの0%を確認中 · 直近の確認済み値を表示。':incoming.note,capturedAt:now,refreshing:false};
+  return {...incoming,plan,windows,extras,note:service==='claude'&&windows.some(w=>w.conflict?.startsWith('api-zero'))?'公式APIの0%を確認中 · 直近の確認済み値を表示。':incoming.note,capturedAt:receivedWindows.length?now:prior.capturedAt||null,metadataAt:now,refreshing:false};
  }
- root.GlanceState={loading,accept};if(typeof module!=='undefined')module.exports=root.GlanceState;
+ root.GlanceState={loading,accept,view};if(typeof module!=='undefined')module.exports=root.GlanceState;
 })(globalThis);

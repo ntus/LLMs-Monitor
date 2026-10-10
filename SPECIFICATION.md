@@ -4,7 +4,7 @@
 
 <a id="en"></a>
 
-Document revision: 1.0 · Product version: **1.24.0** · Web UI: **1.24.0** · Web companion: `https://llmsmonitor.ntus.info/` (previous Site origin retained for compatibility)
+Document revision: 1.0 · Product version: **1.25.0** · Web UI: **1.25.0** · Web companion: `https://llmsmonitor.ntus.info/` (previous Site origin retained for compatibility)
 
 This English section defines the implementation contract for the beta. The [Japanese section](#ja) contains the full historical and field-level acceptance criteria. Implementers must read both sections and every ID in [`spec/requirements.json`](spec/requirements.json); neither translation overrides the other.
 
@@ -46,7 +46,21 @@ Human-readable documentation must start in English and place Japanese in the lat
 
 ---
 
-## Current release: v1.24.0 — narrow task windows and focused floating alerts
+## Current release: v1.25.0 — refresh recovery and independent task acquisition
+
+The API billing reader awaits `API_CREDIT_SNAPSHOT` before acknowledging `API_CREDIT_READ`. In v1.24.0, REFRESH awaited that acknowledgement while its global command queue also blocked the snapshot behind REFRESH: a circular wait. v1.25.0 dispatches authenticated billing snapshots outside that queue; the existing billing-specific queue, host/path/top-frame checks remain. Reader replies are bounded at 5 seconds and the optional billing refresh at 8 seconds. Audio setup/acknowledgement is bounded at 1.5 seconds each, so sound failure cannot block quota publication. The offscreen player starts its first tone before acknowledging, with the remaining two beats at 1-second intervals. A 1.1-second resume timeout and request deadline suppress late audio; public status/intelligence alert audio uses the same bounded setup/acknowledgement.
+
+GET projects expired cached windows as unavailable (`remaining:null`, `expired:true`) and marks stalled refreshes after 45 seconds. It does not write storage, change history, create a synthetic 100%, or reuse a past deadline as “reset soon.” Shared rendering applies the same guard when connected to an older extension. Metadata-only ChatGPT DOM supplements retain the prior API quota capture time; they cannot make a stale quota appear recently fetched. Loading/failure also leaves expired quotas unknown; only an authoritative inactive-session response can show 100%. Existing Claude inactive-session parsing and verified-zero confirmation remain intact. A fresh authoritative response replaces the projected state normally.
+
+Task details use a dedicated `TASKS_READ` message on approved `/tasks` or `/tasks.html` routes, top frame only, with the selected service matching the request. The new `task-list`, `task-reader`, `task-background` modules do not use quota state, history, sounds or the global queue. On opening and each minute while visible, a fresh inactive official home tab reads **rendered sidebar links only**, closes in `finally`, and returns at most 500 titles/links/IDs. Attempts coalesce and have a 55-second cooldown and 20-second acquisition budget. No conversation bodies, draft inputs, cookies, credentials, inferred execution states or private snapshots enter storage/logs/server/Git. Unavailable/empty/loading preserves the last window-local list. Clear/demo/import pauses auto-reading and invalidates pending results. Project IDs from explicit ChatGPT project routes may serve as labels; other ancestry is never inferred. Claude Code/Cowork routes are distinct kinds. Desktop Codex tasks are not exposed to this public Web adapter. Details: [TASK_DETAILS.md](TASK_DETAILS.md).
+
+Feed disclosure state is independent of provider incidents in every surface. An incident cannot expand an unavailable-feed panel. No verified feed connection is shown as setup required, while failure after a verified feed remains unavailable. `lastReadyAt` retains that distinction. Server X credential/KV/cron remain unconfigured; this release does not claim that X monitoring is live. Permission sets and approved origins are unchanged.
+
+Live diagnosis (2026-10-10 around 03:13–03:17 JST): monitor retained ChatGPT 0% / Claude 82% with approximately 163-minute-old capture timestamps; official usage screens showed 78% / 93%. Manual REFRESH stayed pending. The circular-wait regression uses the real background listener and a nested billing-reader response. Full installed-extension comparison, audio and native windows require updating the existing extension in place; never uninstall to update.
+
+Validation (2026-10-10): 195 regression tests pass, including nested billing acknowledgement, repeated refresh, expired GET/shared rendering, independent feed disclosure, task origin/frame/service boundaries and delayed audio cancellation. At 240px, Japanese/English task demo controls have no horizontal overflow. Live automatic acquisition and corrected quotas on the installed extension require an in-place update; they are not yet verified.
+
+## Previous release: v1.24.0 — narrow task windows and focused floating alerts
 
 At widths up to 360px, task details stack import/demo and search/status controls, put actions in two columns, display the count below the service name, and reduce each nested indent to 6px. Task titles remain 14px; controls and supporting text are at least 13px. Header controls wrap as needed. Neither window minimum dimensions nor task data/network/storage behavior changes.
 
@@ -107,7 +121,7 @@ Automatic provider/Codex task fetching remains unconnected in this trial. The Co
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.24.0
+対象製品版: 1.25.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -1353,3 +1367,17 @@ Web画面の「ストアから拡張機能を追加」は、利用者指定の `
 共通ステータス描画に任意のissuesOnly設定を追加し、widgetだけ有効にする。障害がある間、障害詳細にはissueのサービスだけを並べる。Claudeだけ障害ならClaudeだけ表示するが、3社の利用残量カードは維持する。主画面の全社確認は変更せず、障害がなくなれば正常/取得不能/緑の復帰表示を従来どおり確認できる。解析・1分監視・重複抑制・音・保存履歴・権限は変更しない。拡張機能ソース変更を伴うため、ご指定の版規則で1.24.0とし、既存インストールはアンインストールせず更新する。
 
 検証記録（2026-10-09）：全181件通過。配布ZIPの整合性・版一致・ソース収録一致を確認。取得・状態・履歴・通知音・小窓ライフサイクルの各ファイルは変更前と同一で、manifest権限も同じ。画面操作の許可待ちのため、実画面・ネイティブ窓・全画面レイアウトは未確認。
+
+## 56. v1.25.0：更新停止の修正・期限切れ表示・独立した一覧自動取得
+
+API請求読取は結果SNAPSHOTの受領を待ってREAD応答を返すが、旧版はREFRESHとSNAPSHOTを同じ待ち行列へ入れ、REFRESH側もREAD応答を待つため循環待ちになった。請求SNAPSHOTだけを既存の検証・請求専用待ち行列へ直接渡し、読取応答5秒、任意請求更新8秒、音声準備と応答各1.5秒で打ち切る。初回音を開始してから描画側へ値を公開し、残り2音は1秒間隔とする。音声が利用できない場合も残量更新を停止させない。
+
+GETおよび共通描画で期限切れ枠は数値未取得／再取得待ちへ投影し、過去時刻を「まもなくリセット」としない。45秒超の更新待ちも停止扱いとする。この投影は保存値・履歴を書き換えず、100%を捏造しない。ChatGPTのDOM補足だけでAPI残量の取得日時を新しくしない。Claude未使用枠の既存解析、公式0%照合、保存履歴・権利・プランは維持。
+
+タスク一覧は専用TASKS_READ、独立3モジュール、許可済みタスク画面・トップフレーム・service一致に限定する。開いた時と表示中1分ごとに新しい非アクティブ公式ホームタブを作り、表示されたサイドバーのリンク・タイトル・IDのみ読む。20秒の取得予算、55秒の再試行制限、同時依頼共有、finallyで自分の一時タブだけ閉じる。会話本文・入力・認証・実行状態の推測を含めず、窓内メモリーのみ。取得不能・空・読込中は前回一覧を保持し、消去／サンプル／ファイル読込で自動を停止し保留結果も無効にする。ChatGPTの明示プロジェクトURLからIDでまとめ、他の親子を推測しない。Claude Code/Coworkは別種別。デスクトップCodexの一覧は公開Webアダプターでは取得できない。
+
+速報と公式障害の開閉を分離し、障害で速報未接続欄を勝手に広げない。未接続と、一度確認できた配信の取得失敗をlastReadyAtで区別する。X配信サーバーの認証・KV・cronは未設定のため本番速報が稼働したとは報告しない。必須／任意権限と許可originは維持。
+
+2026-10-10 03:13〜03:17 JSTに公式画面ChatGPT78%／Claude93%に対して、モニターは約163分前の0%／82%を保持し、手動更新も待ち状態だった。実背景処理と読取応答を使う循環待ちテストを追加。新ZIPを既存拡張機能へ上書き更新した後の実比較・音・外窓は別途確認が必要であり、アンインストールは不要。
+
+検証（2026-10-10）: 全195件が成功。循環待ち、更新継続、期限切れ表示、速報の独立開閉、タスクのorigin／frame／service制限、遅延音の取消を含む。タスクサンプルは横幅240pxで日英とも横はみ出しなし。導入済み拡張機能の上書き更新後の残量・自動一覧・音の実機確認は未完了。

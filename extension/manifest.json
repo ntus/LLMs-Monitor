@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "default_locale": "ja",
   "name": "__MSG_extensionName__",
-  "version": "1.24.0",
+  "version": "1.25.0",
   "description": "__MSG_extensionDescription__",
   "permissions": [
     "storage",
@@ -45,6 +45,8 @@
         "https://gemini.google.com/*"
       ],
       "js": [
+        "task-list.js",
+        "task-reader.js",
         "locale.js",
         "preferences.js",
         "provider-status.js",

@@ -1,148 +1,67 @@
-# LLMs Monitor — Task Details Trial
+# Task details — Implementation contract
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 <a id="en"></a>
 
-Current Web UI and package **1.24.0**. The 1.23.1 trial below describes the original isolation boundary; 1.24.0 changes task CSS and floating incident rendering only.
+Current release: **1.25.0 beta**. Each service’s Task details button opens an independent tall 420×780 window, or a safe new tab when popups are blocked. The task window inherits initial language/theme; subsequent choices stay local. Existing quota, history, audio and floating-window lifecycles remain separate.
 
-## v1.24.0 narrow-window update
+## Automatic reading
 
-At ≤360px, import/demo and search/status controls stack vertically; actions use two columns, count moves below the service heading, and tree indentation is 6px per level. Task names remain 14px and supporting controls/text at least 13px. Header controls can wrap. No task script, snapshot contract, network, storage or popup lifecycle change is introduced. Native browser minimum dimensions still apply. The separate monitor alert rendering change is documented in SPECIFICATION.md; it does not enter the task page.
+Opening a task window starts a dedicated `TASKS_READ` request. While the window is visible and Auto is ON, it retries once a minute. The installed extension must be updated in place to 1.25.0 and paired in the main monitor on the same origin. The bridge reads only the existing `glance-extension-id` key; it does not read monitor settings, quota snapshots or history.
 
-Automated regression: 181 tests pass for v1.24.0. Actual narrow-window visual review is pending user permission; the viewport checklist below is not a claim of completed browser testing.
+The extension accepts only the approved companion HTTPS origins, `/tasks` or `/tasks.html`, a top frame, and a `service` query matching the request. It opens a **fresh inactive official home** so a previously loaded sidebar cannot leak an old account’s list. It reads only visible sidebar anchors on ChatGPT, Claude or Gemini, then closes its own temporary tab in `finally`. Existing user tabs and input drafts are not navigated/reloaded. Parallel requests for one service share the same promise; attempts have a 55-second cooldown, a 20-second acquisition budget and 2.5-second reader reply bounds. A failure or empty/loading sidebar preserves the prior list in the task window. An empty account and signed-out account cannot yet be distinguished reliably; neither is reported as a verified empty inventory.
 
-## Scope and architecture
+ChatGPT: normal `/c/…` and explicit `/g/g-p-…/c/…` conversation links. The project route identifies membership; an unavailable project name is shown as its ID, not guessed. Claude: `/chat/…`, `/code/session_…`, `/cowork/…`, grouped by kind. Project links alone are not tasks. Gemini: `/app/…` and account-prefixed `/u/N/app/…` links from that single current sidebar. All states are **unknown** unless an imported file explicitly supplies an observation; inactivity never implies completion. Desktop Codex tasks are not obtainable through this Web adapter. Coverage is limited to the rendered sidebar, not the complete account, chat contents or execution steps.
 
-Each visible service card links to a separate task window. The launcher requests a normal 420×780 popup after a click; if blocked, the anchor opens a separate tab. Resizing is left to the browser/OS; rendering never resets dimensions. This is not an always-on-top PiP window and does not share the existing floating window’s lifecycle. Closing/reloading the main monitor does not close/reload task windows.
+Clear, Demo and file import switch automatic reading OFF and invalidate pending results. The Auto button resumes reading. Manual Refresh fetches one list without enabling periodic updates. Reload/close discards window-local data. No private task snapshot is placed in storage, diagnostic logs, server assets or Git.
 
-- `web/task-launcher.js`: only mounts the localized links in existing card action rows, updates URL language/theme, and opens the independent window. No quota state, extension RPC or storage access. Rerendered cards get one launcher each; official-usage buttons retain their original action.
-- `web/tasks.html` / `tasks.css`: independent route, responsive single-column layout, sticky header and scrollable page, EN/JP and dark/standard controls. No fixed minimum/maximum CSS window dimensions. It does not import monitor styles or scripts.
-- `web/tasks-model.js`: pure normalization, hierarchy validation, project/kind grouping, filtering and clearly synthetic demo. Used directly by Node tests.
-- `web/tasks-page.js`: DOM-only renderer and user-driven file read, filter, disclosure and clipboard controls. No HTML injection, network, RPC, audio or persistent storage.
-- `build.py`: copies these Web-only files and adds the launcher script to generated index.html. The existing extension source and ZIP remain unchanged. Shared APP_VERSION stays 1.23.0 to avoid a false compatibility warning; only the Web footer/added asset queries become 1.23.1.
+## Modules and contract
 
-URLs select `service=chatgpt|claude|gemini`, optional `lang=ja|en` and `theme=dark|standard`. Invalid service defaults to ChatGPT; invalid language uses the environment (`ja*` → Japanese, otherwise English). Main-page language/theme are inherited when opening. Subsequent task-window choices affect only that window and are not saved or sent back.
+- `web/task-launcher.js`: adds one link per quota card, preserves existing actions, severs opener, supports tab fallback.
+- `web/tasks-model.js`: normalizes and validates independent schemaVersion 1; project/kind grouping, ancestry-preserving filters, safe URLs and synthetic demo.
+- `web/tasks-page.js` / `tasks.css`: textContent renderer, narrow responsive layout, filters, disclosure, copy, local import and Auto controls.
+- `web/tasks-bridge.js`: dedicated TASKS_READ only, exact origins, existing pairing ID, 26-second response deadline. No usage GET/REFRESH/SETTINGS, audio or persistence.
+- `extension/task-list.js`: pure sidebar metadata extraction; no body/input/textarea reads or provider endpoint guesses.
+- `extension/task-reader.js`: isolated content-script reply to this extension’s TASK_LIST_READ.
+- `extension/task-background.js`: independent acquisition/coalescing/cooldown/cleanup; no quota queue, state, history, sound or persistence.
 
-## Data connection boundary
+Inputs: UTF-8 JSON ≤512 KiB, ≤500 nodes, ≤12 levels. Required `schemaVersion:1`, matching service, ISO capture timestamp and tasks array. Each node has an exact unique ID ≤120 characters, title ≤200, optional verified parent ID, consistent project ID/title, kind, observation status, optional ISO update time, summary ≤500 and safe provider URL. Cycles, missing/cross-project/cross-kind parents, duplicate IDs and mismatched services reject the whole input and retain the prior list. Unknown fields such as credentials/body are discarded. Safe links require exact provider HTTPS host, supported conversation route, no credentials, nondefault port, query or fragment. The source label (`codex-app`, `local-export`, `demo`, `official-sidebar`) is a format label, not authenticated provenance; imported files display as local observations.
 
-**Automatic provider or Codex task acquisition is not implemented in this trial.** Codex desktop tools returned ordinary ChatGPT and Codex chat metadata in the user’s workspace. This connector is available to the agent, not to arbitrary static Web JavaScript. Retrieved project membership is verified structure; titles alone never imply task parentage. Sidebar idle does not establish goal completion. A recent response’s completed turn does not establish that the overall task is done.
+The task page keeps CSP `connect-src 'none'`, self-only scripts/styles and denied object/base/form actions. Extension messaging is the dedicated local browser transport, not a network fetch. Rendering never inserts provider text as HTML. Copy is user-triggered and clipboard failure offers a selectable readonly tree. Narrow windows retain 14px task names, 13px supporting controls and 6px nesting indentation.
 
-A real private snapshot was exported separately from the repository for this user, covering pinned chats plus up to 50 recent unpinned chats. It is not an all-account inventory. It contains titles, project labels, observations, last-update times and listed summaries, not complete messages, credentials or account emails. It must never be added to Git or the deployed directory. Claude/Gemini have the same independent view and JSON contract, but their live task sources remain unverified. The demo is opt-in and clearly labelled synthetic.
+## Verification and limits
 
-## JSON contract
-
-A file is selected with **Open task list (JSON)**. UTF-8 encoded size ≤524,288 bytes, ≤500 nodes, ≤12 levels. The schema is versioned separately from app/extension releases:
-
-```json
-{
-  "schemaVersion": 1,
-  "service": "chatgpt",
-  "source": "local-export",
-  "capturedAt": "2026-10-09T14:00:00Z",
-  "coverage": "Example only; not the complete account",
-  "tasks": [
-    {
-      "id": "example-1",
-      "title": "Example task",
-      "projectId": "example-project",
-      "projectTitle": "Example project",
-      "kind": "chat",
-      "status": "unknown",
-      "updatedAt": "2026-10-09T13:59:00Z"
-    }
-  ]
-}
-```
-
-These are fictitious examples. `source` is a format label (`codex-app`, `local-export`, `demo`), not proof of provenance. Imported files always display as local snapshots without a live connection. `capturedAt` is a required parseable ISO timestamp. `coverage` is optional and capped at 250 characters.
-
-| Node field | Contract |
-|---|---|
-| `id` | Required unique nonempty string, ≤120 characters; no silent shortening of IDs. |
-| `title` | Required nonempty text, capped at 200 characters. |
-| `parentId` | Optional existing node ID. Same project and kind; cycles and depth >12 are rejected. No inferred parent links. |
-| `projectId` / `projectTitle` | Optional project ID (≤120); nonempty title (≤100) required when ID is present. The same ID cannot carry conflicting titles. Missing ID groups under No project. |
-| `kind` | `codex` only for ChatGPT; otherwise `chat`. Group by project **and** kind. |
-| `status` | `running`, `idle`, `waiting`, `completed`, `failed`, `unknown`. Unrecognized states become unknown; idle is never converted to completed. |
-| `updatedAt` | Optional ISO timestamp; missing/invalid shows —. |
-| `summary` | Optional bounded text, ≤500 characters. Not required or inferred. |
-| `url` | Optional exact provider HTTPS conversation route (`chatgpt.com/c/…`, `claude.ai/chat/…`, `gemini.google.com/app/…`). Reject credentials, nondefault ports, query, fragment, other hosts/routes. Unsupported links are omitted. |
-
-Unknown fields are discarded; no token/password/body field is retained. Control characters are sanitized. Invalid schema, missing IDs/titles, duplicate IDs, missing parents, cross-project/cross-kind parents or cycles reject the whole file and leave the prior snapshot intact. Service must match the window; a Claude file cannot populate ChatGPT.
-
-## Rendering and interaction
-
-Native `details`/`summary` provide keyboard-accessible project and task disclosure. Projects are open initially, node details collapsed. Node details contain last-update time, optional summary, original-chat link and verified children. Search matches title/project/summary; status filters include matching nodes plus their ancestors to keep valid hierarchy. Active search/filter expands the matching paths. Expand/collapse affects the task view only. Repainting for language/theme preserves open states when not filtering.
-
-All imported states are explicitly observations. Running and idle badges say “at capture”; completed/failed are reported states, not inferred. After five minutes the capture area warns that it is a historical snapshot. Count is shown as displayed nodes / total nodes, including ancestors required for the filtered tree. Copy includes provider, capture time, local/demo label and the filtered tree. If clipboard access is unavailable, a selectable readonly text dialog appears. Clear discards the snapshot, not any usage history.
-
-Each window holds one snapshot in memory. No automatic file read, auto-refresh, polling, persistence, export to a server or screenshot capture occurs. Reload, close or Clear discards its data; reopening requires an explicit import. Windows have no opener after launch. Popup fallback anchors use `target=_blank` and `rel=noopener noreferrer`. Ctrl/Command-click follows the normal safe anchor.
-
-## Security and next adapters
-
-The task route uses `default-src 'none'`, self-only script/style and `connect-src 'none'`, with objects/base/form action denied. Text is inserted through textContent, not innerHTML. No cookies, API credentials, OS files, usage GET response, diagnostic database or shared localStorage are read by these modules. Ordinary navigation to validated original-chat links occurs only on user click.
-
-Future live adapters must be separately authorized and tested. They must supply this normalized contract through an authenticated local/account-scoped bridge, minimize fields, prevent cross-account reuse, expose source and observation time, distinguish unavailable/stale from running/completed, and fail without touching quota modules. Adding extension integration requires the normal package minor release, a separate message boundary and explicit task collection controls. Do not hide task fetching inside the existing usage refresh or include task bodies in its GET response. No provider endpoint should be guessed from this prototype.
-
-## Verification
-
-Automated model tests cover provider/kind separation, idle semantics, valid ancestry, matching-child ancestor retention, missing parents, duplicate IDs, cycles, depth/count/byte limits, hostile links/text, credential-field stripping and explicit demos. A VM executes the real launcher against repeated card renders and checks provider URL, preserved usage buttons, language/theme, tall popup dimensions, opener severing and blocked-popup tab fallback. Run `node --test tests/*.test.cjs`, `python3 build.py`, `git diff --check` and compare ZIP SHA-256 and every extension source against the baseline.
-
-Verified on 2026-10-09: all 178 regression tests passed, the Web build and diff checks passed, and the private 57-node ChatGPT snapshot passed the actual model parser. All 68 tracked extension files are byte-identical to the baseline; package SHA-256 remains `81c664f12a0b0899127a688c75516700b6d0b75da2229a0c3d53b4f4964570bb`. Browser/OS visual checks have not run: the isolated headless browser could not launch in the sandbox, and screen-operation permission remains pending. No native resize/fullscreen/visual result is claimed.
-
-Browser checks should cover 420×780, 280×700 and 800×600, both languages/themes, import/demo, filtering, disclosure, copy fallback, invalid-import retention and Clear. Check the main monitor at normal/fullscreen viewport sizes after adding launchers. Native window-manager behavior and signed-in provider task adapters remain manual/unimplemented gates; passing unit tests does not establish live task acquisition.
+Regression coverage exercises normalization, ancestry, hostile links, launcher rerenders, real adapter collection against mock sidebars, pending-request coalescing, cooldown and cleanup. Quota tests separately reproduce the real background billing circular wait and verify GET projection does not alter history/storage. Live official usage screens were compared during diagnosis on 2026-10-10. Installed-extension automatic acquisition, native popup resizing, audio and complete account coverage must not be claimed without the package update and live verification. Older import-only trial behavior is historical and superseded by this adapter; the local import option remains supported.
 
 ---
 
 <a id="ja"></a>
 
-# 日本語 — タスク詳細の試作仕様
+# 日本語 — タスク詳細の実装仕様
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
-現行Web・配布版は **1.24.0**。以下の1.23.1試作時の分離構成を維持し、1.24.0ではタスクCSSとフローティング障害詳細だけを調整する。
+現行 **1.25.0 β**。各LLMのタスク詳細ボタンは独立した縦長420×780小窓を開き、ブロック時は安全な別タブへ戻る。起動時の言語／テーマを継承し、後の選択は窓内だけ。残量・履歴・音・既存外窓のライフサイクルは分離する。
 
-## 分離と起動
+## 自動取得
 
-各表示カードに［タスク詳細］を加え、クリック時に初期420×780の縦長通常小窓を要求する。ブロック時は安全な別タブへ戻す。OS/ブラウザーが許す範囲でサイズ変更でき、描画で寸法を戻さない。最前面PiPではなく、既存フローティングの起動・終了処理も流用しない。主画面の終了・再読込から独立する。
+開いた時と、表示中かつ自動ONの間は1分ごと、専用TASKS_READで取得する。拡張機能をアンインストールせず1.25.0へ上書き更新し、同じoriginの主画面で接続する。専用橋渡しは既存glance-extension-idだけを読み、設定・残量・履歴を読まない。
 
-`task-launcher.js` は起動リンクだけを加え、既存の利用状況確認ボタンを残す。残量RPC・保存・通知を使わない。`tasks.html` / `tasks.css` は独立画面と配色、`tasks-model.js` は正規化・入力検証・分類・検索、`tasks-page.js` は読込と描画だけを担当する。通常のビルドでWeb配布物へコピーし、拡張機能ソース・ZIP・互換性版は変更しない。
+許可HTTPS origin、/tasks または /tasks.html、トップフレーム、URLと依頼のservice一致に限定。毎回、新しい非アクティブ公式ホームを開き、古いサイドバーの別アカウント再利用を防ぐ。表示されたサイドバーのリンクだけを読み、finallyで自分の一時タブだけ閉じる。既存チャット・入力を開き直さない。同一事業者の同時依頼共有、55秒の再試行制限、20秒の取得予算、読取応答2.5秒制限。失敗・空・読込中は前回一覧を保持。空アカウントと未ログインは完全には区別できず、全件ゼロを確認済みとはしない。
 
-`service` はchatgpt/claude/gemini、`lang` はja/en、`theme` はdark/standard。不正なサービスはChatGPTへ、不正言語は環境がja始まりなら日本語、それ以外は英語へ戻す。起動時の主画面設定を引き継ぐが、別窓内の切替はその窓だけに適用し、保存・主画面へ送信しない。
+ChatGPTは通常/c/と明示的/g/g-p-…/c/。プロジェクト名が不明ならIDでまとめ、名前や親子を推測しない。Claudeは/chat/・/code/session_・/cowork/を別種別に分け、プロジェクトリンクだけをタスクにしない。Geminiは単一の現在サイドバーの/app/・/u/N/app/。実行状態は未確認とし、待機から完了を推測しない。デスクトップCodexの一覧・会話本文・実行手順・全アカウント履歴はこのWeb取得の対象外。
 
-## 取得の範囲
+消去・サンプル・ファイル読込は自動OFFと保留応答の無効化。自動ボタンで再開、手動更新は1回取得する。窓を閉じる／再読込でメモリーを破棄。一覧は永続保存・診断ログ・運営サーバー・公開資産・Gitへ入れない。
 
-**各社・Codexからのタスク自動取得は未接続。** Codex専用ツールから通常ChatGPT・Codexのメタ情報は取得できたが、この機能を静的Webから直接呼べるわけではない。プロジェクト所属は取得結果を使い、名称から作業の親子を推測しない。待機は作業完了ではなく、直近応答の処理完了も全体の目標達成を意味しない。
+## モジュールと安全契約
 
-実一覧はリポジトリ外の非公開ローカルJSONに書き出し、［タスク一覧を開く（JSON）］で読み込む。範囲はピン留め＋直近最大50件であり、全アカウント履歴ではない。名称・所属・状態・更新日時・一覧の要約に限定し、応答全文や認証情報は含めない。個人のJSONをGit/公開配布物へ入れない。Claude/Geminiは同じ読込契約と表示を用意するが、実取得は未検証。サンプルは任意操作で架空と明示する。
+上記7モジュールを独立実装し、Webの専用橋渡しから利用量GET／REFRESH／SETTINGS・音声・保存へ依存しない。拡張機能側は本文・入力欄・認証情報を読まず、非公開APIの推測をしない。
 
-## 入力契約
+JSONは512KiB・500件・12階層以内、schemaVersion=1、対象service一致、ISO取得時刻が必須。IDは厳密な一意120文字以内、タイトル200、projectId/titleの整合、親は同じproject/kindの実在ID、summary500、任意更新時刻と公式リンク。循環・重複・親不在・別project/kind・別serviceは全体拒否し前回を保持。資格情報など未知フィールドは破棄。リンクは厳密HTTPS事業者host・許可チャット経路・認証/port/query/fragmentなし。sourceは形式ラベルであり取得元認証ではなく、読込ファイルは端末内観測値と表示する。
 
-上のJSON例は架空の形式例。UTF-8で524,288bytes、500件、12階層以内。`schemaVersion=1`、画面と同じ`service`、ISOの`capturedAt`、`tasks`配列を必須とする。`source` は形式区分だけで真正性の証明ではない。読込データは常に端末内一覧・自動接続なしと表示する。
+CSP connect-src none、script/style self、object/base/form-action禁止を維持。専用拡張メッセージはブラウザ内の経路でありWeb fetchをしない。textContentで描画し、コピーは利用者操作のみ、失敗時は選択可能テキストを提示。狭幅でもタスク名14px、補足13px、字下げ6pxを維持。
 
-IDは一意・非空・120文字以内で勝手に短縮しない。名称は非空200文字以内。親IDは同じプロジェクト・同じ種別の存在する要素に限り、循環・12階層超を拒否する。プロジェクトID120文字以内、名称100文字以内とし、同じIDに異なる名称を許可しない。種別は通常chat、ChatGPTだけcodexを許可する。状態はrunning/idle/waiting/completed/failed/unknownで、未知の状態は未確認に戻す。更新日時は任意で、不正/欠落なら—。要約500文字、取得範囲250文字まで。不要フィールドを破棄し、token/password/bodyを保持しない。
+## 検証範囲
 
-リンクは対象事業者の厳密HTTPSチャットパスだけ。ChatGPT `/c/…`、Claude `/chat/…`、Gemini `/app/…` とし、別ホスト・認証情報・別port・query・fragment・未対応パスを除外する。型不正、重複ID、不明な親、別サービス/別プロジェクト/別種別の親、循環はファイル全体を拒否し、前回一覧を保つ。
-
-## 表示・破棄・安全性
-
-ツリーはキーボード操作可能なdetails/summaryで表示し、初期状態はプロジェクトを開き、各タスクを閉じる。名称/所属/要約を検索し、状態絞り込みの一致要素と親を残す。検索中は該当経路を展開する。日英・テーマ切替時は通常の開閉状態を保持する。タスク詳細には更新日時、任意要約、元チャットリンク、明示された子を表示する。
-
-実行中/待機は取得時点と明示し、完了/失敗も報告値として扱う。5分以上前は過去一覧と表示する。件数は表示要素/全件で、親保持分を含む。コピーは取得時刻、ローカル/サンプル区分、絞り込み後のツリーを含める。コピー不可なら選択可能なreadonlyテキストを別ダイアログに出す。
-
-一覧は窓内メモリーだけ。自動読取・更新・ポーリング・永続保存・サーバー書出し・画面撮影をしない。消去・再読込・窓終了で破棄し、再表示は明示読込とする。主画面/履歴には影響しない。openerを切り、別タブリンクはnoopener/noreferrerを使う。
-
-CSPはdefault-src none、script/style self、connect-src none、object/base/form-action none。textContent描画とする。Cookie・API認証情報・OSファイル・利用量GET・診断DB・共通localStorageを読まない。将来の自動取得は別途検証した認証付きローカル/アカウント別アダプターに限定し、観測時刻・取得不能・古い値・実行状態を区別する。拡張機能へ追加するなら中間版番号を増やし、独立メッセージ境界と明示的収集操作を設ける。既存の使用量更新/GETへ混ぜず、事業者APIを推測しない。
-
-## 検証
-
-入力・親子・件数/容量・悪意あるリンク/文字・認証情報破棄・架空表示と、実際の起動スクリプトを再描画/言語/テーマ/ブロック時でテストする。既存全テスト、Webビルド、差分検査、ZIPハッシュ・拡張全ソースの一致を確認する。画面は420×780、280×700、800×600、日英/両テーマ、読込/検索/開閉/コピー/不正入力時保持/消去を確認し、通常/全画面モニターの表示も点検する。ネイティブ小窓の操作性、各社の実取得は別の未確認/未実装事項であり、単体テスト成功を実取得成功と報告しない。
-
-検証記録（2026-10-09）：全178件の回帰テスト、Webビルド、差分検査に合格。取得済み57件の非公開一覧は実際のモデルで解析できた。拡張機能の全68ファイルは変更前と同一で、ZIPのSHA-256は `81c664f12a0b0899127a688c75516700b6d0b75da2229a0c3d53b4f4964570bb` のまま。独立ブラウザーはサンドボックス内で起動に失敗し、画面操作の許可は回答待ちのため、実画面・ネイティブリサイズ・全画面レイアウトは未確認。
-
-## v1.24.0 狭幅調整
-
-360px以下では読込/サンプルと検索/状態を縦配置、操作を2列、件数をサービス名の下にする。ツリー字下げは各6px、タスク名14px、操作と補足13px以上。ヘッダーも必要時に折り返す。タスクスクリプト・形式・通信・保存・終了連動は変更しない。OS/ブラウザの最小寸法は変えられない。別途調整したモニター障害描画はタスク画面へ取り込まない。
-
-1.24.0では全181件の回帰テストが通過。狭幅の実画面は画面操作の許可待ちで未確認であり、以下の確認手順を確認済みと解釈しない。
+形式・親子・不正リンク・繰返しボタン描画・模擬公式サイドバー・同時依頼共有・間隔・一時タブ終了を回帰検証する。残量側は実背景処理の請求循環待ち、GET投影の保存／履歴非変更を別検証。2026-10-10に公式利用画面の数値差を確認。拡張更新後の本番自動取得・外窓リサイズ・音・全アカウント範囲は実確認前に成功と主張しない。旧JSON限定試作は履歴として上書きし、端末内JSON読込機能は残す。

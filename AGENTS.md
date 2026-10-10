@@ -54,6 +54,11 @@ This file is the starting point for every future Codex or LLM edit. Follow the u
 
 - For floating provider alerts, show only `issue` rows while incidents exist; never hide normal usage cards. The main status view remains complete, and no-incident/recovery/unavailable behavior must stay accessible. Keep task narrow-width layout changes in `web/tasks.css`, with readable text and bounded tree indentation.
 
+- Billing-reader snapshot replies must bypass the global refresh queue and retain their dedicated validated queue. Test the real nested READ→SNAPSHOT→acknowledgement path, not only parser outputs. Keep optional reader/audio work bounded.
+- Never show an expired cached quota as current or as “reset soon.” Project stale windows without modifying stored baselines/history, and do not refresh quota capture time with metadata-only DOM supplements.
+- Automatic tasks belong to independent metadata-only modules and TASKS_READ. Restrict sender origin, task route, service and top frame. Use fresh inactive provider homes; never reload user chats/drafts. Do not persist or log titles. Keep explicit pause/clear/import behavior, bounded acquisition, unknown execution state and temporary-tab cleanup.
+- Provider incident and AI feed disclosures have independent state on every surface. Do not claim an unconfigured X feed works or let incidents expand the feed panel.
+
 ## Every deliverable
 
 Keep this `AGENTS.md` in the repository and update it when a new acceptance rule or failure-prevention step arises. In the final report, link this file, the detailed specification, and the distribution package; distinguish verified behavior from live-account checks that remain unverified.
@@ -113,6 +118,11 @@ Keep this `AGENTS.md` in the repository and update it when a new acceptance rule
 - タスク詳細は独立したWeb限定の `tasks-*` 群へ隔離し、主画面には起動導線だけを追加する。残量/RPC/通知音/既存小窓のライフサイクルを流用しない。読込状態は取得時点の観測値とし、サンプルを明示する。不正な親子関係・別事業者リンクを拒否し、個人の一覧をリポジトリ・公開配布物へ入れない。自動取得は別途検証するアダプターで実装する。
 
 - フローティング障害詳細は障害中だけissueのサービスに絞り、正常な利用残量カードは消さない。主画面の全社確認と障害なし／復帰／取得不能の表示を維持する。タスク狭幅調整は `web/tasks.css` 内で、可読文字サイズと小さな字下げを使う。
+
+- 請求読取のSNAPSHOT応答は全体の更新待ち行列へ戻さず、検証済み請求専用待ち行列へ渡す。解析だけでなく実READ→SNAPSHOT→受領応答の循環待ちをテストし、任意読取・音声を時間制限する。
+- 過去リセット枠を現在残量／「まもなくリセット」にしない。保存履歴と基準値は変更せず表示投影する。補足DOMだけで残量取得時刻を更新しない。
+- タスク自動取得は独立したメタ情報用モジュールとTASKS_READに限定し、送信元origin・タスク経路・service・トップフレームを検証する。新しい非アクティブ公式ホームを使い、既存チャット／入力をリロードしない。一覧タイトルを永続保存・ログへ入れず、停止・消去・読込、時間制限、状態未確認、一時タブ終了を維持する。
+- 障害情報とAI速報の開閉状態を全画面で分離し、障害で速報欄を開かない。未設定X配信を稼働済みとしない。
 
 ## 毎回の成果物
 

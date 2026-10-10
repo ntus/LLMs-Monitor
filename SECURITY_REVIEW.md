@@ -1,10 +1,16 @@
-# Security review — v1.24.0 beta
+# Security review — v1.25.0 beta
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 <a id="en"></a>
 
-This review records the checks performed for the 1.24.0 beta; it is not a guarantee that no vulnerabilities exist. A release owner should also test the packaged extension in current Chrome and Edge with real accounts and submit it to store review.
+This review records the checks performed for the 1.25.0 beta; it is not a guarantee that no vulnerabilities exist. A release owner should also test the packaged extension in current Chrome and Edge with real accounts and submit it to store review.
+
+## v1.25.0 recovery and metadata adapter
+
+Required/optional permissions and allowed origins remain unchanged. Authenticated billing snapshots bypass only the global queue; existing billing validation and its own storage queue remain. Expired quota projection never modifies history/storage. Metadata-only supplements do not advance quota capture time. Optional reader/audio waits are bounded; late audio resume is cancelled before any tone. All 195 regression tests pass, including task RPC rejection and delayed audio. Japanese/English task demos have no horizontal overflow at 240px.
+
+TASKS_READ uses a separate non-persistent adapter, restricted to approved task routes/top frames/service match. Fresh inactive homes read visible sidebar anchors, excluding bodies/drafts/credentials. Temporary tabs close after a bounded attempt. Only bounded titles, validated links, IDs and unknown states are returned to the selected task window; no server upload, logging or quota-state dependency. Web connect-src remains none. Imports/demo/Clear pause automatic reading and invalidate pending results. Execution state/full inventory/Desktop Codex are explicitly unavailable. X feed infrastructure remains unconfigured, not claimed live. Installed-extension, account-switch, audio and native-window verification remain manual gates.
 
 ## v1.24.0 presentation changes
 
@@ -67,3 +73,11 @@ Diagnostic events are restricted to numeric fields and fixed categories in exten
 ## v1.24.0 表示調整
 
 障害行の選択は正規化済みの表示値に限り、元状態を変更しない。主画面は全社表示のまま。新権限・通信・保存・音処理は追加せず、タスク調整は独立CSSと資産版だけ。全181件の回帰テスト、ZIP整合性、取得/履歴/音/ライフサイクルソースと権限の変更前比較に合格。実アカウント・実画面・ネイティブ窓は未確認であり、安全性や表示の完全保証としない。
+
+## v1.25.0 日本語検証記録
+
+必須／任意権限と許可originは維持。請求SNAPSHOTの全体待ち行列だけを分離し、既存の請求検証と専用保存待ち行列を残す。期限切れ残量の表示投影は履歴／保存を変更せず、補足だけで残量取得日時を新しくしない。音声・任意読取を時間制限する。
+
+タスク取得は専用経路・トップフレーム・許可origin・service一致、新しい非アクティブホームのサイドバーリンクのみ。本文・入力・認証を収集せず、一時タブ終了、件数・文字数・URL検証、窓内メモリー、ログ／サーバー／履歴への非混入を確認する。消去／読込／サンプルで自動停止と保留応答無効化。実行状態・全件・デスクトップCodexを取得済みとしない。X配信基盤は未設定。インストール更新後の実取得・アカウント切替・音・外窓の確認は手動項目として残す。
+
+現行1.25.0検証: 195件成功。狭幅240pxの日英サンプルで横はみ出しなし。実インストール後のアカウント比較・自動取得・音声は別途確認する。遅延した音声再開は発音前に取消す。

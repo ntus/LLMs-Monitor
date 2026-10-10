@@ -13,9 +13,10 @@
   const id=message.service;if(!Object.hasOwn(A.PROVIDERS,id)||A.provider(sender.url)!==id||sender.frameId!==0||!Number.isInteger(sender.tab?.id)||!await permitted(id))return {ok:false};
   return serialize(async()=>{const saved=await chrome.storage.local.get('apiCredits'),data=saved.apiCredits||{};if(data[id]?.enabled!==true)return {ok:false};data[id]=A.accept(data[id],message);await chrome.storage.local.set({apiCredits:data});return {ok:true}});
  }
+ function bounded(task,ms=5000){let timer;return Promise.race([task,new Promise((_,reject)=>{timer=setTimeout(()=>reject(Error('API reader timeout')),ms)})]).finally(()=>clearTimeout(timer));}
  async function refresh(only){
   const saved=await chrome.storage.local.get('apiCredits'),ids=only?[only]:Object.keys(A.PROVIDERS);
-  await Promise.allSettled(ids.map(async id=>{if(!saved.apiCredits?.[id]?.enabled)return;if(!await permitted(id)){await configure(id,false);return}await register(id);const tabs=await chrome.tabs.query({url:A.PROVIDERS[id].origin+'/*'});for(const tab of tabs){if(!A.provider(tab.url)||!Number.isInteger(tab.id))continue;try{const reply=await chrome.tabs.sendMessage(tab.id,{type:'API_CREDIT_READ'});if(reply?.ready)continue}catch{}await chrome.scripting.executeScript({target:{tabId:tab.id},files:['api-credits.js','api-credit-reader.js']})}}));
+  await Promise.allSettled(ids.map(async id=>{if(!saved.apiCredits?.[id]?.enabled)return;if(!await permitted(id)){await configure(id,false);return}await register(id);const tabs=await chrome.tabs.query({url:A.PROVIDERS[id].origin+'/*'});for(const tab of tabs){if(!A.provider(tab.url)||!Number.isInteger(tab.id))continue;try{const reply=await bounded(chrome.tabs.sendMessage(tab.id,{type:'API_CREDIT_READ'}));if(reply?.ready)continue}catch{}await bounded(chrome.scripting.executeScript({target:{tabId:tab.id},files:['api-credits.js','api-credit-reader.js']}))}}));
  }
  root.GlanceApiCreditBackground={configure,receive,refresh,permission};
 })(globalThis);
