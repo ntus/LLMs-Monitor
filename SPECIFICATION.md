@@ -135,7 +135,7 @@ TASK-CODE-001 reads exact accessibility labels from rendered Claude Code sidebar
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.27.0
+対象製品版: 1.28.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -1407,3 +1407,11 @@ TASK-STATE-001は、旧版の一律「状態未確認」を明示的な操作ボ
 ## v1.27.0 — 閉じたClaude Codeセッション
 
 TASK-CODE-001は公式Codeホームの表示済みサイドバーにある明示的な状態属性だけを取得する。会話タブを開かず「入力待ち」「アイドル」「未読の返答」を一覧由来として表示し、未読やPRマージから完了を推測しない。通常ホームとCodeホームを非アクティブで取得し、1分周期・時間制限・一時タブ終了・部分成功を維持。一覧状態は90秒、会話操作状態は15秒で失効し、不一致は未確認。本文・入力・認証情報・追加権限・残量／履歴／音は変更しない。2026-10-11に公式一覧属性を実確認。更新済み拡張での一連の動作確認は別途必要。
+
+## v1.28.0 — independent task workspace / 独立タスク作業領域
+
+EN: Official project labels and Claude sidebar group names replace internal IDs. Unknown affiliation is labelled unknown. Explicit pins are prioritized and listed separately; rendered-sidebar coverage remains partial, not a guarantee of all account pins. Fresh acquisition homes expand known sidebar sections only. User chats are never navigated. Work notes/checklists are explicitly saved in a separate browser-local key, scoped by provider, user-selected workspace and exact conversation URL. Concurrent saves and overlapping imports are rejected. Copy/export are explicit; no chat text capture, cloud sync or automatic message sending. Existing quotas/history/audio are independent. Claude API promotional balance has a separate billing link/value row. Only an explicit available promotional balance summary is accepted; grants/totals are not inferred or combined with paid credits. Missing values show —. Signed-in promotional reader verification is pending.
+
+JP: 公式プロジェクト名・Claudeのサイドバーグループ名を表示し、内部IDを見出しに出さない。所属不明は未所属と断定しない。検出した公式ピンを優先・別一覧表示するが、全アカウントの全件取得は保証しない。新規取得用ホームだけ既知の一覧を展開する。作業メモ・チェックリストは利用者が明示保存し、事業者・指定作業領域・会話URL単位で端末内の独立キーへ保存する。同時保存・重複読込を拒否し、コピー／書出しで共有する。本文収集・自動送信・クラウド同期はしない。通常残量・履歴・通知音から分離。Claude APIプロモーションクレジットは通常残高に加算せず1行追加し、公式の利用可能額原文のみ解析。付与総額から推測せず未取得は—。添付画面相当の模擬データを検証し、ログイン実機の取得は未検証。
+
+Validation 1.28.0: 220 automated tests passed. Main quota acquisition/history/audio/floating source files match the prior release byte-for-byte; shared renderer differs only in version. Local Chrome 340px width note editor has no horizontal overflow (316px dialog, 60px first textarea). Explicit save and reload preserved a synthetic note/checklist. File-chooser live import is blocked by the browser file-URL setting; parser/atomic import/conflict checks are automated. Actual account-wide pin coverage and signed-in Claude promotional acquisition remain unverified.

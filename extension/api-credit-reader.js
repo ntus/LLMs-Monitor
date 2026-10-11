@@ -12,6 +12,7 @@
   for(const node of matches){let parent=node;for(let depth=0;parent&&depth<4;depth++,parent=parent.parentElement){const text=parent.innerText||'';if(text.length>1200)break;const parsed=A.parse(text,id);if(parsed.status==='ready'){values.push(parsed);break}}}
   let result=matches.length===1&&values.length===1?values[0]:{status:'unavailable'};
   if(!matches.length){const text=document.body.innerText.slice(0,24000);result=A.parse(text,id);if(/(?:^|\n)(?:Sign in|Log in|Continue with Google|ログイン|Googleで続行)(?:\n|$)/i.test(text))result={status:'login'};}
+  if(id==='claude')result={...result,promotional:result.status==='login'?{status:'unavailable'}:A.promotional(document.body.innerText.slice(0,24000))};
   // Do not transmit page text, account names, API keys, credentials or payment details.
   try{await chrome.runtime.sendMessage({type:'API_CREDIT_SNAPSHOT',service:id,...result,scope:scope()})}catch{}
  }

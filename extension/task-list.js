@@ -15,18 +15,45 @@
   if(u.href.length>600||!m||service==='claude'&&m[1]==='code'&&!m[2].startsWith('session_'))return null;
   return {id:service==='chatgpt'?m[2]:service==='claude'?m[1]+':'+m[2]:m[1],url:u.href,kind:service==='claude'&&m[1]!=='chat'?m[1]:'chat',projectId:service==='chatgpt'?m[1]||null:null};
  }catch{return null}}
+ const text=(v,n=100)=>String(v||'').replace(/[\u0000-\u001f\u007f]/g,' ').trim().slice(0,n);
+ function context(a,service,names){
+  let groupTitle='',groupId='',pinned=false;
+  if(service==='chatgpt')pinned=!!a.closest?.('[data-pinned-content-tab-drop-key]');
+  if(service==='claude'){
+   pinned=!!a.closest?.('[data-pinned-list]');
+   const group=a.closest?.('[data-group-list][data-group-label]');
+   if(group){groupTitle=text(group.getAttribute('data-group-label'));groupId=text(group.getAttribute('data-group-list'),120);}
+  }
+  if(service==='gemini'){
+   // Explicit accessible pin icon/label only; absence is not proof of no pins.
+   const row=a.closest?.('gem-nav-list-item');
+   pinned=!!row?.querySelector?.('[aria-label="Pinned"], [aria-label="ピン留め済み"], [data-mat-icon-name="push_pin"]');
+  }
+  const projectId=link(a.getAttribute('href'),service)?.projectId;
+  return {groupId,groupTitle,pinned,projectTitle:projectId?(names.get(projectId)||''):''};
+ }
+ function pinURL(href,service){try{const u=new URL(href,HOMES[service]);if(u.origin!==new URL(HOMES[service]).origin||u.username||u.password||u.search||u.hash)return '';if(link(u.href,service))return u.href;
+  const re=service==='claude'?/^\/(?:code\/project|project)\/[a-zA-Z0-9_-]+\/?$/:service==='chatgpt'?/^\/g\/g-p-[a-zA-Z0-9_-]+(?:\/project)?\/?$/:/^\/notebook\/[a-zA-Z0-9_-]+\/?$/;return re.test(u.pathname)?u.href:'';}catch{return ''}}
+ function prepare(doc,service){
+  const areas=[...doc.querySelectorAll(SIDEBARS[service])].filter(n=>n.getClientRects().length);let count=0;
+  for(const area of areas){const selector=service==='claude'?'[data-group-toggle][aria-expanded="false"]':service==='chatgpt'?'[data-app-action-sidebar-project-id][aria-expanded="false"], [data-app-action-sidebar-section-toggle][aria-expanded="false"]':'button[aria-expanded="false"][aria-label="Pinned"], button[aria-expanded="false"][aria-label="「ピン留め」を切り替える"]';
+   for(const b of area.querySelectorAll(selector)){if(count>=50)return count;if(service==='chatgpt'&&b.hasAttribute?.('data-app-action-sidebar-section-toggle')&&!/^(?:Pinned|ピン留め)$/.test(text(b.innerText)))continue;if(b.getClientRects().length&&typeof b.click==='function'){b.click();count++}}}
+  return count;
+ }
  function collect(doc,service,now=Date.now()){
   if(!HOSTS[service])return {status:'unavailable'};
-  const areas=[...doc.querySelectorAll(SIDEBARS[service])].filter(n=>n.getClientRects().length),rows=new Map();
+  const areas=[...doc.querySelectorAll(SIDEBARS[service])].filter(n=>n.getClientRects().length),rows=new Map(),names=new Map(),pins=new Map();
   if(!areas.length)return {status:'unavailable'};
+  for(const area of areas)for(const n of area.querySelectorAll('[data-app-action-sidebar-project-id][data-app-action-sidebar-project-label]')){const id=n.getAttribute('data-app-action-sidebar-project-id'),label=text(n.getAttribute('data-app-action-sidebar-project-label'));if(id&&label&&!names.has(id))names.set(id,label)}
   for(const area of areas)for(const a of area.querySelectorAll('a[href]')){
-   if(!a.getClientRects().length)continue;const item=link(a.getAttribute('href'),service);if(!item)continue;
-   const title=String(a.innerText||a.getAttribute('aria-label')||'').replace(/[\u0000-\u001f\u007f]/g,' ').trim().slice(0,200);if(!title||item.id.length>120||item.projectId?.length>120||rows.has(item.id))continue;
+   if(!a.getClientRects().length)continue;const ctx=context(a,service,names),pin=pinURL(a.getAttribute('href'),service);if(ctx.pinned&&pin&&!pins.has(pin))pins.set(pin,{url:pin,title:text(a.innerText||a.getAttribute('aria-label'),200),kind:link(pin,service)?'chat':'project'});const item=link(a.getAttribute('href'),service);if(!item)continue;
+   const title=String(a.innerText||a.getAttribute('aria-label')||'').replace(/[\u0000-\u001f\u007f]/g,' ').trim().slice(0,200);if(!title||item.id.length>120||item.projectId?.length>120)continue;
    const listedState=service==='claude'&&item.kind==='code'?codeBadge(a,now):null;
-   rows.set(item.id,{...item,title,status:'unknown',listedState,parentId:null,projectTitle:item.projectId?item.projectId:'',updatedAt:null,summary:''});if(rows.size>=500)break;
+   const prior=rows.get(item.id);if(prior){if(ctx.projectTitle)prior.projectTitle=ctx.projectTitle;if(ctx.groupTitle){prior.groupTitle=ctx.groupTitle;prior.groupId=ctx.groupId}prior.pinned=prior.pinned||ctx.pinned;continue;}
+   rows.set(item.id,{...item,...ctx,title,status:'unknown',listedState,parentId:null,updatedAt:null,summary:''});if(rows.size>=500)break;
   }
-  if(!rows.size)return {status:'unavailable'}; // Empty/loading/signed-out cannot erase a previous list.
-  return {status:'ready',snapshot:{schemaVersion:1,service,capturedAt:new Date(now).toISOString(),source:'official-sidebar',coverage:'Rendered sidebar only; no chat contents or inferred execution states. Project labels may be IDs. Desktop Codex tasks are not included.',tasks:[...rows.values()]}};
+  if(!rows.size&&!pins.size)return {status:'unavailable'}; // Empty/loading/signed-out cannot erase a previous list.
+  return {status:'ready',snapshot:{schemaVersion:1,service,capturedAt:new Date(now).toISOString(),source:'official-sidebar',coverage:'Rendered sidebar only; no chat contents or inferred execution states. Unknown affiliations are not inferred. Desktop Codex tasks are not included.',pins:[...pins.values()].slice(0,500),pinCoverage:'partial',tasks:[...rows.values()]}};
  }
- root.LLMTaskList={HOSTS,HOMES,SIDEBARS,link,collect};if(typeof module!=='undefined')module.exports=root.LLMTaskList;
+ root.LLMTaskList={HOSTS,HOMES,SIDEBARS,link,pinURL,prepare,collect};if(typeof module!=='undefined')module.exports=root.LLMTaskList;
 })(globalThis);

@@ -344,3 +344,7 @@ TASK-CODE-001 reads exact accessibility labels from rendered Claude Code sidebar
 ## v1.27.0 — 閉じたClaude Codeセッション
 
 TASK-CODE-001は公式Codeホームの表示済みサイドバーにある明示的な状態属性だけを取得する。会話タブを開かず「入力待ち」「アイドル」「未読の返答」を一覧由来として表示し、未読やPRマージから完了を推測しない。通常ホームとCodeホームを非アクティブで取得し、1分周期・時間制限・一時タブ終了・部分成功を維持。一覧状態は90秒、会話操作状態は15秒で失効し、不一致は未確認。本文・入力・認証情報・追加権限・残量／履歴／音は変更しない。2026-10-11に公式一覧属性を実確認。更新済み拡張での一連の動作確認は別途必要。
+
+## 1.28.0
+EN: Independent pinned-item priority, verified project/group labels and explicit local work notes/checklist/handoff. Separate Claude API promotional balance row; missing values stay unknown.
+JP: 独立タスク画面にピン優先、確認済み所属名、手動保存する作業メモ・チェックリスト・引継ぎを追加。Claude APIプロモーションクレジットを別行表示し、未取得を0にしない。

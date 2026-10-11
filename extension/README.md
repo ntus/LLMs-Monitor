@@ -184,3 +184,9 @@ OSに依存しない静的Webアプリと、Chrome / Edgeデスクトップ用Ma
 APIクレジット残高も追加しました。上部の「API連携」で各社へのアクセスを個別に許可し、公式請求画面を開いておくと表示値を読み取ります。月額プランの残量とは別表示です。OpenAIの実画面を確認済み、Claude／Geminiの請求アカウント実測は未検証です。外窓のタイトルと言語を共通化し、↔メニューで縦横のサイズを個別に調整できます。
 
 v1.27.0はClaude Codeの一覧から入力待ち／アイドル／未読の返答を取得します。会話タブ不要、1分更新、90秒失効。未読を完了とは扱いません。拡張機能の上書き更新が必要です。
+
+## v1.28.0
+
+EN: Pinned items, verified project/group names and explicitly saved thread work notes/checklists/handoff in the independent task screen. Sidebar coverage remains partial. Claude API promotional credits have a separate row.
+
+JP: 独立タスク画面へピン留め優先・確認済みプロジェクト／グループ名・スレッド別作業メモ・チェックリスト・引継ぎを追加。一覧の全件取得は保証しません。Claude APIのプロモーションクレジットを別行に表示します。

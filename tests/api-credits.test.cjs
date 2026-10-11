@@ -63,3 +63,19 @@ test('API credit display uses separate currency balance and official links in bo
  assert.equal(manifest.optional_host_permissions.length,3);
  const setup=fs.readFileSync('extension/api-setup.js','utf8');assert.match(setup,/chrome\.permissions\.request/);
 });
+
+test('Claude promotional credits are separate from paid balance and never inferred from grant totals',()=>{
+ const text='クレジット残高\n$0.00\nプロモーションクレジット $200.00 をご利用いただけます\nプロモーションクレジット\n$200.00 / $200.00\n2026/11/6';
+ assert.deepEqual(A.parse(text,'claude'),{status:'ready',amount:0,currency:'USD'});
+ assert.deepEqual(A.promotional(text),{status:'ready',amount:200,currency:'USD'});
+ assert.deepEqual(A.promotional('$200.00 in promotional credits available'),{status:'ready',amount:200,currency:'USD'});
+ assert.equal(A.promotional('Promotional credits\n$200.00 / $200.00\n2026/11/6').status,'unavailable');
+ assert.equal(A.promotional('Promotional credits available: $10\nPromotional credits available: $20').status,'unavailable');
+ const row=A.accept({enabled:true},{service:'claude',...A.parse(text,'claude'),promotional:A.promotional(text)},Date.now());
+ assert.equal(row.amount,0);assert.equal(row.promotional.amount,200);
+ assert.equal(A.sanitize({service:'claude',promotional:{status:'ready',amount:'200',currency:'USD'}}).promotional.status,'unavailable');
+ assert.equal(A.sanitize({service:'chatgpt',promotional:A.promotional(text)}).promotional,undefined);
+ A.set({claude:row});require('../extension/locale.js').setLanguage('ja');assert.match(A.view('claude'),/プロモーションクレジット/);assert.match(A.view('claude'),/200\.00/);
+ const missing=A.accept(row,{service:'claude',status:'unavailable'},Date.now());assert.equal(missing.promotional.amount,null);
+ A.set({claude:missing});assert(!A.view('claude').includes('200.00'));
+});

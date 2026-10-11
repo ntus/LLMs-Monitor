@@ -22,9 +22,18 @@
   if(/^(?:Postpay|Postpaid|Invoice billing|後払い|請求書払い)$/im.test(String(text)))return {status:'postpaid'};
   return {status:'unavailable'};
  }
+ function promotional(text){
+  const lines=String(text).split(/\n/).map(x=>x.trim()).filter(Boolean),values=[];
+  // Only the explicit available promotional balance summary, never grant totals or table dates.
+  for(const line of lines){
+   const m=line.match(/^(?:プロモーションクレジット\s+([$€¥£]\s*[\d,.]+)\s*をご利用いただけます|(?:You have\s+)?([$€¥£]\s*[\d,.]+)\s+(?:in\s+)?promotional credits(?:\s+available)?[.]?|Promotional credits\s+available[:：]?\s*([$€¥£]\s*[\d,.]+))$/i);
+   if(m){const value=money(m[1]||m[2]||m[3]);if(value&&value.amount>=0)values.push(value)}
+  }
+  return values.length===1?{status:'ready',...values[0]}:{status:'unavailable'};
+ }
  function sanitize(input={},now=Date.now()){
   const status=['ready','login','unavailable','postpaid'].includes(input.status)?input.status:'unavailable',valid=typeof input.amount==='number'&&Number.isFinite(input.amount)&&Math.abs(input.amount)<=1e9&&['USD','EUR','JPY','GBP'].includes(input.currency);
-  return {status:status==='ready'&&!valid?'unavailable':status,amount:status==='ready'&&valid?input.amount:null,currency:status==='ready'&&valid?input.currency:null,scope:/^[a-f0-9]{8}$/.test(input.scope||'')?input.scope:'',capturedAt:now};
+  return {status:status==='ready'&&!valid?'unavailable':status,amount:status==='ready'&&valid?input.amount:null,currency:status==='ready'&&valid?input.currency:null,scope:/^[a-f0-9]{8}$/.test(input.scope||'')?input.scope:'',capturedAt:now,...(input.service==='claude'?{promotional:sanitize({status:input.promotional?.status,amount:input.promotional?.amount,currency:input.promotional?.currency},now)}:{})};
  }
  function accept(old={},incoming={},now=Date.now()){
   const next={...sanitize(incoming,now),enabled:old.enabled===true};
@@ -38,9 +47,10 @@
   if(!Object.hasOwn(PROVIDERS,id))return '';const p=PROVIDERS[id];const ja=root.GlanceLocale?.language()!=='en',row=state[id]||{},enabled=row.enabled===true,stale=Date.now()-(row.capturedAt||0)>125000;
   const title=ja?'APIクレジット残高':'API credit balance',value=enabled&&row.status==='ready'&&typeof row.amount==='number'?format(row,ja?'ja':'en'):row.status==='postpaid'&&enabled?(ja?'後払い':'Postpaid'):'—';
   const note=!enabled?(ja?'API連携から個別に有効化':'Enable each provider in API connections'):row.status==='login'?(ja?'公式API請求画面でログイン':'Sign in on the official API billing page'):row.status==='postpaid'?(ja?'前払い残高は適用されません':'Prepaid balance does not apply'):row.status==='ready'&&!stale?(ja?'請求画面の表示値（プラン枠とは別）':'Billing page value; separate from plan limits'):(ja?'請求画面を開いて更新してください':'Open the billing page to update');
+  const promo=row.promotional||{},promoValue=enabled&&promo.status==='ready'&&typeof promo.amount==='number'?format(promo,ja?'ja':'en'):'—',promoLine=id==='claude'?`<div class="extra-line" style="flex-wrap:nowrap"><a style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" href="${p.url}" target="_blank" rel="noopener noreferrer">${ja?'プロモーションクレジット':'Promotional credits'}</a><b${enabled&&promo.status==='ready'&&Date.now()-(promo.capturedAt||0)>125000?' class="api-credit-stale"':''}>${esc(promoValue)}</b></div>`:'';
   const last=enabled&&row.previous?`<small>${esc(ja?'前回':'Previous')} ${esc(format(row.previous,ja?'ja':'en'))} · ${esc(new Date(row.previous.capturedAt).toLocaleString(ja?'ja-JP':'en-US',{hour12:false}))}</small>`:'';
-  return `<div class="api-credit-row" data-api-provider="${id}"><div class="extra-line"><a href="${p.url}" target="_blank" rel="noopener noreferrer">${esc(title)} <small>${esc(p.name)}</small></a><b${stale&&enabled&&row.status==='ready'?' class="api-credit-stale"':''}>${esc(value)}</b></div><small>${esc(note)}</small>${last}${showAction?`<button type="button" class="api-connections-button" data-api-setup>${esc(root.GlanceLocale?.t('apiConnections')||'API connections')} ↗</button>`:''}</div>`;
+  return `<div class="api-credit-row" data-api-provider="${id}"><div class="extra-line"><a href="${p.url}" target="_blank" rel="noopener noreferrer">${esc(title)} <small>${esc(p.name)}</small></a><b${stale&&enabled&&row.status==='ready'?' class="api-credit-stale"':''}>${esc(value)}</b></div>${promoLine}<small>${esc(note)}</small>${last}${showAction?`<button type="button" class="api-connections-button" data-api-setup>${esc(root.GlanceLocale?.t('apiConnections')||'API connections')} ↗</button>`:''}</div>`;
  }
- root.GlanceApiCredits={PROVIDERS,provider,money,parse,sanitize,accept,format,set,view};
+ root.GlanceApiCredits={PROVIDERS,provider,money,parse,promotional,sanitize,accept,format,set,view};
  if(typeof module!=='undefined')module.exports=root.GlanceApiCredits;
 })(globalThis);

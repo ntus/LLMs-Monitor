@@ -8,8 +8,8 @@
    const results=await Promise.all([home(service,T.HOMES[service]),home(service,'https://claude.ai/code')]);
    const ready=results.filter(r=>r?.status==='ready'&&r.snapshot?.service===service);
    if(!ready.length)return {status:'unavailable'};
-   const tasks=new Map();for(const r of ready)for(const t of r.snapshot.tasks){if(!tasks.has(t.id)||t.listedState)tasks.set(t.id,t)}
-   return {status:'ready',snapshot:{...ready[0].snapshot,tasks:[...tasks.values()].slice(0,500)}};
+   const tasks=new Map(),pins=new Map();for(const r of ready)for(const p of r.snapshot.pins||[])pins.set(p.url,p);for(const r of ready)for(const t of r.snapshot.tasks){if(!tasks.has(t.id)||t.listedState)tasks.set(t.id,t)}
+   return {status:'ready',snapshot:{...ready[0].snapshot,pins:[...pins.values()].slice(0,500),pinCoverage:'partial',tasks:[...tasks.values()].slice(0,500)}};
   }
   return home(service,T.HOMES[service]);
  }
@@ -18,7 +18,7 @@
   try{
    // A fresh inactive home prevents reuse of an old sidebar after account changes.
    created=await chrome.tabs.create({url,active:false});const started=Date.now();
-   while(Date.now()-started<20000){const r=await request(created.id,service);if(r?.status==='ready')return r;await new Promise(resolve=>setTimeout(resolve,800));}
+   while(Date.now()-started<20000){const r=await request(created.id,service);if(r?.status==='ready'){try{await bounded(chrome.tabs.sendMessage(created.id,{type:'TASK_LIST_PREPARE',service}));}catch{}await new Promise(resolve=>setTimeout(resolve,400));const refreshed=await request(created.id,service);return refreshed?.status==='ready'?refreshed:r;}await new Promise(resolve=>setTimeout(resolve,800));}
    return {status:'unavailable'};
   }catch{return {status:'unavailable'}}finally{if(Number.isInteger(created?.id))try{await chrome.tabs.remove(created.id)}catch{}}
  }

@@ -77,3 +77,7 @@ APIクレジット連携は任意で初期状態は無効です。拡張機能�
 ## v1.26.0 タスク状態の保護範囲
 
 独立タスク小窓は表示中かつ自動ONの間、開いている公式会話の入力欄存在と周辺ボタンのアクセシビリティ／テスト属性・可視性だけを約5秒ごとに確認する。本文・入力値・認証情報・アカウント情報は取得しない。状態はメモリー内で15秒後に失効。タブ遷移・追加権限・タイトルや状態の保存／送信を行わない。経路／アカウント不一致、古い観測、複数タブ不一致、不正送信元をテスト。実インストール後の生成中取得は別途確認し、模擬画面を本番成功と扱わない。
+
+### v1.28 task notes and promotional credits / 作業メモとプロモーションクレジット
+EN: Automatic task titles remain memory-only. The user explicitly authorizes saving user-authored notes/checklists (including their chosen task title and link) in `llms-task-notes-v1`, separately from monitor state. Use separate workspace labels for accounts; no automatic cloud sharing. Export/clipboard requires a click. Verified sidebar names and explicit pins only; full coverage is not guaranteed. Promotional API credits remain separate from paid credits and all monthly quotas, with no inference from grants.
+JP: 自動取得した一覧は従来どおりメモリ内のみ。利用者が明示保存する作業メモ・チェックリスト（選択したタイトル・リンクを含む）は `llms-task-notes-v1` に隔離保存。アカウントごと作業領域名を分け、クラウド同期しない。書出し／コピーはクリック時のみ。公式で確認した名前・ピンのみを使い全件保証はしない。APIプロモーションクレジットは購入残高・月額枠と別扱いで、付与額から推測しない。

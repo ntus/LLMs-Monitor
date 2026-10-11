@@ -143,3 +143,7 @@ API請求残高は `apiCredits` に隔離し、月額プラン枠・リセット
 - タスク状態取得は独立させ、入力欄周辺の操作属性だけを読む。本文・入力値・既存タブの遷移は禁止。15秒の失効、重複タブ不一致、Geminiアカウント一致、停止／消去／読込時の両経路無効化を維持する。応答待機やCode/Cowork入力可否から完了を推測しない。v1.25の残量・履歴・音声回帰テストを残す。
 
 - TASK-CODE-001：Code一覧の状態アイコン属性だけを使い、90秒の一覧失効と15秒の会話失効を分離する。未読／PRマージを完了としない。タイトルから状態を推測しない。
+
+### v1.28 task notes and promotional credits / 作業メモとプロモーションクレジット
+EN: Automatic task titles remain memory-only. The user explicitly authorizes saving user-authored notes/checklists (including their chosen task title and link) in `llms-task-notes-v1`, separately from monitor state. Use separate workspace labels for accounts; no automatic cloud sharing. Export/clipboard requires a click. Verified sidebar names and explicit pins only; full coverage is not guaranteed. Promotional API credits remain separate from paid credits and all monthly quotas, with no inference from grants.
+JP: 自動取得した一覧は従来どおりメモリ内のみ。利用者が明示保存する作業メモ・チェックリスト（選択したタイトル・リンクを含む）は `llms-task-notes-v1` に隔離保存。アカウントごと作業領域名を分け、クラウド同期しない。書出し／コピーはクリック時のみ。公式で確認した名前・ピンのみを使い全件保証はしない。APIプロモーションクレジットは購入残高・月額枠と別扱いで、付与額から推測しない。

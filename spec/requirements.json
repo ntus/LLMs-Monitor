@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs トークン残量モニタ",
     "name_en": "LLMs Token Usage Monitor",
-    "version": "1.27.0",
-    "package_filename": "LLMs-Monitor-v1.27.0.zip",
+    "version": "1.28.0",
+    "package_filename": "LLMs-Monitor-v1.28.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -19,7 +19,7 @@
       "gemini"
     ],
     "production_companion_origin": "https://llmsmonitor.ntus.info",
-    "web_version": "1.27.0",
+    "web_version": "1.28.0",
     "companion_origins": [
       "https://llmsmonitor.ntus.info",
       "https://llmsmonitor.ntusnog.chatgpt.site"
@@ -3789,7 +3789,8 @@
         "APIキー・パスワード・決済情報・ページ全文を送信・保存しない。",
         "apiCreditsへ独立保存。60秒ごと開いた請求画面の表示値を確認。",
         "125秒以上古い値は薄く表示。取得失敗は0にしない。",
-        "OpenAI実画面確認、Claude/Gemini実請求アカウント検証は未完了と記録。"
+        "OpenAI実画面確認、Claude/Gemini実請求アカウント検証は未完了と記録。",
+        "Claudeプロモーションクレジットは明示された利用可能額のみ別行に表示。通常残高に合算せず未取得は—。"
       ],
       "implementation_evidence": [
         {
@@ -4593,6 +4594,108 @@
       ],
       "known_limitations": [
         "Rendered Code sidebar is partial; no verified running label or complete-account coverage. Installed-extension end-to-end verification remains required."
+      ]
+    },
+    {
+      "id": "TASK-NAME-001",
+      "category": "ui",
+      "introduced_in": "1.28.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "Verified project/group labels; unknown affiliation is never claimed absent.",
+      "source_requirements": [
+        "User request 2026-10-11"
+      ],
+      "acceptance_criteria": [
+        "Verified project/group labels; unknown affiliation is never claimed absent."
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/task-list.js",
+          "symbol": "task-list.js"
+        },
+        {
+          "path": "web/tasks-model.js",
+          "symbol": "tasks-model.js"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "tests/task-work.test.cjs",
+          "procedure": "Verified project/group labels; unknown affiliation is never claimed absent."
+        }
+      ],
+      "known_limitations": [
+        "Sidebar coverage is partial; user-authored notes are browser/site-local and account workspace labels are selected manually."
+      ]
+    },
+    {
+      "id": "TASK-PIN-001",
+      "category": "ui",
+      "introduced_in": "1.28.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "Explicit official pins first; bounded fresh-home expansion; disclose partial coverage.",
+      "source_requirements": [
+        "User request 2026-10-11"
+      ],
+      "acceptance_criteria": [
+        "Explicit official pins first; bounded fresh-home expansion; disclose partial coverage."
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/task-list.js",
+          "symbol": "task-list.js"
+        },
+        {
+          "path": "web/tasks-work.js",
+          "symbol": "tasks-work.js"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "tests/task-work.test.cjs",
+          "procedure": "Explicit official pins first; bounded fresh-home expansion; disclose partial coverage."
+        }
+      ],
+      "known_limitations": [
+        "Sidebar coverage is partial; user-authored notes are browser/site-local and account workspace labels are selected manually."
+      ]
+    },
+    {
+      "id": "TASK-WORK-001",
+      "category": "ui",
+      "introduced_in": "1.28.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "Explicit local work notes, checklist and handoff; revision conflicts and overlapping imports rejected; no quota lifecycle changes.",
+      "source_requirements": [
+        "User request 2026-10-11"
+      ],
+      "acceptance_criteria": [
+        "Explicit local work notes, checklist and handoff; revision conflicts and overlapping imports rejected; no quota lifecycle changes."
+      ],
+      "implementation_evidence": [
+        {
+          "path": "web/tasks-notes.js",
+          "symbol": "tasks-notes.js"
+        },
+        {
+          "path": "web/tasks-work.js",
+          "symbol": "tasks-work.js"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "coverage": "tests/task-work.test.cjs",
+          "procedure": "Explicit local work notes, checklist and handoff; revision conflicts and overlapping imports rejected; no quota lifecycle changes."
+        }
+      ],
+      "known_limitations": [
+        "Sidebar coverage is partial; user-authored notes are browser/site-local and account workspace labels are selected manually."
       ]
     }
   ]
