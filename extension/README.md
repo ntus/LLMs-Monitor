@@ -14,7 +14,7 @@ This browser companion checks usage from your signed-in provider sessions about 
 
 Version **1.26.0 beta** fixes a billing-reader circular wait that could stop quota refresh, masks expired cached quotas, and adds independent automatic sidebar task lists. Custom-domain pairing and the previous Site URL remain supported. It includes bounded local diagnostic logs, stable language selection, reliable usage/API page opening, and a compact floating view with all three services visible. API billing balances remain optional and separate from subscription quotas. OpenAI billing-page extraction was verified; Claude/Gemini live billing accounts still need validation. Earlier changes are in the [changelog](CHANGELOG.md).
 
-[Product site](https://llmsmonitor.ntus.info/product.html) · [Open the monitor](https://llmsmonitor.ntus.info/) · [Download the beta extension package](dist/LLMs-Monitor-v1.26.0.zip) · [Detailed specification](SPECIFICATION.md) · [Privacy](PRIVACY.md) · [Follow @ntus on X](https://x.com/ntus)
+[Product site](https://llmsmonitor.ntus.info/product.html) · [Open the monitor](https://llmsmonitor.ntus.info/) · [Download the beta extension package](dist/LLMs-Monitor-v1.27.0.zip) · [Detailed specification](SPECIFICATION.md) · [Privacy](PRIVACY.md) · [Follow @ntus on X](https://x.com/ntus)
 
 ### Custom domain connection
 
@@ -34,7 +34,7 @@ Version **1.23.0** adds extension access for [llmsmonitor.ntus.info](https://llm
 ## Quick start
 
 1. Sign in to the services you want to monitor on their official [ChatGPT](https://chatgpt.com/), [Claude](https://claude.ai/), and [Gemini](https://gemini.google.com/) sites in the same Chrome or Edge profile. Enter credentials only on those sites.
-2. Before store approval, run `python3 build.py --package`, unpack `dist/LLMs-Monitor-v1.26.0.zip`, and load the unpacked extension from the browser's extension management page for beta testing. Installing without developer mode requires Chrome Web Store or Edge Add-ons review and publication.
+2. Before store approval, run `python3 build.py --package`, unpack `dist/LLMs-Monitor-v1.27.0.zip`, and load the unpacked extension from the browser's extension management page for beta testing. Installing without developer mode requires Chrome Web Store or Edge Add-ons review and publication.
 3. Open the extension or the [web monitor](https://llmsmonitor.ntus.info/). The web monitor asks for your extension ID once. The providers' usage tabs do not need to remain open.
 4. Use **Show and arrange services** to choose and reorder cards. Hidden services continue collecting history. Adjust language, theme, opacity, volume, and fullscreen mode from the controls.
 
@@ -51,6 +51,8 @@ Each visible ChatGPT, Claude or Gemini card now has **Task details**, opening a 
 With extension **1.26.0**, the separate page acquires a partial list of visible sidebar titles and links from fresh inactive provider home tabs, on opening and every minute while visible. An independent observer checks already-open conversation controls every five seconds for generating/response-idle states; closed chats stay unknown. It never reads messages or infers completion. Update the extension in place and, if needed, reload official chat tabs after saving drafts. Desktop Codex tasks still require a manual JSON export. JSON import and the labelled synthetic demo remain available; import, Demo and Clear pause automatic acquisition. Lists stay in memory, without upload or persistence. See [the task-view contract and limits](TASK_DETAILS.md#en).
 
 Quota acquisition and saved history are independent from the task adapter. Floating incident details omit healthy providers while incidents exist; AI feed disclosure has a separate expand control. The X feed needs server configuration and is not claimed operational.
+
+v1.27.0 adds Claude Code sidebar input-needed/idle/unread observations without opening individual conversations. Refresh is once a minute and observations expire after 90 seconds; unread never means completed. Update the installed extension in place.
 
 <a id="ja"></a>
 
@@ -75,7 +77,7 @@ Quota acquisition and saved history are independent from the task adapter. Float
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
-## 1.26.0 β
+## 1.27.0 β
 
 API請求読取で起きた循環待ちを修正し、期限切れの古い残量を現在値として表示しないようにしました。独立したタスク一覧の自動取得を追加し、旧URLと履歴を維持します。
 
@@ -132,7 +134,7 @@ v1.6.4では履歴読込結果と通知音説明を左右ボタン付きのス�
 ### 使い方
 
 1. 同じChromeまたはEdgeプロファイルで [ChatGPT](https://chatgpt.com/)、[Claude](https://claude.ai/)、[Gemini](https://gemini.google.com/) に必要な分だけログインします。パスワードは公式サイトで入力します。
-2. ストア公開前は、このリポジトリで `python3 build.py --package` を実行し、`dist/LLMs-Monitor-v1.26.0.zip` を展開して、ブラウザーの拡張機能管理画面から開発用として読み込みます。一般ユーザーがデベロッパーモードなしで導入するには、Chrome Web Store / Edge Add-ons の審査・公開が必要です。
+2. ストア公開前は、このリポジトリで `python3 build.py --package` を実行し、`dist/LLMs-Monitor-v1.27.0.zip` を展開して、ブラウザーの拡張機能管理画面から開発用として読み込みます。一般ユーザーがデベロッパーモードなしで導入するには、Chrome Web Store / Edge Add-ons の審査・公開が必要です。
 3. 拡張機能の画面、または [公開モニター](https://llmsmonitor.ntus.info/) を開きます。公開モニターでは拡張機能IDを一度登録してください。各サービスの使用量タブを開いたままにする必要はありません。
 4. 「表示サービス」からチェックと上下ボタンで表示数・順序を変更します。非表示中も取得と履歴保存は続きます。音、テーマ、言語、透明度、フルスクリーンも画面上で変更できます。
 5. 残量とリセット時刻は公式サービスが返す範囲で表示されます。リセット権は利用可能なら公式利用量ページへ移動できますが、アプリから自動行使しません。出典のあるTips／NEWSはリンクで原文を確認できます。
@@ -180,3 +182,5 @@ OSに依存しない静的Webアプリと、Chrome / Edgeデスクトップ用Ma
 実装契約、取得経路、データモデル、手動検証項目は [SPECIFICATION.md](SPECIFICATION.md) を正本とし、機械可読の受入条件は [`spec/requirements.json`](spec/requirements.json) を参照してください。公式サービスの非公開内部構造は変更され得るため、拡張機能の実アカウントでの通し動作はリリースごとに確認します。
 
 APIクレジット残高も追加しました。上部の「API連携」で各社へのアクセスを個別に許可し、公式請求画面を開いておくと表示値を読み取ります。月額プランの残量とは別表示です。OpenAIの実画面を確認済み、Claude／Geminiの請求アカウント実測は未検証です。外窓のタイトルと言語を共通化し、↔メニューで縦横のサイズを個別に調整できます。
+
+v1.27.0はClaude Codeの一覧から入力待ち／アイドル／未読の返答を取得します。会話タブ不要、1分更新、90秒失効。未読を完了とは扱いません。拡張機能の上書き更新が必要です。

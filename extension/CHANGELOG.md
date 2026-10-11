@@ -118,6 +118,11 @@ Version 1.5.3 and earlier focused on plan retrieval, persistent change history, 
 - Added a per-provider Task details launcher and a separate tall window with bilingual tree navigation, search, state filtering and text copy.
 - Read local JSON snapshots in memory; clearly label demo/historical states. Automatic provider task acquisition remains unconnected.
 - Preserved all extension sources, its 1.23.0 ZIP, quota history/alerts and existing floating views. Added TASK_DETAILS.md and durable isolation requirements.
+
+## v1.27.0 — Closed Claude Code sessions
+
+TASK-CODE-001 reads exact accessibility labels from rendered Claude Code sidebar session links via a fresh inactive Code home, alongside the normal sidebar. Individual conversation tabs need not be open. Input-needed and idle are list observations; unread replies and merged pull requests never imply completion. One-minute acquisition remains bounded and closes both owned tabs; partial success is accepted. List evidence expires after 90 seconds, open-tab evidence after 15 seconds; conflicting evidence stays unknown. No quota/history/audio, permission, message-body or credential changes. Official list labels were inspected on 2026-10-11; installed-package end-to-end behavior is still unverified.
+
 <a id="ja"></a>
 
 ## 1.25.0 — 2026-10-10
@@ -335,3 +340,7 @@ Version 1.5.3 and earlier focused on plan retrieval, persistent change history, 
 ## 1.26.0 — 日本語
 
 開いている公式会話の操作ボタンから約5秒ごとに応答生成中・応答待機を補足する。閉じた会話・根拠なし・古い観測・複数タブ不一致は未確認。権限追加・タスク永続保存・残量／履歴／音声変更なし。拡張を上書き更新し、必要なら入力を保存後に公式会話タブを手動で再読込する。
+
+## v1.27.0 — 閉じたClaude Codeセッション
+
+TASK-CODE-001は公式Codeホームの表示済みサイドバーにある明示的な状態属性だけを取得する。会話タブを開かず「入力待ち」「アイドル」「未読の返答」を一覧由来として表示し、未読やPRマージから完了を推測しない。通常ホームとCodeホームを非アクティブで取得し、1分周期・時間制限・一時タブ終了・部分成功を維持。一覧状態は90秒、会話操作状態は15秒で失効し、不一致は未確認。本文・入力・認証情報・追加権限・残量／履歴／音は変更しない。2026-10-11に公式一覧属性を実確認。更新済み拡張での一連の動作確認は別途必要。

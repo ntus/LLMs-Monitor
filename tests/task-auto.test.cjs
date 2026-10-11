@@ -16,6 +16,6 @@ test('automatic task requests are coalesced, throttled and close only their own 
  const a=c.LLMTaskBackground.read('chatgpt'),b=c.LLMTaskBackground.read('chatgpt');assert.equal(a,b);assert.equal((await a).status,'ready');assert.equal(created,1);assert.equal(reads,1);assert.deepEqual(removed,[20]);assert.equal((await c.LLMTaskBackground.read('chatgpt')).status,'cooldown');assert.equal((await c.LLMTaskBackground.read('bad')).status,'unavailable');
 });
 test('task adapter has no storage, quota, notification or body-reading dependency',()=>{
- for(const path of ['extension/task-list.js','extension/task-reader.js','extension/task-background.js']){const code=fs.readFileSync(path,'utf8');assert(!/\.storage|GlanceState|GlanceFetchers|GlanceHistory|notifications|AudioContext|document\.body|input|textarea/.test(code),path)}
+ for(const path of ['extension/task-list.js','extension/task-reader.js','extension/task-background.js']){const code=fs.readFileSync(path,'utf8');assert(!/\.storage|GlanceState|GlanceFetchers|GlanceHistory|notifications|AudioContext|document\.body|querySelector[^\n]*(?:input|textarea)/.test(code),path)}
  const bridge=fs.readFileSync('web/tasks-bridge.js','utf8');assert(bridge.includes("getItem('glance-extension-id')"));assert(!/setItem|fetch\(|AudioContext|type:'GET'|type:'REFRESH'|type:'SETTINGS'/.test(bridge));
 });

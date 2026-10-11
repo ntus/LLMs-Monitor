@@ -59,6 +59,8 @@ This file is the starting point for every future Codex or LLM edit. Follow the u
 - Automatic tasks belong to independent metadata-only modules and TASKS_READ/TASKS_STATE. Restrict sender origin, task route, service and top frame. Use fresh inactive provider homes; never reload user chats/drafts. Do not persist or log titles. Keep explicit pause/clear/import behavior, bounded acquisition, unknown execution state and temporary-tab cleanup.
 - Provider incident and AI feed disclosures have independent state on every surface. Do not claim an unconfigured X feed works or let incidents expand the feed panel.
 
+- TASK-CODE-001: only exact Claude Code sidebar state-icon labels; keep 90-second list expiry independent from 15-second open-tab expiry. Unread/merged never means completed. Never read task status from its title.
+
 ## Every deliverable
 
 Keep this `AGENTS.md` in the repository and update it when a new acceptance rule or failure-prevention step arises. In the final report, link this file, the detailed specification, and the distribution package; distinguish verified behavior from live-account checks that remain unverified.
@@ -139,3 +141,5 @@ v1.22.0で旧外窓ヘッダー仕様を明示的に上書きしました。独�
 API請求残高は `apiCredits` に隔離し、月額プラン枠・リセット権・変化履歴へ混入させないでください。事業者ごとの任意権限は拡張機能画面の直接クリックで要求します。請求以外のパス、子フレーム、不許可origin、無効事業者、複数残高を拒否し、予算からの残高推測やパスワード／APIキー／決済情報の収集を禁止します。実請求アカウントで未検証の取得処理を明記してください。
 
 - タスク状態取得は独立させ、入力欄周辺の操作属性だけを読む。本文・入力値・既存タブの遷移は禁止。15秒の失効、重複タブ不一致、Geminiアカウント一致、停止／消去／読込時の両経路無効化を維持する。応答待機やCode/Cowork入力可否から完了を推測しない。v1.25の残量・履歴・音声回帰テストを残す。
+
+- TASK-CODE-001：Code一覧の状態アイコン属性だけを使い、90秒の一覧失効と15秒の会話失効を分離する。未読／PRマージを完了としない。タイトルから状態を推測しない。

@@ -45,6 +45,11 @@ The new route denies network connections in CSP, loads only its independent loca
 
 The optional independent task window checks already-open provider conversation tabs approximately every five seconds while visible and Auto ON. It reads only editable-composer presence and scoped button accessibility/test attributes and visibility, not messages, draft values, credentials or account data. States remain in memory and expire after 15 seconds. No tabs are navigated, no new permissions are requested, and no titles or states are stored or uploaded. 208 automated checks pass, including route/account mismatches, stale or conflicting observations, unauthorized RPC senders, bounded tab concurrency, stalled quota queues and old-extension compatibility. The quota/history/parser/audio sources are byte-identical to the previous release; only isolated task dispatch and the display version change. Japanese/English mock state UI was checked at 240px without horizontal overflow. Actual installed-extension generation checks remain required after the update; mock fixtures are not account-level proof.
 
+
+## v1.27.0 — Closed Claude Code sessions
+
+TASK-CODE-001 reads exact accessibility labels from rendered Claude Code sidebar session links via a fresh inactive Code home, alongside the normal sidebar. Individual conversation tabs need not be open. Input-needed and idle are list observations; unread replies and merged pull requests never imply completion. One-minute acquisition remains bounded and closes both owned tabs; partial success is accepted. List evidence expires after 90 seconds, open-tab evidence after 15 seconds; conflicting evidence stays unknown. No quota/history/audio, permission, message-body or credential changes. Official list labels were inspected on 2026-10-11; installed-package end-to-end behavior is still unverified.
+
 <a id="ja"></a>
 
 # 日本語 — セキュリティ検証記録
@@ -90,3 +95,7 @@ Diagnostic events are restricted to numeric fields and fixed categories in exten
 ## v1.26.0 タスク状態の保護範囲
 
 独立タスク小窓は表示中かつ自動ONの間、開いている公式会話の入力欄存在と周辺ボタンのアクセシビリティ／テスト属性・可視性だけを約5秒ごとに確認する。本文・入力値・認証情報・アカウント情報は取得しない。状態はメモリー内で15秒後に失効。タブ遷移・追加権限・タイトルや状態の保存／送信を行わない。自動テスト208件成功。経路／アカウント不一致、古い観測、複数タブ不一致、不正送信元、タブ同時数、残量待ち行列停止、旧拡張互換性を検証。残量／履歴／解析／音声のソースは前版と同一で、独立タスク受付と表示版だけを追加。240px幅の日本語・英語模擬画面で横はみ出しなし。実インストール後の生成中取得は別途確認し、模擬画面を本番成功と扱わない。
+
+## v1.27.0 — 閉じたClaude Codeセッション
+
+TASK-CODE-001は公式Codeホームの表示済みサイドバーにある明示的な状態属性だけを取得する。会話タブを開かず「入力待ち」「アイドル」「未読の返答」を一覧由来として表示し、未読やPRマージから完了を推測しない。通常ホームとCodeホームを非アクティブで取得し、1分周期・時間制限・一時タブ終了・部分成功を維持。一覧状態は90秒、会話操作状態は15秒で失効し、不一致は未確認。本文・入力・認証情報・追加権限・残量／履歴／音は変更しない。2026-10-11に公式一覧属性を実確認。更新済み拡張での一連の動作確認は別途必要。

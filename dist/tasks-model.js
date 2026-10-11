@@ -4,6 +4,11 @@
  const SERVICES=['chatgpt','claude','gemini'];
  const STATUSES=['running','idle','waiting','completed','failed','unknown'];
  const MAX_BYTES=524288,MAX_TASKS=500,MAX_DEPTH=12,STATE_TTL=15000;
+ const CODE_LIST_TTL=90000,CODE_LABELS={'入力待ち':'waiting','Awaiting input':'waiting','アイドル':'idle','Idle':'idle','未読の返答':'unknown','Unread response':'unknown'};
+ function listed(value,service,kind,source){const r=value?.listedState;
+  return service==='claude'&&kind==='code'&&source==='official-sidebar'&&r&&Object.hasOwn(CODE_LABELS,r.label)&&r.status===CODE_LABELS[r.label]&&Number.isFinite(r.observedAt)?{label:r.label,status:r.status,observedAt:r.observedAt}:null;
+ }
+ function listProjection(task,now){const r=task.listedState;return r&&now-r.observedAt<=CODE_LIST_TTL&&r.observedAt<=now+1000?{status:r.status,stateObservedAt:r.observedAt,stateEvidence:'official-code-list',stateReason:'',listedLabel:r.label}:null;}
  const clean=(v,n)=>typeof v==='string'?v.replace(/[\u0000-\u001f\u007f]/g,' ').slice(0,n).trim():'';
  const reference=v=>{if(v===undefined||v===null||v==='')return null;const id=clean(v,120);if(!id||id!==v)throw Error('reference');return id};
  const date=v=>typeof v==='string'&&/^\d{4}-\d\d-\d\dT/.test(v)&&Number.isFinite(Date.parse(v))?new Date(v).toISOString():null;
@@ -24,7 +29,9 @@
    if(!id||!title||id!==value.id||ids.has(id))throw Error('id');ids.add(id);
    const projectId=reference(value.projectId),projectTitle=projectId?clean(value.projectTitle,100):'';
    if(projectId){if(!projectTitle||projects.has(projectId)&&projects.get(projectId)!==projectTitle)throw Error('project');projects.set(projectId,projectTitle)}
-   return {id,title,parentId,projectId,projectTitle,kind:service==='chatgpt'&&value.kind==='codex'?'codex':service==='claude'&&['code','cowork'].includes(value.kind)?value.kind:'chat',status:STATUSES.includes(value.status)?value.status:'unknown',updatedAt:date(value.updatedAt),summary:clean(value.summary,500),url:safeURL(value.url,service)};
+   const kind=service==='chatgpt'&&value.kind==='codex'?'codex':service==='claude'&&['code','cowork'].includes(value.kind)?value.kind:'chat';
+   const task={id,title,parentId,projectId,projectTitle,kind,status:STATUSES.includes(value.status)?value.status:'unknown',updatedAt:date(value.updatedAt),summary:clean(value.summary,500),url:safeURL(value.url,service)};
+   const state=listed(value,service,kind,input.source);if(state&&task.url){task.listedState=state;Object.assign(task,listProjection(task,Date.now())||{})}return task;
   });
   const byId=new Map(tasks.map(t=>[t.id,t]));
   for(const task of tasks){let cursor=task,seen=new Set(),depth=0;
@@ -34,7 +41,7 @@
   }
   return {schemaVersion:1,service,capturedAt,source:['codex-app','local-export','demo','official-sidebar'].includes(input.source)?input.source:'local-export',coverage:clean(input.coverage,250),tasks};
  }
- function parse(text,service){if(typeof text!=='string'||new TextEncoder().encode(text).length>MAX_BYTES)throw Error('size');return normalize(JSON.parse(text),service)}
+ function parse(text,service){if(typeof text!=='string'||new TextEncoder().encode(text).length>MAX_BYTES)throw Error('size');const input=JSON.parse(text);if(input&&typeof input==='object')input.source='local-export';return normalize(input,service)}
  function select(snapshot,query='',status='all'){
   const byId=new Map(snapshot.tasks.map(t=>[t.id,t])),visible=new Set(),needle=clean(query,200).toLocaleLowerCase();
   for(const t of snapshot.tasks){if(status!=='all'&&t.status!==status)continue;if(needle&&!`${t.title} ${t.projectTitle} ${t.summary}`.toLocaleLowerCase().includes(needle))continue;
@@ -53,13 +60,17 @@
    const validated=fresh.map(r=>({...r,status:r.status==='running'&&r.evidence==='stop-control'?'running':r.status==='idle'&&task.kind==='chat'&&r.evidence==='composer-ready'?'idle':'unknown'}));
    const conflict=new Set(validated.map(r=>r.status)).size>1;
    const r=conflict?null:validated[0];
-   return {...task,status:r?.status||'unknown',stateObservedAt:r?.observedAt||null,stateReason:conflict?'conflict':r?.status==='unknown'?'no-signal':r?'':ready?'not-open':'unavailable',stateEvidence:r?.status!=='unknown'&&r?r.evidence:''};
+   const list=listProjection(task,now);
+   if(list&&!conflict&&(!r||r.status==='unknown'))return {...task,...list};
+   if(list&&r?.status==='running'&&['waiting','idle'].includes(list.status))return {...task,status:'unknown',stateObservedAt:null,stateReason:'conflict',stateEvidence:'',listedLabel:''};
+   return {...task,status:r?.status||'unknown',stateObservedAt:r?.observedAt||null,stateReason:conflict?'conflict':r?.status==='unknown'?'no-signal':r?'':ready?'not-open':'unavailable',stateEvidence:r?.status!=='unknown'&&r?r.evidence:'',listedLabel:''};
   });return {...snapshot,tasks,stateCheckedAt:ready?result.checkedAt:null};
  }
  function expireStates(snapshot,now=Date.now()){
   if(snapshot?.source!=='official-sidebar')return snapshot;
-  if(!snapshot.tasks.some(t=>t.stateObservedAt&&now-t.stateObservedAt>STATE_TTL))return snapshot;
-  return {...snapshot,tasks:snapshot.tasks.map(t=>t.stateObservedAt&&now-t.stateObservedAt>STATE_TTL?{...t,status:'unknown',stateObservedAt:null,stateReason:'stale',stateEvidence:''}:t)};
+  const expired=t=>t.stateObservedAt&&now-t.stateObservedAt>(t.stateEvidence==='official-code-list'?CODE_LIST_TTL:STATE_TTL);
+  if(!snapshot.tasks.some(expired))return snapshot;
+  return {...snapshot,tasks:snapshot.tasks.map(t=>expired(t)?{...t,status:'unknown',stateObservedAt:null,stateReason:'stale',stateEvidence:'',listedLabel:''}:t)};
  }
  function demo(service,now=Date.now()){
   const iso=new Date(now).toISOString();return normalize({schemaVersion:1,service,capturedAt:iso,source:'demo',coverage:'Synthetic example',tasks:[

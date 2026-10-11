@@ -1,13 +1,13 @@
 {
   "schema_version": "1.0.0",
   "ledger_id": "llms-token-usage-monitor-requirements",
-  "last_updated": "2026-10-10",
+  "last_updated": "2026-10-11",
   "authoritative": true,
   "product": {
     "name_ja": "LLMs トークン残量モニタ",
     "name_en": "LLMs Token Usage Monitor",
-    "version": "1.26.0",
-    "package_filename": "LLMs-Monitor-v1.26.0.zip",
+    "version": "1.27.0",
+    "package_filename": "LLMs-Monitor-v1.27.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -19,7 +19,7 @@
       "gemini"
     ],
     "production_companion_origin": "https://llmsmonitor.ntus.info",
-    "web_version": "1.26.1",
+    "web_version": "1.27.0",
     "companion_origins": [
       "https://llmsmonitor.ntus.info",
       "https://llmsmonitor.ntusnog.chatgpt.site"
@@ -4546,6 +4546,53 @@
       ],
       "known_limitations": [
         "Closed conversation execution and Desktop Codex are outside the adapter. Live installed-extension generation must be validated after package update; fixtures do not prove account-wide completion."
+      ]
+    },
+    {
+      "id": "TASK-CODE-001",
+      "priority": "MUST",
+      "category": "tasks",
+      "status": "implemented",
+      "title_en": "Read closed Claude Code session labels from official sidebar",
+      "title_ja": "閉じたClaude Codeの公式一覧状態を取得",
+      "normative_requirement": "Only exact observed sidebar accessibility labels on Claude Code session links supply list states; do not infer completion.",
+      "acceptance_criteria": [
+        "Fresh inactive Claude normal and Code homes, one-minute coalesced acquisition with cleanup and partial success; no conversation navigation or private storage.",
+        "Exact waiting/idle/unread labels only. Unread and merged PR never mean completed. No labels from task titles.",
+        "List states expire after 90 seconds separately from 15-second open-tab states; conflicting evidence remains unknown.",
+        "No quota, history, audio, credential, permission or endpoint changes."
+      ],
+      "introduced_in": "1.27.0",
+      "source_requirements": [
+        "会話のタブを閉じても状態取得できる手段",
+        "本体＋拡張機能（推奨）"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/task-list.js",
+          "symbol": "TASK-CODE-001"
+        },
+        {
+          "path": "extension/task-background.js",
+          "symbol": "TASK-CODE-001"
+        },
+        {
+          "path": "web/tasks-model.js",
+          "symbol": "TASK-CODE-001"
+        },
+        {
+          "path": "web/tasks-page.js",
+          "symbol": "TASK-CODE-001"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/task-code-list.test.cjs"
+        }
+      ],
+      "known_limitations": [
+        "Rendered Code sidebar is partial; no verified running label or complete-account coverage. Installed-extension end-to-end verification remains required."
       ]
     }
   ]

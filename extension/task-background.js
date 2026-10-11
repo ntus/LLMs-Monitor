@@ -4,10 +4,20 @@
  function bounded(task,ms=2500){let timer;return Promise.race([task,new Promise((_,reject)=>{timer=setTimeout(()=>reject(Error('task timeout')),ms)})]).finally(()=>clearTimeout(timer));}
  async function request(id,service){try{return await bounded(chrome.tabs.sendMessage(id,{type:'TASK_LIST_READ',service}))}catch{return null}}
  async function acquire(service){
+  if(service==='claude'){
+   const results=await Promise.all([home(service,T.HOMES[service]),home(service,'https://claude.ai/code')]);
+   const ready=results.filter(r=>r?.status==='ready'&&r.snapshot?.service===service);
+   if(!ready.length)return {status:'unavailable'};
+   const tasks=new Map();for(const r of ready)for(const t of r.snapshot.tasks){if(!tasks.has(t.id)||t.listedState)tasks.set(t.id,t)}
+   return {status:'ready',snapshot:{...ready[0].snapshot,tasks:[...tasks.values()].slice(0,500)}};
+  }
+  return home(service,T.HOMES[service]);
+ }
+ async function home(service,url){
   let created=null;
   try{
    // A fresh inactive home prevents reuse of an old sidebar after account changes.
-   created=await chrome.tabs.create({url:T.HOMES[service],active:false});const started=Date.now();
+   created=await chrome.tabs.create({url,active:false});const started=Date.now();
    while(Date.now()-started<20000){const r=await request(created.id,service);if(r?.status==='ready')return r;await new Promise(resolve=>setTimeout(resolve,800));}
    return {status:'unavailable'};
   }catch{return {status:'unavailable'}}finally{if(Number.isInteger(created?.id))try{await chrome.tabs.remove(created.id)}catch{}}

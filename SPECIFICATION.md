@@ -123,6 +123,11 @@ Read only composer presence/editability, button aria-label/data-testid/disabled 
 
 Modules: `extension/task-status.js` observes scoped controls; `task-state-background.js` bounds existing-tab reads; `task-reader.js` accepts self-extension/top-frame requests; task Web bridge/model/page validate, expire and render. Mock controls and real background message gates are regression-tested. Provider control shapes were inspected read-only; live generation through the installed v1.26.0 extension remains a separate acceptance check.
 
+
+## v1.27.0 — Closed Claude Code sessions
+
+TASK-CODE-001 reads exact accessibility labels from rendered Claude Code sidebar session links via a fresh inactive Code home, alongside the normal sidebar. Individual conversation tabs need not be open. Input-needed and idle are list observations; unread replies and merged pull requests never imply completion. One-minute acquisition remains bounded and closes both owned tabs; partial success is accepted. List evidence expires after 90 seconds, open-tab evidence after 15 seconds; conflicting evidence stays unknown. No quota/history/audio, permission, message-body or credential changes. Official list labels were inspected on 2026-10-11; installed-package end-to-end behavior is still unverified.
+
 <a id="ja"></a>
 
 # 日本語 — LLMs モニター 詳細仕様書
@@ -130,7 +135,7 @@ Modules: `extension/task-status.js` observes scoped controls; `task-state-backgr
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.26.0
+対象製品版: 1.27.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -1398,3 +1403,7 @@ TASK-STATE-001は、旧版の一律「状態未確認」を明示的な操作ボ
 入力欄の存在・編集可否、ボタンのaria-label/data-testid/disabledと可視性だけを読み、本文・入力値・認証情報は読まない。現在経路のID・種別、Geminiのアカウント経路を照合。最大40タブ、同時4件、応答900ms、全体3500ms。15秒を超える観測は自動OFF中も失効させる。送信元origin・タスク経路・service・トップフレームの検証を維持。残量待ち行列・履歴・保存・音・外部fetch・タブ遷移に依存しない。観測日時はタスク最終更新日時とは別。消去／サンプル／JSON読込は両方の保留応答を無効化。拡張は上書き更新し、公式会話タブは必要なら入力を保存後に利用者が再読込する。自動リロードは禁止。
 
 独立モジュールtask-status.jsが入力欄周辺の操作を観測、task-state-background.jsが時間制限付きタブ読取、task-reader.jsが自拡張・トップフレーム受付、Web専用橋渡し／モデル／画面が検証・失効・表示を担当する。模擬操作ボタンと実backgroundの送信元検証を回帰テスト。公式操作ボタン構造は読み取り確認し、実インストールv1.26.0での生成中取得は別途実機確認する。
+
+## v1.27.0 — 閉じたClaude Codeセッション
+
+TASK-CODE-001は公式Codeホームの表示済みサイドバーにある明示的な状態属性だけを取得する。会話タブを開かず「入力待ち」「アイドル」「未読の返答」を一覧由来として表示し、未読やPRマージから完了を推測しない。通常ホームとCodeホームを非アクティブで取得し、1分周期・時間制限・一時タブ終了・部分成功を維持。一覧状態は90秒、会話操作状態は15秒で失効し、不一致は未確認。本文・入力・認証情報・追加権限・残量／履歴／音は変更しない。2026-10-11に公式一覧属性を実確認。更新済み拡張での一連の動作確認は別途必要。
