@@ -19,7 +19,10 @@
    return route?.test(u.pathname)?u.href:'';
   }catch{return ''}
  }
- function pinURL(value,service){if(safeURL(value,service))return safeURL(value,service);try{const u=new URL(value);if(u.protocol!=='https:'||u.hostname!=={chatgpt:'chatgpt.com',claude:'claude.ai',gemini:'gemini.google.com'}[service]||u.port||u.username||u.password||u.search||u.hash)return '';const re=service==='claude'?/^\/(?:code\/project|project)\/[a-zA-Z0-9_-]+\/?$/:service==='chatgpt'?/^\/g\/g-p-[a-zA-Z0-9_-]+(?:\/project)?\/?$/:/^\/notebook\/[a-zA-Z0-9_-]+\/?$/;return re.test(u.pathname)?u.href:''}catch{return ''}}
+ function pinURL(value,service){if(safeURL(value,service))return safeURL(value,service);try{const u=new URL(value);if(u.protocol!=='https:'||u.hostname!=={chatgpt:'chatgpt.com',claude:'claude.ai',gemini:'gemini.google.com'}[service]||u.port||u.username||u.password||u.hash)return '';if(service==='claude'&&/^\/artifact\/[a-zA-Z0-9_-]+\/?$/.test(u.pathname)){const q=[...u.searchParams];return !q.length||q.length===1&&q[0][0]==='org'&&/^[a-f0-9]{8}-(?:[a-f0-9]{4}-){3}[a-f0-9]{12}$/i.test(q[0][1])?u.href:'';}if(u.search)return '';const re=service==='claude'?/^\/(?:code\/project|project)\/[a-zA-Z0-9_-]+\/?$/:service==='chatgpt'?/^\/g\/g-p-[a-zA-Z0-9_-]+(?:\/project)?\/?$/:/^\/notebook\/[a-zA-Z0-9_-]+\/?$/;return re.test(u.pathname)?u.href:''}catch{return ''}}
+ function audit(a){if(!a||typeof a!=='object')return null;const out={};for(const k of ['observed','accepted','rejected'])out[k]=Number.isInteger(a[k])&&a[k]>=0?Math.min(10000,a[k]):0;for(const k of ['limited','sectionSeen','scanFinished'])out[k]=a[k]===true;return out;}
+ function noteURL(value,service){if(safeURL(value,service))return safeURL(value,service);try{const u=new URL(value);return service==='claude'&&u.origin==='https://claude.ai'&&!u.username&&!u.password&&!u.hash&&/^\/code\/project\/[a-zA-Z0-9_-]+\/?$/.test(u.pathname)&&[...u.searchParams].length===1&&/^cmsg_[a-zA-Z0-9_-]+$/.test(u.searchParams.get('thread')||'')?u.href:''}catch{return ''}}
+ function stateIcon(task){return {running:'🟢',waiting:'🟠',idle:'🔵',completed:'✅',failed:'🔴',unknown:'⚪'}[task?.status]||'⚪';}
  function groupLabel(group,language='en',index=0){if(group.groupTitle)return group.groupTitle;const title=group.projectTitle;if(title&&!/^g-p-[a-zA-Z0-9_-]+$/.test(title))return title;return group.projectId?(language==='ja'?`プロジェクト名未取得 ${index+1}`:`Project name unavailable ${index+1}`):(language==='ja'?'その他の会話（所属未確認）':'Other conversations (affiliation unknown)');}
  function normalize(input,service){
   if(!SERVICES.includes(service)||!input||input.schemaVersion!==1||input.service!==service||!Array.isArray(input.tasks)||input.tasks.length>MAX_TASKS)throw Error('schema');
@@ -41,8 +44,8 @@
     if(!cursor.parentId)break;const parent=byId.get(cursor.parentId);if(!parent||parent.projectId!==task.projectId||parent.kind!==task.kind)throw Error('parent');cursor=parent;
    }
   }
-  const pins=(Array.isArray(input.pins)?input.pins:[]).slice(0,500).map(p=>({title:clean(p.title,200),url:pinURL(p.url,service),kind:p.kind==='project'?'project':'chat'})).filter(p=>p.title&&p.url);
-  return {schemaVersion:1,service,capturedAt,pins,pinCoverage:'partial',source:['codex-app','local-export','demo','official-sidebar'].includes(input.source)?input.source:'local-export',coverage:clean(input.coverage,250),tasks};
+  const pins=(Array.isArray(input.pins)?input.pins:[]).slice(0,500).map(p=>({title:clean(p.title,200),url:pinURL(p.url,service),kind:['project','artifact'].includes(p.kind)?p.kind:'chat'})).filter(p=>p.title&&p.url);
+  return {schemaVersion:1,service,capturedAt,pins,pinCoverage:'partial',pinAudit:audit(input.pinAudit),source:['codex-app','local-export','demo','official-sidebar'].includes(input.source)?input.source:'local-export',coverage:clean(input.coverage,250),tasks};
  }
  function parse(text,service){if(typeof text!=='string'||new TextEncoder().encode(text).length>MAX_BYTES)throw Error('size');const input=JSON.parse(text);if(input&&typeof input==='object')input.source='local-export';return normalize(input,service)}
  function select(snapshot,query='',status='all'){
@@ -82,6 +85,6 @@
    {id:'sample-3',title:'Example: documentation',projectId:'example-project',projectTitle:'Example project',status:'completed',updatedAt:iso}
   ]},service);
  }
- const api={SERVICES,STATUSES,MAX_BYTES,MAX_TASKS,MAX_DEPTH,STATE_TTL,normalize,parse,select,groups,groupLabel,pinURL,safeURL,states,expireStates,demo};
+ const api={SERVICES,STATUSES,MAX_BYTES,MAX_TASKS,MAX_DEPTH,STATE_TTL,normalize,parse,select,groups,groupLabel,stateIcon,pinURL,safeURL,noteURL,states,expireStates,demo};
  if(typeof module==='object'&&module.exports)module.exports=api;else root.LLMTaskModel=Object.freeze(api);
 })(globalThis);

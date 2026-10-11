@@ -147,3 +147,7 @@ API請求残高は `apiCredits` に隔離し、月額プラン枠・リセット
 ### v1.28 task notes and promotional credits / 作業メモとプロモーションクレジット
 EN: Automatic task titles remain memory-only. The user explicitly authorizes saving user-authored notes/checklists (including their chosen task title and link) in `llms-task-notes-v1`, separately from monitor state. Use separate workspace labels for accounts; no automatic cloud sharing. Export/clipboard requires a click. Verified sidebar names and explicit pins only; full coverage is not guaranteed. Promotional API credits remain separate from paid credits and all monthly quotas, with no inference from grants.
 JP: 自動取得した一覧は従来どおりメモリ内のみ。利用者が明示保存する作業メモ・チェックリスト（選択したタイトル・リンクを含む）は `llms-task-notes-v1` に隔離保存。アカウントごと作業領域名を分け、クラウド同期しない。書出し／コピーはクリック時のみ。公式で確認した名前・ピンのみを使い全件保証はしない。APIプロモーションクレジットは購入残高・月額枠と別扱いで、付与額から推測しない。
+
+TASK-REGISTER-001: Keep official registration isolated; metadata only, explicit save, 2-minute single-use memory handles and exact sender route/frame/service validation. Never place titles or conversation URLs in launch queries. TASK-PIN-002: scan only owned acquisition homes; report rejected/limited/missing pin evidence and never equate rendered end with full-account coverage. TASK-DISCLOSE-001: preserve default-open section disclosure state through refresh and language changes.
+
+TASK-STATE-MARK-001: all task titles start with explicit status mark and retain textual state. Keep pin and state separate; unknown project/artifact states never infer running/completion.

@@ -4,7 +4,7 @@
 
 <a id="en"></a>
 
-Document revision: 1.0 · Product version: **1.26.0** · Web UI: **1.26.0** · Web companion: `https://llmsmonitor.ntus.info/` (previous Site origin retained for compatibility)
+Document revision: 1.0 · Product version: **1.29.0** · Web UI: **1.29.0** · Web companion: `https://llmsmonitor.ntus.info/` (previous Site origin retained for compatibility)
 
 This English section defines the implementation contract for the beta. The [Japanese section](#ja) contains the full historical and field-level acceptance criteria. Implementers must read both sections and every ID in [`spec/requirements.json`](spec/requirements.json); neither translation overrides the other.
 
@@ -135,7 +135,7 @@ TASK-CODE-001 reads exact accessibility labels from rendered Claude Code sidebar
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.28.0
+対象製品版: 1.29.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -1415,3 +1415,21 @@ EN: Official project labels and Claude sidebar group names replace internal IDs.
 JP: 公式プロジェクト名・Claudeのサイドバーグループ名を表示し、内部IDを見出しに出さない。所属不明は未所属と断定しない。検出した公式ピンを優先・別一覧表示するが、全アカウントの全件取得は保証しない。新規取得用ホームだけ既知の一覧を展開する。作業メモ・チェックリストは利用者が明示保存し、事業者・指定作業領域・会話URL単位で端末内の独立キーへ保存する。同時保存・重複読込を拒否し、コピー／書出しで共有する。本文収集・自動送信・クラウド同期はしない。通常残量・履歴・通知音から分離。Claude APIプロモーションクレジットは通常残高に加算せず1行追加し、公式の利用可能額原文のみ解析。付与総額から推測せず未取得は—。添付画面相当の模擬データを検証し、ログイン実機の取得は未検証。
 
 Validation 1.28.0: 220 automated tests passed. Main quota acquisition/history/audio/floating source files match the prior release byte-for-byte; shared renderer differs only in version. Local Chrome 340px width note editor has no horizontal overflow (316px dialog, 60px first textarea). Explicit save and reload preserved a synthetic note/checklist. File-chooser live import is blocked by the browser file-URL setting; parser/atomic import/conflict checks are automated. Actual account-wide pin coverage and signed-in Claude promotional acquisition remain unverified.
+
+## v1.29.0 — pin scanning, official work-note registration and section disclosures
+
+EN: Fresh inactive acquisition homes expand known sidebar sections and scan scrollable sidebar content with bounded passes, accumulating explicit pins independently from the 500-task ceiling. Claude artifact/taskboard links permit only their exact official route and optional UUID org routing. Counts, rejected rows, limits and rendered-end confirmation are exposed. A missing pin section never proves zero account pins. The official DOM provides no authoritative account-wide count; rendered-end confirmation is not a full-account guarantee.
+
+The independent closed-shadow registration button appears on verified conversation routes and Claude Code project-thread routes. An explicit click transfers only title/URL/provider through a maximum 20-entry memory buffer, 2-minute TTL and single-use opaque handle. The tall editor opens on the existing companion; provider title/URL are absent from the browser query. Sender extension ID, provider route, URL match, service, task origin/route and top frame are validated. Save remains explicit in the browser/site-local workspace. The workspace label can be selected in the editor. No messages, input values, credentials, automatic sending, quota/history/audio or floating lifecycle changes.
+
+Pins, notes and the entire task tree have separate default-open disclosures. Redraws preserve section state; global Expand/Collapse includes all three. Existing task state expiry and sidebar refresh remain unchanged. Required/optional permissions remain unchanged. Package release is v1.29.0; unmodified manuals/PDFs are not regenerated. Installed official pages need a user reload after saving drafts to receive the new button.
+
+JP: 新しい非アクティブ取得ホームだけ既知の一覧を展開・スクロールし、複数回の読取結果からピンを合併。会話500件上限で後続ピンを取りこぼさない。Claudeのタスクボードも公式artifact経路＋org UUIDだけ許可。取得数・対象数・未対応・上限・表示一覧末尾確認を示す。ピン欄未取得を0件と断定しない。公式DOMに全アカウントの確定総数がないため、表示一覧末尾確認とアカウント全件保証を区別する。
+
+公式会話に独立した［作業メモへ登録］ボタンを設け、クリックでタイトル・URL・事業者のみを縦長の別画面へ渡す。本文・入力値・認証情報を読まず、自動保存／送信もしない。最大20件・2分のメモリ内一度限りハンドルを厳密な送信元へ渡し、URLのqueryに会話タイトル／URLを載せない。メモ画面で作業領域を選択し明示保存。残量・履歴・音・小窓ライフサイクルとは独立。
+
+ピン留め・作業メモ・タスク一覧全体はそれぞれ開閉可能、初期は展開。定期更新・言語切替でも閉じた状態を保持し、全て展開／閉じるの対象にも含む。権限追加なし。v1.29.0として本体＋拡張機能のみビルド。既存公式タブは入力保存後に利用者が再読込して新ボタンを有効にする。
+
+TASK-STATE-MARK-001 (v1.29.0): Every task title begins with 🟢 running, 🟠 waiting, 🔵 idle, ⚪ unknown, ✅ reported completed or 🔴 failed; pinned mark follows separately. Textual state badges remain accessible. Unverified project/artifact pin states use ⚪, never inferred aggregates. 全タスク先頭に状態マーク＋必要時📌。状態文字列も保持し、未確認を稼働中／完了と推測しない。
+
+Validation v1.29.0: 229 automated tests passed. Chrome 340px task tree/status marks, disclosure retention through language change and explicit synthetic note save verified. Existing main acquisition, history, audio, floating modules and PDF manuals are unchanged. Packaged registration handoff validation is automated; installed-extension registration still requires in-place update and official-tab reload. Account-wide pin completeness remains unverified.

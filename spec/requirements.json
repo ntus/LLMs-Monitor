@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs トークン残量モニタ",
     "name_en": "LLMs Token Usage Monitor",
-    "version": "1.28.0",
-    "package_filename": "LLMs-Monitor-v1.28.0.zip",
+    "version": "1.29.0",
+    "package_filename": "LLMs-Monitor-v1.29.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -19,7 +19,7 @@
       "gemini"
     ],
     "production_companion_origin": "https://llmsmonitor.ntus.info",
-    "web_version": "1.28.0",
+    "web_version": "1.29.0",
     "companion_origins": [
       "https://llmsmonitor.ntus.info",
       "https://llmsmonitor.ntusnog.chatgpt.site"
@@ -4696,6 +4696,182 @@
       ],
       "known_limitations": [
         "Sidebar coverage is partial; user-authored notes are browser/site-local and account workspace labels are selected manually."
+      ]
+    },
+    {
+      "id": "TASK-PIN-002",
+      "category": "tasks",
+      "introduced_in": "1.29.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "Expand and scan fresh official sidebars to their rendered end, accumulate pins across scrolling independently of task truncation, include Claude artifact taskboards, report counts/rejections/limits and never claim account-wide completeness without authoritative evidence.",
+      "source_requirements": [
+        "User approval 2026-10-11: all pins, official work-note registration, default-expanded collapsible sections; app + extension; no manual regeneration."
+      ],
+      "acceptance_criteria": [
+        "Expand and scan fresh official sidebars to their rendered end, accumulate pins across scrolling independently of task truncation, include Claude artifact taskboards, report counts/rejections/limits and never claim account-wide completeness without authoritative evidence."
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/task-list.js",
+          "symbol": "TASK-PIN-002"
+        },
+        {
+          "path": "extension/task-background.js",
+          "symbol": "TASK-PIN-002"
+        },
+        {
+          "path": "web/tasks-model.js",
+          "symbol": "TASK-PIN-002"
+        },
+        {
+          "path": "web/tasks-work.js",
+          "symbol": "TASK-PIN-002"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/task-note-register.test.cjs"
+        },
+        {
+          "type": "automated",
+          "path": "tests/task-pins-complete.test.cjs"
+        },
+        {
+          "type": "manual",
+          "procedure": "Chrome narrow viewport, section toggles and note editor; installed extension requires in-place update."
+        }
+      ],
+      "known_limitations": [
+        "Official DOM has no authoritative account-wide pin count. Finished rendered sidebar traversal is not proof of all account pins. Closed regular chat execution remains unknown."
+      ]
+    },
+    {
+      "id": "TASK-REGISTER-001",
+      "category": "tasks",
+      "introduced_in": "1.29.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "Explicit official-chat button opens independent tall work-note editor using only title/link metadata; bounded two-minute one-time memory handoff, strict sender/provider/top-frame/task-route checks; no body, credential, automatic save or quota lifecycle.",
+      "source_requirements": [
+        "User approval 2026-10-11: all pins, official work-note registration, default-expanded collapsible sections; app + extension; no manual regeneration."
+      ],
+      "acceptance_criteria": [
+        "Explicit official-chat button opens independent tall work-note editor using only title/link metadata; bounded two-minute one-time memory handoff, strict sender/provider/top-frame/task-route checks; no body, credential, automatic save or quota lifecycle."
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/task-note-button.js",
+          "symbol": "TASK-REGISTER-001"
+        },
+        {
+          "path": "extension/task-note-background.js",
+          "symbol": "TASK-REGISTER-001"
+        },
+        {
+          "path": "web/tasks-bridge.js",
+          "symbol": "TASK-REGISTER-001"
+        },
+        {
+          "path": "web/tasks-work.js",
+          "symbol": "TASK-REGISTER-001"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/task-note-register.test.cjs"
+        },
+        {
+          "type": "automated",
+          "path": "tests/task-pins-complete.test.cjs"
+        },
+        {
+          "type": "manual",
+          "procedure": "Chrome narrow viewport, section toggles and note editor; installed extension requires in-place update."
+        }
+      ],
+      "known_limitations": [
+        "Official DOM has no authoritative account-wide pin count. Finished rendered sidebar traversal is not proof of all account pins. Closed regular chat execution remains unknown."
+      ]
+    },
+    {
+      "id": "TASK-DISCLOSE-001",
+      "category": "tasks",
+      "introduced_in": "1.29.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "Pins, work notes and whole task tree are independently collapsible, expanded by default; preserve disclosure across refresh/language updates; global expand/collapse includes all sections.",
+      "source_requirements": [
+        "User approval 2026-10-11: all pins, official work-note registration, default-expanded collapsible sections; app + extension; no manual regeneration."
+      ],
+      "acceptance_criteria": [
+        "Pins, work notes and whole task tree are independently collapsible, expanded by default; preserve disclosure across refresh/language updates; global expand/collapse includes all sections."
+      ],
+      "implementation_evidence": [
+        {
+          "path": "web/tasks.html",
+          "symbol": "TASK-DISCLOSE-001"
+        },
+        {
+          "path": "web/tasks-page.js",
+          "symbol": "TASK-DISCLOSE-001"
+        },
+        {
+          "path": "web/tasks.css",
+          "symbol": "TASK-DISCLOSE-001"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/task-note-register.test.cjs"
+        },
+        {
+          "type": "automated",
+          "path": "tests/task-pins-complete.test.cjs"
+        },
+        {
+          "type": "manual",
+          "procedure": "Chrome narrow viewport, section toggles and note editor; installed extension requires in-place update."
+        }
+      ],
+      "known_limitations": [
+        "Official DOM has no authoritative account-wide pin count. Finished rendered sidebar traversal is not proof of all account pins. Closed regular chat execution remains unknown."
+      ]
+    },
+    {
+      "id": "TASK-STATE-MARK-001",
+      "category": "tasks",
+      "introduced_in": "1.29.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "Every task item begins with a state emoji alongside an independent pin marker. Unknown states never imply running; manual note phases remain distinct from observed provider states.",
+      "source_requirements": [
+        "User approval 2026-10-11: all pins, official work-note registration, default-expanded collapsible sections; app + extension; no manual regeneration."
+      ],
+      "acceptance_criteria": [
+        "Running, waiting, idle, completed, failed and unknown have distinct leading marks with textual status retained."
+      ],
+      "implementation_evidence": [
+        {
+          "path": "web/tasks-model.js",
+          "symbol": "stateIcon"
+        },
+        {
+          "path": "web/tasks-page.js",
+          "symbol": "stateIcon"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/task-pins-complete.test.cjs"
+        }
+      ],
+      "known_limitations": [
+        "Official DOM has no authoritative account-wide pin count. Finished rendered sidebar traversal is not proof of all account pins. Closed regular chat execution remains unknown."
       ]
     }
   ]

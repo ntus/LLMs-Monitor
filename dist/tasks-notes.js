@@ -4,7 +4,7 @@
  const KEY='llms-task-notes-v1',MAX_BYTES=1048576,MAX_NOTES=500;
  const clean=(v,n)=>typeof v==='string'?v.replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g,'').slice(0,n).trim():'';
  function validate(v){
-  if(!v||!root.LLMTaskModel.SERVICES.includes(v.service)||!root.LLMTaskModel.safeURL(v.url,v.service))throw Error('note route');
+  if(!v||!root.LLMTaskModel.SERVICES.includes(v.service)||!root.LLMTaskModel.noteURL(v.url,v.service))throw Error('note route');
   const workspace=clean(v.workspace,80);if(!workspace)throw Error('workspace');
   const title=clean(v.title,200);if(!title)throw Error('title');
   return {service:v.service,url:v.url,workspace,title,phase:['working','review','blocked','done'].includes(v.phase)?v.phase:'working',purpose:clean(v.purpose,2000),current:clean(v.current,4000),next:clean(v.next,2000),waiting:clean(v.waiting,2000),cautions:clean(v.cautions,2000),checklist:(Array.isArray(v.checklist)?v.checklist:[]).slice(0,50).map(x=>({text:clean(x.text,300),done:x.done===true})).filter(x=>x.text),updatedAt:typeof v.updatedAt==='string'&&Number.isFinite(Date.parse(v.updatedAt))?v.updatedAt:null,revision:Number.isSafeInteger(v.revision)&&v.revision>=0?v.revision:0};

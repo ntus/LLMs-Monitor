@@ -32,7 +32,7 @@
   const projectId=link(a.getAttribute('href'),service)?.projectId;
   return {groupId,groupTitle,pinned,projectTitle:projectId?(names.get(projectId)||''):''};
  }
- function pinURL(href,service){try{const u=new URL(href,HOMES[service]);if(u.origin!==new URL(HOMES[service]).origin||u.username||u.password||u.search||u.hash)return '';if(link(u.href,service))return u.href;
+ function pinURL(href,service){try{const u=new URL(href,HOMES[service]);if(u.origin!==new URL(HOMES[service]).origin||u.username||u.password||u.hash)return '';if(service==='claude'&&/^\/artifact\/[a-zA-Z0-9_-]+\/?$/.test(u.pathname)){const q=[...u.searchParams];return !q.length||q.length===1&&q[0][0]==='org'&&/^[a-f0-9]{8}-(?:[a-f0-9]{4}-){3}[a-f0-9]{12}$/i.test(q[0][1])?u.href:'';}if(u.search)return '';if(link(u.href,service))return u.href;
   const re=service==='claude'?/^\/(?:code\/project|project)\/[a-zA-Z0-9_-]+\/?$/:service==='chatgpt'?/^\/g\/g-p-[a-zA-Z0-9_-]+(?:\/project)?\/?$/:/^\/notebook\/[a-zA-Z0-9_-]+\/?$/;return re.test(u.pathname)?u.href:'';}catch{return ''}}
  function prepare(doc,service){
   const areas=[...doc.querySelectorAll(SIDEBARS[service])].filter(n=>n.getClientRects().length);let count=0;
@@ -42,18 +42,19 @@
  }
  function collect(doc,service,now=Date.now()){
   if(!HOSTS[service])return {status:'unavailable'};
-  const areas=[...doc.querySelectorAll(SIDEBARS[service])].filter(n=>n.getClientRects().length),rows=new Map(),names=new Map(),pins=new Map();
+  const areas=[...doc.querySelectorAll(SIDEBARS[service])].filter(n=>n.getClientRects().length),rows=new Map(),names=new Map(),pins=new Map(),seenPins=new Set();let rejected=0;
   if(!areas.length)return {status:'unavailable'};
   for(const area of areas)for(const n of area.querySelectorAll('[data-app-action-sidebar-project-id][data-app-action-sidebar-project-label]')){const id=n.getAttribute('data-app-action-sidebar-project-id'),label=text(n.getAttribute('data-app-action-sidebar-project-label'));if(id&&label&&!names.has(id))names.set(id,label)}
   for(const area of areas)for(const a of area.querySelectorAll('a[href]')){
-   if(!a.getClientRects().length)continue;const ctx=context(a,service,names),pin=pinURL(a.getAttribute('href'),service);if(ctx.pinned&&pin&&!pins.has(pin))pins.set(pin,{url:pin,title:text(a.innerText||a.getAttribute('aria-label'),200),kind:link(pin,service)?'chat':'project'});const item=link(a.getAttribute('href'),service);if(!item)continue;
+   if(!a.getClientRects().length)continue;const ctx=context(a,service,names),href=a.getAttribute('href'),pin=pinURL(href,service);if(ctx.pinned&&!seenPins.has(href)){seenPins.add(href);const title=text(a.innerText||a.getAttribute('aria-label'),200);if(pin&&title)pins.set(pin,{url:pin,title,kind:link(pin,service)?'chat':pin.includes('/artifact/')?'artifact':'project'});else rejected++;}const item=link(a.getAttribute('href'),service);if(!item)continue;
    const title=String(a.innerText||a.getAttribute('aria-label')||'').replace(/[\u0000-\u001f\u007f]/g,' ').trim().slice(0,200);if(!title||item.id.length>120||item.projectId?.length>120)continue;
    const listedState=service==='claude'&&item.kind==='code'?codeBadge(a,now):null;
    const prior=rows.get(item.id);if(prior){if(ctx.projectTitle)prior.projectTitle=ctx.projectTitle;if(ctx.groupTitle){prior.groupTitle=ctx.groupTitle;prior.groupId=ctx.groupId}prior.pinned=prior.pinned||ctx.pinned;continue;}
-   rows.set(item.id,{...item,...ctx,title,status:'unknown',listedState,parentId:null,updatedAt:null,summary:''});if(rows.size>=500)break;
+   rows.set(item.id,{...item,...ctx,title,status:'unknown',listedState,parentId:null,updatedAt:null,summary:''});if(rows.size>500)rows.delete(item.id);
   }
   if(!rows.size&&!pins.size)return {status:'unavailable'}; // Empty/loading/signed-out cannot erase a previous list.
-  return {status:'ready',snapshot:{schemaVersion:1,service,capturedAt:new Date(now).toISOString(),source:'official-sidebar',coverage:'Rendered sidebar only; no chat contents or inferred execution states. Unknown affiliations are not inferred. Desktop Codex tasks are not included.',pins:[...pins.values()].slice(0,500),pinCoverage:'partial',tasks:[...rows.values()]}};
+  return {status:'ready',snapshot:{schemaVersion:1,service,capturedAt:new Date(now).toISOString(),source:'official-sidebar',coverage:'Rendered sidebar only; no chat contents or inferred execution states. Unknown affiliations are not inferred. Desktop Codex tasks are not included.',pins:[...pins.values()].slice(0,500),pinCoverage:'partial',pinAudit:{observed:seenPins.size,accepted:pins.size,rejected,limited:pins.size>500,sectionSeen:service==='claude'?areas.some(a=>!!a.querySelector?.('[data-pinned-list]')):service==='chatgpt'?seenPins.size>0:seenPins.size>0},tasks:[...rows.values()]}};
  }
- root.LLMTaskList={HOSTS,HOMES,SIDEBARS,link,pinURL,prepare,collect};if(typeof module!=='undefined')module.exports=root.LLMTaskList;
+ function advance(doc,service){const areas=[...doc.querySelectorAll(SIDEBARS[service])].filter(n=>n.getClientRects().length);let more=false;for(const area of areas){for(const n of [area,...area.querySelectorAll('*')]){if(n.scrollHeight>n.clientHeight+2&&n.clientHeight>0&&n.scrollTop+n.clientHeight<n.scrollHeight-2){n.scrollTop=Math.min(n.scrollTop+Math.max(100,n.clientHeight-40),n.scrollHeight);more=true;break;}}}return more;}
+ root.LLMTaskList={HOSTS,HOMES,SIDEBARS,link,pinURL,prepare,advance,collect};if(typeof module!=='undefined')module.exports=root.LLMTaskList;
 })(globalThis);

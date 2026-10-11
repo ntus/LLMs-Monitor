@@ -348,3 +348,9 @@ TASK-CODE-001は公式Codeホームの表示済みサイドバーにある明示
 ## 1.28.0
 EN: Independent pinned-item priority, verified project/group labels and explicit local work notes/checklist/handoff. Separate Claude API promotional balance row; missing values stay unknown.
 JP: 独立タスク画面にピン優先、確認済み所属名、手動保存する作業メモ・チェックリスト・引継ぎを追加。Claude APIプロモーションクレジットを別行表示し、未取得を0にしない。
+
+## v1.29.0
+
+EN: Official-chat work-note registration opens a separate tall editor. Pins, notes and task tree collapse independently (expanded by default). Pin scanning includes Claude taskboards and reports its acquisition counts and limits. Update the extension in place; quota/history/audio are unchanged. Account-wide pin coverage remains unverified.
+
+JP: 公式チャットの［作業メモへ登録］から縦長の別画面を開けます。ピン・作業メモ・一覧全体を折りたたみ可能（初期展開）。Claudeタスクボードを含めピンを走査し、取得件数と制限を表示。拡張は上書き更新し、残量／履歴／音は維持。全アカウントの全件保証は未確認です。

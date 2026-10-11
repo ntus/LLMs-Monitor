@@ -13,7 +13,7 @@
  const reasonLabel=task=>t({'not-open':'notOpen','no-signal':'noSignal',conflict:'stateConflict',stale:'stateStale',unavailable:'stateUnavailable'}[task.stateReason]||'unknown');
  function node(task,children,opened,filtering){
   const item=el('li',undefined,'task-node'),detail=el('details');detail.dataset.taskId=task.id;detail.open=filtering||opened.has('task:'+task.id);
-  const summary=el('summary'),title=el('span',(task.pinned?'📌 ':'')+task.title,'task-title'),badge=el('span',stateLabel(task),'task-state');badge.dataset.status=task.status;if(task.status==='unknown'&&task.stateReason)badge.title=reasonLabel(task);summary.append(title,badge);detail.append(summary);
+  const summary=el('summary'),title=el('span',M.stateIcon(task)+' '+(task.pinned?'📌 ':'')+task.title,'task-title'),badge=el('span',stateLabel(task),'task-state');badge.dataset.status=task.status;if(task.status==='unknown'&&task.stateReason)badge.title=reasonLabel(task);summary.append(title,badge);detail.append(summary);
   const meta=el('div',undefined,'task-meta');meta.append(el('p',`${t('updated')}: ${when(task.updatedAt)}`));if(task.stateObservedAt)meta.append(el('p',`${t('observed')}: ${when(task.stateObservedAt)}`,'task-observed'));else if(task.stateReason)meta.append(el('p',reasonLabel(task)));if(task.summary)meta.append(el('p',task.summary));
   if(task.listedLabel)meta.append(el('p',t('codeListNote')));
   if(task.url){const link=el('a',t('open')+' ↗');link.href=task.url;link.target='_blank';link.rel='noopener noreferrer';meta.append(link)}if(globalThis.LLMTaskWork)meta.append(LLMTaskWork.button(task));detail.append(meta);
@@ -51,14 +51,14 @@
  }
  function textTree(){
   if(!snapshot)return '';const selected=M.select(snapshot,$('search').value,$('status').value),out=[`${names[service][0]} — ${t('taskDetails')}`,`${t('captured')}: ${when(snapshot.capturedAt)}`,t(snapshot.source==='demo'?'sample':snapshot.source==='official-sidebar'?'autoSource':'local')];
-  const visit=(tasks,prefix)=>tasks.forEach((task,i)=>{const last=i===tasks.length-1;out.push(`${prefix}${last?'└─':'├─'} ${task.title} [${stateLabel(task)}]`);visit(selected.filter(x=>x.parentId===task.id),prefix+(last?'   ':'│  '))});
+  const visit=(tasks,prefix)=>tasks.forEach((task,i)=>{const last=i===tasks.length-1;out.push(`${prefix}${last?'└─':'├─'} ${M.stateIcon(task)} ${task.pinned?'📌 ':''}${task.title} [${stateLabel(task)}]`);visit(selected.filter(x=>x.parentId===task.id),prefix+(last?'   ':'│  '))});
   M.groups(selected).forEach((group,i,groups)=>{const last=i===groups.length-1;out.push(`${last?'└─':'├─'} ${M.groupLabel(group,language,i)} (${t(group.kind)})`);visit(group.tasks.filter(x=>!x.parentId),last?'   ':'│  ')});return out.join('\n');
  }
  $('task-file').onchange=e=>importFile(e.target.files[0]);$('search').oninput=render;$('status').onchange=render;
  $('language').onclick=()=>{language=language==='ja'?'en':'ja';globalThis.LLMTaskWork?.mount(service,language);render()};$('theme').onclick=()=>{theme=theme==='dark'?'standard':'dark';render()};
  $('demo').onclick=()=>{automatic=false;autoGeneration++;snapshot=M.demo(service);stateNotice='';$('search').value='';$('status').value='all';noticeKey='';$('tree').dataset.rendered='false';render()};
  $('clear').onclick=()=>{automatic=false;autoGeneration++;snapshot=null;stateNotice='';noticeKey='cleared';$('search').value='';$('status').value='all';render()};
- $('expand').onclick=()=>$('tree').querySelectorAll('details').forEach(d=>{d.open=true});$('collapse').onclick=()=>$('tree').querySelectorAll('details').forEach(d=>{d.open=false});
+ $('expand').onclick=()=>document.querySelectorAll('.task-section, #tree details').forEach(d=>{d.open=true});$('collapse').onclick=()=>document.querySelectorAll('.task-section, #tree details').forEach(d=>{d.open=false});
  $('copy').onclick=async()=>{try{await navigator.clipboard.writeText(textTree());noticeKey='copied';render()}catch{noticeKey='copyFailed';render();const dialog=el('dialog'),area=el('textarea'),close=el('button',t('close'));dialog.setAttribute('aria-label',t('taskDetails'));area.readOnly=true;area.value=textTree();area.setAttribute('aria-label',t('taskDetails'));close.onclick=()=>{dialog.close();dialog.remove()};dialog.append(area,close);document.body.append(dialog);dialog.showModal();area.focus();area.select();dialog.addEventListener('close',()=>dialog.remove(),{once:true})}};
  async function acquire(){
   if(acquiring||reading)return;const generation=autoGeneration;acquiring=true;noticeKey='fetching';render();
@@ -79,5 +79,7 @@
   }catch{if(generation===autoGeneration&&snapshot===base){snapshot=M.states(snapshot,null);stateNotice='stateFailed';render()}}finally{stateReading=false}
  }
  $('auto').onclick=()=>{automatic=!automatic;autoGeneration++;render();if(automatic){acquire();checkStates()}};$('task-refresh').onclick=acquire;
- globalThis.LLMTaskWork?.mount(service,language);render();acquire();setInterval(()=>{if(automatic&&!document.hidden)acquire()},60000);setInterval(()=>{const before=snapshot;snapshot=M.expireStates(snapshot);if(before!==snapshot&&!document.hidden)render();checkStates()},5000);document.addEventListener('visibilitychange',()=>{if(!document.hidden){render();checkStates()}});
+ globalThis.LLMTaskWork?.mount(service,language);render();
+ if(params.get('note')){LLMTaskBridge.note(service,params.get('note')).then(r=>{const task=r?.task;if(r.status==='ready'&&task?.service===service&&M.noteURL(task.url,service)&&typeof task.title==='string'){globalThis.LLMTaskWork?.editor(task);}else{$('notice').textContent=language==='ja'?'登録情報を取得できません。公式チャットの登録ボタンからもう一度開いてください。':'Registration expired or unavailable. Open it again from the official chat button.';}const clean=new URL(location.href);clean.searchParams.delete('note');clean.searchParams.delete('extension');history.replaceState(null,'',clean.href);}).catch(()=>{});}
+ acquire();setInterval(()=>{if(automatic&&!document.hidden)acquire()},60000);setInterval(()=>{const before=snapshot;snapshot=M.expireStates(snapshot);if(before!==snapshot&&!document.hidden)render();checkStates()},5000);document.addEventListener('visibilitychange',()=>{if(!document.hidden){render();checkStates()}});
 })();

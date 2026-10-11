@@ -190,3 +190,9 @@ v1.27.0はClaude Codeの一覧から入力待ち／アイドル／未読の返�
 EN: Pinned items, verified project/group names and explicitly saved thread work notes/checklists/handoff in the independent task screen. Sidebar coverage remains partial. Claude API promotional credits have a separate row.
 
 JP: 独立タスク画面へピン留め優先・確認済みプロジェクト／グループ名・スレッド別作業メモ・チェックリスト・引継ぎを追加。一覧の全件取得は保証しません。Claude APIのプロモーションクレジットを別行に表示します。
+
+## v1.29.0
+
+EN: Official-chat work-note registration opens a separate tall editor. Pins, notes and task tree collapse independently (expanded by default). Pin scanning includes Claude taskboards and reports its acquisition counts and limits. Update the extension in place; quota/history/audio are unchanged. Account-wide pin coverage remains unverified.
+
+JP: 公式チャットの［作業メモへ登録］から縦長の別画面を開けます。ピン・作業メモ・一覧全体を折りたたみ可能（初期展開）。Claudeタスクボードを含めピンを走査し、取得件数と制限を表示。拡張は上書き更新し、残量／履歴／音は維持。全アカウントの全件保証は未確認です。
