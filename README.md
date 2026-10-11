@@ -23,7 +23,7 @@ Update the extension in place; do not uninstall or clear browser storage. Save o
 
 
 
-Release preparation **v1.33.0** for Chrome/Edge desktop, with English and Japanese interfaces.
+Release preparation **Web v1.33.1 / extension v1.33.0** for Chrome/Edge desktop, with English and Japanese interfaces.
 
 - **See LLM usage remaining in real time:** current/weekly limits, reset times, official incidents and local change alerts for ChatGPT, Claude and Gemini.
 - **Keep track of work:** independent task windows, evidenced response states, pinned items first, and per-thread notes/checklists with links back to the conversation.
@@ -50,7 +50,7 @@ Only changed numeric values blink; local sound is sent before the display change
 
 Use standard/dark themes, language, volume, opacity, service ordering/hiding, fullscreen or a floating view. Hidden services continue acquisition/history. Always-on-top uses supported Document Picture-in-Picture after a click; native window chrome, sizing limits and OS transparency belong to the browser/OS. Floating incident details list only affected services, while usage cards remain available. History stores up to 10,000 changed values per window locally.
 
-For macOS helper setup: **Connect Codex → download and extract → run Install.command → paste the extension ID → Enable connection → Check connection → Refresh list**. The [step-by-step guide](https://github.com/ntus/LLMs-Monitor/blob/main/native/README.md#macos-en) includes a Terminal fallback, Python 3.9+ checks and troubleshooting. Linux has a command installer; Windows helper installation is not implemented. This guide update preserves app v1.33.0 and helper v1.30.0 ZIPs.
+For macOS helper setup: **Connect Codex → download and extract → run Install.command → paste the extension ID → Enable connection → Check connection → Refresh list**. The [step-by-step guide](https://github.com/ntus/LLMs-Monitor/blob/main/native/README.md#macos-en) includes a Terminal fallback, Python 3.9+ checks and troubleshooting. Linux has a command installer; Windows helper installation is not implemented. Web v1.33.1 uses helper v1.30.1; the extension ZIP remains v1.33.0.
 
 ## Tasks and work notes
 
@@ -58,7 +58,7 @@ For macOS helper setup: **Connect Codex → download and extract → run Install
 
 Observed states appear before every item. **Generating** means a visible stop control was observed; **Response idle** is not completion. Closed ordinary chats or unrecognized controls stay Unknown. Open-tab evidence expires after 15 seconds; exact Claude Code list evidence and shared Codex evidence after 90 seconds. Waiting cannot be inferred into finished work.
 
-Pinned projects/chats are prioritized when detected. Rendered-list coverage and rejected/limited counts are displayed; **all account pins are not guaranteed**. A pinned project does not pin every child chat. Browser ChatGPT and desktop Codex are different sources. Optional [Codex helper v1.30.0](dist/LLMs-Monitor-Codex-Helper-v1.30.0.zip), [macOS installation guide](https://github.com/ntus/LLMs-Monitor/blob/main/native/README.md#macos-en), provides this computer’s Codex metadata/local pins; it is initially disabled. Runtime stays Unknown unless an existing shared server supplies evidence.
+Pinned projects/chats are prioritized when detected. Rendered-list coverage and rejected/limited counts are displayed; **all account pins are not guaranteed**. A pinned project does not pin every child chat. Browser ChatGPT and desktop Codex are different sources. Optional [Codex helper v1.30.1](dist/LLMs-Monitor-Codex-Helper-v1.30.1.zip), [macOS installation guide](https://github.com/ntus/LLMs-Monitor/blob/main/native/README.md#macos-en), provides this computer’s Codex metadata/local pins; it is initially disabled. Runtime stays Unknown unless an existing shared server supplies evidence.
 
 To remember a thread:
 
@@ -72,7 +72,7 @@ Automatic lists are memory-only and exclude bodies/drafts/credentials. Explicitl
 
 ## Release and build
 
-Full release build: `node --test tests/*.test.cjs tests/*.test.mjs`, then `python3 build.py --package --codex-helper`. This generates the app, extension, optional helper and current Markdown manuals in `dist/docs/`; no PDF manual exists in this repository. `python3 build.py` alone preserves package/manual artifacts. Helper runtime stays 1.30.0 because its code did not change. Package changes increment the middle version and reset the last digit; Web-only patches increment the last digit.
+Full release build: `node --test tests/*.test.cjs tests/*.test.mjs`, then `python3 build.py --package --codex-helper`. This generates the app, extension, optional helper and current Markdown manuals in `dist/docs/`; no PDF manual exists in this repository. `python3 build.py` alone preserves package/manual artifacts. Helper 1.30.1 fixes the shared-socket fallback deadline. Package changes increment the middle version and reset the last digit; Web-only patches increment the last digit.
 
 Security and regression results are in [Security review](SECURITY_REVIEW.md); remaining store/live-account/X acceptance steps are in [Store submission](STORE_SUBMISSION.md). Current Site access stays owner-only. Formal public access and future `aimon.ntus.info` migration are separate release steps. Chrome/Edge desktop are the target; Safari, Firefox, native mobile, Windows Codex helper and complete account inventories are not claimed supported.
 
@@ -101,7 +101,7 @@ Security and regression results are in [Security review](SECURITY_REVIEW.md); re
 
 [日本語チラシを拡大](assets/promotional/llms-monitor-a4-landscape-flyer-v1.jpg?raw=1)（以前の画面紹介。現行の説明は以下）
 
-**AIの残量も、作業の続きも。** 正式リリース準備版 **v1.33.0**。
+**AIの残量も、作業の続きも。** 正式リリース準備版 **Web v1.33.1／拡張v1.33.0**。
 
 ① **各種LLMの利用残量をリアルタイム表示！** リセット時刻、公式障害情報、数値変化も確認。
 
@@ -111,7 +111,7 @@ Security and regression results are in [Security review](SECURITY_REVIEW.md); re
 
 **※Tiboリセット通知は現在の静的サイトでは未稼働です。** Tibo氏（`@thsottiaux`、OpenAIスタッフ）・各社公式Xの利用枠／リセット投稿を検知する処理はありますが、別サーバー・X認証Secret・キャッシュ・1分cronが必要です。模擬データでの成功を実投稿の通知成功とは扱いません。[設定と実投稿検証](server/README.md#ja)を参照。告知は個人の残量がリセット済みである証明ではありません。Nerf Benchはリンクのみです。
 
-CodexヘルパーのmacOS導入は **［Codexを接続］→ZIP展開→Install.command実行→拡張機能ID入力→［接続を有効にする］→［接続を確認］→［一覧を更新］**。詳しくは [macOS手順と困ったときの対処](https://github.com/ntus/LLMs-Monitor/blob/main/native/README.md#macos-ja) を参照。Python 3.9以上、ターミナルでの代替手順、Chrome／Edge別IDの注意点も掲載。Linuxはコマンド方式、Windowsヘルパーは未対応です。今回の取説更新では本体v1.33.0・ヘルパーv1.30.0のZIPは作り直しません。
+CodexヘルパーのmacOS導入は **［Codexを接続］→ZIP展開→Install.command実行→拡張機能ID入力→［接続を有効にする］→［接続を確認］→［一覧を更新］**。詳しくは [macOS手順と困ったときの対処](https://github.com/ntus/LLMs-Monitor/blob/main/native/README.md#macos-ja) を参照。Python 3.9以上、ターミナルでの代替手順、Chrome／Edge別IDの注意点も掲載。Linuxはコマンド方式、Windowsヘルパーは未対応です。Web v1.33.1／ヘルパーv1.30.1へ更新、拡張機能ZIPはv1.33.0のままです。
 
 ## 導入・更新
 
@@ -137,7 +137,7 @@ CodexヘルパーのmacOS導入は **［Codexを接続］→ZIP展開→Install.
 
 各項目の先頭に状態を表示。［応答生成中］は停止ボタンの観測、［応答待機］は完了ではありません。通常会話のタブを閉じると未確認。開いた会話の観測は15秒、Claude Code一覧・共有Codexの観測は90秒で失効します。
 
-検出したピンを優先表示しますが、**アカウント全件は保証しません**。取得数・未対応・上限を表示。プロジェクトのピンは子の全会話のピンではありません。ブラウザーChatGPTとCodexは別経路。[任意ヘルパー](dist/LLMs-Monitor-Codex-Helper-v1.30.0.zip)と[macOS導入手順](https://github.com/ntus/LLMs-Monitor/blob/main/native/README.md#macos-ja)で、この端末のCodex一覧・ローカルピンを取得できます。初期無効で、共有サーバーの根拠がなければ状態は未確認です。
+検出したピンを優先表示しますが、**アカウント全件は保証しません**。取得数・未対応・上限を表示。プロジェクトのピンは子の全会話のピンではありません。ブラウザーChatGPTとCodexは別経路。[任意ヘルパー](dist/LLMs-Monitor-Codex-Helper-v1.30.1.zip)と[macOS導入手順](https://github.com/ntus/LLMs-Monitor/blob/main/native/README.md#macos-ja)で、この端末のCodex一覧・ローカルピンを取得できます。初期無効で、共有サーバーの根拠がなければ状態は未確認です。
 
 **備忘録を作る手順**
 
@@ -151,8 +151,14 @@ CodexヘルパーのmacOS導入は **［Codexを接続］→ZIP展開→Install.
 
 ## ビルド・正式公開
 
-`node --test tests/*.test.cjs tests/*.test.mjs` 後に `python3 build.py --package --codex-helper` で、本体・拡張機能・ヘルパー・現行Markdown取説（`dist/docs/`）を生成。このリポジトリにPDF取説はありません。通常の `python3 build.py` はZIP・取説成果物を維持。ヘルパー本体はコード未変更の1.30.0を継続します。
+`node --test tests/*.test.cjs tests/*.test.mjs` 後に `python3 build.py --package --codex-helper` で、本体・拡張機能・ヘルパー・現行Markdown取説（`dist/docs/`）を生成。このリポジトリにPDF取説はありません。通常の `python3 build.py` はZIP・取説成果物を維持。ヘルパー本体は待機不具合を修正した1.30.1です。
 
 [セキュリティ精査](SECURITY_REVIEW.md)・[ストア提出手順](STORE_SUBMISSION.md)を参照。現行Sitesの所有者限定公開は維持し、一般公開・ストア承認・実機確認・将来のaimon.ntus.info移行は別の正式公開作業です。Safari／Firefox／ネイティブモバイル／Windows用Codexヘルパー／全アカウント一覧は対応を保証しません。
 
 Documentation-only build / 取説だけのビルド: `python3 build.py --manuals-only CODEX_HELPER.md README.md TASK_DETAILS.md SPECIFICATION.md AGENTS.md` updates only the named hosted manuals; no app/version/ZIP changes.
+
+### 2026-10-12 helper connection fix / ヘルパー接続修正
+
+Use [helper v1.30.1](https://llmsmonitor.ntus.info/LLMs-Monitor-Codex-Helper-v1.30.1.zip), reinstall once with the current browser extension ID, then Check connection. **Refresh list / ［一覧を更新］** is in **LLMs Monitor → ChatGPT card → Task details**, not the official ChatGPT site. The unchanged extension setup links to old helper 1.30.0; the independent task window and updated guide link to 1.30.1. Metadata-only states remain Unknown; installation is not required each refresh.
+
+v1.30.1を一度導入し直して［接続を確認］。その後、**LLMs MonitorのChatGPTカード → ［タスク詳細］ → ［一覧を更新］**。公式ChatGPTにはこの更新ボタンはありません。ヘルパー更新リンクは新しいタスク画面／取説から使います。

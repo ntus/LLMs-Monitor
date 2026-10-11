@@ -13,8 +13,10 @@ import sys
 import time
 
 HOST = "info.ntus.llmsmonitor.codex"
-VERSION = "1.30.0"
+VERSION = "1.30.1"
 LIMIT = 500
+ACQUIRE_SECONDS = 21
+SHARED_SECONDS = 4
 UUID = re.compile(r"^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$", re.I)
 METHODS = {"initialize", "thread/list", "thread/read"}
 
@@ -168,7 +170,7 @@ def collect(rpc, pins, pins_known, live):
 
 
 def acquire():
-    deadline = time.monotonic() + 21
+    deadline = time.monotonic() + ACQUIRE_SECONDS
     home = Path(os.environ.get("CODEX_HOME", str(Path.home() / ".codex"))).expanduser()
     candidates = [shutil.which("codex"), "/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex", "/Applications/Codex.app/Contents/Resources/codex"]
     binary = next((v for v in candidates if v and Path(v).is_file() and os.access(v, os.X_OK)), None)
@@ -182,7 +184,10 @@ def acquire():
     for command, live in commands:
         rpc = None
         try:
-            rpc = RPC(command, deadline)
+            # A stale/unresponsive shared socket must not spend the fallback's
+            # entire budget. Bound all shared RPCs, including pin/list reads.
+            attempt_deadline = min(deadline, time.monotonic() + SHARED_SECONDS) if live else deadline
+            rpc = RPC(command, attempt_deadline)
             rpc.call("initialize", {"clientInfo": {"name": "llms_monitor_codex", "version": VERSION}, "capabilities": {"experimentalApi": False}})
             rpc.send({"method": "initialized", "params": {}})
             return collect(rpc, pins, known, live)

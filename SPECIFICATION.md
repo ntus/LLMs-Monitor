@@ -1524,3 +1524,17 @@ DOC-CODEX-INSTALL-001: macOS-first bilingual guide covers the independent helper
 取説だけを更新。macOS導入から実際の取得確認までを具体化し、Linux実機未確認・Windows導入未対応を明記。既存ZIP内の旧取説と現行Web取説を区別。本体v1.33.0／ヘルパーv1.30.0／保存データを維持し、指定文書以外はビルドしない。
 
 Documentation verification: 275 CJS/MJS tests pass, including the 5 embedded Python host/installer tests and two isolated manual-build safety tests. SHA256 comparison preserves all 178 unnamed existing runtime/package/manual files. Only the five selected hosted manuals and native source guide changed within the guarded artifact set. No user installation or browser permission was performed.
+
+## 2026-10-12 Web v1.33.1 / helper v1.30.1 — shared timeout fallback
+
+TASK-CODEX-FALLBACK-001: An existing shared control socket on the inspected macOS host did not reply to initialize. Helper 1.30.0 spent the whole 21-second global deadline there, so independent metadata also failed. Bound each whole shared attempt to four seconds, close its process, then use the remaining global budget for stdio metadata. Fast shared replies preserve evidenced status; metadata-only always Unknown with no observedAt. No commands beyond fixed metadata methods, no message/preview/auth forwarding, no port/daemon creation, no user tasks stopped.
+
+macOS実確認: 登録先・実行権限・拡張IDは正常。CLI 0.162.1、共有initialize待機が期限を使い切る。独立メタ経路は成功。修正版で共有接続待機を最大4秒へ区切り、代替一覧の時間を確保。取得結果18件・端末内ピン6/6、状態はmetadata-only。Chromeの［接続を確認］後の取得はヘルパー再導入後の別受入とし、件数以外の個人タイトル・URL・IDは証跡に保存しない。
+
+Build approval: app + Codex helper + changed guides only. Web1.33.1 / helper1.30.1, extension source and ZIP1.33.0 retained; old helper1.30.0 retained. Current task-window download and updated guide link to new helper; unchanged extension setup still links to old helper. Guide explicitly distinguishes LLMs Monitor task-window Refresh list from official ChatGPT. No installed helper replacement performed by the agent.
+
+### Future native application requirement / 専用アプリの必須対象
+
+User requires macOS, Windows, iOS and Android for the future native product. This repair does not implement native apps or claim mobile support. Candidate: shared HTML/CSS/JS UI packaged with Tauri and platform-specific acquisition connectors. Desktop app bundles metadata connector without requiring a separate Python installation; browser provider adapters may still require explicit browser integration or separate app sign-in. Phones cannot assume access to another computer’s Codex data. Mobile viewing of desktop snapshots requires an explicit authenticated device-pairing/sharing design, revocation, per-account isolation and freshness/online disclosure. Manual work-note sync needs separate consent/conflict handling. Do not enable remote sharing in this release. Existing Web main monitor must remain separate through any trial migration.
+
+Verification: 275 Node CJS/MJS tests pass, including 7 Python host cases (shared hangs at initialize/pin/list, responsive shared runtime, metadata privacy/protocol/install). Live fixed-host read returns ready, metadata-only, 18 tasks, local pins6/6 with no limit. Extension source and ZIP, old helperZIP, main quota/history/audio/CSS and unnamed manuals match pre-build SHA256. New helper has exactly four canonical files, valid CRC and executable installer; current task script cache URL advances to1331. Installed browser native messaging after new helper registration remains user acceptance, not inferred from the CLI result.

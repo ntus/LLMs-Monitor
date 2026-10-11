@@ -172,3 +172,11 @@ TASK-CODEX-001 adds optional nativeMessaging, never a required grant. User click
 JP: 任意権限を専用画面の直接クリックで許可。固定の読取要求と正規送信元を検証し、本文・preview・イベント・認証を渡さない。端末内ピンの互換形式を明示、別ホスト全件保証なし。21秒取得・24秒接続・500件上限、停止／消去時の応答破棄。Python 3ヘルパーはユーザー領域＋指定拡張IDのみ、Windows導入未対応。実Codexメタ情報取得は確認済みだがChrome/Edge導入後の権限・共有接続・アカウント比較は手動確認が必要。
 
 Verification v1.30.0: 237 tests pass, including native host protocol/projection/pagination/installer, adversarial senders, optional permission, late-result invalidation and actual RPC bypass of a stalled quota queue. Python has 5 embedded subtests. Real local Codex metadata: 16 tasks, pins 7/7, metadata-only. Browser native installation and shared-state observations remain unverified; no absolute no-regression/security guarantee is claimed.
+
+## v1.33.0 scoped fixes
+
+Offscreen uses only runtime; SOUND-OFFSCREEN-001 returns a boolean after exact own-extension offscreen route validation, independently of quota queue. Mute cancels through worker STOP; missing acknowledgements fail closed. Permissions, host list, CSP and acquisition/history boundaries are unchanged. TASK-NOTE-UX-001 fixes display:contents wrappers using only exact thread-ID and visible region heading attributes. No message/draft reads or account inference. Synthetic nested worker/player and registration/session/note-store tests cover these boundaries; installed Chrome/Edge sound and current-provider registration still require separate acceptance. Build preserves manuals/helper hashes.
+
+## Helper v1.30.1 / Web v1.33.1 (2026-10-12)
+
+Shared socket existence no longer consumes the whole host deadline: all shared metadata operations have a four-second attempt budget, followed by process cleanup and independent stdio within the existing total21seconds. Returned fallback state remains Unknown; no permission/origin/route/method/storage changes. Diagnose only aggregate counts/status, never private title/ID/URL/auth payloads. Extension source/package1.33.0, quota/history/audio/CSS remain unchanged. New Web link targets only the same approved HTTPS companion helper ZIP. Installed Chrome native acceptance remains user verification after reinstall; live read-only host check is distinguished from browser messaging. Future macOS/Windows/iOS/Android app/shared-data requirements do not authorize automatic private uploads in this release.

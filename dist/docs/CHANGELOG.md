@@ -381,3 +381,14 @@ JP: 独立タスク画面にピン優先、確認済み所属名、手動保存�
 EN: Official-chat work-note registration opens a separate tall editor. Pins, notes and task tree collapse independently (expanded by default). Pin scanning includes Claude taskboards and reports its acquisition counts and limits. Update the extension in place; quota/history/audio are unchanged. Account-wide pin coverage remains unverified.
 
 JP: 公式チャットの［作業メモへ登録］から縦長の別画面を開けます。ピン・作業メモ・一覧全体を折りたたみ可能（初期展開）。Claudeタスクボードを含めピンを走査し、取得件数と制限を表示。拡張は上書き更新し、残量／履歴／音は維持。全アカウントの全件保証は未確認です。
+
+## v1.33.0
+
+Fix the v1.32 offscreen startup regression by using runtime-only audio messages and worker-owned mute checks. Claude Code work-note registration recognizes visible thread headers inside display:contents tiles and preserves distinct thread links. Work notes move before Pinned items / ピン留め. App + extension only; unchanged v1.32 manuals and v1.30 helper ZIP are retained.
+
+通知音のoffscreen起動エラーを修正。Claude Codeのスレッド見出し・リンクでメモ登録し、作業メモを「ピン留め」の前へ配置。未変更取説は再生成しない。
+
+## 2026-10-12 — Web1.33.1 / Codex helper1.30.1
+
+EN: Fix a stalled shared Codex socket exhausting the entire metadata deadline. Bound shared initialization/pin/list reads to four seconds, then retain time for independent metadata. Fallback states remain Unknown. Current Web task-window helper download and related guides updated; extension ZIP1.33.0, old helper and unrelated manuals preserved. Future native targets include macOS, Windows, iOS and Android; no native applications or cloud sync are shipped by this repair.
+JP: 共有socket待機で代替一覧も失敗する不具合を修正。共有処理を4秒で区切り、全体21秒の残りでメタ一覧を取得。稼働状態は未確認。Web／ヘルパー／関連取説だけ更新、拡張ZIP1.33.0・旧ヘルパー・未変更取説を維持。将来アプリのmacOS／Windows／iOS／Androidを必須対象として記録、今回実装はしない。

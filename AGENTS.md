@@ -176,3 +176,8 @@ TASK-NOTE-UX-001: Claude display:contents tile hosts have no rectangle. Select t
 
 DOC-CODEX-INSTALL-001: documentation-only builds use --manuals-only followed by exact changed guide filenames; exit before app inputs and reject mixed package/helper options. Preserve all runtime files, ZIPs and unnamed manuals. macOS guide must match actual installer paths/ID validation and distinguish enabled permission from successful host read; Windows remains unsupported, Linux implementation is not live acceptance. Do not install on the user's machine when only instructions were requested.
 JP: 取説だけなら変更した文書名を --manuals-only に指定し、本体／ZIP／未変更取説を保持。拡張機能ID入力・Python3.9以上・接続確認までの手順を実コードに照合。Windows未対応を隠さず、取説依頼で実機導入を行わない。
+
+TASK-CODEX-FALLBACK-001: Shared connection discovery is not proof of a responsive server. Bound the whole shared attempt (initialize, pins, paging) to four seconds within the 21-second host budget, then close it and retain time for metadata fallback. Tests must reproduce hangs in all three stages and preserve Unknown runtime on fallback. Keep helper version separate from Web/extension versions; approved Web/helper-only builds preserve extension sources/ZIP and old helper bytes. Never log private payloads during diagnosis.
+JP: 共有socketがあるだけで接続成功としない。共有初期化・ピン・一覧すべてを4秒以内に区切り、失敗プロセスを終了して全体21秒の残りを一覧代替経路へ確保。代替の状態は未確認。Web／ヘルパーのみ更新時に拡張ZIPを再生成しない。
+
+Future native-app scope: macOS, Windows, iOS and Android are user-required targets. Treat this as a future acceptance requirement, not current support. Cross-device Codex/tasks/notes need a separately reviewed explicit consent/pairing/retention design; no automatic private uploads or rewrite of the stable main monitor as part of helper repair.

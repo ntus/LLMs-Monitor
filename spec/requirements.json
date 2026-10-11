@@ -19,12 +19,12 @@
       "gemini"
     ],
     "production_companion_origin": "https://llmsmonitor.ntus.info",
-    "web_version": "1.33.0",
+    "web_version": "1.33.1",
     "companion_origins": [
       "https://llmsmonitor.ntus.info",
       "https://llmsmonitor.ntusnog.chatgpt.site"
     ],
-    "codex_helper_version": "1.30.0"
+    "codex_helper_version": "1.30.1"
   },
   "normative_language": {
     "MUST": "必須。未達の場合はリリース不可。",
@@ -5248,6 +5248,80 @@
       "known_limitations": [
         "Current ZIP README remains its previous edition by explicit manuals-only scope.",
         "Updated-guide installed macOS Chrome/Edge and Linux acceptance remains separate; Windows native installer unimplemented."
+      ]
+    },
+    {
+      "id": "TASK-CODEX-FALLBACK-001",
+      "category": "tasks",
+      "introduced_in": "1.33.1",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "A stalled existing shared Codex socket must leave time for independent metadata acquisition within the total 21-second host budget. Metadata-only fallback never claims live runtime.",
+      "source_requirements": [
+        "2026-10-12 user: correct helper ID but connection fails; approve app + Codex helper + related manuals only, preserve extension ZIP."
+      ],
+      "acceptance_criteria": [
+        "Bound shared initialization, pin reads and list reads to at most four seconds; preserve the total 21-second acquisition budget.",
+        "Close failed shared process before independent stdio; return ready metadata with Unknown states when the fallback succeeds.",
+        "Responsive shared metadata preserves evidenced runtime; fixed methods and no turns/preview/event/auth forwarding remain unchanged.",
+        "Publish helper 1.30.1 and a current download link in the independent Web Codex section; old extension setup remains compatible but links to old helper.",
+        "Preserve extension source/package, main quota/history/audio/CSS, old helper ZIP and unnamed manuals."
+      ],
+      "implementation_evidence": [
+        {
+          "path": "native/codex_host.py",
+          "symbol": "SHARED_SECONDS"
+        },
+        {
+          "path": "web/tasks-codex.js",
+          "symbol": "helperDownload"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/test_codex_host.py"
+        },
+        {
+          "type": "automated",
+          "path": "tests/task-codex.test.cjs"
+        }
+      ],
+      "known_limitations": [
+        "Independent metadata-only fallback does not observe desktop runtime. Installed Chrome connection after helper replacement remains user acceptance.",
+        "macOS, Windows, iOS and Android are future required application targets; native applications and mobile-to-desktop sharing are not implemented by this repair."
+      ]
+    },
+    {
+      "id": "NATIVE-PLATFORMS-001",
+      "category": "roadmap",
+      "introduced_in": "1.33.1",
+      "status": "documented_limitation",
+      "priority": "MUST",
+      "normative_requirement": "The future native LLMs Monitor product must target macOS, Windows, iOS and Android, with a platform-specific acquisition capability matrix and explicit consent for cross-device sharing. This is a future product acceptance condition; current Web/helper release does not claim native support.",
+      "source_requirements": [
+        "2026-10-12 user: elegant native application instead of repeated local setup; iOS/Android/Windows MUST alongside macOS."
+      ],
+      "acceptance_criteria": [
+        "Shared UI and task/work-note models with platform-specific acquisition adapters; isolate trials from stable main monitor.",
+        "Native desktop Codex acquisition must avoid repeated shell/extension-ID setup and manual Python prerequisite.",
+        "Disclose unsupported provider/status acquisition per OS; mobile clients must not assume desktop files/processes or desktop browser-extension access.",
+        "Any cross-device task/usage/note sharing requires authenticated consent/pairing, revocation, account isolation and freshness/conflict handling."
+      ],
+      "implementation_evidence": [
+        {
+          "path": "SPECIFICATION.md",
+          "symbol": "Future native application requirement"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "manual",
+          "procedure": "Architecture requirements recorded only; native builds and installed acceptance on all four OSs remain future work."
+        }
+      ],
+      "known_limitations": [
+        "No native app, mobile connector or cross-device service implemented by this release."
       ]
     }
   ]

@@ -5,6 +5,7 @@ from pathlib import Path
 import struct
 import tempfile
 import unittest
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location("codex_host", ROOT / "native/codex_host.py")
@@ -39,6 +40,93 @@ class Fake:
 
 
 class HostTests(unittest.TestCase):
+    def test_unresponsive_shared_connection_leaves_time_for_metadata_fallback(self):
+        # Real failure: an existing socket hangs; one 21-second deadline used to
+        # leave the independent stdio route no time to initialize/read the list.
+        for failure_stage in ("initialize", "thread/read", "thread/list"):
+            with self.subTest(stage=failure_stage), tempfile.TemporaryDirectory() as directory:
+                home = Path(directory)
+                binary = home / "codex"
+                binary.touch()
+                binary.chmod(0o700)
+                socket = home / "app-server-control/app-server-control.sock"
+                socket.parent.mkdir()
+                socket.touch()
+                clock, attempts = [100.0], []
+
+                class TimedRPC:
+                    def __init__(self, command, deadline):
+                        self.live = "proxy" in command
+                        self.deadline, self.closed = deadline, False
+                        attempts.append(self)
+
+                    def call(self, method, params):
+                        if self.live and method == failure_stage:
+                            clock[0] = self.deadline
+                            raise TimeoutError("Synthetic shared stall")
+                        if clock[0] >= self.deadline:
+                            raise TimeoutError("Fallback has no budget")
+                        clock[0] += 0.1
+                        if method == "initialize":
+                            return {}
+                        if method == "thread/read":
+                            self.assert_metadata_only(params)
+                            return {"thread": thread(1, {"type": "active"})}
+                        return {"data": [thread(1, {"type": "active"})], "nextCursor": None}
+
+                    def assert_metadata_only(self, params):
+                        if params.get("includeTurns") is not False:
+                            raise AssertionError("Turns requested")
+
+                    def send(self, value):
+                        pass
+
+                    def close(self):
+                        self.closed = True
+                        clock[0] += 0.5
+
+                with patch.object(H.os, "environ", {"CODEX_HOME": str(home)}), patch.object(H.shutil, "which", return_value=str(binary)), patch.object(H.time, "monotonic", side_effect=lambda: clock[0]), patch.object(H, "pinned_ids", return_value=([ident(1)], True)), patch.object(H, "RPC", TimedRPC):
+                    reply = H.acquire()
+                self.assertEqual(reply["status"], "ready")
+                self.assertEqual(reply["runtime"], "metadata-only")
+                self.assertEqual(reply["pinAudit"]["resolved"], 1)
+                self.assertTrue(all(row["status"] == "unknown" and row["observedAt"] is None for row in reply["tasks"]))
+                self.assertEqual(len(attempts), 2)
+                self.assertLessEqual(attempts[0].deadline, 100 + H.SHARED_SECONDS)
+                self.assertEqual(attempts[1].deadline, 100 + H.ACQUIRE_SECONDS)
+                self.assertLess(clock[0], attempts[1].deadline)
+                self.assertTrue(all(attempt.closed for attempt in attempts))
+                self.assertNotIn("PRIVATE", json.dumps(reply))
+
+    def test_responsive_shared_connection_preserves_evidenced_runtime(self):
+        with tempfile.TemporaryDirectory() as directory:
+            home = Path(directory)
+            binary = home / "codex"
+            binary.touch()
+            binary.chmod(0o700)
+            socket = home / "app-server-control/app-server-control.sock"
+            socket.parent.mkdir()
+            socket.touch()
+            attempts = []
+
+            class ReadyRPC:
+                def __init__(self, command, deadline):
+                    attempts.append(self)
+                    self.closed = False
+                def call(self, method, params):
+                    return {} if method == "initialize" else {"data": [thread(1, {"type": "active"})], "nextCursor": None}
+                def send(self, value):
+                    pass
+                def close(self):
+                    self.closed = True
+
+            with patch.object(H.os, "environ", {"CODEX_HOME": str(home)}), patch.object(H.shutil, "which", return_value=str(binary)), patch.object(H, "pinned_ids", return_value=([], True)), patch.object(H, "RPC", ReadyRPC):
+                reply = H.acquire()
+            self.assertEqual(reply["runtime"], "shared")
+            self.assertEqual(reply["tasks"][0]["status"], "running")
+            self.assertEqual(len(attempts), 1)
+            self.assertTrue(attempts[0].closed)
+
     def test_all_local_pins_resolve_even_outside_recent_list_and_pages_dedupe(self):
         pins = [ident(100), ident(101)]
         rpc = Fake([{"data": [thread(1), thread(2)], "nextCursor": "next"}, {"data": [thread(2), thread(3)], "nextCursor": None}])
