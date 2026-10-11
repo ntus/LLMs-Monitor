@@ -1,3 +1,8 @@
+## Web 1.30.1 — 2026-10-11
+
+JP: 保存済み作業メモのタイトルを会話リンクにし、右端に編集ボタンを追加。見出しに件数を表示し、指定の説明段落を削除。タスク登録はリンクを自動保持。本体のみ更新、拡張機能・ヘルパーv1.30.0と未変更マニュアルは維持。
+EN: Linked saved-note titles, separate Edit action, scoped note counts and concise notes panel. Task links retained automatically. Web-only; extension/helper packages unchanged.
+
 ## 1.30.0 — 2026-10-11
 
 - Add an opt-in per-user Codex metadata helper and independent task section, local pins first with completeness audit.

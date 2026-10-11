@@ -4,7 +4,7 @@
 
 <a id="en"></a>
 
-Document revision: 1.0 · Product version: **1.30.0** · Web UI: **1.30.0** · Web companion: `https://llmsmonitor.ntus.info/` (previous Site origin retained for compatibility)
+Document revision: 1.0 · Product version: **1.30.0** · Web UI: **1.30.1** · Web companion: `https://llmsmonitor.ntus.info/` (previous Site origin retained for compatibility)
 
 This English section defines the implementation contract for the beta. The [Japanese section](#ja) contains the full historical and field-level acceptance criteria. Implementers must read both sections and every ID in [`spec/requirements.json`](spec/requirements.json); neither translation overrides the other.
 
@@ -1453,3 +1453,11 @@ EN: Optional per-user native helper and independent default-open Codex section. 
 ヘルパーは独立版 `product.codex_helper_version=1.30.0`。今回 `python3 build.py --package --codex-helper` で生成し、以後の通常 `--package` は未変更ヘルパーZIPを維持する。
 
 Validation v1.30.0: 237 Node tests passed, including 5 Python host subtests. Read-only live Codex returned 16 tasks and all 7 local pins. Synthetic Chrome UI at 340px verified no horizontal overflow, language/disclosure retention, Codex work-note save and clear/late-response isolation. Nineteen existing core acquisition/history/audio/floating/browser-task files are byte-identical; shared.js differs only by release version, and new main CSS is identical. Installed native messaging, shared runtime and Linux/Edge remain manual checks. Package: 86 entries; helper: 4 entries with executable installer, no macOS metadata/bytecode.
+
+## Web v1.30.1 — 保存済み作業メモの導線
+
+TASK-WORK-001: 保存済みメモのタイトルに検証済みの会話URLを付け、右端の［編集］は同じメモの編集画面を開く。タスク／公式登録／Codexからの登録は既存のURLを自動保持する。「作業メモ」と保存済み一覧の見出し右端に、選択中の事業者・作業領域の件数を小さく表示し、保存・削除・読込・作業領域／言語変更へ追従する。指定された端末内保存の説明段落をパネルと編集画面から削除し、保存方式・明示保存・競合検出は維持する。既存メモのキー・本文・リンクは移行不要。独立Webモジュールのみ更新し、拡張機能とCodexヘルパーはv1.30.0、未変更のマニュアル・ZIPは再生成しない。
+
+EN: Saved note titles open their validated original conversation; a separate right-aligned Edit action opens the editor. Task registration retains its URL automatically. Counts are scoped to the selected provider/workspace. Redundant storage explanation is removed without changing local storage or explicit-save behavior. Web-only patch, unchanged extension/helper packages.
+
+Validation Web v1.30.1: 238 automated tests passed. Chrome at 340px verified synthetic save, original-link retention, heading count and separate edit reopening; document width 340px, edit action within the right edge. Main quota/history/audio code and both v1.30.0 ZIP hashes are unchanged. User production notes were not modified during QA.

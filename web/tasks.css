@@ -47,3 +47,11 @@ dialog{background:var(--surface);color:var(--text);border:1px solid var(--line);
 .codex-task>summary .task-title{overflow-wrap:anywhere;min-width:0;flex:1 1 150px}
 .codex-task .task-meta a{overflow-wrap:anywhere}
 .codex-notice{color:var(--muted)}
+
+/* Saved note links and edit action stay separate at minimum window width. */
+#notes-heading,#saved-heading{display:flex;align-items:center;gap:8px;min-width:0}
+#notes-heading>span,#saved-heading>span{min-width:0;overflow-wrap:anywhere}
+.work-count{margin-left:auto;flex:none;font-size:12px;font-weight:400;color:var(--muted)}
+.saved-work-row{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);min-width:0}
+.saved-work-title{flex:1;min-width:0}.saved-work-title a{overflow-wrap:anywhere}.saved-work-title small{display:block;font-size:12px;color:var(--muted);margin-top:4px}
+.saved-work-edit{flex:none;font-size:13px;padding:6px 10px}

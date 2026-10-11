@@ -19,7 +19,7 @@
       "gemini"
     ],
     "production_companion_origin": "https://llmsmonitor.ntus.info",
-    "web_version": "1.30.0",
+    "web_version": "1.30.1",
     "companion_origins": [
       "https://llmsmonitor.ntus.info",
       "https://llmsmonitor.ntusnog.chatgpt.site"
@@ -4685,7 +4685,8 @@
         "User request 2026-10-11"
       ],
       "acceptance_criteria": [
-        "Explicit local work notes, checklist and handoff; revision conflicts and overlapping imports rejected; no quota lifecycle changes."
+        "Explicit local work notes, checklist and handoff; revision conflicts and overlapping imports rejected; no quota lifecycle changes.",
+        "Saved note titles link to their exact validated conversation URL; a separate Edit button is right aligned. Task registration automatically retains its link. Section and saved-list headings show counts for the selected provider/workspace, updated on save/delete/import/workspace/language changes. Omit the redundant local-storage explanatory paragraph in the panel and editor; retain storage isolation and explicit-save safeguards."
       ],
       "implementation_evidence": [
         {
@@ -4702,6 +4703,11 @@
           "type": "automated",
           "coverage": "tests/task-work.test.cjs",
           "procedure": "Explicit local work notes, checklist and handoff; revision conflicts and overlapping imports rejected; no quota lifecycle changes."
+        },
+        {
+          "type": "automated",
+          "coverage": "tests/task-work-ui.test.cjs",
+          "procedure": "Exercise task registration, saved link/edit separation, scoped counts, save/delete, language and workspace switching with synthetic notes."
         }
       ],
       "known_limitations": [
