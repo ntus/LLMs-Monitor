@@ -17,6 +17,6 @@ test('Claude project-thread note routes remain distinct from quota task state ro
  assert.equal(M.noteURL('https://gemini.google.com/u/1/app/demo','gemini'),'https://gemini.google.com/u/1/app/demo');assert.equal(M.noteURL('https://gemini.google.com/u/1/app/demo','claude'),'');
 });
 test('registration dispatch bypasses stalled quota queue without widening TASKS_READ or sender validation',()=>{
- const s=fs.readFileSync('extension/background.js','utf8');assert.match(s,/TASK_NOTE_REGISTER'&&!external/);assert.match(s,/TASK_NOTE_READ'&&external&&trusted/);assert.match(s,/\['TASKS_READ','TASKS_STATE','TASK_NOTE_REGISTER','TASK_NOTE_READ'\]/);assert.match(s,/sender.frameId!==0/);
+ const s=fs.readFileSync('extension/background.js','utf8');assert.match(s,/TASK_NOTE_REGISTER'&&!external/);assert.match(s,/TASK_NOTE_READ'&&external&&trusted/);assert.match(s,/\['TASKS_MONITOR','TASKS_READ','TASKS_STATE','TASK_NOTE_REGISTER','TASK_NOTE_READ'\]/);assert.match(s,/sender.frameId!==0/);
  const content=fs.readFileSync('extension/task-note-button.js','utf8');assert(!/\.innerText|\.textContent\s*[^=]|querySelector|\.storage|fetch\(|\.value\b|document\.body/.test(content));assert.match(content,/button.onclick/);assert.match(content,/mode:'closed'/);
 });

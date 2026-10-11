@@ -4,7 +4,7 @@
 
 <a id="en"></a>
 
-Document revision: 1.0 · Product version: **1.30.0** · Web UI: **1.30.1** · Web companion: `https://llmsmonitor.ntus.info/` (previous Site origin retained for compatibility)
+Document revision: 1.0 · Product version: **1.31.0** · Web UI: **1.31.0** · Web companion: `https://llmsmonitor.ntus.info/` (previous Site origin retained for compatibility)
 
 This English section defines the implementation contract for the beta. The [Japanese section](#ja) contains the full historical and field-level acceptance criteria. Implementers must read both sections and every ID in [`spec/requirements.json`](spec/requirements.json); neither translation overrides the other.
 
@@ -135,7 +135,7 @@ TASK-CODE-001 reads exact accessibility labels from rendered Claude Code sidebar
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.30.0
+対象製品版: 1.31.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -1461,3 +1461,17 @@ TASK-WORK-001: 保存済みメモのタイトルに検証済みの会話URLを�
 EN: Saved note titles open their validated original conversation; a separate right-aligned Edit action opens the editor. Task registration retains its URL automatically. Counts are scoped to the selected provider/workspace. Redundant storage explanation is removed without changing local storage or explicit-save behavior. Web-only patch, unchanged extension/helper packages.
 
 Validation Web v1.30.1: 238 automated tests passed. Chrome at 340px verified synthetic save, original-link retention, heading count and separate edit reopening; document width 340px, edit action within the right edge. Main quota/history/audio code and both v1.30.0 ZIP hashes are unchanged. User production notes were not modified during QA.
+
+## v1.31.0 — Task usage overview and release preparation / タスク残量概要と正式公開準備
+
+TASK-MONITOR-001: title/header are `LLMs Monitor -Task- <service>`. A separate overview module reads only selected-service saved windows and incident via TASKS_MONITOR, validating exact companion origin, top frame, task path and one matching service query. This user-authorized read-only exception supersedes earlier task “no quota RPC” restrictions only for this projection. No provider refresh, history/settings/storage writes, audio, core queue or floating lifecycle reuse. Maximum six bounded windows; expired/missing is null, genuine verified zero is zero, stale is previous, login hides personal windows. Source acquisition remains minute-based; visible local overview reads every ten seconds. Provider text uses textContent and links are fixed official status URLs. Old extension/failed RPC has explicit update/previous labels.
+
+INTELLIGENCE-AUDIT-001: current static feed is unconfigured; do not claim Tibo live. The separate Worker classifies full supported long post text rather than a truncated summary, matches fixed accounts case-insensitively and excludes generic password resets. Initial search covers 24 hours; only complete pages advance public post cursor. Maximum four 100-result pages, eight seconds overall, 3 MB/response. API/malformed/partial/over-limit results retain prior feed/cursor; stale ready after 125 seconds becomes unavailable. First successful client feed is silent; failed/unconfigured polls cannot establish baseline. Repeated post IDs preserve detectedAt and do not notify. Synthetic tests execute Worker→client normalization and the actual background popup/sound dispatch; live X secret/KV/cron/routing and an eligible real post remain external acceptance. Announcements never prove an individual quota reset. Nerf remains link-only.
+
+取扱説明は残量と作業メモを主要価値として日英で整理。本体・拡張v1.31.0、ヘルパーコードは未変更のv1.30.0。利用者承認済みフルビルドで現行Markdown取説とヘルパー説明も再生成し、dist/docsへ配布する。既存の紹介画像は以前の画面として明示し、PDF取説は存在しない。Sites公開範囲は所有者限定を維持。正式公開にはストア承認、一般閲覧プライバシー、実Chrome/Edge受入、X実投稿通知、将来のaimon.ntus.info移行が残る。過去章の「未変更文書を再生成しない」は各リリース当時の承認範囲で、今回はフルビルドが明示承認されている。
+
+日本語の実装契約: 新規タスク概要だけは読取専用RPCで対象事業者の保存値を表示し、主画面の再取得／履歴／音声／設定には触れない。期限切れ・未取得を0や100とせず、ログアウト時は枠を隠す。全ピン・閉じた通常会話の稼働は保証しない。Tiboは現在未稼働で、長文・初回基準・重複・失敗・ページ上限を自動検証しても、実投稿通知の成功とは扱わない。
+
+Validation v1.31.0 (2026-10-11): 255 automated tests pass (CJS + MJS, including the Python host suite), then full app/extension/helper/Markdown build. Chrome synthetic UI at 240/340px verifies no horizontal overflow, English/Japanese and standard/dark, expired —, actual 0%, previous values, login hiding and selected-service incident only. Japanese product hero is two lines at 340px. Against 2d5b0bf, 21 core acquisition/state/history/audio/status/billing/window/task modules and main CSS are byte-identical; manifest version-only. New overview tests execute the real background listener with a stalled main queue and verify no storage writes. X tests cover full-text reset matching, complete paging/cursor, response limits/deadline, stale feed, failed baseline, actual notification dispatch and repeated IDs. No actual X server/API/post delivery, installed Chrome/Edge upgrade or store approval is claimed. Proof/fixtures remain outside the repository and production notes are untouched.
+
+Package audit: extension ZIP 89 entries; optional helper ZIP 4 entries; 10 current Markdown manuals in dist/docs. No private fixture/screenshot/credential/bytecode files in packages. Retain the previous v1.30 main stylesheet at its URL for older cached clients.

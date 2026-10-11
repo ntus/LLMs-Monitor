@@ -1,3 +1,13 @@
+## 1.31.0 — 2026-10-11
+
+EN: Independent task windows add compact saved-usage bars, selected-provider incidents and `LLMs Monitor -Task- <service>` titles. Full bilingual manuals emphasize capacity and linked work notes. Tibo/X audit fixes long-post matching, reset/recovery classification, incomplete paging, stale-cache handling and first-success notification baseline; live feed remains unconfigured and explicitly documented. Required/optional permissions and main quota/history/audio implementations are unchanged. Helper runtime stays 1.30.0; its guide is updated in the approved full build.
+JP: 独立タスク窓に対象LLMの保存済み残量・障害を表示、タイトルへ-Task-を追加。残量と作業メモを訴求する日英取説を全更新・フルビルド。Tiboの長文・初回通知・不完全取得・古いcacheを修正。ただしX実配信は未設定と明記。主残量・履歴・音声・既存権限を維持、ヘルパー本体は1.30.0のまま説明を更新。
+
+## Web 1.30.1 — 2026-10-11
+
+JP: 保存済み作業メモのタイトルを会話リンクにし、右端に編集ボタンを追加。見出しに件数を表示し、指定の説明段落を削除。タスク登録はリンクを自動保持。本体のみ更新、拡張機能・ヘルパーv1.30.0と未変更マニュアルは維持。
+EN: Linked saved-note titles, separate Edit action, scoped note counts and concise notes panel. Task links retained automatically. Web-only; extension/helper packages unchanged.
+
 ## 1.30.0 — 2026-10-11
 
 - Add an opt-in per-user Codex metadata helper and independent task section, local pins first with completeness audit.

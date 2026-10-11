@@ -4,7 +4,7 @@
  const providers={openai:'OpenAI',anthropic:'Anthropic',google:'Google'};
  const clean=value=>String(value??'').replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim().slice(0,360);
  const escape=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
- function safeUrl(value){try{const url=new URL(String(value));return url.protocol==='https:'&&SOURCE_HOSTS.has(url.hostname)?url.href:''}catch{return ''}}
+ function safeUrl(value){try{const url=new URL(String(value));return url.protocol==='https:'&&!url.username&&!url.password&&!url.port&&!url.search&&!url.hash&&SOURCE_HOSTS.has(url.hostname)&&/^\/[A-Za-z0-9_]{1,30}\/status\/[A-Za-z0-9_-]{1,100}\/?$/.test(url.pathname)?url.href:''}catch{return ''}}
  function normalizeAlert(row){
   if(!row||typeof row!=='object')return null;
   const id=clean(row.id).slice(0,100),url=safeUrl(row.url),provider=Object.hasOwn(providers,row.provider)?row.provider:'',kind=['usage','reset','recovery','model-update'].includes(row.kind)?row.kind:'',severity=['info','warning','critical'].includes(row.severity)?row.severity:'info';
@@ -17,8 +17,8 @@
   return {status:['ready','unavailable','unconfigured'].includes(feed?.status)?feed.status:'unavailable',checkedAt:Number(feed?.checkedAt)||0,lastReadyAt:Number(feed?.lastReadyAt)||(feed?.status==='ready'?Number(feed?.checkedAt)||0:0),alerts};
  }
  function key(feed){return normalize(feed).alerts.map(row=>row.id).sort().join('|')}
- function newAlerts(previous,current){const before=new Set(normalize(previous).alerts.map(row=>row.id));if(!normalize(previous).checkedAt)return [];return normalize(current).alerts.filter(row=>!before.has(row.id));}
- function label(row,language){const ja=language!=='en';if(row.kind==='recovery')return ja?'性能回復':'Performance recovery';if(row.kind==='reset')return ja?'リセット速報':'Reset update';if(row.kind==='usage')return ja?'利用枠速報':'Usage-limit update';return ja?'モデル速報':'Model update'}
+ function newAlerts(previous,current){const before=new Set(normalize(previous).alerts.map(row=>row.id));if(!normalize(previous).lastReadyAt||normalize(current).status!=='ready')return [];return normalize(current).alerts.filter(row=>!before.has(row.id));}
+ function label(row,language){const ja=language!=='en';if(row.kind==='recovery')return ja?'利用枠の復旧情報':'Usage recovery';if(row.kind==='reset')return ja?'リセット速報':'Reset update';if(row.kind==='usage')return ja?'利用枠速報':'Usage-limit update';return ja?'モデル速報':'Model update'}
  function view(feed,language='en',open=false){
   const data=normalize(feed),ja=language!=='en',latest=data.alerts[0],state=data.status==='ready'?'ready':data.status==='unconfigured'?'unconfigured':'unavailable';
   const title=latest?`${label(latest,language)} · ${providers[latest.provider]}`:state==='ready'?(ja?'AI速報':'AI intelligence'):state==='unconfigured'?(ja?'AI速報の接続待ち':'AI feed setup required'):(ja?'AI速報を確認できません':'AI feed unavailable');

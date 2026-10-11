@@ -1,12 +1,25 @@
-# Security review — v1.26.0 beta
+# Security review — v1.31.0
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 <a id="en"></a>
 
-This review records the checks performed for the 1.26.0 beta; it is not a guarantee that no vulnerabilities exist. A release owner should also test the packaged extension in current Chrome and Edge with real accounts and submit it to store review.
+This review includes current v1.31.0 checks and historical evidence; it is not a guarantee that no vulnerabilities exist. A release owner should also test the packaged extension in current Chrome and Edge with real accounts and submit it to store review.
 
-## v1.25.0 recovery and metadata adapter
+
+## Current release audit — 2026-10-11
+
+The user approved a full app/extension/manual build. v1.31 adds a selected-service read-only overview, Task titles and bilingual release guides. Against commit `2d5b0bf773780ee81b39b0adb1f42f396268b95a`, 21 core modules (quota/state/history/audio/status/preferences/billing/window and existing task adapters) are byte-identical; manifest differs only in version and new main CSS is byte-identical to v1.30.0. Background changes add isolated TASKS_MONITOR dispatch/import/queue bypass only; intelligence changes are confined to source-link validation, initial-ready baseline and labels. No permission/origin expansion, new state key, quota parser, history migration or native helper runtime change.
+
+TASKS_MONITOR requires exact approved origin, task path, top frame and a single matching service parameter. Unauthorized requests cannot read storage. It reads only data/providerStatus, returns a bounded selected-service projection with no accounts/history/settings/extras/credits, uses fixed status URLs, suppresses expired values and clears login windows/plan. Real-listener regression blocks the main queue and proves reply/no writes. UI uses textContent; hostile labels cannot become HTML. Task CSP remains connect-src none. Existing explicit notes and automatic lists are separate.
+
+Tibo findings: static Site ships unconfigured and does not deploy the Worker. Full-text matching avoids late reset signals being lost to summary truncation; reset/recovery and unrelated password reset are separated. Worker validates complete pages, bounds eight-second/3MB/four-page reads, advances public cursor only after feed commit, and marks old ready data unavailable. Client first success is silent even after prior failed/unconfigured polls. End-to-end synthetic fixtures run actual background notifications/audio dispatch and verify unchanged private quota/history storage. No real X token/API access/cron/eligible real-post notification was tested. Server source is prepared, **not live deployed**. Keyword matching is not exhaustive and never proves personal reset.
+
+Chrome synthetic UI checks at 240/340px verify no horizontal overflow, EN/JP both themes, expired — vs genuine 0%, stale previous, selected-provider incident and login hiding. Product Japanese hero uses two readable lines at 340px. Fixtures/proof files stay outside source/deployment; production chats/notes were not edited. All 255 automated tests pass, including CJS/MJS and Python host subtests. Package inventory and full-build evidence are recorded in the specification.
+
+Formal release gates: preserve current owner-only Site audience; publicly readable privacy policy and store approval still required. Installed Chrome/Edge upgrade/permissions/real-account state, Linux/Edge helper installation and live Tibo feed must be accepted separately. Historical “not implemented” paragraphs below describe their release dates; current task behavior is defined in TASK_DETAILS.md. This audit does not promise zero vulnerabilities or zero regressions.
+
+## Historical v1.25.0 recovery and metadata adapter
 
 Required/optional permissions and allowed origins remain unchanged. Authenticated billing snapshots bypass only the global queue; existing billing validation and its own storage queue remain. Expired quota projection never modifies history/storage. Metadata-only supplements do not advance quota capture time. Optional reader/audio waits are bounded; late audio resume is cancelled before any tone. All 195 regression tests pass, including task RPC rejection and delayed audio. Japanese/English task demos have no horizontal overflow at 240px.
 
@@ -21,7 +34,7 @@ Incident-only rows are selected from already normalized status state at render t
 - **Origins and permissions:** `externally_connectable` permits only the exact custom HTTPS monitor origin and the previous Site origin retained for compatibility; wildcard domains are excluded. Provider content scripts run only on the three official AI sites. Public status feeds have fixed HTTPS URLs and credential-free requests. API billing support adds only optional `scripting` and three optional billing hosts, enabled individually through a direct extension-page gesture. Existing required permissions are unchanged.
 - **Message validation:** service snapshots are accepted only from the matching provider origin. The arrays, percentages, labels, and counts are bounded before storage. State-changing settings and window commands require the extension's own origin or the approved monitor origin.
 - **Untrusted content:** incident text, provider-derived labels, and the new ChatGPT reset wording are length-bounded and escaped before HTML rendering. Links are fixed to official HTTPS pages. No remote scripts, `eval`, or arbitrary URL navigation are used for status content.
-- **X intelligence boundary:** the extension receives only normalized public-post data from the fixed companion endpoint. X credentials remain a server runtime secret. External links are restricted to X and BridgeBench HTTPS hosts; the first successful feed is a silent baseline and IDs prevent repeat alerts.
+- **X intelligence boundary:** the extension receives only normalized public-post data from the fixed companion endpoint. X credentials remain a server runtime secret. Current intelligence links are restricted to exact HTTPS X post routes without credentials or ports; Nerf Bench is link-only; the first successful feed is a silent baseline and IDs prevent repeat alerts.
 - **Network and storage:** status responses have an 8-second timeout and a 3 MB cap. Incident requests omit credentials. Account data, history, and the last status summary remain in browser storage; no developer analytics endpoint receives them. Existing stored history is not migrated or deleted.
 - **Reset-expiry recovery:** only a verified available entitlement with no expiry triggers a check of the already-permitted ChatGPT usage origin. A pre-existing tab is reloaded only when its content reader is absent, with a five-minute per-tab cooldown. If no tab exists, an inactive official tab is opened briefly and closed after acquisition or at a 45-second alarm. Only its tab ID is temporarily stored for cleanup; no new host or broad `tabs` permission is requested.
 - **Notification behavior:** a new issue signature triggers one browser popup and one audio sequence. Repeated one-minute checks of the same signature do not retrigger. Unknown source state is shown as unavailable, not as healthy. Recovery is based only on a subsequent official healthy response and is retained for ten minutes.
@@ -32,7 +45,7 @@ The v1.24.0 origin regression executes the actual external listener: both approv
 
 ## Verification and limits
 
-`node --test tests/*.test.cjs` exercises the status parser, hostile summary escaping, service filtering, duplicate-incident signature, and existing regression contracts. `python3 build.py --package` checks version alignment and packages only the `extension/` tree. The regression suite distinguishes missing, expired, failed, and genuinely exhausted Claude sessions and guards a contradictory API zero against a positive official-page value. The server credential, KV binding, cron, and live X responses remain externally unconfigured and require manual verification. This is static and unit-level review; live provider responses, browser permission dialogs, accessibility, audio quality, and store policy acceptance still require manual review. Google's Workspace status feed may not report every Gemini consumer issue. False negatives remain possible when providers omit incidents or change their feeds.
+`node --test tests/*.test.cjs tests/*.test.mjs` exercises the status parser, hostile summary escaping, service filtering, duplicate-incident signature, and existing regression contracts. `python3 build.py --package` checks version alignment and packages only the `extension/` tree. The regression suite distinguishes missing, expired, failed, and genuinely exhausted Claude sessions and guards a contradictory API zero against a positive official-page value. The server credential, KV binding, cron, and live X responses remain externally unconfigured and require manual verification. This is static and unit-level review; live provider responses, browser permission dialogs, accessibility, audio quality, and store policy acceptance still require manual review. Google's Workspace status feed may not report every Gemini consumer issue. False negatives remain possible when providers omit incidents or change their feeds.
 
 ---
 
@@ -51,6 +64,15 @@ The optional independent task window checks already-open provider conversation t
 TASK-CODE-001 reads exact accessibility labels from rendered Claude Code sidebar session links via a fresh inactive Code home, alongside the normal sidebar. Individual conversation tabs need not be open. Input-needed and idle are list observations; unread replies and merged pull requests never imply completion. One-minute acquisition remains bounded and closes both owned tabs; partial success is accepted. List evidence expires after 90 seconds, open-tab evidence after 15 seconds; conflicting evidence stays unknown. No quota/history/audio, permission, message-body or credential changes. Official list labels were inspected on 2026-10-11; installed-package end-to-end behavior is still unverified.
 
 <a id="ja"></a>
+
+## 現行v1.31.0精査
+
+利用者承認済みフルビルド。基準2d5b0bfと比較し主残量・状態・履歴・音・障害・設定・API請求・外窓・既存タスク取得の21モジュールが同一。Manifestは版だけ、主CSSも同一。タスク概要RPCは厳密な送信元・単一service・トップフレーム検証と対象サービスの保存値投影だけで、取得・履歴・設定・音声を変更しない。実listenerの待ち行列停止テストで独立性と書込なしを確認。本文／秘密／他社値を返さず、ログアウト／期限切れ／前回値／真0を区別。
+
+Tiboは現行静的配信が未設定と判明。長文後半・復旧／リセット・初回失敗後の過去通知・不完全取得・古いcacheを修正し、ページ／カーソル／取得制限／実background通知呼出しを模擬検証。API Secret・KV・cron・配信経路と実投稿の通知は未検証で、サーバーコードの準備を稼働完了とは扱わない。
+
+Chrome模擬画面240/340px・日英・両テーマで横はみ出しなし、対象社障害、期限切れ／0／前回／ログアウトを確認。製品紹介日本語見出しは340pxで2行。個人メモ・本文を変更せず、模擬データとスクショはリポジトリ外。正式公開は所有者限定範囲を勝手に変えず、一般閲覧プライバシー・ストア審査・実Chrome/Edge・ヘルパー・Tibo実投稿の受入が残る。無欠陥／無デグレの絶対保証ではない。以下は各リリース当時の検証記録。
+
 
 # 日本語 — セキュリティ検証記録
 

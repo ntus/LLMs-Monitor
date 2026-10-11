@@ -1,110 +1,84 @@
-# Task details — Implementation contract
+# Task details and work notes — v1.31.0
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 <a id="en"></a>
 
-Current release: **1.27.0 beta**. Each service’s Task details button opens an independent tall 420×780 window, or a safe new tab when popups are blocked. The task window inherits initial language/theme; subsequent choices stay local. Existing quota, history, audio and floating-window lifecycles remain separate.
+## Read your capacity and remember your work
 
-## Automatic reading
+Each service’s **Task details** opens an independent tall 420×780 resizable window; popup blocking falls back to a safe new tab. Header and document title are `LLMs Monitor -Task- ChatGPT`, `…Claude` or `…Gemini`. Initial language/theme are inherited, then changes apply only to this window.
 
-Opening a task window starts a dedicated `TASKS_READ` request. While the window is visible and Auto is ON, it retries once a minute. The installed extension must be updated in place to 1.26.0 and paired in the main monitor on the same origin. The bridge reads only the existing `glance-extension-id` key; it does not read monitor settings, quota snapshots or history.
+Below the title, compact bars show **selected-provider saved usage** and its official incident. Current, previous, unknown, signed-out and expired values are distinct. A reset past its deadline masks the old percentage as — rather than inventing 100% or retaining a current 0%. The `TASKS_MONITOR` RPC reads only existing `data`/`providerStatus`, whitelists selected-service fields, and never fetches provider quota, writes storage/history, changes settings or plays sounds. It bypasses the main refresh queue. Local reads occur about every 10 seconds while visible; source acquisition remains about one minute. Older extensions show a connection/update prompt. This is the narrowly scoped v1.31 read-only exception to earlier “no quota RPC” task isolation.
 
-The extension accepts only the approved companion HTTPS origins, `/tasks` or `/tasks.html`, a top frame, and a `service` query matching the request. It opens a **fresh inactive official home** so a previously loaded sidebar cannot leak an old account’s list. It reads only visible sidebar anchors on ChatGPT, Claude or Gemini, then closes its own temporary tab in `finally`. Existing user tabs and input drafts are not navigated/reloaded. Parallel requests for one service share the same promise; attempts have a 55-second cooldown, a 20-second acquisition budget and 2.5-second reader reply bounds. A failure or empty/loading sidebar preserves the prior list in the task window. An empty account and signed-out account cannot yet be distinguished reliably; neither is reported as a verified empty inventory.
+## Lists, pins and states
 
-ChatGPT: normal `/c/…` and explicit `/g/g-p-…/c/…` conversation links. The project route identifies membership; an unavailable project name is shown as its ID, not guessed. Claude: `/chat/…`, `/code/session_…`, `/cowork/…`, grouped by kind. Project links alone are not tasks. Gemini: `/app/…` and account-prefixed `/u/N/app/…` links from that single current sidebar. Sidebar-only states are **unknown**; the independent control observer described below adds verified response states; inactivity never implies completion. Desktop Codex tasks are not obtainable through this Web adapter. Coverage is limited to the rendered sidebar, not the complete account, chat contents or execution steps.
+Pair extension v1.31.0 in the main monitor on the same origin. Task lists start on opening and about once a minute while visible and Auto ON. Fresh inactive official homes provide sidebar/project/group names and explicit pins. The adapter expands/scrolls only its owned tabs and closes them in `finally`; existing user chats/drafts are not reloaded. Requests coalesce per service, with a 55-second cooldown, 20-second acquisition budget and 2.5-second reader bounds. Missing/loading/failed lists retain the previous list; an empty response is not proof of an empty account.
 
-Clear, Demo and file import switch automatic reading OFF and invalidate pending results. The Auto button resumes reading. Manual Refresh fetches one list without enabling periodic updates. Reload/close discards window-local data. No private task snapshot is placed in storage, diagnostic logs, server assets or Git.
+ChatGPT normal and project conversations, Claude normal/Code/Cowork sessions, Gemini current-account conversations are grouped by verified labels. Unresolved membership is described as unconfirmed rather than “unassigned”; internal IDs are not display headings. Pins precede other items. Projects, chats and artifacts retain their type; a pinned project does not make every child chat pinned. Coverage is **rendered-list/partial**, with observed/accepted/rejected/limited/end-of-scan counts. Browser providers do not guarantee all account pins. ChatGPT browser pins can differ from the desktop app; Codex uses a separate opt-in local adapter.
 
+Every item begins with a state mark, independently of 📌. Text remains alongside marks: generating/running, awaiting input/approval, response idle, failed or Unknown. Exact visible controls establish generating/idle for ordinary chats. Idle is not completion; Code/Cowork input readiness alone does not establish idle. Open conversation controls are observed about every five seconds and expire after **15 seconds**. Closed ordinary chats, mismatched accounts/routes, stale or conflicting duplicate tabs remain Unknown. Exact official Claude Code sidebar icon labels can describe closed sessions and expire after **90 seconds**; unread/merged never means completed. State observation time is separate from task update time.
 
-## v1.26.0 — Evidence-based task response states
+The observer checks ≤40 existing tabs, four workers, 900ms per response/3500ms overall. Only composer presence/editability, button aria/test attributes and visibility are read; no message or draft values. No user-tab navigation, state persistence, task execution, extra permissions or external requests. Auto OFF pauses list/state acquisition. Clear/Demo/import pauses it and invalidates pending responses; Manual refresh reads one list without turning Auto ON. Imported states are historical, not authenticated live proof.
 
-TASK-STATE-001 supersedes the earlier unconditional unknown state only for verified controls. Independent `TASKS_STATE` polls already-open provider conversation tabs about every five seconds while the task window is visible and Auto ON; `TASKS_READ` lists remain at one minute. A visible enabled stop control scoped to the editable composer indicates generating a response. A normal-chat composer with a recognized send/voice control indicates response idle, never task completion. Claude Code/Cowork require explicit stop evidence; accepting another prompt does not prove idle. Closed chats, unreadable controls, stale responses and conflicting duplicate tabs remain unknown with reasons. Desktop Codex is excluded.
+## Save a work note
 
-Read only composer presence/editability, button aria-label/data-testid/disabled and visibility; never message text, editable values or credentials. Match current route identity and Gemini account path, limit 40 existing tabs with four workers, 900ms per reply and 3500ms total. States expire after 15 seconds, including when Auto is paused. Sender checks retain exact origins, task path, service and top frame. No quota queue, history, storage, audio, external fetch or tab navigation is used. Each state carries its observation time separately from task updatedAt. Clear/Demo/import invalidate both pending paths. Existing extension installations must update in place; users may need to reload official chat tabs after saving drafts, never automatically.
+Use **Register work note** on a supported official conversation, or the task’s **Work notes / handoff** button. The editor inherits the validated source title/link. Select a workspace/account label, enter purpose/current situation/next actions/waiting/cautions/checklist, then **Save notes**. Manual phase (Working/Review/Waiting/Done) is separate from observed response state. Saved title opens the source; **Edit** sits at the right edge, and headings show scoped counts. Notes remain when a conversation is missing from the latest list. Sections for pins, notes and tasks start expanded and retain disclosure through refresh/language changes.
 
-Modules: `extension/task-status.js` observes scoped controls; `task-state-background.js` bounds existing-tab reads; `task-reader.js` accepts self-extension/top-frame requests; task Web bridge/model/page validate, expire and render. Mock controls and real background message gates are regression-tested. Provider control shapes were inspected read-only; live generation through the installed v1.26.0 extension remains a separate acceptance check.
-## Modules and contract
+**Copy handoff** requires a click: paste the text into another chat yourself. JSON export/import is deliberate transfer, not automatic cloud sharing. Notes use `llms-task-notes-v1` in this browser/site’s localStorage, keyed by provider/workspace/validated URL. A different origin/profile has a different store. Export before clearing data or migrating domains. Read/write failures and concurrent revision/import overlap reject without silently replacing notes. Limits: 1 MiB total, 500 notes, 50 checklist items per note; current situation ≤4000 characters, other prose fields ≤2000, checklist item ≤300.
 
-- `web/task-launcher.js`: adds one link per quota card, preserves existing actions, severs opener, supports tab fallback.
-- `web/tasks-model.js`: normalizes and validates independent schemaVersion 1; project/kind grouping, ancestry-preserving filters, safe URLs and synthetic demo.
-- `web/tasks-page.js` / `tasks.css`: textContent renderer, narrow responsive layout, filters, disclosure, copy, local import and Auto controls.
-- `web/tasks-bridge.js`: independent TASKS_READ (26-second deadline) and TASKS_STATE (5-second deadline), exact origins and existing pairing ID. No usage GET/REFRESH/SETTINGS, audio or persistence.
-- `extension/task-list.js`: pure sidebar metadata extraction; no body/input/textarea reads or provider endpoint guesses.
-- `extension/task-reader.js`: isolated content-script reply to this extension’s TASK_LIST_READ.
-- `extension/task-background.js`: independent acquisition/coalescing/cooldown/cleanup; no quota queue, state, history, sound or persistence.
+Registration is independent and explicit: supported conversation route/top frame/origin/service, ≤20 single-use memory handles, two-minute expiry. Launch queries contain neither conversation titles nor URLs. The handoff opens a separate task editor; nothing is saved until the user clicks Save. Bodies/drafts/credentials are never read or copied. Dismissed registration UI does not change the conversation.
 
-Inputs: UTF-8 JSON ≤512 KiB, ≤500 nodes, ≤12 levels. Required `schemaVersion:1`, matching service, ISO capture timestamp and tasks array. Each node has an exact unique ID ≤120 characters, title ≤200, optional verified parent ID, consistent project ID/title, kind, observation status, optional ISO update time, summary ≤500 and safe provider URL. Cycles, missing/cross-project/cross-kind parents, duplicate IDs and mismatched services reject the whole input and retain the prior list. Unknown fields such as credentials/body are discarded. Safe links require exact provider HTTPS host, supported conversation route, no credentials, nondefault port, query or fragment. The source label (`codex-app`, `local-export`, `demo`, `official-sidebar`) is a format label, not authenticated provenance; imported files display as local observations.
+## Optional Codex
 
-The task page keeps CSP `connect-src 'none'`, self-only scripts/styles and denied object/base/form actions. Extension messaging is the dedicated local browser transport, not a network fetch. Rendering never inserts provider text as HTML. Copy is user-triggered and clipboard failure offers a selectable readonly tree. Narrow windows retain 14px task names, 13px supporting controls and 6px nesting indentation.
+[Helper installation](native/README.md) is initially disabled and requires an extension-page permission click plus separate per-user helper installation. The helper runtime remains v1.30.0. Local read-only App Server metadata provides IDs/titles/pins/update times; previews, turns, events and authentication fields are discarded. Only fixed metadata methods are permitted. Desktop local pin IDs use an explicitly labelled compatibility adapter; the local audit is not a remote-host/account guarantee. Maximum 500 tasks. Independent metadata cannot observe runtime; an already-existing shared server can provide evidence valid for 90 seconds. Idle never implies completed. No task execution, automatic server start/restart, network port or cloud upload. Pause/Clear/import invalidates the separate Codex path too.
 
-## Verification and limits
+## Implementation and acceptance
 
-Regression coverage exercises normalization, ancestry, hostile links, launcher rerenders, real adapter collection against mock sidebars, pending-request coalescing, cooldown and cleanup. Quota tests separately reproduce the real background billing circular wait and verify GET projection does not alter history/storage. Live official usage screens were compared during diagnosis on 2026-10-10. Installed-extension automatic acquisition, native popup resizing, audio and complete account coverage must not be claimed without the package update and live verification. Older import-only trial behavior is historical and superseded by this adapter; the local import option remains supported.
+Independent `web/tasks-*`, `extension/task-*`, `extension/codex-*` modules; the main monitor receives the launcher only. RPC requires exact approved HTTPS origin, `/tasks` or `/tasks.html`, selected service and top frame. The overview additionally requires one unambiguous service query. Required/optional permissions are unchanged in v1.31.
+
+Task JSON: UTF-8 ≤512 KiB, ≤500 nodes/12 levels; schemaVersion 1, matching service, ISO capture time, unique ID ≤120, title ≤200, summary ≤500, consistent parent/project/kind. Reject cycles, duplicate/missing/cross-project/cross-kind parents; discard unknown fields. HTTPS provider conversation links must have exact host/route, no credentials, alternate port, query or fragment. Codex notes allow only exact validated Codex deep links. Render with textContent, self-only scripts/styles, `connect-src 'none'`, denied objects/base/forms, severed opener and safe links. Nothing private enters logs, server bundles or Git. Automatic titles remain memory-only; explicitly saved notes are the separate authorized exception.
+
+Run CJS **and MJS** tests and full build, inspect ZIP/permission diff, verify 240–420px EN/JP both themes, expired/missing/zero/previous, single-provider incident, existing notes and all pause/late-response races. Unchanged main acquisition/history/audio files must remain identical. Installed Chrome/Edge permissions, genuine response controls, native helper and complete provider inventory remain live acceptance checks; synthetic fixtures do not prove account-wide success. [Specification](SPECIFICATION.md), [security review](SECURITY_REVIEW.md), [requirements](spec/requirements.json) contain evidence and historical contracts.
 
 ---
 
-
-## v1.27.0 — Closed Claude Code sessions
-
-TASK-CODE-001 reads exact accessibility labels from rendered Claude Code sidebar session links via a fresh inactive Code home, alongside the normal sidebar. Individual conversation tabs need not be open. Input-needed and idle are list observations; unread replies and merged pull requests never imply completion. One-minute acquisition remains bounded and closes both owned tabs; partial success is accepted. List evidence expires after 90 seconds, open-tab evidence after 15 seconds; conflicting evidence stays unknown. No quota/history/audio, permission, message-body or credential changes. Official list labels were inspected on 2026-10-11; installed-package end-to-end behavior is still unverified.
-
 <a id="ja"></a>
 
-# 日本語 — タスク詳細の実装仕様
+# 日本語 — タスク詳細と作業メモ
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
-現行 **1.27.0 β**。各LLMのタスク詳細ボタンは独立した縦長420×780小窓を開き、ブロック時は安全な別タブへ戻る。起動時の言語／テーマを継承し、後の選択は窓内だけ。残量・履歴・音・既存外窓のライフサイクルは分離する。
+## 残量と作業の続きを一緒に確認
 
-## 自動取得
+［タスク詳細］は縦長420×780の独立小窓を開き、ブロック時は安全な別タブへ戻ります。タイトルは `LLMs Monitor -Task- Gemini` など。起動時の日英・テーマを引き継ぎ、以後の切替は窓内だけです。
 
-開いた時と、表示中かつ自動ONの間は1分ごと、専用TASKS_READで取得する。拡張機能をアンインストールせず1.26.0へ上書き更新し、同じoriginの主画面で接続する。専用橋渡しは既存glance-extension-idだけを読み、設定・残量・履歴を読まない。
+タイトル直下に対象LLMの保存済み残量バーと公式障害を表示。現在／前回／未取得／ログアウト／期限切れを区別し、期限切れは—として再取得待ちにします。勝手に100%へリセットしません。`TASKS_MONITOR` は選択したサービスの既存 `data`／`providerStatus` だけを検証して返す読取専用処理。約10秒ごとに保存値を読み、公式側の取得は従来の約1分周期のまま。残量の再取得・保存・履歴・通知音・設定変更を行わず、主画面の待ち行列も使いません。旧「タスクから残量RPCを使わない」制約に対するv1.31の限定例外です。
 
-許可HTTPS origin、/tasks または /tasks.html、トップフレーム、URLと依頼のservice一致に限定。毎回、新しい非アクティブ公式ホームを開き、古いサイドバーの別アカウント再利用を防ぐ。表示されたサイドバーのリンクだけを読み、finallyで自分の一時タブだけ閉じる。既存チャット・入力を開き直さない。同一事業者の同時依頼共有、55秒の再試行制限、20秒の取得予算、読取応答2.5秒制限。失敗・空・読込中は前回一覧を保持。空アカウントと未ログインは完全には区別できず、全件ゼロを確認済みとはしない。
+## 一覧・ピン・状態
 
-ChatGPTは通常/c/と明示的/g/g-p-…/c/。プロジェクト名が不明ならIDでまとめ、名前や親子を推測しない。Claudeは/chat/・/code/session_・/cowork/を別種別に分け、プロジェクトリンクだけをタスクにしない。Geminiは単一の現在サイドバーの/app/・/u/N/app/。サイドバーだけの実行状態は未確認とし、下記の操作ボタン観測だけで応答状態を補足する。待機から完了を推測しない。デスクトップCodexの一覧・会話本文・実行手順・全アカウント履歴はこのWeb取得の対象外。
+同じURLで拡張v1.31.0を接続。表示中かつ自動ONなら起動時と約1分ごとに、新しい非アクティブ公式ホームのサイドバー／名前／ピンを取得します。展開・スクロールは自分で作ったタブだけで行い必ず終了。利用中の会話・入力タブを再読込しません。事業者ごとの重複要求を統合し、最短55秒・取得20秒・返信2.5秒の制限。未取得・失敗・描画途中では前回一覧を保持し、空応答を全件0と断定しません。
 
-消去・サンプル・ファイル読込は自動OFFと保留応答の無効化。自動ボタンで再開、手動更新は1回取得する。窓を閉じる／再読込でメモリーを破棄。一覧は永続保存・診断ログ・運営サーバー・公開資産・Gitへ入れない。
+確認済みプロジェクト／グループ名でまとめ、不明な所属は未確認とし、内部IDを見出しに出しません。ピンは優先表示しますが、プロジェクトのピンと子会話のピンは別です。取得数・未対応・上限・走査終了を表示し、**ブラウザー各社の全アカウント全件は保証しません**。ChatGPTブラウザーとデスクトップ／Codexのピンは別経路です。
 
-## モジュールと安全契約
+全項目の先頭に状態マークと文字を表示し、📌とは別にします。通常会話の停止操作を観測した［応答生成中］、送信操作を観測した［応答待機］は応答状態で、作業完了ではありません。Code／Coworkの入力可否だけから待機を推測しません。開いた会話のボタン属性を約5秒ごとに観測し、15秒で失効。閉じた通常会話・アカウント／経路不一致・重複タブ不一致は未確認です。Claude Code公式一覧の明示アイコン属性は閉じたセッションにも使え、90秒で失効。未読・PRマージを完了としません。観測日時と最終更新日時は別です。
 
-一覧と状態の各モジュールを独立実装し、Webの専用橋渡しから利用量GET／REFRESH／SETTINGS・音声・保存へ依存しない。拡張機能側は本文・入力値・認証情報を読まず、非公開APIの推測をしない。
+最大40タブ・4並列・返信900ms／全体3500ms。入力欄の存在と操作属性・可視性だけを確認し、本文・入力値は読みません。自動OFFで停止、消去／サンプル／JSON読込で停止して保留応答も無効化。手動更新は自動ONに戻しません。読込状態は過去の観測で、生の稼働証明ではありません。
 
-JSONは512KiB・500件・12階層以内、schemaVersion=1、対象service一致、ISO取得時刻が必須。IDは厳密な一意120文字以内、タイトル200、projectId/titleの整合、親は同じproject/kindの実在ID、summary500、任意更新時刻と公式リンク。循環・重複・親不在・別project/kind・別serviceは全体拒否し前回を保持。資格情報など未知フィールドは破棄。リンクは厳密HTTPS事業者host・許可チャット経路・認証/port/query/fragmentなし。sourceは形式ラベルであり取得元認証ではなく、読込ファイルは端末内観測値と表示する。
+## 作業メモの保存・引継ぎ
 
-CSP connect-src none、script/style self、object/base/form-action禁止を維持。専用拡張メッセージはブラウザ内の経路でありWeb fetchをしない。textContentで描画し、コピーは利用者操作のみ、失敗時は選択可能テキストを提示。狭幅でもタスク名14px、補足13px、字下げ6pxを維持。
+1. 公式会話の［作業メモへ登録］、またはタスクの［作業メモ・引継ぎ］を押す。検証済みタイトル・リンクが自動で入ります。
+2. 作業領域／アカウント名を選び、目的・現在の状況・次の作業・確認待ち・再開時の注意・チェックリストを記入して［メモを保存］。
+3. 保存済みタイトルは元会話へのリンク、右端は［編集］。見出しに対象サービス・作業領域の件数を表示。一覧から消えた会話のメモも保持します。
+4. ［引継ぎ文をコピー］して共有先へ自分で貼り付けるか、JSONを書出し／読込み。自動共有・クラウド同期ではありません。
 
-## 検証範囲
+ピン／メモ／タスク一覧全体は初期展開で、更新・言語変更でも開閉状態を保持。手動の作業状態と観測状態は別です。メモは `llms-task-notes-v1` にサービス／作業領域／URL別で保存し、別URL・別ブラウザーでは別保存。データ消去・ドメイン移行前に書出してください。保存失敗・同時更新・重複読込は黙って上書きしません。上限は全体1MiB・500メモ、1メモ50チェック項目、現在の状況4000字・他本文2000字・1項目300字です。
 
-形式・親子・不正リンク・繰返しボタン描画・模擬公式サイドバー・同時依頼共有・間隔・一時タブ終了を回帰検証する。残量側は実背景処理の請求循環待ち、GET投影の保存／履歴非変更を別検証。2026-10-10に公式利用画面の数値差を確認。拡張更新後の本番自動取得・外窓リサイズ・音・全アカウント範囲は実確認前に成功と主張しない。旧JSON限定試作は履歴として上書きし、端末内JSON読込機能は残す。
+公式登録は独立・明示保存。厳密な公式会話経路・トップフレーム・サービス確認と、最大20件／2分／一度限りのメモリー内ハンドルを使います。起動URLへ会話名・URLを載せず、本文・入力・認証情報を読まず、別窓で保存を押すまで記録しません。
 
-## v1.26.0 — 根拠のあるタスク応答状態の取得
+## 任意のCodex連携と保護範囲
 
-TASK-STATE-001は、旧版の一律「状態未確認」を明示的な操作ボタンがある場合だけ上書きする。一覧は引き続き1分ごと、状態はタスク小窓が表示中かつ自動ONの間、専用TASKS_STATEで約5秒ごとに既存の公式会話タブから取得する。入力欄周辺の有効な停止ボタンは「応答生成中」、通常チャットの編集可能な入力欄と既知の送信／音声ボタンは「応答待機」。待機からタスク完了を推測しない。Claude Code/Coworkは次の入力を受け付けても処理が続くため、停止根拠がない場合は未確認を維持する。閉じた会話・読取不能・古い観測・複数タブの不一致は理由付き未確認。デスクトップCodexは対象外。
+[導入説明](native/README.md#ja)に従い、専用画面のクリックと別ヘルパー導入で有効化。初期無効。コード未変更のヘルパー1.30.0はタイトル・ID・ローカルピン・更新日時・根拠のある状態だけを返し、preview／turn／認証を渡しません。端末内ピン形式は互換読取で、他ホスト・全アカウント保証ではありません。最大500件。独立メタ情報から稼働は推測せず、既存共有サーバーの観測のみ90秒有効。待機を完了とせず、サーバー起動／再起動・ポート公開・実行は行いません。停止／消去／読込でCodex保留応答も無効化します。
 
-入力欄の存在・編集可否、ボタンのaria-label/data-testid/disabledと可視性だけを読み、本文・入力値・認証情報は読まない。現在経路のID・種別、Geminiのアカウント経路を照合。最大40タブ、同時4件、応答900ms、全体3500ms。15秒を超える観測は自動OFF中も失効させる。送信元origin・タスク経路・service・トップフレームの検証を維持。残量待ち行列・履歴・保存・音・外部fetch・タブ遷移に依存しない。観測日時はタスク最終更新日時とは別。消去／サンプル／JSON読込は両方の保留応答を無効化。拡張は上書き更新し、公式会話タブは必要なら入力を保存後に利用者が再読込する。自動リロードは禁止。
+Web・拡張の専用モジュールへ分離し、主画面には起動導線だけ。許可HTTPS origin・タスク経路・サービス・トップフレームを検証し、残量概要は重複service指定も拒否。必須／任意権限はv1.30から変更なし。JSONは512KiB・500項目・12階層、重複／循環／不正親子を拒否。リンクは厳密な公式会話URLまたは検証済みCodexリンクのみ、描画はtextContent、接続禁止CSPで本文や秘密を画面・ログ・配布物へ混入させません。自動一覧はメモリー内、手動保存メモだけを明示された別保存とします。
 
-独立モジュールtask-status.jsが入力欄周辺の操作を観測、task-state-background.jsが時間制限付きタブ読取、task-reader.jsが自拡張・トップフレーム受付、Web専用橋渡し／モデル／画面が検証・失効・表示を担当する。模擬操作ボタンと実backgroundの送信元検証を回帰テスト。公式操作ボタン構造は読み取り確認し、実インストールv1.26.0での生成中取得は別途実機確認する。
-
-## v1.27.0 — 閉じたClaude Codeセッション
-
-TASK-CODE-001は公式Codeホームの表示済みサイドバーにある明示的な状態属性だけを取得する。会話タブを開かず「入力待ち」「アイドル」「未読の返答」を一覧由来として表示し、未読やPRマージから完了を推測しない。通常ホームとCodeホームを非アクティブで取得し、1分周期・時間制限・一時タブ終了・部分成功を維持。一覧状態は90秒、会話操作状態は15秒で失効し、不一致は未確認。本文・入力・認証情報・追加権限・残量／履歴／音は変更しない。2026-10-11に公式一覧属性を実確認。更新済み拡張での一連の動作確認は別途必要。
-
-### v1.28 task notes and promotional credits / 作業メモとプロモーションクレジット
-EN: Automatic task titles remain memory-only. The user explicitly authorizes saving user-authored notes/checklists (including their chosen task title and link) in `llms-task-notes-v1`, separately from monitor state. Use separate workspace labels for accounts; no automatic cloud sharing. Export/clipboard requires a click. Verified sidebar names and explicit pins only; full coverage is not guaranteed. Promotional API credits remain separate from paid credits and all monthly quotas, with no inference from grants.
-JP: 自動取得した一覧は従来どおりメモリ内のみ。利用者が明示保存する作業メモ・チェックリスト（選択したタイトル・リンクを含む）は `llms-task-notes-v1` に隔離保存。アカウントごと作業領域名を分け、クラウド同期しない。書出し／コピーはクリック時のみ。公式で確認した名前・ピンのみを使い全件保証はしない。APIプロモーションクレジットは購入残高・月額枠と別扱いで、付与額から推測しない。
-
-## v1.29.0 — pin scanning, official work-note registration and section disclosures
-
-EN: Fresh inactive acquisition homes expand known sidebar sections and scan scrollable sidebar content with bounded passes, accumulating explicit pins independently from the 500-task ceiling. Claude artifact/taskboard links permit only their exact official route and optional UUID org routing. Counts, rejected rows, limits and rendered-end confirmation are exposed. A missing pin section never proves zero account pins. The official DOM provides no authoritative account-wide count; rendered-end confirmation is not a full-account guarantee.
-
-The independent closed-shadow registration button appears on verified conversation routes and Claude Code project-thread routes. An explicit click transfers only title/URL/provider through a maximum 20-entry memory buffer, 2-minute TTL and single-use opaque handle. The tall editor opens on the existing companion; provider title/URL are absent from the browser query. Sender extension ID, provider route, URL match, service, task origin/route and top frame are validated. Save remains explicit in the browser/site-local workspace. The workspace label can be selected in the editor. No messages, input values, credentials, automatic sending, quota/history/audio or floating lifecycle changes.
-
-Pins, notes and the entire task tree have separate default-open disclosures. Redraws preserve section state; global Expand/Collapse includes all three. Existing task state expiry and sidebar refresh remain unchanged. Required/optional permissions remain unchanged. Package release is v1.29.0; unmodified manuals/PDFs are not regenerated. Installed official pages need a user reload after saving drafts to receive the new button.
-
-JP: 新しい非アクティブ取得ホームだけ既知の一覧を展開・スクロールし、複数回の読取結果からピンを合併。会話500件上限で後続ピンを取りこぼさない。Claudeのタスクボードも公式artifact経路＋org UUIDだけ許可。取得数・対象数・未対応・上限・表示一覧末尾確認を示す。ピン欄未取得を0件と断定しない。公式DOMに全アカウントの確定総数がないため、表示一覧末尾確認とアカウント全件保証を区別する。
-
-公式会話に独立した［作業メモへ登録］ボタンを設け、クリックでタイトル・URL・事業者のみを縦長の別画面へ渡す。本文・入力値・認証情報を読まず、自動保存／送信もしない。最大20件・2分のメモリ内一度限りハンドルを厳密な送信元へ渡し、URLのqueryに会話タイトル／URLを載せない。メモ画面で作業領域を選択し明示保存。残量・履歴・音・小窓ライフサイクルとは独立。
-
-ピン留め・作業メモ・タスク一覧全体はそれぞれ開閉可能、初期は展開。定期更新・言語切替でも閉じた状態を保持し、全て展開／閉じるの対象にも含む。権限追加なし。v1.29.0として本体＋拡張機能のみビルド。既存公式タブは入力保存後に利用者が再読込して新ボタンを有効にする。
+CJS＋MJSテスト、フルビルド、ZIP・権限差分、240〜420px・日英・両テーマ、0／未取得／期限切れ／前回値、対象サービス障害、既存メモ、停止・保留応答を確認。メイン残量・履歴・音声の既存ソースを維持します。実Chrome/Edgeでの権限・本物の応答状態・ヘルパー・全件は別の手動受入確認で、模擬画面の成功を本番全件成功とは扱いません。

@@ -55,3 +55,8 @@ dialog{background:var(--surface);color:var(--text);border:1px solid var(--line);
 .saved-work-row{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);min-width:0}
 .saved-work-title{flex:1;min-width:0}.saved-work-title a{overflow-wrap:anywhere}.saved-work-title small{display:block;font-size:12px;color:var(--muted);margin-top:4px}
 .saved-work-edit{flex:none;font-size:13px;padding:6px 10px}
+
+/* Independent task-window usage overview. */
+.task-monitor{margin:0 0 14px;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface);font-variant-numeric:tabular-nums}.task-usage-head,.task-usage-label{display:flex;justify-content:space-between;align-items:baseline;gap:8px}.task-usage-head strong{font-size:14px}.task-monitor small{color:var(--muted);font-size:12px;line-height:1.5}.task-usage-head small{text-align:right}.task-usage-plan{display:block;margin:3px 0}.task-usage-row{margin-top:9px}.task-usage-label{font-size:13px;line-height:1.5}.task-usage-label strong{white-space:nowrap;color:var(--provider)}.task-usage-track{height:5px;background:var(--line);border-radius:3px;overflow:hidden;margin:4px 0}.task-usage-track span{display:block;height:100%;background:var(--provider)}.task-incident{display:flex;flex-direction:column;gap:4px;border-top:1px solid var(--line);padding-top:8px;margin-top:9px;color:var(--muted);font-size:13px;line-height:1.5}.task-incident.issue{color:#ffb5bd}.task-incident a{font-size:12px}@media(max-width:300px){.task-usage-head{flex-direction:column;gap:3px}.task-usage-head small{text-align:left}.task-monitor{padding:10px}}
+
+.task-monitor small{font-size:13px}html[data-theme="standard"] .task-incident.issue{color:#9f2439}

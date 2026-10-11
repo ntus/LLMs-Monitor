@@ -4,7 +4,14 @@
 
 <a id="en"></a>
 
-Last updated: 2026-10-10
+Last updated: 2026-10-11
+
+## Current task overview and saved notes (v1.31.0)
+
+The independent task window receives only its selected provider’s already-saved plan, bounded usage windows and public incident summary through an origin/route/service/top-frame validated read-only RPC. No account identifier, history, settings, credits, authentication or other-provider data is returned by this overview. It does not acquire fresh quotas, change storage/history or trigger audio. Signed-out windows are hidden; expired values are unavailable, stale values marked previous. Automatic task titles/states remain in memory. Only explicitly saved work notes/checklists and selected validated title/link persist under the separate local notes key; export/copy needs a click. Notes differ by site origin/browser and chosen workspace label; no automatic cloud sharing.
+
+The current static X feed is unconfigured. The independent server, if configured, sees public posts only and receives no private data. Optional API promotional credits remain separate from paid credits. Details for native Codex and historical feature boundaries follow below.
+
 
 The extension reads plan names, usage limits, remaining percentages, reset times, and related credit balances from the official ChatGPT, Claude, Gemini, and Google One services for accounts already signed in within the browser profile. Google One is queried only to identify the current Google AI membership name when Gemini does not expose it directly.
 
@@ -33,7 +40,7 @@ The extension stores bounded numeric acquisition diagnostics locally in IndexedD
 
 ## Independent task details (v1.25.0)
 
-When a user opens Task details, automatic acquisition reads only visible sidebar conversation titles and approved links from fresh inactive official provider home tabs in the same browser profile. It checks once on opening and about once a minute while the task window is visible and automatic mode is enabled. Temporary tabs are closed after acquisition; user chats and drafts are not reloaded. The list is partial, execution state is unknown, and no chat bodies, input fields or credentials are read. Task titles are neither persisted nor logged, and are returned only to the separate task page on an approved companion origin. Imported JSON may contain bounded titles, project labels, reported states, timestamps and summaries; it stays in that window's memory. Import, Demo or Clear pauses automatic acquisition. Reloading or closing discards the list. No task list is uploaded to our server. Existing usage history and required extension permissions remain unchanged.
+When a user opens Task details, automatic acquisition reads only visible sidebar conversation titles and approved links from fresh inactive official provider home tabs in the same browser profile. It checks once on opening and about once a minute while the task window is visible and automatic mode is enabled. Temporary tabs are closed after acquisition; user chats and drafts are not reloaded. The list is partial and execution state remains unknown unless the separate control/list observer has explicit evidence, and no chat bodies, input fields or credentials are read. Task titles are neither persisted nor logged, and are returned only to the separate task page on an approved companion origin. Imported JSON may contain bounded titles, project labels, reported states, timestamps and summaries; it stays in that window's memory. Import, Demo or Clear pauses automatic acquisition. Reloading or closing discards the list. No task list is uploaded to our server. Existing usage history and required extension permissions remain unchanged.
 
 
 ## v1.26.0 task-state boundary
@@ -46,7 +53,14 @@ The optional independent task window checks already-open provider conversation t
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
-最終更新: 2026-10-10
+最終更新: 2026-10-11
+
+## 現行タスク概要と作業メモ（v1.31.0）
+
+独立タスク窓へ、選択事業者の保存済みプラン・利用枠・公開障害要約だけを、origin／タスク経路／service／トップフレームを検証した読取専用RPCで返します。この概要はアカウントID・履歴・設定・クレジット・認証・他社情報を返さず、残量再取得・保存・履歴変更・音声を行いません。ログアウトでは枠を隠し、期限切れは未取得、古い値は前回値とします。自動一覧／状態はメモリー内のみ。明示保存する作業メモ・チェックリスト・選択したタイトル／検証済みリンクだけを別の端末内キーへ保存し、書出し／コピーはクリック時だけ。サイトURL／ブラウザー・指定作業領域ごとで、自動クラウド共有はありません。
+
+現行静的サイトのX配信は未設定。設定した場合も別サーバーは公開投稿だけを読み、個人使用データを受け取りません。APIプロモーションクレジットは購入残高と区別します。Codexと過去機能の保護範囲は以下を参照。
+
 
 本拡張機能は、同じブラウザープロファイルでログイン済みのChatGPT、Claude、Gemini、Google Oneの公式サービスから、契約プラン名、利用枠、残量、リセット日時、関連クレジットを取得します。Gemini側で現在の契約名を取得できない場合に限り、Google Oneで現在のGoogle AIメンバーシップ名を確認します。
 
@@ -72,7 +86,7 @@ APIクレジット連携は任意で初期状態は無効です。拡張機能�
 
 ## 独立したタスク詳細（v1.25.0）
 
-［タスク詳細］を開くと、同じブラウザープロファイルの公式ホームを新しい非アクティブなタブで開き、表示済みサイドバーの会話名と許可されたリンクだけを取得します。起動時と、自動取得が有効で窓が表示されている間の約1分ごとに確認し、一時タブは取得後に閉じます。利用中のチャットや入力途中のタブを再読込しません。一覧は部分的で、実行状態は不明です。チャット本文、入力欄、認証情報は読み取りません。会話名は永続保存・ログ記録せず、許可済みコンパニオンoriginの独立タスク画面だけへ返します。手動JSONの名称・プロジェクト・報告状態・日時・要約も、その窓のメモリー内のみで扱います。読込・サンプル・消去は自動取得を停止し、再読込・終了で一覧を破棄します。運営サーバーへの送信はなく、既存の使用量履歴と必須権限は維持します。
+［タスク詳細］を開くと、同じブラウザープロファイルの公式ホームを新しい非アクティブなタブで開き、表示済みサイドバーの会話名と許可されたリンクだけを取得します。起動時と、自動取得が有効で窓が表示されている間の約1分ごとに確認し、一時タブは取得後に閉じます。利用中のチャットや入力途中のタブを再読込しません。一覧は部分的で、別の操作属性／一覧観測に明示根拠がある場合だけ状態を表示します。チャット本文、入力欄、認証情報は読み取りません。会話名は永続保存・ログ記録せず、許可済みコンパニオンoriginの独立タスク画面だけへ返します。手動JSONの名称・プロジェクト・報告状態・日時・要約も、その窓のメモリー内のみで扱います。読込・サンプル・消去は自動取得を停止し、再読込・終了で一覧を破棄します。運営サーバーへの送信はなく、既存の使用量履歴と必須権限は維持します。
 
 ## v1.26.0 タスク状態の保護範囲
 

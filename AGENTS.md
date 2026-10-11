@@ -23,7 +23,7 @@ This file is the starting point for every future Codex or LLM edit. Follow the u
 - Apply settings to the main page, public web app, normal popup, always-on-top view, and in-page panels. Hidden services must keep fetching and recording history so they can be restored.
 - Check the existing acquisition paths, 60-second refresh, one-minute official service-status monitoring and status-log throttle, history, numeric-only change indicator, three sounds, localization, themes, opacity, fullscreen, explicit-only popup launch, unrestricted popup CSS sizing, and privacy before release. Read `SECURITY_REVIEW.md` and keep its permissions and manual-test limits current.
 - Never replace an official provider value with an estimate. Tips and news require dates and primary-source links; never send private usage data or history to an external news source.
-- Run meaningful tests, `node --test tests/*.test.cjs`, `python3 build.py`, ZIP inspection, version checks, and diff checks. Record any necessary manual verification in `SPECIFICATION.md`.
+- Run meaningful tests, `node --test tests/*.test.cjs tests/*.test.mjs`, `python3 build.py`, ZIP inspection, version checks, and diff checks. Record any necessary manual verification in `SPECIFICATION.md`.
 - Decide the version before building. If the store package changes, increment the minor component `y` in `x.y.z` and reset `z` to zero. If only lightweight non-package content changes, increment `z`; an explicitly version-neutral content update keeps the current version. Keep all changed release surfaces consistent and preserve the existing Site audience when deploying.
 - Treat `https://aimon.ntus.info/` as the canonical hostname for the future public production release. Any extension allowlist, CSP, redirects, documentation, and hosting configuration introduced for that release must use this exact HTTPS origin. Publishing the product page on GitHub Pages may precede that migration.
 - Any interim Site slug or origin change must update `manifest.externally_connectable`, the background `ALLOWED` set, Web links, privacy and release documents, and regression tests in one package release before the renamed URL is reported usable.
@@ -96,7 +96,7 @@ At the start of work, if the planned build would regenerate unchanged manuals, d
 - 設定変更はメイン画面、公開Web、通常小窓、最前面表示、サイト内パネルに反映する。非表示のサービスもバックグラウンド取得・履歴保存を続け、再表示時に既存データを戻す。
 - 既存の取得経路、60秒更新、1分周期の障害監視とステータスログ抑制、履歴、数値だけの通知、3音、日英、テーマ、透明度、フルスクリーン、小窓の明示起動と自由リサイズ、プライバシーを変更前後で確認する。
 - 公式サービス由来の値を推測値で置き換えない。外部情報やニュースは日付と一次情報へのリンクを付け、使用量・履歴を外部へ送信しない。
-- 適切な意味のあるテストと `node --test tests/*.test.cjs` を実行し、`python3 build.py`、ZIP一覧、版番号、差分を確認する。必要な手動確認を `SPECIFICATION.md` に記録する。
+- 適切な意味のあるテストと `node --test tests/*.test.cjs tests/*.test.mjs` を実行し、`python3 build.py`、ZIP一覧、版番号、差分を確認する。必要な手動確認を `SPECIFICATION.md` に記録する。
 - ビルド前に版を判定する。ストア公開用パッケージが変わる場合は `x.y.z` の `y` を1増やして `z=0`、パッケージを変えない軽微な変更は `z` を1増やす。ただし利用者が版据え置きを明示したコンテンツ更新は現行版を維持する。変更対象の版表記をそろえ、既存の公開範囲を保ってサイトを更新する。
 - 将来の正式公開URLは `https://aimon.ntus.info/` を正本とする。その公開時に追加する拡張機能の接続許可、CSP、リダイレクト、文書、ホスティング設定は、このHTTPSオリジンへ統一する。商品説明ページのGitHub Pages先行公開は可能とする。
 - 正式公開前のSitesスラッグまたはoriginを変更する場合も、`manifest.externally_connectable`、backgroundの`ALLOWED`、Webリンク、プライバシー・リリース文書、回帰テストを同じパッケージリリースで同時更新し、新URLの利用可否を報告する前に接続整合を確認する。
@@ -157,3 +157,8 @@ JP: Codex取得は任意の端末内連携として独立。本文・preview・�
 Codex helper packaging is separately opt-in: `python3 build.py --package --codex-helper` for this release. Later `--package` preserves an unchanged helper ZIP; use product.codex_helper_version independently. ヘルパー再生成は明示した時だけ。未変更のヘルパーを毎回作り直さない。
 
 TASK-WORK-001 Web v1.30.1: saved-note titles use validated noteURL (including exact Codex deep links), Edit is separate, heading counts follow selected provider/workspace. Remove the redundant storage paragraph only; preserve explicit-save, storage keys, revision conflicts, source isolation and minimum-width layout. Web-only note changes must preserve extension/helper ZIP bytes.
+
+TASK-MONITOR-001 (v1.31): user-authorized task overview is the only read-only saved-quota RPC exception. Require exact task origin/route/top-frame and unique selected service, data/providerStatus-only read, field whitelist, expired/null/previous/login/actual-zero distinctions, no writes/fetch/audio/history/settings/core queue. Keep new task CSS isolated and test real listener with a stalled main queue.
+JP: タスク概要は保存済み対象事業者の読取だけを許可し、主画面の取得・履歴・音・設定を変更しない。厳密な送信元・単一service検証、期限切れ／未取得／前回／ログアウト／真0を維持する。
+INTELLIGENCE-AUDIT-001: always include *.test.mjs in regression runs. Static builds ship unconfigured X feed; full build never deploys the Worker or proves Tibo delivery. Require live server/eligible post acceptance before advertising live alerts. First client success is silent, complete bounded paging commits feed before public cursor, failures preserve prior alerts.
+JP: MJSのサーバーテストも必須。静的ビルドとTibo実配信を混同しない。実投稿確認までは未設定を明記。初回成功は無音、完全取得だけカーソル更新、失敗は前回保持。

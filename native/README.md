@@ -1,10 +1,32 @@
 # LLMs Monitor — Codex helper v1.30.0
 
+[🌍 EN](#en) · [🇯🇵 JP](#ja)
+
+Guide updated for app v1.31.0; helper runtime unchanged.
+
+<a id="en"></a>
+
+## English
+
+Optional, local-only Codex task metadata for the independent ChatGPT task window. Requires Python 3 and Codex CLI on macOS/Linux Chrome or Edge. Windows installation is not implemented.
+
+Open **Connect Codex**, extract this ZIP, run `Install.command` on macOS or `python3 install.py --extension-id <ID>` on Linux, then enable the optional native-messaging permission in the extension connection page. Only the chosen extension ID can access the helper. No administrator access, exposed port or login-startup service.
+
+Titles, IDs, explicit local pins, update times and evidenced states only. No message previews, turns, drafts, credentials or execution commands are forwarded. Automatic lists remain memory-only. Desktop pins use a version-sensitive local compatibility adapter; completeness applies to that local pin-ID list. Browser account matching and remote-host/account coverage are not verified. Maximum 500 tasks. A shared existing App Server can provide runtime states; independent metadata reading stays Unknown. Idle never implies completed.
+
+Disable access in the connection page. Remove only the helper directory and its specific browser host manifests to uninstall; leave other native integrations intact.
+
+Sources: [Codex App Server](https://learn.chatgpt.com/docs/app-server), [Chrome native messaging](https://developer.chrome.com/docs/extensions/develop/concepts/native-messaging).
+
+See the [current task/work-note guide](../TASK_DETAILS.md). Install the helper only if you want local Codex metadata; it is not required for browser chat lists. Saved notes can be exported before changing browser/site.
+
+<a id="ja"></a>
+
 ## 日本語
 
 ChatGPTブラウザ版に含まれない、同じ端末のCodexタスクを独立した欄に表示する任意の連携です。macOS／LinuxのChrome／Edgeに対応。Python 3とCodex CLIが必要です。Windows用の導入は未対応です。
 
-1. 拡張機能v1.30.0を導入し、ChatGPTタスク詳細の［Codexを接続］を開きます。
+1. 拡張機能v1.31.0（連携互換性はv1.30.0以降）を導入し、ChatGPTタスク詳細の［Codexを接続］を開きます。
 2. このZIPを展開。macOSでは `Install.command` を開き、連携画面の拡張機能IDを入力します。Linuxでは `python3 install.py --extension-id <ID>` を実行します。
 3. 連携画面の［接続を有効にする］を押し、ブラウザの任意権限を許可します。タスク詳細で［一覧を更新］します。
 
@@ -18,14 +40,5 @@ ChatGPTブラウザ版に含まれない、同じ端末のCodexタスクを独�
 
 停止は連携画面の［無効にする］。完全削除は、導入した `~/Library/Application Support/LLMs Monitor/Codex` と各ブラウザの `NativeMessagingHosts/info.ntus.llmsmonitor.codex.json`（Linuxは `~/.local/share/llms-monitor/codex` と `~/.config/<browser>/NativeMessagingHosts/...`）だけ削除してください。他の連携ファイルは削除しないでください。
 
-## English
 
-Optional, local-only Codex task metadata for the independent ChatGPT task window. Requires Python 3 and Codex CLI on macOS/Linux Chrome or Edge. Windows installation is not implemented.
-
-Open **Connect Codex**, extract this ZIP, run `Install.command` on macOS or `python3 install.py --extension-id <ID>` on Linux, then enable the optional native-messaging permission in the extension connection page. Only the chosen extension ID can access the helper. No administrator access, exposed port or login-startup service.
-
-Titles, IDs, explicit local pins, update times and evidenced states only. No message previews, turns, drafts, credentials or execution commands are forwarded. Automatic lists remain memory-only. Desktop pins use a version-sensitive local compatibility adapter; completeness applies to that local pin-ID list. Browser account matching and remote-host/account coverage are not verified. Maximum 500 tasks. A shared existing App Server can provide runtime states; independent metadata reading stays Unknown. Idle never implies completed.
-
-Disable access in the connection page. Remove only the helper directory and its specific browser host manifests to uninstall; leave other native integrations intact.
-
-Sources: [Codex App Server](https://learn.chatgpt.com/docs/app-server), [Chrome native messaging](https://developer.chrome.com/docs/extensions/develop/concepts/native-messaging).
+本体v1.31.0向けに説明を更新。ヘルパーコード・版は1.30.0のままです。[タスク・作業メモ取説](../TASK_DETAILS.md#ja)も参照。ブラウザー通常チャット一覧にはヘルパー不要です。

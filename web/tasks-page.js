@@ -24,7 +24,8 @@
   const opened=new Set([...$('tree').querySelectorAll('details[open]')].map(d=>d.dataset.taskId?'task:'+d.dataset.taskId:'group:'+d.dataset.groupId));
   const initialized=$('tree').dataset.rendered==='true';
   document.documentElement.lang=language;document.documentElement.dataset.theme=theme;
-  $('task-brand-title').textContent=`LLMs Monitor - ${names[service][0]}`;
+  $('task-brand-title').textContent=`LLMs Monitor -Task- ${names[service][0]}`;
+  globalThis.LLMTaskMonitor?.mount(service,language);
   document.title=$('task-brand-title').textContent;
   document.documentElement.style.setProperty('--provider',names[service][2]);$('heading').textContent=names[service][0];$('service-mark').textContent=names[service][1];
   document.querySelectorAll('[data-copy]').forEach(n=>{n.textContent=t(n.dataset.copy)});$('language').textContent=language==='ja'?'🇯🇵JP':'🌍EN';$('theme').textContent=theme==='dark'?'☼':'◐';$('theme').title=t(theme==='dark'?'light':'dark');$('theme').setAttribute('aria-label',$('theme').title);

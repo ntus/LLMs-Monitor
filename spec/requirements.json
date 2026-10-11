@@ -4,10 +4,10 @@
   "last_updated": "2026-10-11",
   "authoritative": true,
   "product": {
-    "name_ja": "LLMs トークン残量モニタ",
-    "name_en": "LLMs Token Usage Monitor",
-    "version": "1.30.0",
-    "package_filename": "LLMs-Monitor-v1.30.0.zip",
+    "name_ja": "LLMs モニター",
+    "name_en": "LLMs Monitor",
+    "version": "1.31.0",
+    "package_filename": "LLMs-Monitor-v1.31.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -19,7 +19,7 @@
       "gemini"
     ],
     "production_companion_origin": "https://llmsmonitor.ntus.info",
-    "web_version": "1.30.1",
+    "web_version": "1.31.0",
     "companion_origins": [
       "https://llmsmonitor.ntus.info",
       "https://llmsmonitor.ntusnog.chatgpt.site"
@@ -119,6 +119,13 @@
       "tasks": "up to 500 metadata nodes: UUID, name only (never preview), exact codex://threads/<UUID>, pinned, evidenced status, timestamps",
       "pinAudit": "observed local desktop IDs / resolved IDs / complete; desktop compatibility adapter, not all hosts/accounts",
       "persistence": "none; boolean enabled key only; explicitly saved notes use existing separate storage"
+    },
+    "TaskMonitorOverview": {
+      "schemaVersion": 1,
+      "service": "selected route service only",
+      "usage": "plan<=80, status, capturedAt, <=6 windows(label<=80, finite remaining 0..100/null, resetAt, expired)",
+      "incident": "selected service state, summary<=180, checkedAt, fixed official URL",
+      "excluded": "history, settings, account identifiers, credits, other-provider values; no storage writes"
     }
   },
   "requirements": [
@@ -4137,7 +4144,8 @@
         "各社ボタンが対応するserviceの独立画面を開く。",
         "起動時EN/JP・テーマを引き継ぎ、420×780を初期要求する。",
         "ブロック時は安全な別タブへ戻り、自動起動・強制リサイズ・既存小窓のライフサイクルへの干渉をしない。",
-        "タスク機能から残量取得/RPC/保存/履歴/通知へ干渉しない。1.23.1試作時の拡張ソース/ZIP据置は履歴であり、1.24.0の別途許可されたSTATUS-FLOAT-001更新を妨げない。"
+        "タスク機能から残量取得/RPC/保存/履歴/通知へ干渉しない。1.23.1試作時の拡張ソース/ZIP据置は履歴であり、1.24.0の別途許可されたSTATUS-FLOAT-001更新を妨げない。",
+        "v1.31 TASK-MONITOR-001 authorizes only a separately validated selected-provider read-only saved overview; all acquisition/history/audio/lifecycle isolation remains mandatory."
       ],
       "implementation_evidence": [
         {
@@ -4241,7 +4249,8 @@
         "循環・重複ID・存在しない親・別サービス/別プロジェクト/別種別の親を拒否する。",
         "textContent描画、厳密な事業者HTTPSチャットURL、opener切断を使う。",
         "CSP connect-src none、取得/保存/RPC/通知コードへの依存なし。",
-        "個人一覧はGit/公開資産に含めず、Clear/再読込/終了で破棄する。"
+        "個人一覧はGit/公開資産に含めず、Clear/再読込/終了で破棄する。",
+        "v1.31 TASK-MONITOR-001 authorizes only a separately validated selected-provider read-only saved overview; all acquisition/history/audio/lifecycle isolation remains mandatory."
       ],
       "implementation_evidence": [
         {
@@ -4955,6 +4964,95 @@
       "known_limitations": [
         "Local desktop pin field is an internal compatibility format, subject to change; no remote/account-wide guarantee.",
         "No shared server exposed on inspected host; live Codex execution remains Unknown. Windows installer unsupported; Linux/Edge installation not live verified."
+      ]
+    },
+    {
+      "id": "TASK-MONITOR-001",
+      "category": "tasks",
+      "introduced_in": "1.31.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "Independent task window displays selected-provider saved usage bars/incident through a strictly read-only scoped RPC and uses LLMs Monitor -Task- <service> titles.",
+      "source_requirements": [
+        "2026-10-11 user: formal release, compact task usage/incident, -Task- titles, full manuals/build/security regression audit; Tibo reset detection concern."
+      ],
+      "acceptance_criteria": [
+        "Exact approved origin, top frame, task route, single matching service query.",
+        "Read only data/providerStatus; never write storage/history/settings or run quota fetch/audio. Bypass main queue.",
+        "Expired/missing/previous/login/real zero remain distinct; whitelist bounded fields, fixed URLs and textContent.",
+        "Visible refresh about 10 seconds; source updates remain about one minute. Narrow bilingual/theme layout."
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/task-monitor-background.js",
+          "symbol": "TASK-MONITOR-001"
+        },
+        {
+          "path": "web/tasks-monitor.js",
+          "symbol": "TASK-MONITOR-001"
+        },
+        {
+          "path": "web/tasks-page.js",
+          "symbol": "TASK-MONITOR-001"
+        },
+        {
+          "path": "web/tasks.html",
+          "symbol": "TASK-MONITOR-001"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/task-monitor.test.cjs"
+        }
+      ],
+      "known_limitations": [
+        "Requires updated/paired extension. Saved overview is not immediate provider acquisition."
+      ]
+    },
+    {
+      "id": "INTELLIGENCE-AUDIT-001",
+      "category": "notification",
+      "introduced_in": "1.31.0",
+      "status": "external_action_required",
+      "priority": "MUST",
+      "normative_requirement": "Do not claim live Tibo resets until independent X server deployment and real-post acceptance. Protect long-post detection, first successful baseline, bounded complete paging, cursor and retained failure state.",
+      "source_requirements": [
+        "2026-10-11 user: formal release, compact task usage/incident, -Task- titles, full manuals/build/security regression audit; Tibo reset detection concern."
+      ],
+      "acceptance_criteria": [
+        "Match fixed accounts case-insensitively; classify full supported note_tweet text, exclude unrelated password resets.",
+        "Baseline requires successful ready feed, not failed/unconfigured polls; unchanged IDs never retrigger.",
+        "Eight-second, 3MB, four-page budget; malformed/partial/API failures never commit cursor. Ready cache stale after 125 seconds.",
+        "Static build remains unconfigured; document deployment requirements and no personal-reset inference."
+      ],
+      "implementation_evidence": [
+        {
+          "path": "server/intelligence-worker.mjs",
+          "symbol": "INTELLIGENCE-AUDIT-001"
+        },
+        {
+          "path": "extension/intelligence.js",
+          "symbol": "INTELLIGENCE-AUDIT-001"
+        },
+        {
+          "path": "server/README.md",
+          "symbol": "INTELLIGENCE-AUDIT-001"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/intelligence-worker.test.mjs"
+        },
+        {
+          "type": "automated",
+          "path": "tests/intelligence.test.cjs"
+        }
+      ],
+      "known_limitations": [
+        "X token, KV, cron, routing and eligible real-post notification not configured/verified on current Site.",
+        "Keyword text detection can miss images/videos/replies, wording changes and API omissions; first search covers 24 hours."
       ]
     }
   ]

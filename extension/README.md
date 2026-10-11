@@ -1,205 +1,126 @@
 # LLMs Monitor
 
-[![LLMs Monitor — English A4 landscape product overview](assets/promotional/llms-monitor-a4-landscape-flyer-en-v1.jpg)](assets/promotional/llms-monitor-a4-landscape-flyer-en-v1.jpg?raw=1)
+[![LLMs Monitor — English product overview](assets/promotional/llms-monitor-a4-landscape-flyer-en-v1.jpg)](assets/promotional/llms-monitor-a4-landscape-flyer-en-v1.jpg?raw=1)
 
-[Open the full-size English flyer](assets/promotional/llms-monitor-a4-landscape-flyer-en-v1.jpg?raw=1) · [Download English JPEG](assets/promotional/llms-monitor-a4-landscape-flyer-en-v1.jpg?raw=1)
+[Full-size English flyer](assets/promotional/llms-monitor-a4-landscape-flyer-en-v1.jpg?raw=1) · Earlier visual overview; the current guide is below.
 
-**See the remaining usage across ChatGPT, Claude, and Gemini at a glance.**
+**Your AI capacity. Your work, remembered.**
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 <a id="en"></a>
 
-This browser companion checks usage from your signed-in provider sessions about once a minute. Large gauges and bars show current and weekly limits, reset times, plans, and available credits. Your change history stays in your browser, with up to 10,000 entries per limit. The interface supports English and Japanese, light and dark themes, fullscreen viewing, and compact floating panels.
+Release preparation **v1.31.0** for Chrome/Edge desktop, with English and Japanese interfaces.
 
-Version **1.26.0 beta** fixes a billing-reader circular wait that could stop quota refresh, masks expired cached quotas, and adds independent automatic sidebar task lists. Custom-domain pairing and the previous Site URL remain supported. It includes bounded local diagnostic logs, stable language selection, reliable usage/API page opening, and a compact floating view with all three services visible. API billing balances remain optional and separate from subscription quotas. OpenAI billing-page extraction was verified; Claude/Gemini live billing accounts still need validation. Earlier changes are in the [changelog](CHANGELOG.md).
+- **See LLM usage remaining in real time:** current/weekly limits, reset times, official incidents and local change alerts for ChatGPT, Claude and Gemini.
+- **Keep track of work:** independent task windows, evidenced response states, pinned items first, and per-thread notes/checklists with links back to the conversation.
 
-[Product site](https://llmsmonitor.ntus.info/product.html) · [Open the monitor](https://llmsmonitor.ntus.info/) · [Download the beta extension package](dist/LLMs-Monitor-v1.30.0.zip) · [Detailed specification](SPECIFICATION.md) · [Privacy](PRIVACY.md) · [Follow @ntus on X](https://x.com/ntus)
+[Open monitor](https://llmsmonitor.ntus.info/) · [Product introduction](https://llmsmonitor.ntus.info/product.html) · [Extension ZIP](dist/LLMs-Monitor-v1.31.0.zip) · [Task/work-note guide](TASK_DETAILS.md) · [Specification](SPECIFICATION.md) · [Privacy](PRIVACY.md) · [Security review](SECURITY_REVIEW.md) · [Release history](CHANGELOG.md)
 
-### Custom domain connection
-
-Version **1.23.0** adds extension access for [llmsmonitor.ntus.info](https://llmsmonitor.ntus.info/), preserving the previous Site URL. Update the existing extension in place, reload the monitor, and enter the same extension ID once on the new domain. Browser localStorage is separated by origin; extension-stored history and settings are retained. Do not uninstall to update. Store installations need the approved store update; the packaged ZIP is available for beta testing.
-
-## Basic specifications
-
-- **Platforms:** static web monitor plus a Manifest V3 extension for desktop Chrome and Edge. The extension supplies data from currently signed-in official provider accounts.
-- **Services:** ChatGPT, Claude, and Gemini, individually shown or hidden and reordered. Available session and weekly limits, plans, credits, reset times, and local change history are displayed only when provider data is available.
-- **Refresh:** usage about every minute; official OpenAI, Claude, and Gemini status feeds every minute. Active incidents trigger a visible alert and optional sound. The ⓘ control also shows a normal or unavailable state.
-- **Storage:** settings and up to 10,000 history entries per limit stay in browser local storage; provider passwords are never requested.
-- **Display:** English/Japanese, light/dark, fullscreen, floating window, supported browser Picture-in-Picture, configurable translucency, and alert volume.
-- **Limits:** provider APIs and pages may change; unverified values remain unavailable. The floating window cannot provide OS-wide transparency or always-on-top behavior without browser support.
-
-[Revision history](CHANGELOG.md#en) · [Security review](SECURITY_REVIEW.md#en)
+**Tibo reset alerts are not live on the current static Site.** The detector supports public usage/reset posts from Tibo (`@thsottiaux`, OpenAI staff) and selected company accounts, but requires a separately configured X server, secret, cache and minute cron. Tested synthetic detection is not proof of live delivery. See [setup and live acceptance](server/README.md). Posts are announcements, not confirmation that your individual limit has reset. Nerf Bench is [link-only](https://www.bridgebench.ai/nerf-bench).
 
 ## Quick start
 
-1. Sign in to the services you want to monitor on their official [ChatGPT](https://chatgpt.com/), [Claude](https://claude.ai/), and [Gemini](https://gemini.google.com/) sites in the same Chrome or Edge profile. Enter credentials only on those sites.
-2. Before store approval, run `python3 build.py --package`, unpack `dist/LLMs-Monitor-v1.30.0.zip`, and load the unpacked extension from the browser's extension management page for beta testing. Installing without developer mode requires Chrome Web Store or Edge Add-ons review and publication.
-3. Open the extension or the [web monitor](https://llmsmonitor.ntus.info/). The web monitor asks for your extension ID once. The providers' usage tabs do not need to remain open.
-4. Use **Show and arrange services** to choose and reorder cards. Hidden services continue collecting history. Adjust language, theme, opacity, volume, and fullscreen mode from the controls.
+1. Sign in to the official LLM services in the same Chrome/Edge profile.
+2. Until store approval, extract the extension ZIP and use **Load unpacked** in the extension management page. Store installation without developer mode requires separate Chrome Web Store/Edge Add-ons approval; hosting the ZIP does not complete that process.
+3. Open the extension, or open the monitor and enter its 32-character extension ID once. The new domain requires pairing even if the previous Site domain was paired.
+4. Keep the browser running. Supported usage and official incidents update approximately once a minute. Browser sleep, throttling and provider reporting delay can postpone updates.
+5. **Update in place:** keep the same unpacked folder and extension ID, reload the extension, then reload the monitor. Do not uninstall to update; extension history/settings are retained. Save drafts before manually reloading existing official chats to activate a new registration button.
 
-The monitor never asks for provider passwords and never exercises a reset entitlement automatically. A reset link opens the official usage page when an entitlement is available. If a provider does not expose a reliable plan or deadline, the app shows it as unavailable rather than guessing. Document Picture-in-Picture can keep a panel on top in supported browsers; OS-wide window transparency and native mobile apps are outside this beta.
+## Usage and alerts
 
-For contributors and future AI-assisted changes, read [AGENTS.md](AGENTS.md), the [specification](SPECIFICATION.md), and the [requirements ledger](spec/requirements.json) before editing. Run `node --test tests/*.test.cjs` and `python3 build.py --package` before a package release.
+Gauges and bars show obtained remaining values, with resets and weekly session equivalents when enough local history exists. Unknown values are **—**, failed retrieval retains a labelled previous value, and expired cached windows await a fresh value. Genuine verified exhaustion alone is 0%. ChatGPT Work/Codex limits do not represent ordinary ChatGPT chats. Claude provisional API zero is checked against official usage; missing plans/deadlines are not guessed.
+
+Credits, Claude cloud-session credits, reset entitlements and optional API billing balances are separate. Claude API promotional credit gets its own line. Links open official settings; resets, purchases and account changes are never performed automatically. API billing connections start disabled and require a direct permission click; keep the billing page open. Coverage depends on what that account exposes.
+
+Only changed numeric values blink; local sound is sent before the display change. At most three tones, one second apart. Downward crossings of 5% and 1% have distinct gentle warning tones. Sound defaults on, but browser/OS restrictions can require a first gesture. Official incident checks are separate from X alerts and personal usage.
+
+Use standard/dark themes, language, volume, opacity, service ordering/hiding, fullscreen or a floating view. Hidden services continue acquisition/history. Always-on-top uses supported Document Picture-in-Picture after a click; native window chrome, sizing limits and OS transparency belong to the browser/OS. Floating incident details list only affected services, while usage cards remain available. History stores up to 10,000 changed values per window locally.
+
+## Tasks and work notes
+
+**Task details** opens a tall separate window titled `LLMs Monitor -Task- ChatGPT` (or Claude/Gemini). Compact bars show that provider’s saved usage and incident without refreshing quotas or modifying the main monitor. Search/filter the list and collapse pins, notes or the tree; all sections start expanded.
+
+Observed states appear before every item. **Generating** means a visible stop control was observed; **Response idle** is not completion. Closed ordinary chats or unrecognized controls stay Unknown. Open-tab evidence expires after 15 seconds; exact Claude Code list evidence and shared Codex evidence after 90 seconds. Waiting cannot be inferred into finished work.
+
+Pinned projects/chats are prioritized when detected. Rendered-list coverage and rejected/limited counts are displayed; **all account pins are not guaranteed**. A pinned project does not pin every child chat. Browser ChatGPT and desktop Codex are different sources. Optional [Codex helper v1.30.0](dist/LLMs-Monitor-Codex-Helper-v1.30.0.zip), [installation guide](native/README.md), provides this computer’s Codex metadata/local pins; it is initially disabled. Runtime stays Unknown unless an existing shared server supplies evidence.
+
+To remember a thread:
+
+1. Click **Register work note** on a supported official conversation, or **Work notes / handoff** on a task item.
+2. Choose a workspace/account label. The selected title and validated conversation link are included automatically.
+3. Write purpose, current situation, next actions, waiting items, cautions and a checklist; click **Save notes**.
+4. Saved titles reopen the conversation; **Edit** is at the right edge. Heading counts follow the selected provider/workspace.
+5. **Copy handoff** and paste it into the next chat yourself, or export/import JSON for a deliberate transfer. This is local storage, not automatic cross-chat or cloud sharing. Export a backup before clearing browser/site data; notes differ between site origins/browser profiles.
+
+Automatic lists are memory-only and exclude bodies/drafts/credentials. Explicitly saved notes remain even when the latest sidebar omits that chat. Clear/Demo/import pauses automatic task reading. Manual note state is separate from observed response state. Concurrent edits/import conflicts are rejected rather than silently overwritten.
+
+## Release and build
+
+Full release build: `node --test tests/*.test.cjs tests/*.test.mjs`, then `python3 build.py --package --codex-helper`. This generates the app, extension, optional helper and current Markdown manuals in `dist/docs/`; no PDF manual exists in this repository. `python3 build.py` alone preserves package/manual artifacts. Helper runtime stays 1.30.0 because its code did not change. Package changes increment the middle version and reset the last digit; Web-only patches increment the last digit.
+
+Security and regression results are in [Security review](SECURITY_REVIEW.md); remaining store/live-account/X acceptance steps are in [Store submission](STORE_SUBMISSION.md). Current Site access stays owner-only. Formal public access and future `aimon.ntus.info` migration are separate release steps. Chrome/Edge desktop are the target; Safari, Firefox, native mobile, Windows Codex helper and complete account inventories are not claimed supported.
 
 ---
 
-## Task trial v1.26.0: separate task windows
-
-Each visible ChatGPT, Claude or Gemini card now has **Task details**, opening a separate tall, resizable window (or a new tab if popups are blocked). Search projects/chats, filter reported states, expand the tree, and copy it as text. Language and theme are inherited when opening; controls in the task window affect only that window.
-
-With extension **1.26.0**, the separate page acquires a partial list of visible sidebar titles and links from fresh inactive provider home tabs, on opening and every minute while visible. An independent observer checks already-open conversation controls every five seconds for generating/response-idle states; closed chats stay unknown. It never reads messages or infers completion. Update the extension in place and, if needed, reload official chat tabs after saving drafts. Desktop Codex tasks still require a manual JSON export. JSON import and the labelled synthetic demo remain available; import, Demo and Clear pause automatic acquisition. Lists stay in memory, without upload or persistence. See [the task-view contract and limits](TASK_DETAILS.md#en).
-
-Quota acquisition and saved history are independent from the task adapter. Floating incident details omit healthy providers while incidents exist; AI feed disclosure has a separate expand control. The X feed needs server configuration and is not claimed operational.
-
-v1.27.0 adds Claude Code sidebar input-needed/idle/unread observations without opening individual conversations. Refresh is once a minute and observations expire after 90 seconds; unread never means completed. Update the installed extension in place.
-
 <a id="ja"></a>
 
-## タスク試作 v1.26.0：独立したタスク画面
-
-各ChatGPT・Claude・Geminiカードの **［タスク詳細］** から、縦長でサイズ変更可能な別窓を開きます。小窓がブロックされた場合は別タブになります。プロジェクト・チャットの検索、状態の絞り込み、ツリー開閉、テキストコピーに対応します。起動時の言語・テーマを引き継ぎ、別窓内の切替はその窓だけに適用します。
-
-拡張機能 **1.26.0** で、公式ホームを新しい非アクティブなタブで開き、表示済みサイドバーの名称とリンクを起動時・表示中の約1分ごとに自動取得します。一覧は部分的です。独立した観測処理が開いている会話の操作ボタンを約5秒ごとに確認し、応答生成中／応答待機を補足します。閉じた会話は未確認のまま、本文取得や完了の推定は行いません。拡張を上書き更新後、必要なら入力を保存して公式会話タブを再読込してください。デスクトップCodexのタスクは引き続き手動JSONが必要です。JSON読込と架空サンプルも利用でき、読込・サンプル・消去で自動取得を停止します。一覧はメモリー内だけで扱い、送信・永続保存しません。[詳細仕様と制約](TASK_DETAILS.md#ja)を参照してください。
-
-残量取得・保存履歴とタスク処理は独立しています。障害中の小窓詳細は該当サービスだけを表示し、AI速報は別に開閉します。X速報はサーバー設定が必要で、稼働済みとは表示しません。
-
-## 独自ドメインへの接続
-
-**1.23.0** で [llmsmonitor.ntus.info](https://llmsmonitor.ntus.info/) を接続許可に追加し、旧URLも継続利用できます。既存の拡張機能を同じ読込元のまま更新し、Web画面を再読込して、同じ拡張機能IDを新ドメインで一度登録してください。ブラウザーのlocalStorageはURLのoriginごとに分かれますが、拡張機能内の履歴・設定は保持されます。更新のためにアンインストールしないでください。ストア版は審査・公開された更新が必要です。β検証用ZIPも配布します。
 # 日本語 — LLMs モニター
-
-**ChatGPT/Claude/Geminiのトークン利用残量をリアルタイム表示**
-
-[![LLMs モニター — 日本語A4横製品紹介](assets/promotional/llms-monitor-a4-landscape-flyer-v1.jpg)](assets/promotional/llms-monitor-a4-landscape-flyer-v1.jpg?raw=1)
-
-[日本語版チラシを原寸表示](assets/promotional/llms-monitor-a4-landscape-flyer-v1.jpg?raw=1) · [日本語版JPEGをダウンロード](assets/promotional/llms-monitor-a4-landscape-flyer-v1.jpg?raw=1)
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
-## 1.27.0 β
+[![LLMs モニター — 日本語製品紹介](assets/promotional/llms-monitor-a4-landscape-flyer-v1.jpg)](assets/promotional/llms-monitor-a4-landscape-flyer-v1.jpg?raw=1)
 
-API請求読取で起きた循環待ちを修正し、期限切れの古い残量を現在値として表示しないようにしました。独立したタスク一覧の自動取得を追加し、旧URLと履歴を維持します。
+[日本語チラシを拡大](assets/promotional/llms-monitor-a4-landscape-flyer-v1.jpg?raw=1)（以前の画面紹介。現行の説明は以下）
 
-診断ログを変化履歴とは別に端末内へ保存し、必要なときだけJSONLで書き出せます。言語切替、利用状況・API連携画面の再表示、3社を同時に見せる小窓を改善しました。API連携はAPIクレジット欄から開きます。
+**AIの残量も、作業の続きも。** 正式リリース準備版 **v1.31.0**。
 
+① **各種LLMの利用残量をリアルタイム表示！** リセット時刻、公式障害情報、数値変化も確認。
 
-診断ログは端末内に保存し、自動送信しません。小窓は3社を表示し、独自のタイトル行やサイズメニューは追加しません。
+② **タスク一覧とスレッドごとの作業メモで、続きの作業を忘れない！** ピン留め優先、観測できた状態、リンク付き備忘録・チェックリストを別窓で表示。
 
+[モニター](https://llmsmonitor.ntus.info/) · [製品紹介](https://llmsmonitor.ntus.info/product.html) · [拡張機能ZIP](dist/LLMs-Monitor-v1.31.0.zip) · [タスク・作業メモ取説](TASK_DETAILS.md#ja) · [詳細仕様](SPECIFICATION.md#ja) · [プライバシー](PRIVACY.md#ja)
 
-Claudeの週間0%も公式画面で確認します。使用率1%は残量99%として扱い、確認前に前回値や履歴を上書きしません。
+**※Tiboリセット通知は現在の静的サイトでは未稼働です。** Tibo氏（`@thsottiaux`、OpenAIスタッフ）・各社公式Xの利用枠／リセット投稿を検知する処理はありますが、別サーバー・X認証Secret・キャッシュ・1分cronが必要です。模擬データでの成功を実投稿の通知成功とは扱いません。[設定と実投稿検証](server/README.md#ja)を参照。告知は個人の残量がリセット済みである証明ではありません。Nerf Benchはリンクのみです。
 
+## 導入・更新
 
-Claudeの未確認0%を誤って確定表示しないよう修正し、公式画面を再確認します。フローティングの変化履歴は初期状態で閉じ、縦方向のCSS制限を解除しました。
+1. 同じChrome／Edgeプロファイルで公式LLMサイトへログイン。
+2. ストア審査完了前はZIPを展開し、拡張機能管理画面の［パッケージ化されていない拡張機能を読み込む］で導入。デベロッパーモード不要の配布は別途ストアの承認・公開が必要です。
+3. 拡張機能を開くか、Webモニターに32文字の拡張IDを一度登録。旧URLで登録済みでも新ドメインでは接続が必要です。
+4. ブラウザー稼働中は残量・公式障害を約1分ごとに確認。省電力・スリープ・公式側の集計で遅延する場合があります。
+5. 更新は**同じフォルダー・同じ拡張IDのまま上書き**し、拡張機能とモニターを再読込。更新時にアンインストールしないでください。既存履歴・設定を保持します。公式チャットの新ボタンを有効にする再読込は入力を保存してから手動で行います。
 
-ChatGPTのリセット権期限がAPIにない場合、公式使用状況タブの読み取りを自動復旧します。既存タブにスクリプトがなければ再読込し、タブがない場合は一時的に非アクティブな公式タブを開いて取得後に閉じます。各種AIツールはおすすめ9件＋10番目のNerf Benchに整理しました。
+## 残量の見方
 
-## 1.17.1 β
+現在枠・週間枠の円とバー、リセット時刻、十分な履歴がある場合の推定セッション数を表示。未取得は—、失敗時は前回値、期限切れは再取得待ち。実際に確認された上限到達だけを0%とします。ChatGPTのWork／Codex枠は通常Chatとは別枠。Claudeの暫定API 0%は公式画面と照合し、プラン名や期限を推測しません。
 
-「役立つAIツール」を「各種AIツール」に改め、「各種LLM」と同じ幅連動のカード配置にしました。カードの余白と行間を詰めました。全画面表示ではツール欄を隠し、残量・履歴の表示領域を優先します。
+クレジット、Claudeクラウドセッションクレジット、リセット権、任意のAPI残高は区別します。Claude APIのプロモーションクレジットは別行。リンクは公式設定を開き、購入・権利行使・契約変更は自動実行しません。API連携は初期無効で、拡張機能内のクリックによる任意権限許可後、開いている請求画面を読み取ります。
 
-## 1.17.0 β
+変化した数値だけ点滅し、音を送出してから表示変更します。最大3音・1秒間隔、残量5%以下／1%以下への下降時は別の穏やかな警告音。通知音は初期ONですが、ブラウザー・OSによって初回操作が必要です。公式障害監視、X速報、個人残量は独立しています。
 
-ChatGPTの使用状況画面を開いたまま拡張機能を更新したときは、該当タブを一度再読込してリセット権期限の原文を取り直します。フローティング画面の点滅中も主数値の大きさを維持し、各種LLMの前に便利なAIツール11件のリンク集を追加しました。Nerf Benchは11番目のリンクのみです。
+標準／ダーク、日英、音量、透明度、表示サービス・順序、全画面、小窓に対応。非表示サービスも取得・履歴保存を継続。最前面は対応ブラウザーのDocument PiPでクリック後に起動し、外枠のURL表示・サイズ限界・OS透過はブラウザー／OS仕様です。小窓の障害詳細は障害中のサービスだけに絞り、残量カードは維持。変化履歴は枠ごと最大10,000件を端末内に保存します。
 
-## 1.16.0 β
+## タスクと作業メモ
 
-ChatGPTのリセット権は、公式画面で確認できた種別と期限の原文を利用可能件数の下に表示します。Claudeの公式画面で残量があるのにAPIだけが0%を返した場合は、矛盾する0%を表示・通知しません。残量5%以下と1%以下には段階別の穏やかな警告音を用意しました。
+［タスク詳細］は縦長の独立画面 `LLMs Monitor -Task- Claude` などを開きます。対象LLMの保存済み残量バーと障害をコンパクトに表示し、主画面の取得・履歴・音声は変更しません。ピン留め／作業メモ／タスク一覧全体を折りたたみ可能、初期は全展開です。
 
-Tibo氏と各社公式Xの1分周期速報を維持します。X認証情報は拡張機能へ入れず、サーバー側Secretだけで扱います。実データ接続にはX Developer bearer token、サーバーキャッシュ、1分cronの設定が必要です。
+各項目の先頭に状態を表示。［応答生成中］は停止ボタンの観測、［応答待機］は完了ではありません。通常会話のタブを閉じると未確認。開いた会話の観測は15秒、Claude Code一覧・共有Codexの観測は90秒で失効します。
 
-## 1.9.0 β
+検出したピンを優先表示しますが、**アカウント全件は保証しません**。取得数・未対応・上限を表示。プロジェクトのピンは子の全会話のピンではありません。ブラウザーChatGPTとCodexは別経路。[任意ヘルパー](dist/LLMs-Monitor-Codex-Helper-v1.30.0.zip)と[導入説明](native/README.md#ja)で、この端末のCodex一覧・ローカルピンを取得できます。初期無効で、共有サーバーの根拠がなければ状態は未確認です。
 
-Claudeの週間枠とクラウドセッションクレジットへ現在セッション単位の区切りを追加し、クラウドセッションクレジット残額を小数点以下2桁に丸めました。残量変化時は通知音を開始してから赤色点滅を表示します。公式障害情報は引き続き1分ごとに確認します。
+**備忘録を作る手順**
 
-## 1.6.4 β
+1. 公式会話の［作業メモへ登録］、または一覧項目の［作業メモ・引継ぎ］を押す。
+2. 作業領域／アカウント名を選択。タイトルと対応する会話リンクが自動で入ります。
+3. 目的、現在の状況、次の作業、確認待ち、再開時の注意、チェックリストを書き、［メモを保存］。
+4. 保存済みのタイトルは元の会話を開き、右端の［編集］で再編集。見出し右側に対象サービス・作業領域の件数を表示。
+5. ［引継ぎ文をコピー］して次のチャットへ自分で貼り付けるか、JSONを書出し／読込み。自動共有・クラウド同期ではありません。ブラウザー／サイトURLごとの保存なので、消去前や移行時はバックアップを取ります。
 
-ChatGPT、Claude、Gemini の残量とリセット時刻を、ログイン中の公式セッションから約1分ごとに確認するブラウザー用モニターです。円とバーで現在枠・週間枠を見渡し、変化履歴を各枠最大10,000件まで端末内に保持します。日本語／英語、標準／ダーク、フルスクリーン、通常小窓、対応ブラウザーでの最前面表示に対応します。
+自動一覧は本文・入力・認証情報を取得せずメモリー内のみ。明示保存したメモは、最新一覧から会話が消えても残ります。消去／サンプル／JSON読込は自動取得を停止。メモの手動作業状態と観測した応答状態は別扱いです。同時編集・重複読込は黙って上書きせず拒否します。
 
-v1.6.4では履歴読込結果と通知音説明を左右ボタン付きのステータスログへ集約し、履歴読込メッセージの再計算を最大1分に1回へ抑えました。通常小窓は明示的なボタン操作時だけ開き、作成時の固定幅・固定高を廃止してブラウザーとOSが許す範囲で自由にリサイズできます。
+## ビルド・正式公開
 
-3サービスの表示・非表示と順序を保存し、表示枚数に合わせてレイアウトを調整します。履歴から週間枠が現在セッションの何枠分に相当するかを推定し、期限が近いリセット権と利用枠を段階的に警告します。分析欄は高さを約半分に抑え、利用ペースの提案、公式ソース付きTips／NEWSを切り替えて表示します。通知音量のスライダー操作中も画面が動かないよう修正し、アプリアイコンを刷新しました。
+`node --test tests/*.test.cjs tests/*.test.mjs` 後に `python3 build.py --package --codex-helper` で、本体・拡張機能・ヘルパー・現行Markdown取説（`dist/docs/`）を生成。このリポジトリにPDF取説はありません。通常の `python3 build.py` はZIP・取説成果物を維持。ヘルパー本体はコード未変更の1.30.0を継続します。
 
-[使い方](#使い方) · [基本仕様](#基本仕様) · [改訂履歴](CHANGELOG.md#ja) · [詳しい仕様と制限](SPECIFICATION.md) · [デグレ防止手順](AGENTS.md) · [プライバシー](PRIVACY.md) · [更新情報をXで見る](https://x.com/ntus)
-
-## 基本仕様
-
-- **構成:** OSに依存しない静的Webモニターと、デスクトップ版Chrome／Edge用Manifest V3拡張機能。ログイン済みの公式セッションから拡張機能がデータを取得します。
-- **対象:** ChatGPT、Claude、Gemini。表示・非表示と順序を設定でき、提供元から確認できた現在枠、週間枠、契約プラン、クレジット、リセット時刻、変化履歴を表示します。
-- **更新:** 残量は約1分ごと、各社の公式障害情報は約1分ごと。障害があれば画面内警告と設定に応じた通知音で知らせ、ⓘから正常時も確認できます。
-- **保存:** 設定と各枠最大10,000件の履歴はブラウザー内に保存。パスワード入力は求めません。
-- **画面:** 日英、標準／ダーク、フルスクリーン、通常小窓、対応ブラウザーの最前面表示、半透明度と音量調整。
-- **制約:** 提供元の画面やAPI変更により未取得になる場合があります。OS全体での窓透過・常時最前面はブラウザーの対応範囲に限られます。
-
-### 使い方
-
-1. 同じChromeまたはEdgeプロファイルで [ChatGPT](https://chatgpt.com/)、[Claude](https://claude.ai/)、[Gemini](https://gemini.google.com/) に必要な分だけログインします。パスワードは公式サイトで入力します。
-2. ストア公開前は、このリポジトリで `python3 build.py --package` を実行し、`dist/LLMs-Monitor-v1.30.0.zip` を展開して、ブラウザーの拡張機能管理画面から開発用として読み込みます。一般ユーザーがデベロッパーモードなしで導入するには、Chrome Web Store / Edge Add-ons の審査・公開が必要です。
-3. 拡張機能の画面、または [公開モニター](https://llmsmonitor.ntus.info/) を開きます。公開モニターでは拡張機能IDを一度登録してください。各サービスの使用量タブを開いたままにする必要はありません。
-4. 「表示サービス」からチェックと上下ボタンで表示数・順序を変更します。非表示中も取得と履歴保存は続きます。音、テーマ、言語、透明度、フルスクリーンも画面上で変更できます。
-5. 残量とリセット時刻は公式サービスが返す範囲で表示されます。リセット権は利用可能なら公式利用量ページへ移動できますが、アプリから自動行使しません。出典のあるTips／NEWSはリンクで原文を確認できます。
-
-### β版の注意点
-
-Geminiなどの契約プランは公式アカウント画面から取得できない場合があります。その場合は未取得と表示し、推測した有料プラン名は付けません。週間の「現在セッション何枠分」は十分な同期履歴があるときだけ推定表示します。ブラウザー外のOS全体での常時最前面・窓全体の透過はWeb拡張機能の機能ではありません。対応ブラウザーのDocument Picture-in-Pictureを使用します。iOS／Androidのネイティブ版は今後の設計対象で、今回のβには含みません。
-
-OSに依存しない静的Webアプリと、Chrome / Edgeデスクトップ用Manifest V3拡張機能です。Safari、Firefox、モバイルブラウザへの対応は未検証です。
-
-## 使い方
-
-1. Chrome Web StoreまたはMicrosoft Edge Add-onsで審査公開された拡張機能を追加します。ストア公開前のZIPは審査提出・動作確認用です。
-2. ChatGPT・Claude・Geminiの公式サイトへ普段のブラウザプロファイルでログインします。モニタにパスワードを入力する画面はありません。
-3. ツールバーの「LLMs モニター」を開きます。以後は60秒ごとにバックグラウンド取得し、専用タブを開いたままにする必要はありません。
-4. 各AIサイト上の半透明パネル、必要時にボタンで開くフローティング小窓、またはメインモニタで残量を確認します。
-5. 常に手前へ置く場合はメイン画面の「最前面に固定」を押します。ブラウザの制約によりユーザー操作が必要で、元のモニター画面を閉じると終了します。
-
-ホストされたWebアプリは、拡張機能の詳細画面にある32文字のIDを入力すると接続できます。拡張機能に内蔵したモニターはID入力不要・ネット接続なしでも起動できます。取得には各サービスへの通信が必要です。
-
-## 表示と制約
-
-- Claude: 現在のセッション・週間の使用済み率から残量を算出。製品別内訳や追加クレジットは混ぜません。
-- Gemini: 公式使用量ページの現在・週間の使用率から残量を算出。
-- ChatGPT: 現時点で確認した公式使用量ページは通常Chatを含みません。表示できるのは **Work / Codex等の共通利用枠** です。「通常のChat：取得不可」と明記します。Chatの正確な残量は未実装・取得未確認です。
-- 数値がない場合は「—」。更新中・取得失敗時は前回取得値を保持し、ログアウト時は数値を消去。125秒以上経過すると「更新待ち」を表示します。
-- 常駐パネルは対象3サイトのページ内で半透明表示されます。背景不透明度は15〜100%です。通常小窓およびPiPのウィンドウ自体は、OSデスクトップを透過するネイティブオーバーレイではありません。
-- 通常小窓はボタン操作時だけ開き、ブラウザーとOSが許す範囲で縦横にリサイズできます。対応Chrome/Edgeでは、ユーザーが「最前面に固定」を押すとDocument Picture-in-Pictureへ切り替えます。
-- 複数アカウントの合算はしません。各公式サービスで現在選択されているアカウントが対象です。アカウント切り替え後は「今すぐ更新」を押してください。
-- 公式DOM構造を読むため、サービス側の変更で修正が必要になることがあります。
-
-## データ・権限
-
-パスワードは読み取りません。ChatGPTの使用量取得では、公式ページが現在のログインに使っているアクセストークンを取得処理中のメモリ内だけで利用し、保存・ログ出力・第三者送信をしません。ClaudeとGeminiも現在の公式ログインセッションを使います。取得対象は契約名・利用枠・残率・リセット時刻・関連クレジットです。使用量・履歴・表示設定はブラウザのlocalストレージだけに保存し、運営サーバーへアップロードしません。送信・購入操作は自動実行しません。
-
-拡張機能に対する3サイトの閲覧権限は、ログイン中の公式セッションで使用量を取得するために必要です。ブラウザ再起動時は前回値をすぐ表示し、その後バックグラウンド更新します。
-
-## 開発
-
-- `python3 -m http.server 4173 --directory dist` でローカルWeb版の表示を確認できます。本番Manifestは安全のためlocalhostからの外部接続を許可しないので、実データ接続は拡張機能内蔵画面か公開HTTPS版で検証します。
-- `node --test tests/*.test.cjs` で残量パーサーを検証。
-- `python3 build.py` でWeb成果物を更新し、ストア配布ZIPを意図的に更新する場合だけ `python3 build.py --package` を使う。
-- `dist/` が静的Web配布物。`extension/` が読み込み可能な拡張機能。
-
-実装契約、取得経路、データモデル、手動検証項目は [SPECIFICATION.md](SPECIFICATION.md) を正本とし、機械可読の受入条件は [`spec/requirements.json`](spec/requirements.json) を参照してください。公式サービスの非公開内部構造は変更され得るため、拡張機能の実アカウントでの通し動作はリリースごとに確認します。
-
-APIクレジット残高も追加しました。上部の「API連携」で各社へのアクセスを個別に許可し、公式請求画面を開いておくと表示値を読み取ります。月額プランの残量とは別表示です。OpenAIの実画面を確認済み、Claude／Geminiの請求アカウント実測は未検証です。外窓のタイトルと言語を共通化し、↔メニューで縦横のサイズを個別に調整できます。
-
-v1.27.0はClaude Codeの一覧から入力待ち／アイドル／未読の返答を取得します。会話タブ不要、1分更新、90秒失効。未読を完了とは扱いません。拡張機能の上書き更新が必要です。
-
-## v1.28.0
-
-EN: Pinned items, verified project/group names and explicitly saved thread work notes/checklists/handoff in the independent task screen. Sidebar coverage remains partial. Claude API promotional credits have a separate row.
-
-JP: 独立タスク画面へピン留め優先・確認済みプロジェクト／グループ名・スレッド別作業メモ・チェックリスト・引継ぎを追加。一覧の全件取得は保証しません。Claude APIのプロモーションクレジットを別行に表示します。
-
-## v1.29.0
-
-EN: Official-chat work-note registration opens a separate tall editor. Pins, notes and task tree collapse independently (expanded by default). Pin scanning includes Claude taskboards and reports its acquisition counts and limits. Update the extension in place; quota/history/audio are unchanged. Account-wide pin coverage remains unverified.
-
-JP: 公式チャットの［作業メモへ登録］から縦長の別画面を開けます。ピン・作業メモ・一覧全体を折りたたみ可能（初期展開）。Claudeタスクボードを含めピンを走査し、取得件数と制限を表示。拡張は上書き更新し、残量／履歴／音は維持。全アカウントの全件保証は未確認です。
-
-
-## v1.30.0 — Codex取得 / Codex acquisition
-
-ChatGPTタスク詳細の独立したCodex欄へ、この端末のタスクとピンを取得します。初期は無効。[任意連携ヘルパー](dist/LLMs-Monitor-Codex-Helper-v1.30.0.zip)と[導入説明](native/README.md)を用意。拡張機能を上書き更新し、Codexを接続→ヘルパー導入→任意権限許可→一覧更新。確認済み: 16タスク、ローカルピン7/7。共有サーバーがない場合は一覧だけ取得し状態は未確認。本文・認証・実行API・残量／履歴／音への混入なし。未変更マニュアルは再生成しません。
-
-Optional isolated local Codex tasks, pinned first. Install the helper and enable the optional permission in Connect Codex. macOS/Linux installer; Windows not implemented. Local pin-ID completeness is audited, not all hosts/accounts. Shared runtime only; separate metadata leaves state Unknown. No messages/previews forwarded, execution or main-monitor state changes.
+[セキュリティ精査](SECURITY_REVIEW.md)・[ストア提出手順](STORE_SUBMISSION.md)を参照。現行Sitesの所有者限定公開は維持し、一般公開・ストア承認・実機確認・将来のaimon.ntus.info移行は別の正式公開作業です。Safari／Firefox／ネイティブモバイル／Windows用Codexヘルパー／全アカウント一覧は対応を保証しません。
