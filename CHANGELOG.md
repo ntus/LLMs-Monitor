@@ -1,3 +1,9 @@
+# 1.34.0 — 2026-10-12
+
+- Distinguish granted native permission with an absent Chrome API from helper installation failure.
+- Add an explicit extension restart and recovery instructions; no automatic restart or required permission expansion.
+- Setup download now points to existing helper 1.30.1. Helper ZIPs and unchanged manuals preserved; installed-browser recovery remains unverified.
+
 ## 1.31.0 — 2026-10-11
 
 ## v1.32.0 — 2026-10-12

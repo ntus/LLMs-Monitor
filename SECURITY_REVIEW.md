@@ -178,3 +178,9 @@ Offscreen uses only runtime; SOUND-OFFSCREEN-001 returns a boolean after exact o
 ## Helper v1.30.1 / Web v1.33.1 (2026-10-12)
 
 Shared socket existence no longer consumes the whole host deadline: all shared metadata operations have a four-second attempt budget, followed by process cleanup and independent stdio within the existing total21seconds. Returned fallback state remains Unknown; no permission/origin/route/method/storage changes. Diagnose only aggregate counts/status, never private title/ID/URL/auth payloads. Extension source/package1.33.0, quota/history/audio/CSS remain unchanged. New Web link targets only the same approved HTTPS companion helper ZIP. Installed Chrome native acceptance remains user verification after reinstall; live read-only host check is distinguished from browser messaging. Future macOS/Windows/iOS/Android app/shared-data requirements do not authorize automatic private uploads in this release.
+
+## v1.34.0 native API recovery
+
+No permission, CSP, host or native adapter expansion. Setup exposes only enabled/permission/API-availability booleans and an explicit runtime.reload button. Missing API is checked before native launch/cooldown; no settings/history/notes writes or automatic restart. Restart briefly suspends the extension and clears session-memory note handoffs; persisted data remains. Helper ZIPs unchanged. Real Chrome reports granted permission but undefined API; recovery success remains a live acceptance gate.
+
+Verification: 277 CJS/MJS regression tests pass (including the existing Python suite). Fifteen main acquisition/state/history/audio/settings/CSS modules are byte-identical to the previous release; shared.js differs only in APP_VERSION. New ZIP CRC and exact source entries checked; both helper ZIPs and unnamed manuals retain hashes. Installed Chrome/Edge recovery remains unverified.

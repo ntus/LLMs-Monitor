@@ -4,7 +4,7 @@ Canonical guide / 正本: https://github.com/ntus/LLMs-Monitor/blob/main/native/
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja) · [macOS](#macos-ja)
 
-Guide revised **2026-10-12** for Web v1.33.1 / extension v1.33.0. Helper runtime / download: **v1.30.1**. This release rebuilds only the Web app, helper ZIP and changed guides; the extension ZIP remains unchanged. Helper 1.30.1 fixes an unresponsive shared-connection timeout that blocked metadata fallback.
+Guide revised **2026-10-12** for Web / extension **v1.34.0**. Helper runtime / download remains **v1.30.1**; this release preserves its ZIP and updates the hosted guide separately.
 
 <a id="en"></a>
 
@@ -242,3 +242,9 @@ Windows：現行インストーラーはWindowsを受け付けません。Window
 EN: Download the v1.30.1 ZIP linked above or in LLMs Monitor’s ChatGPT task window, extract it and run its installer with the ID from the same browser’s **Connect Codex** page. The unchanged extension v1.33.0 setup still offers helper v1.30.0; use the new task-window/guide link for this update. Save drafts before closing applications. No main extension reinstall is needed. Shared connection attempts are limited to four seconds so the independent metadata path can still read the list within the total 21-second acquisition budget. Ready metadata may still have Unknown runtime. Installation is one-time, not required each refresh.
 
 JP: 上記リンクまたは **LLMs Monitor → ChatGPTカードの［タスク詳細］→［Codex — デスクトップ］** の新しいリンクからv1.30.1 ZIPを取得・展開し、同じブラウザーの［Codexを接続］画面にあるIDでインストーラーを実行します。変更していない拡張機能v1.33.0の接続設定画面は旧v1.30.0を案内するため、今回は新しいタスク画面／取説のリンクを使ってください。拡張機能の入れ直しは不要。共有接続の待機は最大4秒で切り上げ、取得全体21秒の中で代替一覧を読む時間を確保します。一覧を取得しても稼働状態は未確認の場合があります。導入は初回・更新時だけで、毎回の更新操作にインストールは不要です。
+
+## Granted permission but unavailable API / 権限許可済みなのに接続APIが利用できない
+
+EN: In extension 1.34.0, open **Connect Codex**. If it reports that the native API is unavailable despite granted permission, use **Restart extension**. This explicit action briefly stops all monitor updates and may close setup pages; saved settings/history/work notes remain, but pending session-memory note registrations are cleared. Reopen **Connect Codex** from the task window and click **Check connection**. If unresolved, save drafts, fully quit Chrome / Edge and reopen it. Recovery has not yet passed installed-browser acceptance; a terminal helper check alone does not prove browser connectivity. Do not reinstall the helper solely because the API is missing.
+
+JP: 拡張v1.34.0の［Codexを接続］で、権限許可済みなのにAPIが利用できないと表示されたら、［拡張機能を再起動］を押します。明示操作で全モニター更新が一時停止し、設定画面は閉じることがあります。保存済み設定・履歴・作業メモは保持しますが、未完了のsessionメモリー内メモ登録は失効します。タスク窓の［Codexを接続］から開き直し、［接続を確認］を押してください。直らない場合は入力を保存し、Chrome／Edgeを完全終了して再度開きます。復旧成功は実機で未確認で、ターミナルの成功だけではブラウザー接続成功としません。API未提供だけを理由にヘルパーを再導入する必要はありません。v1.34.0の接続画面は既存ヘルパー1.30.1へのリンクを案内します。

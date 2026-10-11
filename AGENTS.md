@@ -181,3 +181,5 @@ TASK-CODEX-FALLBACK-001: Shared connection discovery is not proof of a responsiv
 JP: 共有socketがあるだけで接続成功としない。共有初期化・ピン・一覧すべてを4秒以内に区切り、失敗プロセスを終了して全体21秒の残りを一覧代替経路へ確保。代替の状態は未確認。Web／ヘルパーのみ更新時に拡張ZIPを再生成しない。
 
 Future native-app scope: macOS, Windows, iOS and Android are user-required targets. Treat this as a future acceptance requirement, not current support. Cross-device Codex/tasks/notes need a separately reviewed explicit consent/pairing/retention design; no automatic private uploads or rewrite of the stable main monitor as part of helper repair.
+
+TASK-CODEX-API-001: Permission=true does not prove runtime.connectNative exists. Detect native-api-unavailable before cooldown/launch, expose only availability booleans, and use explicit own-setup click for runtime.reload. Never auto-restart the extension/browser, move nativeMessaging into required permissions, or log private native errors/payloads. Restart interrupts monitoring and clears session note handoffs; saved storage is retained. Do not claim verified browser recovery from a mock or terminal host test.

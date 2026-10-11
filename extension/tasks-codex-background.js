@@ -13,7 +13,7 @@
  }
  const stamp=v=>{const n=typeof v==='string'?Date.parse(v):NaN;return Number.isFinite(n)&&n>0?new Date(n).toISOString():null};
  function normalize(value){
-  if(value?.status!=='ready')return {status:['codex-not-found','unavailable'].includes(value?.status)?value.status:'unavailable'};
+  if(value?.status!=='ready')return {status:['codex-not-found','unavailable','native-api-unavailable'].includes(value?.status)?value.status:'unavailable'};
   if(value.schemaVersion!==1||value.scope!=='local-desktop'||!['shared','metadata-only'].includes(value.runtime)||!stamp(value.checkedAt)||!Array.isArray(value.tasks)||value.tasks.length>500)return {status:'unavailable'};
   const checked=Date.parse(value.checkedAt);if(checked>Date.now()+5000||Date.now()-checked>90000)return {status:'unavailable'};
   const seen=new Set(),tasks=[];
@@ -25,9 +25,10 @@
   const audit=value.pinAudit||{},observed=Number.isInteger(audit.observed)&&audit.observed>=0&&audit.observed<=500?audit.observed:null,resolved=tasks.filter(t=>t.pinned).length;
   return {status:'ready',schemaVersion:1,checkedAt:stamp(value.checkedAt),scope:'local-desktop',runtime:value.runtime,limited:value.limited===true,pinAudit:{observed,resolved,complete:audit.complete===true&&observed!==null&&observed===resolved&&audit.resolved===resolved,source:'desktop-compatibility'},tasks};
  }
- async function config(){return {enabled:(await chrome.storage.local.get(KEY))[KEY]===true,permission:await chrome.permissions.contains({permissions:['nativeMessaging']})};}
+ async function config(){return {enabled:(await chrome.storage.local.get(KEY))[KEY]===true,permission:await chrome.permissions.contains({permissions:['nativeMessaging']}),apiAvailable:typeof chrome.runtime.connectNative==='function'};}
  async function read(){
   const generation=epoch,c=await config();if(generation!==epoch||!c.enabled||!c.permission)return {status:'disabled'};
+  if(!c.apiAvailable)return {status:'native-api-unavailable'};
   if(pending)return pending;
   if(lastRead&&Date.now()-lastRead<55000)return {status:'cooldown'};
   lastRead=Date.now();

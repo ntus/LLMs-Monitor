@@ -3,7 +3,7 @@ const M=require('../web/tasks-model.js'),C=require('../web/tasks-codex.js');
 const id=n=>'00000000-0000-0000-0000-'+String(n).padStart(12,'0');
 const reply=()=>{const time=new Date().toISOString();return {status:'ready',schemaVersion:1,scope:'local-desktop',runtime:'shared',checkedAt:time,pinAudit:{observed:1,resolved:1,complete:true},tasks:[{id:id(1),title:'Synthetic task',url:'codex://threads/'+id(1),status:'running',observedAt:time,pinned:true,updatedAt:time}]}};
 function setup(){let enabled=false,permission=false,ports=[],listeners={},lastNow=Date.now();const stored={data:{claude:{remaining:98}},history:{original:true}};const chrome={runtime:{id:'a'.repeat(32),getURL:name=>'chrome-extension://'+'a'.repeat(32)+'/'+name,connectNative:host=>{assert.equal(host,'info.ntus.llmsmonitor.codex');let callbacks={},port={onMessage:{addListener:f=>callbacks.message=f},onDisconnect:{addListener:f=>callbacks.disconnect=f},postMessage:m=>{assert.equal(m.type,'CODEX_TASKS_READ');assert.equal(Object.keys(m).length,1)},disconnect:()=>{},reply:r=>callbacks.message(r)};ports.push(port);return port}},permissions:{contains:async()=>permission},storage:{local:{get:async key=>({[key]:enabled}),set:async value=>{assert.deepEqual(Object.keys(value),['llms-codex-enabled-v1']);enabled=value['llms-codex-enabled-v1']}}}};
- const c=vm.createContext({chrome,URL,setTimeout,clearTimeout,Date:class extends Date{static now(){return lastNow}},GlanceWindows:{createNormalTab:async()=>{}}});vm.runInContext(fs.readFileSync('extension/tasks-codex-background.js','utf8'),c);return {api:c.LLMTaskCodexBackground,ports,stored,enable:()=>{enabled=permission=true},tick:()=>lastNow+=56000,disablePermission:()=>permission=false};}
+ const c=vm.createContext({chrome,URL,setTimeout,clearTimeout,Date:class extends Date{static now(){return lastNow}},GlanceWindows:{createNormalTab:async()=>{}}});vm.runInContext(fs.readFileSync('extension/tasks-codex-background.js','utf8'),c);return {api:c.LLMTaskCodexBackground,ports,stored,chrome,enable:()=>{enabled=permission=true},tick:()=>lastNow+=56000,disablePermission:()=>permission=false};}
 const external=(url='https://llmsmonitor.ntus.info/tasks?service=chatgpt')=>({url,frameId:0});
 const internal=()=>({url:'chrome-extension://'+'a'.repeat(32)+'/codex-setup.html',frameId:0,id:'a'.repeat(32)});
 test('Codex runtime evidence, pin order and 90-second expiry are independent of browser snapshots',()=>{
@@ -46,4 +46,21 @@ test('real native RPC bypasses a blocked main refresh queue and unauthorized sen
  const send=(sender,m={type:'TASKS_CODEX_READ',service:'chatgpt'})=>new Promise(r=>external(m,sender,r));assert.equal((await send({...externalSender(),frameId:1})).status,'unavailable');assert.equal(launches,0);
  const before=structuredClone(stored),pending=send(externalSender());await new Promise(setImmediate);assert.equal(launches,1);port.reply(reply());assert.equal((await pending).status,'ready');assert.deepEqual(stored,before);
  function externalSender(){return {url:'https://llmsmonitor.ntus.info/tasks?service=chatgpt',frameId:0}}
+});
+
+test('granted permission with an absent native API reports recovery without launching, throttling or changing saved data',async()=>{
+ const x=setup();x.enable();const saved=x.chrome.runtime.connectNative,before=structuredClone(x.stored);delete x.chrome.runtime.connectNative;
+ const config=await x.api.handle({type:'CODEX_CONFIG_READ'},internal(),false);assert.equal(config.permission,true);assert.equal(config.enabled,true);assert.equal(config.apiAvailable,false);
+ assert.equal((await x.api.handle({type:'CODEX_CHECK'},internal(),false)).status,'native-api-unavailable');
+ assert.equal((await x.api.handle({type:'TASKS_CODEX_READ',service:'chatgpt'},external(),true)).status,'native-api-unavailable');assert.equal(x.ports.length,0);assert.deepEqual(x.stored,before);
+ x.chrome.runtime.connectNative=saved;const pending=x.api.handle({type:'CODEX_CHECK'},internal(),false);await new Promise(setImmediate);assert.equal(x.ports.length,1);x.ports[0].reply(reply());assert.equal((await pending).status,'ready');
+});
+test('setup distinguishes missing API and restarts only on an explicit button click without altering storage',async()=>{
+ const elements=Object.fromEntries(['description','step-one','step-two','extension-id','download','install-help','step-three','enable','disable','check','guide','limits','result','restart','restart-help'].map(id=>[id,{textContent:'',hidden:true}]));let reloads=0,status='native-api-unavailable';
+ const chrome={runtime:{id:'a'.repeat(32),reload(){reloads++},sendMessage:async m=>m.type==='CODEX_CONFIG_READ'?{enabled:true,permission:true,apiAvailable:false}:{status}},permissions:{request:async()=>true,remove:async()=>{}}};
+ const c=vm.createContext({chrome,navigator:{language:'ja'},document:{documentElement:{},getElementById:id=>elements[id]}});vm.runInContext(fs.readFileSync('extension/codex-setup.js','utf8'),c);await new Promise(setImmediate);
+ assert.equal(reloads,0);assert.equal(elements.restart.hidden,false);assert.match(elements.result.textContent,/接続API/);assert(!elements.result.textContent.includes('ヘルパー導入'));
+ await elements.check.onclick();assert.equal(elements.restart.hidden,false);assert.equal(elements.check.disabled,false);assert.equal(reloads,0);
+ status='unavailable';await elements.check.onclick();assert.equal(elements.restart.hidden,true);elements.restart.onclick();assert.equal(reloads,1);
+ const html=fs.readFileSync('extension/codex-setup.html','utf8');assert.match(html,/id="restart" type="button" hidden/);assert.match(html,/Helper-v1\.30\.1\.zip/);
 });

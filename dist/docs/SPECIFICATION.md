@@ -137,7 +137,7 @@ TASK-CODE-001 reads exact accessibility labels from rendered Claude Code sidebar
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.33.0
+対象製品版: 1.34.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -1540,3 +1540,9 @@ Build approval: app + Codex helper + changed guides only. Web1.33.1 / helper1.30
 User requires macOS, Windows, iOS and Android for the future native product. This repair does not implement native apps or claim mobile support. Candidate: shared HTML/CSS/JS UI packaged with Tauri and platform-specific acquisition connectors. Desktop app bundles metadata connector without requiring a separate Python installation; browser provider adapters may still require explicit browser integration or separate app sign-in. Phones cannot assume access to another computer’s Codex data. Mobile viewing of desktop snapshots requires an explicit authenticated device-pairing/sharing design, revocation, per-account isolation and freshness/online disclosure. Manual work-note sync needs separate consent/conflict handling. Do not enable remote sharing in this release. Existing Web main monitor must remain separate through any trial migration.
 
 Verification: 275 Node CJS/MJS tests pass, including 7 Python host cases (shared hangs at initialize/pin/list, responsive shared runtime, metadata privacy/protocol/install). Live fixed-host read returns ready, metadata-only, 18 tasks, local pins6/6 with no limit. Extension source and ZIP, old helperZIP, main quota/history/audio/CSS and unnamed manuals match pre-build SHA256. New helper has exactly four canonical files, valid CRC and executable installer; current task script cache URL advances to1331. Installed browser native messaging after new helper registration remains user acceptance, not inferred from the CLI result.
+
+## v1.34.0 Codex native API recovery — 2026-10-12
+
+TASK-CODEX-API-001: Live Chrome screenshot shows permission=true, enabled=true, connectNative=undefined. Installed helper 1.30.1 independently returns 18 tasks / 6 matched pins with valid native framing, but Chrome connection still fails. This release distinguishes missing native API from helper failure, checks availability before launching/throttling, and adds an explicit setup-page Restart extension action. No automatic restart or privilege expansion. Saved state remains; extension restart temporarily interrupts monitor updates and clears browser-session note handoffs under the existing two-minute contract. Reopen Connect Codex from the task window afterward; save drafts before a full browser restart if required. Recovery success on installed Chrome/Edge is unverified. Helper ZIP/runtime and unchanged manuals are preserved.
+
+Verification: 277 CJS/MJS regression tests pass (including the existing Python suite). Fifteen main acquisition/state/history/audio/settings/CSS modules are byte-identical to the previous release; shared.js differs only in APP_VERSION. New ZIP CRC and exact source entries checked; both helper ZIPs and unnamed manuals retain hashes. Installed Chrome/Edge recovery remains unverified.
