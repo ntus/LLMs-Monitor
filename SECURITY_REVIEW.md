@@ -117,3 +117,12 @@ JP: 新しい非アクティブ取得ホームだけ既知の一覧を展開・�
 公式会話に独立した［作業メモへ登録］ボタンを設け、クリックでタイトル・URL・事業者のみを縦長の別画面へ渡す。本文・入力値・認証情報を読まず、自動保存／送信もしない。最大20件・2分のメモリ内一度限りハンドルを厳密な送信元へ渡し、URLのqueryに会話タイトル／URLを載せない。メモ画面で作業領域を選択し明示保存。残量・履歴・音・小窓ライフサイクルとは独立。
 
 ピン留め・作業メモ・タスク一覧全体はそれぞれ開閉可能、初期は展開。定期更新・言語切替でも閉じた状態を保持し、全て展開／閉じるの対象にも含む。権限追加なし。v1.29.0として本体＋拡張機能のみビルド。既存公式タブは入力保存後に利用者が再読込して新ボタンを有効にする。
+
+
+## v1.30.0 — optional Codex native metadata
+
+TASK-CODEX-001 adds optional nativeMessaging, never a required grant. User click in the exact own extension setup page; provider content scripts cannot configure it. External requests require one of the existing exact HTTPS task origins, chatgpt service and top frame. Native host accepts only a fixed read request, binds to one installed extension ID, bounds length/time/count, and sends only initialize/thread/list/thread/read(includeTurns=false). CLI API previews/events are not used or forwarded. Local desktop pin IDs use a disclosed compatibility field; no auth/config fields leave the host. No network listener, admin installation, task execution, settings mutation or inference requests. Independent stdio does not claim live status; shared observations expire at 90 seconds. Automatic titles/links stay in task-window memory; only the boolean opt-in is stored. Existing quota/history/audio/floating logic and manuals are unchanged.
+
+JP: 任意権限を専用画面の直接クリックで許可。固定の読取要求と正規送信元を検証し、本文・preview・イベント・認証を渡さない。端末内ピンの互換形式を明示、別ホスト全件保証なし。21秒取得・24秒接続・500件上限、停止／消去時の応答破棄。Python 3ヘルパーはユーザー領域＋指定拡張IDのみ、Windows導入未対応。実Codexメタ情報取得は確認済みだがChrome/Edge導入後の権限・共有接続・アカウント比較は手動確認が必要。
+
+Verification v1.30.0: 237 tests pass, including native host protocol/projection/pagination/installer, adversarial senders, optional permission, late-result invalidation and actual RPC bypass of a stalled quota queue. Python has 5 embedded subtests. Real local Codex metadata: 16 tasks, pins 7/7, metadata-only. Browser native installation and shared-state observations remain unverified; no absolute no-regression/security guarantee is claimed.

@@ -12,5 +12,5 @@
    try{chrome.runtime.sendMessage(id,{type,service,...extra},result=>{const failed=chrome.runtime.lastError;finish(failed?{status:'unavailable'}:result?.error&&/未対応|unsupported/i.test(result.error)?{status:'unsupported'}:result?.error?{status:'unavailable'}:result||{status:'unavailable'})})}catch{finish({status:'unavailable'})}
   });
  }
- root.LLMTaskBridge={read:service=>request(service,'TASKS_READ',26000),states:service=>request(service,'TASKS_STATE',5000),note:(service,token)=>request(service,'TASK_NOTE_READ',5000,{token})};
+ root.LLMTaskBridge={read:service=>request(service,'TASKS_READ',26000),states:service=>request(service,'TASKS_STATE',5000),codex:()=>request('chatgpt','TASKS_CODEX_READ',26000),codexSetup:()=>request('chatgpt','TASKS_CODEX_SETUP',5000),note:(service,token)=>request(service,'TASK_NOTE_READ',5000,{token})};
 })(globalThis);

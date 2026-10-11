@@ -81,3 +81,10 @@ APIクレジット連携は任意で初期状態は無効です。拡張機能�
 ### v1.28 task notes and promotional credits / 作業メモとプロモーションクレジット
 EN: Automatic task titles remain memory-only. The user explicitly authorizes saving user-authored notes/checklists (including their chosen task title and link) in `llms-task-notes-v1`, separately from monitor state. Use separate workspace labels for accounts; no automatic cloud sharing. Export/clipboard requires a click. Verified sidebar names and explicit pins only; full coverage is not guaranteed. Promotional API credits remain separate from paid credits and all monthly quotas, with no inference from grants.
 JP: 自動取得した一覧は従来どおりメモリ内のみ。利用者が明示保存する作業メモ・チェックリスト（選択したタイトル・リンクを含む）は `llms-task-notes-v1` に隔離保存。アカウントごと作業領域名を分け、クラウド同期しない。書出し／コピーはクリック時のみ。公式で確認した名前・ピンのみを使い全件保証はしない。APIプロモーションクレジットは購入残高・月額枠と別扱いで、付与額から推測しない。
+
+
+## Optional local Codex helper / 任意のCodex端末内連携 (v1.30.0)
+
+Disabled by default. A direct extension-page click grants optional nativeMessaging; a separately installed per-user helper allows only your chosen extension ID. It reads local Codex titles, IDs, pins and evidenced states through read-only App Server metadata. Standard API preview fields and turn/event contents are discarded, never used as titles, displayed, stored or uploaded. Only the desktop local pin-ID field is used from the compatibility state file; other settings/auth fields are not forwarded. Runtime cannot be inferred from an independent metadata process. Lists remain in the independent task window; explicit work-note saving retains the existing browser/site-local behavior. No task execution, exposed local network port, administrator access or cloud sync. Disable in the setup page; remove only the helper and its specific native-host manifests to uninstall.
+
+初期は無効。専用画面のクリックで任意nativeMessagingを許可し、別途導入した端末内ヘルパーを指定拡張IDだけに許可する。Codexのタイトル・ID・ローカルピン・根拠のある状態を読取専用APIで取得。API標準previewとturn／イベント内容は使用・表示・保存・アップロードせず除外する。互換設定ファイルではピンID欄だけ使用し、その他設定／認証情報は転送しない。独立した取得プロセスから稼働を推測しない。一覧はタスク小窓内のメモリのみ、明示保存メモは従来のブラウザ・サイト内保存。実行・ポート公開・管理者権限・クラウド同期なし。停止と削除は[導入説明](native/README.md)を参照。

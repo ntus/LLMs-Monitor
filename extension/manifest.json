@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "default_locale": "ja",
   "name": "__MSG_extensionName__",
-  "version": "1.29.0",
+  "version": "1.30.0",
   "description": "__MSG_extensionDescription__",
   "permissions": [
     "storage",
@@ -73,7 +73,8 @@
     "extension_pages": "script-src 'self'; object-src 'none'"
   },
   "optional_permissions": [
-    "scripting"
+    "scripting",
+    "nativeMessaging"
   ],
   "optional_host_permissions": [
     "https://platform.openai.com/*",

@@ -21,7 +21,8 @@
  }
  function pinURL(value,service){if(safeURL(value,service))return safeURL(value,service);try{const u=new URL(value);if(u.protocol!=='https:'||u.hostname!=={chatgpt:'chatgpt.com',claude:'claude.ai',gemini:'gemini.google.com'}[service]||u.port||u.username||u.password||u.hash)return '';if(service==='claude'&&/^\/artifact\/[a-zA-Z0-9_-]+\/?$/.test(u.pathname)){const q=[...u.searchParams];return !q.length||q.length===1&&q[0][0]==='org'&&/^[a-f0-9]{8}-(?:[a-f0-9]{4}-){3}[a-f0-9]{12}$/i.test(q[0][1])?u.href:'';}if(u.search)return '';const re=service==='claude'?/^\/(?:code\/project|project)\/[a-zA-Z0-9_-]+\/?$/:service==='chatgpt'?/^\/g\/g-p-[a-zA-Z0-9_-]+(?:\/project)?\/?$/:/^\/notebook\/[a-zA-Z0-9_-]+\/?$/;return re.test(u.pathname)?u.href:''}catch{return ''}}
  function audit(a){if(!a||typeof a!=='object')return null;const out={};for(const k of ['observed','accepted','rejected'])out[k]=Number.isInteger(a[k])&&a[k]>=0?Math.min(10000,a[k]):0;for(const k of ['limited','sectionSeen','scanFinished'])out[k]=a[k]===true;return out;}
- function noteURL(value,service){if(safeURL(value,service))return safeURL(value,service);try{const u=new URL(value);return service==='claude'&&u.origin==='https://claude.ai'&&!u.username&&!u.password&&!u.hash&&/^\/code\/project\/[a-zA-Z0-9_-]+\/?$/.test(u.pathname)&&[...u.searchParams].length===1&&/^cmsg_[a-zA-Z0-9_-]+$/.test(u.searchParams.get('thread')||'')?u.href:''}catch{return ''}}
+ function codexURL(value,service){return service==='chatgpt'&&typeof value==='string'&&/^codex:\/\/threads\/[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/.test(value)?value:''}
+ function noteURL(value,service){if(codexURL(value,service))return value;if(safeURL(value,service))return safeURL(value,service);try{const u=new URL(value);return service==='claude'&&u.origin==='https://claude.ai'&&!u.username&&!u.password&&!u.hash&&/^\/code\/project\/[a-zA-Z0-9_-]+\/?$/.test(u.pathname)&&[...u.searchParams].length===1&&/^cmsg_[a-zA-Z0-9_-]+$/.test(u.searchParams.get('thread')||'')?u.href:''}catch{return ''}}
  function stateIcon(task){return {running:'🟢',waiting:'🟠',idle:'🔵',completed:'✅',failed:'🔴',unknown:'⚪'}[task?.status]||'⚪';}
  function groupLabel(group,language='en',index=0){if(group.groupTitle)return group.groupTitle;const title=group.projectTitle;if(title&&!/^g-p-[a-zA-Z0-9_-]+$/.test(title))return title;return group.projectId?(language==='ja'?`プロジェクト名未取得 ${index+1}`:`Project name unavailable ${index+1}`):(language==='ja'?'その他の会話（所属未確認）':'Other conversations (affiliation unknown)');}
  function normalize(input,service){
@@ -85,6 +86,6 @@
    {id:'sample-3',title:'Example: documentation',projectId:'example-project',projectTitle:'Example project',status:'completed',updatedAt:iso}
   ]},service);
  }
- const api={SERVICES,STATUSES,MAX_BYTES,MAX_TASKS,MAX_DEPTH,STATE_TTL,normalize,parse,select,groups,groupLabel,stateIcon,pinURL,safeURL,noteURL,states,expireStates,demo};
+ const api={SERVICES,STATUSES,MAX_BYTES,MAX_TASKS,MAX_DEPTH,STATE_TTL,normalize,parse,select,groups,groupLabel,stateIcon,pinURL,safeURL,noteURL,codexURL,states,expireStates,demo};
  if(typeof module==='object'&&module.exports)module.exports=api;else root.LLMTaskModel=Object.freeze(api);
 })(globalThis);

@@ -1,0 +1,16 @@
+(()=>{'use strict';
+ const ja=navigator.language.startsWith('ja'),$=id=>document.getElementById(id),text=(jp,en)=>ja?jp:en,send=message=>chrome.runtime.sendMessage(message);
+ document.documentElement.lang=ja?'ja':'en';
+ $('description').textContent=text('同じ端末のCodexのピン留めとタスクを、ChatGPTタスク詳細の専用欄に表示します。会話本文・入力内容・認証情報は画面へ渡しません。','Show local Codex pins and tasks in the independent ChatGPT task window. Messages, drafts and credentials are not forwarded.');
+ $('step-one').textContent=text('CodexとPython 3がこの端末にインストールされていることを確認します。','Install Codex and Python 3 on this computer.');
+ $('step-two').textContent=text('連携ヘルパーを展開して導入し、次の拡張機能IDを指定します。','Extract and install the helper using this extension ID:');
+ $('extension-id').textContent=chrome.runtime.id;$('download').textContent=text('Codex連携ヘルパー v1.30.0 をダウンロード','Download Codex helper v1.30.0');
+ $('step-three').textContent=text('接続を有効にし、任意の権限を許可します。タスク詳細で一覧を更新します。','Enable the optional permission, then refresh the task window.');
+ $('enable').textContent=text('接続を有効にする','Enable connection');$('disable').textContent=text('無効にする','Disable');$('check').textContent=text('接続を確認','Check connection');$('guide').textContent=text('導入・削除の説明','Install / uninstall guide');
+ $('limits').textContent=text('macOS／Linux向け。ピン留めの全件照合は端末内のID一覧が対象です。ブラウザとのアカウント一致・他のホストの全件は確認しません。共有サーバーへ接続できない場合、一覧は取得できますが状態は未確認です。','macOS/Linux. Pin completeness covers the local desktop ID list only. Browser account matching and other-host coverage are not verified. Without an existing shared server, lists are available but runtime states remain Unknown.');
+ async function show(){const c=await send({type:'CODEX_CONFIG_READ'});$('result').textContent=text(c?.enabled&&c?.permission?'接続は有効です。':'接続は無効です。',c?.enabled&&c?.permission?'Connection enabled.':'Connection disabled.');}
+ $('enable').onclick=async()=>{try{const granted=await chrome.permissions.request({permissions:['nativeMessaging']});if(!granted){$('result').textContent=text('権限は許可されませんでした。','Permission was not granted.');return}await send({type:'CODEX_CONFIGURE',enabled:true});await show()}catch{$('result').textContent=text('接続を有効にできません。','Could not enable connection.')}};
+ $('disable').onclick=async()=>{await send({type:'CODEX_CONFIGURE',enabled:false});await chrome.permissions.remove({permissions:['nativeMessaging']});await show()};
+ $('check').onclick=async()=>{$('check').disabled=true;try{const r=await send({type:'CODEX_CHECK'});$('result').textContent=r?.status==='ready'?text(`取得 ${r.tasks.length}件 · ピン留め ${r.pinAudit.resolved}/${r.pinAudit.observed??'?'}件 · ${r.runtime==='shared'?'状態接続あり':'一覧のみ・状態未確認'}`,`${r.tasks.length} tasks · ${r.pinAudit.resolved}/${r.pinAudit.observed??'?'} pins · ${r.runtime==='shared'?'runtime connected':'metadata only'}`):text(r?.status==='disabled'?'先に接続を有効にしてください。':r?.status==='cooldown'?'1分ほど待って再確認してください。':'接続できません。ヘルパー導入とCodexを確認してください。',r?.status==='disabled'?'Enable access first.':r?.status==='cooldown'?'Wait about one minute.':'Could not connect. Check the helper and Codex installation.')}catch{$('result').textContent=text('接続できません。','Could not connect.')}finally{$('check').disabled=false}};
+ show().catch(()=>{$('result').textContent=text('拡張機能を更新してください。','Update the extension.');});
+})();

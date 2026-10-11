@@ -1,3 +1,9 @@
+## 1.30.0 — 2026-10-11
+
+- Add an opt-in per-user Codex metadata helper and independent task section, local pins first with completeness audit.
+- Optional nativeMessaging requires a setup-page click. Read-only metadata, no preview/turn/auth forwarding, quota/history/audio changes or unchanged manual regeneration.
+- Separate metadata cannot observe live runtime; existing shared-server observations expire after 90 seconds. macOS/Linux helper; Windows installer pending.
+
 ## 1.23.0
 
 - Allow extension messaging from the custom monitor domain and retain the previous Site origin.

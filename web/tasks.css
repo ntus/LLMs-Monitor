@@ -40,3 +40,10 @@ dialog{background:var(--surface);color:var(--text);border:1px solid var(--line);
 
 /* Section disclosure state is preserved independently from periodic tree redraws. */
 .task-section{margin:12px 0}.task-section>summary{cursor:pointer;font-size:16px;font-weight:650;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}.task-section>.work-panel{margin-top:6px}.task-section:not([open]){margin-bottom:12px}
+/* Native metadata remains confined to the independent task view. */
+.task-section[hidden]{display:none}
+.codex-task{margin-top:10px;border-top:1px solid var(--line);padding-top:10px;min-width:0}
+.codex-task>summary{display:flex;flex-wrap:wrap;gap:6px;align-items:center;cursor:pointer}
+.codex-task>summary .task-title{overflow-wrap:anywhere;min-width:0;flex:1 1 150px}
+.codex-task .task-meta a{overflow-wrap:anywhere}
+.codex-notice{color:var(--muted)}

@@ -4,7 +4,7 @@
 
 <a id="en"></a>
 
-Document revision: 1.0 · Product version: **1.29.0** · Web UI: **1.29.0** · Web companion: `https://llmsmonitor.ntus.info/` (previous Site origin retained for compatibility)
+Document revision: 1.0 · Product version: **1.30.0** · Web UI: **1.30.0** · Web companion: `https://llmsmonitor.ntus.info/` (previous Site origin retained for compatibility)
 
 This English section defines the implementation contract for the beta. The [Japanese section](#ja) contains the full historical and field-level acceptance criteria. Implementers must read both sections and every ID in [`spec/requirements.json`](spec/requirements.json); neither translation overrides the other.
 
@@ -135,7 +135,7 @@ TASK-CODE-001 reads exact accessibility labels from rendered Claude Code sidebar
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.29.0
+対象製品版: 1.30.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -1433,3 +1433,23 @@ JP: 新しい非アクティブ取得ホームだけ既知の一覧を展開・�
 TASK-STATE-MARK-001 (v1.29.0): Every task title begins with 🟢 running, 🟠 waiting, 🔵 idle, ⚪ unknown, ✅ reported completed or 🔴 failed; pinned mark follows separately. Textual state badges remain accessible. Unverified project/artifact pin states use ⚪, never inferred aggregates. 全タスク先頭に状態マーク＋必要時📌。状態文字列も保持し、未確認を稼働中／完了と推測しない。
 
 Validation v1.29.0: 229 automated tests passed. Chrome 340px task tree/status marks, disclosure retention through language change and explicit synthetic note save verified. Existing main acquisition, history, audio, floating modules and PDF manuals are unchanged. Packaged registration handoff validation is automated; installed-extension registration still requires in-place update and official-tab reload. Account-wide pin completeness remains unverified.
+
+## v1.30.0 — 独立したCodex取得経路 / Independent Codex acquisition
+
+TASK-CODEX-001: ChatGPTタスク詳細に初期展開の「Codex — デスクトップ」欄を追加。通常ブラウザ一覧と別のメモリ内スナップショットを使い、端末内のピンを先頭に表示。件数・ピンIDとの照合・不足／上限、検索・状態絞込、開閉、明示コピー、既存の作業メモ登録に対応。残量、履歴、通知音へ混入させない。
+
+専用拡張機能画面のクリックで任意の `nativeMessaging` 権限を要求し、初期は無効。固定ホスト `info.ntus.llmsmonitor.codex` へ固定 `CODEX_TASKS_READ` のみ渡す。許可HTTPS origin、`/tasks` または `/tasks.html`、service=chatgpt、トップフレームを検証。設定は自身の `codex-setup.html` のみ。有効／無効の追加キー `llms-codex-enabled-v1` だけ保存し、自動一覧の保存・ログ・外部アップロードなし。最大500件、21秒取得＋24秒接続上限、55秒の連続要求抑制、1分周期。停止／消去／サンプル／読込時は保留応答を無効化し、消去時はCodex欄も空にする。
+
+Python 3の任意ヘルパーをmacOS／LinuxのChrome／Edge向け別ZIPで配布。ユーザー領域へ導入し、指定32文字の拡張機能IDだけ許可。管理者権限・ローカルHTTPポート・ログイン自動起動なし。Windows導入は未対応、Linux／Edge実機連携は未確認。無関係なホスト設定を上書きしない。
+
+Codex CLI App Serverへ `initialize`、`thread/list`（ページ末尾まで、useStateDbOnly、非アーカイブ、root sourceKinds）、`thread/read`（includeTurns=false）だけ送る。標準API応答に含まれるpreviewはタイトルにも本文にも使用せず除外し、turns／通知イベント／認証フィールドを転送・保存しない。デスクトップの `.codex-global-state.json` 内 `pinned-thread-ids` だけを互換読取して照合。形式変更時の全件保証なし。新しい一覧にないピンも個別照会する。全件照合はこの端末のID一覧に限り、他ホスト・アカウント全体ではない。
+
+既存共有App Serverのproxyへ接続できた場合だけ稼働中／入力・承認待ち／待機／エラーを表示。notLoadedは未確認、idleは完了ではない。共有サーバーがない場合は独立stdioで一覧だけを読み、状態未確認とする。共有daemonを勝手に起動／再起動しない。観測は90秒後に失効、取得失敗時は前回一覧を保持。Codexリンクは `codex://threads/<UUID>` だけ許可し、従来の公式HTTPS検証を緩めない。
+
+EN: Optional per-user native helper and independent default-open Codex section. Local pins first, explicit local completeness audit; no quota/history/audio changes. Only read-only metadata RPC; previews/turns/events are discarded. Pins use a version-sensitive local adapter. Existing shared runtime observations expire after 90 seconds; separate stdio has Unknown states. Scoped RPC, direct-click permission, caps, throttling, pause/clear/import races and links are validated. App + extension + helper built; manuals/PDFs not regenerated.
+
+実確認 2026-10-11: 読み取り専用照会で16タスク・7ピン、7/7照合、ページ上限なしを確認。共有接続がないため実行状態は未確認。インストール済みChrome拡張機能からのネイティブ接続は、ヘルパー導入・任意権限許可後の手動確認が必要。公開サイトへの反映はこのビルドだけでは完了しない。
+
+ヘルパーは独立版 `product.codex_helper_version=1.30.0`。今回 `python3 build.py --package --codex-helper` で生成し、以後の通常 `--package` は未変更ヘルパーZIPを維持する。
+
+Validation v1.30.0: 237 Node tests passed, including 5 Python host subtests. Read-only live Codex returned 16 tasks and all 7 local pins. Synthetic Chrome UI at 340px verified no horizontal overflow, language/disclosure retention, Codex work-note save and clear/late-response isolation. Nineteen existing core acquisition/history/audio/floating/browser-task files are byte-identical; shared.js differs only by release version, and new main CSS is identical. Installed native messaging, shared runtime and Linux/Edge remain manual checks. Package: 86 entries; helper: 4 entries with executable installer, no macOS metadata/bytecode.

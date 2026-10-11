@@ -14,7 +14,7 @@ This browser companion checks usage from your signed-in provider sessions about 
 
 Version **1.26.0 beta** fixes a billing-reader circular wait that could stop quota refresh, masks expired cached quotas, and adds independent automatic sidebar task lists. Custom-domain pairing and the previous Site URL remain supported. It includes bounded local diagnostic logs, stable language selection, reliable usage/API page opening, and a compact floating view with all three services visible. API billing balances remain optional and separate from subscription quotas. OpenAI billing-page extraction was verified; Claude/Gemini live billing accounts still need validation. Earlier changes are in the [changelog](CHANGELOG.md).
 
-[Product site](https://llmsmonitor.ntus.info/product.html) · [Open the monitor](https://llmsmonitor.ntus.info/) · [Download the beta extension package](dist/LLMs-Monitor-v1.27.0.zip) · [Detailed specification](SPECIFICATION.md) · [Privacy](PRIVACY.md) · [Follow @ntus on X](https://x.com/ntus)
+[Product site](https://llmsmonitor.ntus.info/product.html) · [Open the monitor](https://llmsmonitor.ntus.info/) · [Download the beta extension package](dist/LLMs-Monitor-v1.30.0.zip) · [Detailed specification](SPECIFICATION.md) · [Privacy](PRIVACY.md) · [Follow @ntus on X](https://x.com/ntus)
 
 ### Custom domain connection
 
@@ -34,7 +34,7 @@ Version **1.23.0** adds extension access for [llmsmonitor.ntus.info](https://llm
 ## Quick start
 
 1. Sign in to the services you want to monitor on their official [ChatGPT](https://chatgpt.com/), [Claude](https://claude.ai/), and [Gemini](https://gemini.google.com/) sites in the same Chrome or Edge profile. Enter credentials only on those sites.
-2. Before store approval, run `python3 build.py --package`, unpack `dist/LLMs-Monitor-v1.27.0.zip`, and load the unpacked extension from the browser's extension management page for beta testing. Installing without developer mode requires Chrome Web Store or Edge Add-ons review and publication.
+2. Before store approval, run `python3 build.py --package`, unpack `dist/LLMs-Monitor-v1.30.0.zip`, and load the unpacked extension from the browser's extension management page for beta testing. Installing without developer mode requires Chrome Web Store or Edge Add-ons review and publication.
 3. Open the extension or the [web monitor](https://llmsmonitor.ntus.info/). The web monitor asks for your extension ID once. The providers' usage tabs do not need to remain open.
 4. Use **Show and arrange services** to choose and reorder cards. Hidden services continue collecting history. Adjust language, theme, opacity, volume, and fullscreen mode from the controls.
 
@@ -134,7 +134,7 @@ v1.6.4では履歴読込結果と通知音説明を左右ボタン付きのス�
 ### 使い方
 
 1. 同じChromeまたはEdgeプロファイルで [ChatGPT](https://chatgpt.com/)、[Claude](https://claude.ai/)、[Gemini](https://gemini.google.com/) に必要な分だけログインします。パスワードは公式サイトで入力します。
-2. ストア公開前は、このリポジトリで `python3 build.py --package` を実行し、`dist/LLMs-Monitor-v1.27.0.zip` を展開して、ブラウザーの拡張機能管理画面から開発用として読み込みます。一般ユーザーがデベロッパーモードなしで導入するには、Chrome Web Store / Edge Add-ons の審査・公開が必要です。
+2. ストア公開前は、このリポジトリで `python3 build.py --package` を実行し、`dist/LLMs-Monitor-v1.30.0.zip` を展開して、ブラウザーの拡張機能管理画面から開発用として読み込みます。一般ユーザーがデベロッパーモードなしで導入するには、Chrome Web Store / Edge Add-ons の審査・公開が必要です。
 3. 拡張機能の画面、または [公開モニター](https://llmsmonitor.ntus.info/) を開きます。公開モニターでは拡張機能IDを一度登録してください。各サービスの使用量タブを開いたままにする必要はありません。
 4. 「表示サービス」からチェックと上下ボタンで表示数・順序を変更します。非表示中も取得と履歴保存は続きます。音、テーマ、言語、透明度、フルスクリーンも画面上で変更できます。
 5. 残量とリセット時刻は公式サービスが返す範囲で表示されます。リセット権は利用可能なら公式利用量ページへ移動できますが、アプリから自動行使しません。出典のあるTips／NEWSはリンクで原文を確認できます。
@@ -196,3 +196,10 @@ JP: 独立タスク画面へピン留め優先・確認済みプロジェクト�
 EN: Official-chat work-note registration opens a separate tall editor. Pins, notes and task tree collapse independently (expanded by default). Pin scanning includes Claude taskboards and reports its acquisition counts and limits. Update the extension in place; quota/history/audio are unchanged. Account-wide pin coverage remains unverified.
 
 JP: 公式チャットの［作業メモへ登録］から縦長の別画面を開けます。ピン・作業メモ・一覧全体を折りたたみ可能（初期展開）。Claudeタスクボードを含めピンを走査し、取得件数と制限を表示。拡張は上書き更新し、残量／履歴／音は維持。全アカウントの全件保証は未確認です。
+
+
+## v1.30.0 — Codex取得 / Codex acquisition
+
+ChatGPTタスク詳細の独立したCodex欄へ、この端末のタスクとピンを取得します。初期は無効。[任意連携ヘルパー](dist/LLMs-Monitor-Codex-Helper-v1.30.0.zip)と[導入説明](native/README.md)を用意。拡張機能を上書き更新し、Codexを接続→ヘルパー導入→任意権限許可→一覧更新。確認済み: 16タスク、ローカルピン7/7。共有サーバーがない場合は一覧だけ取得し状態は未確認。本文・認証・実行API・残量／履歴／音への混入なし。未変更マニュアルは再生成しません。
+
+Optional isolated local Codex tasks, pinned first. Install the helper and enable the optional permission in Connect Codex. macOS/Linux installer; Windows not implemented. Local pin-ID completeness is audited, not all hosts/accounts. Shared runtime only; separate metadata leaves state Unknown. No messages/previews forwarded, execution or main-monitor state changes.

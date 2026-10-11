@@ -12,7 +12,7 @@ for legacy_css in (root / 'dist').glob('style-v*.css'):
 for name in ['index.html', 'privacy.html', 'style.css', 'style-v151.css', 'style-v152.css', 'style-v153.css', 'style-v160.css', 'style-v161.css', 'style-v162.css', 'style-v163.css', 'style-v164.css', 'style-v170.css', 'style-v1140.css', 'style-v1150.css', 'style-v1160.css', 'style-v1170.css', 'style-v1171.css', 'style-v1180.css', 'style-v1190.css', 'style-v1200.css', 'style-v1210.css', 'style-v1220.css', 'style-v1230.css', 'style-v1250.css', 'style-v1260.css', 'style-v1270.css', version_css, 'locale.js', 'preferences.js', 'provider-status.js', 'intelligence.js', 'changes.js', 'shared.js', 'api-credits.js', 'sound.js', 'advice.js', 'app.js']:
     shutil.copy2(root / 'extension' / name, root / 'dist' / name)
 # Standalone bilingual product page and its promotional artwork.
-for name in ['product.html', 'product.css', 'product.js', 'app-web.css', 'app-web.js', 'tasks.html', 'tasks.css', 'tasks-model.js', 'tasks-bridge.js', 'tasks-page.js', 'tasks-notes.js', 'tasks-work.js', 'task-launcher.js', 'task-launcher.css']:
+for name in ['product.html', 'product.css', 'product.js', 'app-web.css', 'app-web.js', 'tasks.html', 'tasks.css', 'tasks-model.js', 'tasks-bridge.js', 'tasks-page.js', 'tasks-notes.js', 'tasks-work.js', 'tasks-codex.js', 'task-launcher.js', 'task-launcher.css']:
     shutil.copy2(root / 'web' / name, root / 'dist' / name)
 (root / 'dist' / 'promotional').mkdir(exist_ok=True)
 shutil.copy2(root / 'assets' / 'promotional' / 'llms-monitor-a4-landscape-flyer-v1.png', root / 'dist' / 'promotional' / 'llms-monitor-a4-landscape-flyer-v1.png')
@@ -53,10 +53,20 @@ if '--package' in sys.argv:
         if not (root / 'extension' / name).exists() or (root / name).read_bytes() != (root / 'extension' / name).read_bytes():
             shutil.copy2(root / name, root / 'extension' / name)
     for legacy in (root / 'dist').glob('LLMs-*-v*.zip'):
-        if legacy != package: legacy.unlink()
+        if legacy != package and not legacy.name.startswith('LLMs-Monitor-Codex-Helper-'): legacy.unlink()
     with zipfile.ZipFile(package, 'w', zipfile.ZIP_DEFLATED) as archive:
         for path in sorted((root / 'extension').rglob('*')):
             if path.is_file() and path.name != '.DS_Store': archive.write(path, path.relative_to(root / 'extension'))
-    print(f'LLMs Monitor v{version} package created.')
+    print(f'LLMs Monitor v{version} package created; unchanged Codex helper preserved.')
 else:
     print(f'LLMs Monitor web assets built; store package v{version} preserved.')
+# Separate opt-in packaging avoids regenerating an unchanged helper on later releases.
+if '--codex-helper' in sys.argv:
+    helper_version = requirements['product']['codex_helper_version']
+    if f'VERSION = "{helper_version}"' not in (root / 'native' / 'codex_host.py').read_text():
+        raise SystemExit('Codex helper version does not match the requirement ledger')
+    helper = root / 'dist' / f'LLMs-Monitor-Codex-Helper-v{helper_version}.zip'
+    with zipfile.ZipFile(helper, 'w', zipfile.ZIP_DEFLATED) as archive:
+        for name in ['README.md', 'codex_host.py', 'install.py', 'Install.command']:
+            archive.write(root / 'native' / name, name)
+    print(f'Optional Codex helper v{helper_version} created.')

@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs トークン残量モニタ",
     "name_en": "LLMs Token Usage Monitor",
-    "version": "1.29.0",
-    "package_filename": "LLMs-Monitor-v1.29.0.zip",
+    "version": "1.30.0",
+    "package_filename": "LLMs-Monitor-v1.30.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -19,11 +19,12 @@
       "gemini"
     ],
     "production_companion_origin": "https://llmsmonitor.ntus.info",
-    "web_version": "1.29.0",
+    "web_version": "1.30.0",
     "companion_origins": [
       "https://llmsmonitor.ntus.info",
       "https://llmsmonitor.ntusnog.chatgpt.site"
-    ]
+    ],
+    "codex_helper_version": "1.30.0"
   },
   "normative_language": {
     "MUST": "必須。未達の場合はリリース不可。",
@@ -109,6 +110,15 @@
       "updatedAt": "optional ISO timestamp",
       "summary": "optional <=500 chars",
       "url": "optional exact provider HTTPS conversation route; reject credentials, port, query, fragment"
+    },
+    "CodexTaskSnapshot": {
+      "schemaVersion": 1,
+      "scope": "local-desktop",
+      "runtime": "shared | metadata-only",
+      "checkedAt": "ISO timestamp; observations expire after 90s",
+      "tasks": "up to 500 metadata nodes: UUID, name only (never preview), exact codex://threads/<UUID>, pinned, evidenced status, timestamps",
+      "pinAudit": "observed local desktop IDs / resolved IDs / complete; desktop compatibility adapter, not all hosts/accounts",
+      "persistence": "none; boolean enabled key only; explicitly saved notes use existing separate storage"
     }
   },
   "requirements": [
@@ -4872,6 +4882,73 @@
       ],
       "known_limitations": [
         "Official DOM has no authoritative account-wide pin count. Finished rendered sidebar traversal is not proof of all account pins. Closed regular chat execution remains unknown."
+      ]
+    },
+    {
+      "id": "TASK-CODEX-001",
+      "category": "tasks",
+      "introduced_in": "1.30.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "Optional local Codex metadata acquisition stays isolated from browser task snapshots and all main quota/history/audio state. Local pins are individually resolved and prioritized with explicit audit. Only shared existing runtime can establish current state.",
+      "source_requirements": [
+        "2026-10-11: Add a Codex acquisition path and rebuild; app + extension; no unchanged manual regeneration."
+      ],
+      "acceptance_criteria": [
+        "Direct-click optional nativeMessaging permission and per-user exact-extension-ID host installation.",
+        "Exact approved HTTPS origin / task route / chatgpt service / top-frame; own setup controls only.",
+        "Only fixed read RPCs, no execution/turns/messages/previews/auth forwarding or automatic storage.",
+        "Page bounded task lists, individually resolve old pins, report missing/unsupported/limited cases.",
+        "Separate stdio states Unknown; shared active/approval/input/idle/error observations expire at 90 seconds; idle never completed.",
+        "Default-open independent Codex section; local pins first; text labels/emoji; notes exact deep-link validation; pause/clear/import invalidation."
+      ],
+      "implementation_evidence": [
+        {
+          "path": "native/codex_host.py",
+          "symbol": "TASK-CODEX-001"
+        },
+        {
+          "path": "native/install.py",
+          "symbol": "TASK-CODEX-001"
+        },
+        {
+          "path": "extension/tasks-codex-background.js",
+          "symbol": "TASK-CODEX-001"
+        },
+        {
+          "path": "extension/codex-setup.js",
+          "symbol": "TASK-CODEX-001"
+        },
+        {
+          "path": "web/tasks-codex.js",
+          "symbol": "TASK-CODEX-001"
+        },
+        {
+          "path": "web/tasks-model.js",
+          "symbol": "TASK-CODEX-001"
+        },
+        {
+          "path": "build.py",
+          "symbol": "TASK-CODEX-001"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/task-codex.test.cjs"
+        },
+        {
+          "type": "automated",
+          "path": "tests/test_codex_host.py"
+        },
+        {
+          "type": "manual",
+          "procedure": "2026-10-11 local CLI read-only: 16 tasks, 7/7 local pins, metadata-only runtime. Installed Chrome/Edge native connection still requires helper installation and user permission."
+        }
+      ],
+      "known_limitations": [
+        "Local desktop pin field is an internal compatibility format, subject to change; no remote/account-wide guarantee.",
+        "No shared server exposed on inspected host; live Codex execution remains Unknown. Windows installer unsupported; Linux/Edge installation not live verified."
       ]
     }
   ]

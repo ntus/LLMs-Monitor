@@ -59,7 +59,7 @@ test('API credit display uses separate currency balance and official links in bo
  A.set({chatgpt:{enabled:true,status:'unavailable',capturedAt:Date.now()}});assert(!A.view('chatgpt').includes('$0.00'));
  const manifest=JSON.parse(fs.readFileSync('extension/manifest.json'));
  assert.deepEqual(manifest.permissions,['storage','alarms','offscreen','notifications']);
- assert.deepEqual(manifest.optional_permissions,['scripting']);
+ assert.deepEqual(manifest.optional_permissions,['scripting','nativeMessaging']);
  assert.equal(manifest.optional_host_permissions.length,3);
  const setup=fs.readFileSync('extension/api-setup.js','utf8');assert.match(setup,/chrome\.permissions\.request/);
 });
