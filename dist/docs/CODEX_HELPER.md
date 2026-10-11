@@ -4,11 +4,13 @@ Canonical guide / 正本: https://github.com/ntus/LLMs-Monitor/blob/main/native/
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
-Guide updated for app v1.31.0; helper runtime unchanged.
+Guide updated for app v1.32.0; helper runtime unchanged.
 
 <a id="en"></a>
 
 ## English
+
+**This ZIP is a native helper installer, not a Chrome extension.** Do not select its folder with Load unpacked: it intentionally has no extension `manifest.json`. Load unpacked uses the separate main LLMs Monitor extension package. Extract this helper and follow the installer steps below.
 
 Optional, local-only Codex task metadata for the independent ChatGPT task window. Requires Python 3 and Codex CLI on macOS/Linux Chrome or Edge. Windows installation is not implemented.
 
@@ -26,9 +28,11 @@ See the [current task/work-note guide](../TASK_DETAILS.md). Install the helper o
 
 ## 日本語
 
+**このZIPは端末内ヘルパーのインストーラーで、Chrome拡張機能ではありません。** 拡張機能用 `manifest.json` はありません。Chromeの［パッケージ化されていない拡張機能を読み込む］に選択すると読めません。そこには別の本体拡張ZIPを展開したフォルダーを使います。ヘルパーは展開して下記のインストール手順で導入してください。
+
 ChatGPTブラウザ版に含まれない、同じ端末のCodexタスクを独立した欄に表示する任意の連携です。macOS／LinuxのChrome／Edgeに対応。Python 3とCodex CLIが必要です。Windows用の導入は未対応です。
 
-1. 拡張機能v1.31.0（連携互換性はv1.30.0以降）を導入し、ChatGPTタスク詳細の［Codexを接続］を開きます。
+1. 拡張機能v1.32.0（連携互換性はv1.30.0以降）を導入し、ChatGPTタスク詳細の［Codexを接続］を開きます。
 2. このZIPを展開。macOSでは `Install.command` を開き、連携画面の拡張機能IDを入力します。Linuxでは `python3 install.py --extension-id <ID>` を実行します。
 3. 連携画面の［接続を有効にする］を押し、ブラウザの任意権限を許可します。タスク詳細で［一覧を更新］します。
 
@@ -43,4 +47,4 @@ ChatGPTブラウザ版に含まれない、同じ端末のCodexタスクを独�
 停止は連携画面の［無効にする］。完全削除は、導入した `~/Library/Application Support/LLMs Monitor/Codex` と各ブラウザの `NativeMessagingHosts/info.ntus.llmsmonitor.codex.json`（Linuxは `~/.local/share/llms-monitor/codex` と `~/.config/<browser>/NativeMessagingHosts/...`）だけ削除してください。他の連携ファイルは削除しないでください。
 
 
-本体v1.31.0向けに説明を更新。ヘルパーコード・版は1.30.0のままです。[タスク・作業メモ取説](../TASK_DETAILS.md#ja)も参照。ブラウザー通常チャット一覧にはヘルパー不要です。
+本体v1.32.0向けに説明を更新。ヘルパーコード・版は1.30.0のままです。[タスク・作業メモ取説](../TASK_DETAILS.md#ja)も参照。ブラウザー通常チャット一覧にはヘルパー不要です。

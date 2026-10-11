@@ -27,7 +27,7 @@
   }
   if(p?.state==='issue'||!p?.current||p?.state==='unknown'){
    const incident=el('div',undefined,'task-incident');if(p?.state==='issue')incident.classList.add('issue');incident.append(el('strong',p?.state==='issue'?(p.current&&connected?c.alert:c.old):c.status));if(p?.state==='issue')incident.append(el('span',p.summary));
-   const a=el('a',c.source);a.href=SOURCES[service];a.target='_blank';a.rel='noopener noreferrer';incident.append(a);host.append(incident);
+   const a=el('a',c.source);a.href=SOURCES[service];a.target='_blank';a.rel='noopener noreferrer';incident.append(a);if(service==='chatgpt'){const tibo=el('a','Tibo 𝕏 ↗');tibo.href='https://x.com/thsottiaux';tibo.target='_blank';tibo.rel='noopener noreferrer';tibo.title=language==='ja'?'OpenAIスタッフの発信':'OpenAI staff source';incident.append(tibo);}host.append(incident);
   }
  }
  async function read(){if(busy||document.hidden)return;busy=true;try{const r=await root.LLMTaskBridge.monitor(service);if(normalize(r,service)){last=r;connected=true;}else connected=false;}catch{connected=false;}finally{busy=false;render();}}

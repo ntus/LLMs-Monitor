@@ -162,3 +162,9 @@ TASK-MONITOR-001 (v1.31): user-authorized task overview is the only read-only sa
 JP: タスク概要は保存済み対象事業者の読取だけを許可し、主画面の取得・履歴・音・設定を変更しない。厳密な送信元・単一service検証、期限切れ／未取得／前回／ログアウト／真0を維持する。
 INTELLIGENCE-AUDIT-001: always include *.test.mjs in regression runs. Static builds ship unconfigured X feed; full build never deploys the Worker or proves Tibo delivery. Require live server/eligible post acceptance before advertising live alerts. First client success is silent, complete bounded paging commits feed before public cursor, failures preserve prior alerts.
 JP: MJSのサーバーテストも必須。静的ビルドとTibo実配信を混同しない。実投稿確認までは未設定を明記。初回成功は無音、完全取得だけカーソル更新、失敗は前回保持。
+
+### v1.32 sound / note handoff narrow exception
+
+SOUND-MUTE-001 must cancel queued tones/late resume and preserve explicit mute across old GET replies and concurrent general settings. Preview never enables notifications. TASK-REGISTER-001 now permits only the clicked, bounded two-minute single-use chrome.storage.session browser-memory handoff (not storage.local/disk), with expiry cleanup and the existing strict receiver validation. This supersedes the older process-memory-only handoff, not automatic task persistence. Manual workspace-choice preferences may use llms-task-note-workspaces-v1; preserve llms-task-notes-v1 and default identities. Exact Claude thread header metadata and editable note titles only; never body/draft text or inferred account names. Full build requires explicit user approval (obtained for v1.32); include all current manuals and the helper’s revised guide without changing helper runtime.
+
+通知音OFFは保留音・遅延再開・古い応答・一般設定からの再ONを防ぐ。試聴で有効化しない。メモ登録のprocess内限定を、明示クリック分の2分／一度限りsessionメモリーだけへ変更可。自動一覧の永続化は不可。旧メモキー／defaultを保ち、手動領域選択を別キーへ保存。スレッド見出し属性だけを読み、本文・入力・アカウント推測は禁止。v1.32は全取説フルビルド承認済み。

@@ -54,14 +54,14 @@ test('state RPC rejects unrelated origins, routes, child frames and mismatched s
 });
 function audioHarness(resume){let listen,started=0;const timers=[];const param={setValueAtTime(){},exponentialRampToValueAtTime(){}};
  class AudioContext{state='suspended';currentTime=0;destination={};resume=resume;createOscillator(){return {frequency:param,connect(){return this},start(){started++},stop(){}}}createGain(){return {gain:param,connect(){return this}}}}
- const c=vm.createContext({chrome:{runtime:{onMessage:{addListener:f=>listen=f}}},AudioContext,Date,Number,setTimeout:(fn,ms)=>{timers.push({fn,ms});return timers.length},clearTimeout(){}});vm.runInContext(fs.readFileSync(path.join(root,'extension/offscreen.js'),'utf8'),c);
- return {send:(m,reply)=>listen(m,{},reply),timers,started:()=>started};
+ const c=vm.createContext({chrome:{storage:{local:{get:async()=>({settings:{sound:true}})},onChanged:{addListener(){}}},runtime:{id:'audio-test',onMessage:{addListener:f=>listen=f}}},AudioContext,Date,Number,setTimeout:(fn,ms)=>{timers.push({fn,ms});return timers.length},clearTimeout(){}});vm.runInContext(fs.readFileSync(path.join(root,'extension/offscreen.js'),'utf8'),c);
+ return {send:(m,reply)=>listen(m,{id:'audio-test'},reply),timers,started:()=>started};
 }
 test('audio acknowledges only after the first tone and schedules two remaining one-second beats',async()=>{
  const a=audioHarness(async()=>{});let ack=null;a.send({type:'PLAY_CHANGE_SOUND',volume:18},r=>{ack=r;assert.equal(a.started(),1)});await new Promise(resolve=>setImmediate(resolve));assert.equal(ack.played,true);assert.deepEqual(a.timers.filter(t=>[1000,2000].includes(t.ms)).map(t=>t.ms),[1000,2000]);
 });
 test('a suspended audio resume that completes after its deadline cannot play late',async()=>{
- let resume;const a=audioHarness(()=>new Promise(r=>resume=r));let ack=null;a.send({type:'PLAY_CHANGE_SOUND'},r=>ack=r);a.timers.find(t=>t.ms===1100).fn();assert.equal(ack.played,false);resume();await new Promise(resolve=>setImmediate(resolve));assert.equal(a.started(),0);
+ let resume;const a=audioHarness(()=>new Promise(r=>resume=r));let ack=null;a.send({type:'PLAY_CHANGE_SOUND'},r=>ack=r);await new Promise(resolve=>setImmediate(resolve));a.timers.find(t=>t.ms===1100).fn();assert.equal(ack.played,false);resume();await new Promise(resolve=>setImmediate(resolve));assert.equal(a.started(),0);
 });
 function sharedHarness(){const c=vm.createContext({console,URL,Date});for(const n of ['locale.js','preferences.js','provider-status.js','intelligence.js','changes.js','shared.js'])vm.runInContext(fs.readFileSync(path.join(root,'extension',n),'utf8'),c);return c}
 test('shared Web and floating rendering masks expired old-extension values without changing history',()=>{

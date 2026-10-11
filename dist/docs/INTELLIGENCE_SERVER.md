@@ -1,6 +1,6 @@
 Canonical guide / 正本: https://github.com/ntus/LLMs-Monitor/blob/main/server/README.md
 
-# Public X/Tibo intelligence — v1.31.0
+# Public X/Tibo intelligence — v1.32.0
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
@@ -44,3 +44,5 @@ Synthetic tests cover long posts, recovery vs reset, false-positive exclusions, 
 初回サーバー検索は直近24時間、その後は完全取得できた公開投稿IDより新しい投稿を確認。1回最大100件×4ページ・合計8秒・応答3MB。APIエラー・不完全ページ・上限は成功とせず、前回情報を保持して取得不可にします。最大50速報・7日保持。125秒より古いreadyは現在の正常取得としません。最初の成功したクライアント取得は無音の基準値、新しいIDだけ通知。同じ投稿は再通知せず、未設定／失敗は初回基準になりません。ブラウザー休止・待ち行列・通信で1分確認が遅れる場合があります。
 
 **宣伝前の実機確認:** endpointがready・最新時刻になること、cron／X権限、実際のTiboリセット投稿のID・種類・出典、初回無音→以後の実投稿通知1回→再取得無音、失敗時の保持、通知許可・音ON/OFF、残量・履歴への影響なしを確認。対象投稿がなければ待ち、テスト投稿を勝手に公開しません。記録は公開URL・日時・ID・通知時刻だけです。模擬テストの通過を本番通知成功とは扱いません。
+
+For v1.32, the fixed Tibo 𝕏 profile link is independent of this still-unconfigured feed. It does not enable deployment or verify resets. v1.32のTibo 𝕏プロフィールリンクは未設定の配信経路とは独立し、配信稼働／個人リセットの検証とは扱いません。

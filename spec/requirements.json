@@ -1,13 +1,13 @@
 {
   "schema_version": "1.0.0",
   "ledger_id": "llms-token-usage-monitor-requirements",
-  "last_updated": "2026-10-11",
+  "last_updated": "2026-10-12",
   "authoritative": true,
   "product": {
     "name_ja": "LLMs モニター",
     "name_en": "LLMs Monitor",
-    "version": "1.31.0",
-    "package_filename": "LLMs-Monitor-v1.31.0.zip",
+    "version": "1.32.0",
+    "package_filename": "LLMs-Monitor-v1.32.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -19,7 +19,7 @@
       "gemini"
     ],
     "production_companion_origin": "https://llmsmonitor.ntus.info",
-    "web_version": "1.31.0",
+    "web_version": "1.32.0",
     "companion_origins": [
       "https://llmsmonitor.ntus.info",
       "https://llmsmonitor.ntusnog.chatgpt.site"
@@ -4778,12 +4778,13 @@
       "introduced_in": "1.29.0",
       "status": "implemented",
       "priority": "MUST",
-      "normative_requirement": "Explicit official-chat button opens independent tall work-note editor using only title/link metadata; bounded two-minute one-time memory handoff, strict sender/provider/top-frame/task-route checks; no body, credential, automatic save or quota lifecycle.",
+      "normative_requirement": "Explicit official-chat button opens independent tall work-note editor using only title/link metadata; bounded two-minute one-time memory handoff, strict sender/provider/top-frame/task-route checks; no body, credential, automatic save or quota lifecycle. v1.32 narrowly replaces process memory with trusted chrome.storage.session browser memory to survive worker sleep; 20 entries, two-minute validity, single-use, expiry cleanup; never storage.local/disk or content-script access.",
       "source_requirements": [
         "User approval 2026-10-11: all pins, official work-note registration, default-expanded collapsible sections; app + extension; no manual regeneration."
       ],
       "acceptance_criteria": [
-        "Explicit official-chat button opens independent tall work-note editor using only title/link metadata; bounded two-minute one-time memory handoff, strict sender/provider/top-frame/task-route checks; no body, credential, automatic save or quota lifecycle."
+        "Explicit official-chat button opens independent tall work-note editor using only title/link metadata; bounded two-minute one-time memory handoff, strict sender/provider/top-frame/task-route checks; no body, credential, automatic save or quota lifecycle.",
+        "Main monitor closure and worker restart preserve valid clicked handoff; duplicates/expired/wrong recipient cannot consume it."
       ],
       "implementation_evidence": [
         {
@@ -4815,6 +4816,10 @@
         {
           "type": "manual",
           "procedure": "Chrome narrow viewport, section toggles and note editor; installed extension requires in-place update."
+        },
+        {
+          "type": "automated",
+          "path": "tests/release-1320.test.cjs"
         }
       ],
       "known_limitations": [
@@ -5053,6 +5058,96 @@
       "known_limitations": [
         "X token, KV, cron, routing and eligible real-post notification not configured/verified on current Site.",
         "Keyword text detection can miss images/videos/replies, wording changes and API omissions; first search covers 24 hours."
+      ]
+    },
+    {
+      "id": "SOUND-MUTE-001",
+      "category": "audio",
+      "introduced_in": "1.32.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "Explicit OFF bypasses quota queue and cancels late resume, oscillators, repeated and threshold timers; new general SETTINGS preserve sound, stale GET cannot undo clicks, preview is one-off, OS notifications silent. No quota/history migration.",
+      "source_requirements": [
+        "User-approved fixes and full build 2026-10-12."
+      ],
+      "acceptance_criteria": [
+        "Explicit OFF bypasses quota queue and cancels late resume, oscillators, repeated and threshold timers; new general SETTINGS preserve sound, stale GET cannot undo clicks, preview is one-off, OS notifications silent. No quota/history migration."
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/background.js",
+          "symbol": "SOUND-MUTE-001"
+        },
+        {
+          "path": "extension/offscreen.js",
+          "symbol": "SOUND-MUTE-001"
+        },
+        {
+          "path": "extension/sound.js",
+          "symbol": "SOUND-MUTE-001"
+        },
+        {
+          "path": "extension/app.js",
+          "symbol": "SOUND-MUTE-001"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/release-1320.test.cjs"
+        },
+        {
+          "type": "automated",
+          "path": "tests/task-work-ui.test.cjs"
+        },
+        {
+          "type": "manual",
+          "procedure": "In-place extension update, current Chrome/Edge, worker sleep and multiple-window mute."
+        }
+      ],
+      "known_limitations": [
+        "Live installed-extension and provider-account acceptance remain separate; no absolute regression guarantee."
+      ]
+    },
+    {
+      "id": "TASK-NOTE-UX-001",
+      "category": "tasks",
+      "introduced_in": "1.32.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "Exact selected Claude thread header metadata only; editable titles retain note identity/link/checklist. Blank workspace maps to legacy default, manual labels remembered per provider, no inferred account identity.",
+      "source_requirements": [
+        "User-approved fixes and full build 2026-10-12."
+      ],
+      "acceptance_criteria": [
+        "Exact selected Claude thread header metadata only; editable titles retain note identity/link/checklist. Blank workspace maps to legacy default, manual labels remembered per provider, no inferred account identity."
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/task-note-metadata.js",
+          "symbol": "TASK-NOTE-UX-001"
+        },
+        {
+          "path": "web/tasks-work.js",
+          "symbol": "TASK-NOTE-UX-001"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/release-1320.test.cjs"
+        },
+        {
+          "type": "automated",
+          "path": "tests/task-work-ui.test.cjs"
+        },
+        {
+          "type": "manual",
+          "procedure": "In-place extension update, current Chrome/Edge, worker sleep and multiple-window mute."
+        }
+      ],
+      "known_limitations": [
+        "Live installed-extension and provider-account acceptance remain separate; no absolute regression guarantee."
       ]
     }
   ]

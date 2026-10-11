@@ -1,19 +1,19 @@
 Canonical guide / 正本: https://github.com/ntus/LLMs-Monitor/blob/main/STORE_SUBMISSION.md
 
-# Store submission checklist — v1.31.0
+# Store submission checklist — v1.32.0
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 <a id="en"></a>
 
-`dist/LLMs-Monitor-v1.31.0.zip` is the Chrome Web Store and Microsoft Edge Add-ons submission package. Its manifest and complete runtime UI are localized as “LLMs モニター” in Japanese and “LLMs Monitor” in English.
+`dist/LLMs-Monitor-v1.32.0.zip` is the Chrome Web Store and Microsoft Edge Add-ons submission package. Its manifest and complete runtime UI are localized as “LLMs モニター” in Japanese and “LLMs Monitor” in English.
 
 Developer-mode-free installation requires the owner to complete both stores' account, review, and publication process. Building or hosting the ZIP does not publish an installable store extension.
 
 ## Required owner actions
 
 1. Register the owner developer accounts and enable two-step verification where required.
-2. Upload `LLMs-Monitor-v1.31.0.zip`, the 128px icon, screenshots, Japanese and English descriptions, and reviewer test instructions.
+2. Upload `LLMs-Monitor-v1.32.0.zip`, the 128px icon, screenshots, Japanese and English descriptions, and reviewer test instructions.
 3. Use the deployed privacy policy at `https://llmsmonitor.ntus.info/privacy.html` and verify that it is reachable without sign-in.
 4. Submit for manual review in each store. After approval, replace the website package-only guidance with the approved store URLs.
 
@@ -55,15 +55,15 @@ Before uploading, run `node --test tests/*.test.cjs tests/*.test.mjs`, `python3 
 ---
 
 
-Task-state acceptance: update in place, save drafts before manually refreshing existing official chat tabs, then verify generating→response-idle, closed-tab unknown, conflicting tabs, Auto OFF, Clear/Demo/import races, and quota/history independence. The browser adapter cannot establish closed-chat completion. Optional Codex nativeMessaging is added in v1.31.0, enabled only by a setup-page click plus per-user helper installation. Independent metadata cannot establish desktop runtime state.
+Task-state acceptance: update in place, save drafts before manually refreshing existing official chat tabs, then verify generating→response-idle, closed-tab unknown, conflicting tabs, Auto OFF, Clear/Demo/import races, and quota/history independence. The browser adapter cannot establish closed-chat completion. Optional Codex nativeMessaging was added in v1.30.0, enabled only by a setup-page click plus per-user helper installation. Independent metadata cannot establish desktop runtime state.
 
 <a id="ja"></a>
 
-# 日本語 — ストア提出チェックリスト v1.31.0
+# 日本語 — ストア提出チェックリスト v1.32.0
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
-提出物は `dist/LLMs-Monitor-v1.31.0.zip` です。拡張機能名と画面は日本語「LLMs モニター」、英語「LLMs MONITOR」に対応します。デベロッパーモード不要の導入には、所有者がChrome Web StoreとMicrosoft Edge Add-onsでアカウント、審査、公開を完了する必要があります。ZIPの作成やWeb配布だけではストア公開になりません。
+提出物は `dist/LLMs-Monitor-v1.32.0.zip` です。拡張機能名と画面は日本語「LLMs モニター」、英語「LLMs MONITOR」に対応します。デベロッパーモード不要の導入には、所有者がChrome Web StoreとMicrosoft Edge Add-onsでアカウント、審査、公開を完了する必要があります。ZIPの作成やWeb配布だけではストア公開になりません。
 
 ## 所有者が行う提出作業
 
@@ -107,11 +107,11 @@ v1.17.1: The AI tool directory uses static HTTPS links in the existing card layo
 
 API連携は初期状態で無効です。拡張機能画面で事業者を選択したときだけ、scriptingと該当の公式API請求ホストへの任意権限を要求します。請求画面の残高表示だけを取得し、APIキーや決済情報を保存しません。解除時に該当ホストの権限を削除します。
 
-Before v1.31.0 submission, manually confirm diagnostic export/clear and storage-limit fallback, language switching after repeated refresh, opening usage/API pages after closing them, and all three floating cards at a narrow width.
+Before v1.32.0 submission, manually confirm diagnostic export/clear and storage-limit fallback, language switching after repeated refresh, opening usage/API pages after closing them, and all three floating cards at a narrow width.
 
-v1.31.0提出前に、診断ログの書出し・消去・容量上限時の継続動作、繰返し更新後の言語維持、画面を閉じた後の使用量/API連携再表示、狭幅小窓の3社表示を実機確認する。
+v1.32.0提出前に、診断ログの書出し・消去・容量上限時の継続動作、繰返し更新後の言語維持、画面を閉じた後の使用量/API連携再表示、狭幅小窓の3社表示を実機確認する。
 
-タスク状態の受入確認: 上書き更新し、入力保存後に必要な公式会話タブを手動再読込。応答生成中→応答待機、閉じたタブ未確認、複数タブ不一致、自動OFF、消去／サンプル／読込の保留応答無効化、残量／履歴の独立性を確認。ブラウザ経路では閉じた会話の完了を推測しない。v1.31.0で任意nativeMessagingを追加し、専用画面のクリックと端末内ヘルパー導入後だけCodexメタ情報を取得。共有接続がなければ状態未確認。
+タスク状態の受入確認: 上書き更新し、入力保存後に必要な公式会話タブを手動再読込。応答生成中→応答待機、閉じたタブ未確認、複数タブ不一致、自動OFF、消去／サンプル／読込の保留応答無効化、残量／履歴の独立性を確認。ブラウザ経路では閉じた会話の完了を推測しない。v1.30.0で任意nativeMessagingを追加し、専用画面のクリックと端末内ヘルパー導入後だけCodexメタ情報を取得。共有接続がなければ状態未確認。
 
 
 Codex acceptance / Codex受入: first-use disabled, deny/grant/revoke optional nativeMessaging, exact-ID host manifest, read counts/pins and metadata-only Unknown states, paused/clear/import races and 90-second expiry. Test installed Chrome/Edge manually before store submission. Native helper is a separate optional ZIP and is not installed by the extension.
@@ -125,3 +125,9 @@ The static Site feed is **unconfigured**. Do not advertise live Tibo alerts befo
 タスク別窓は選択した事業者の保存済み残量・障害だけを読取専用で表示。期限切れ／未取得／前回値／実際の0%を区別し、240〜420px・日英・両テーマで確認する。残量再取得・履歴保存・音声は行わない。必須・任意権限はv1.30.0から変更なし。ヘルパー本体は1.30.0を維持し、説明書だけフルビルドで更新する。
 
 現在の静的サイトのX配信は**未設定**。別サーバー・X Secret・KV・1分cronと実投稿の検証前にTibo通知を稼働済みと宣伝しない。Sitesは所有者限定のまま維持し、ストア提出前にプライバシーの一般閲覧を整える。全アカウントのピン全件は保証しない。ストア承認、Chrome/Edge実機受入、将来のaimon.ntus.info移行は正式公開前の作業。
+
+## v1.32 review acceptance / 更新受入
+
+Test OFF during blocked quota refresh and delayed audio resume, then repeat with multiple main/related windows; no repeated or second threshold tone may play after mute. OS notifications are explicitly silent. Preview must not change mute. Confirm the extension’s intentional background monitoring after the main closes. Verify note registration after worker suspension with main closed, exact service/top-frame/opaque handle/expiry, no title/link in query, selected Claude Code thread heading and editable title, default-note retention and per-provider workspace choice. No new permission or host. The helper installer is not loaded via Chrome Load unpacked. Run full regression and package checks; installed Chrome/Edge and native helper acceptance remain separate.
+
+残量取得待ち・遅延音声再開中・複数の本体／関連窓でOFFを確認し、予約済み音・警告の2音目が停止すること。OS通知は明示的に無音とし、試聴で設定を変更しない。メイン終了後の拡張監視は仕様。メイン終了＋worker休止後の登録、2分失効・一度限り・送信元／service／frame・queryへの名称非混入、Claude Codeの選択スレッド見出し・タイトル編集・旧defaultメモ保持・サービス別領域選択を確認。権限／host追加なし。Codexは端末内インストーラーで導入。全回帰・ZIP照合に加え、更新済み実Chrome/Edge・ヘルパーの受入は別途必要。

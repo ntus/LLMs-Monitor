@@ -10,12 +10,25 @@
 
 <a id="en"></a>
 
-Release preparation **v1.31.0** for Chrome/Edge desktop, with English and Japanese interfaces.
+## v1.32 changes
+
+**A clearer view of AI-driven development.** Capacity, task lists and linked work notes help you resume AI-assisted work.
+
+- ChatGPT status includes **Tibo 𝕏**, an OpenAI staff profile link. It does not activate the currently unconfigured X feed or prove a personal reset.
+- **Sound OFF** cancels scheduled tones and late audio resumes. Mute is saved without waiting for quota refresh, and old windows’ other settings cannot turn it back ON. **Preview** plays once without changing ON/OFF. The installed extension still checks usage and service status when the main monitor closes; turn OFF to mute those checks.
+- Work-note registration survives worker sleep; actual Claude Code thread headings and editable note titles replace generic titles. Blank workspace means Shared, preserving old `default` notes; manual selections are remembered per provider.
+- The **Codex helper ZIP is a native installer**, not the Chrome extension package. Extract it and run `Install.command` on macOS or the command in the [helper guide](native/README.md) on Linux. Chrome **Load unpacked** uses the main extension ZIP’s extracted folder containing `manifest.json`.
+
+Update the extension in place; do not uninstall or clear browser storage. Save official-page drafts before manually reloading them to receive the new registration reader. [Task/work-note details](TASK_DETAILS.md).
+
+
+
+Release preparation **v1.32.0** for Chrome/Edge desktop, with English and Japanese interfaces.
 
 - **See LLM usage remaining in real time:** current/weekly limits, reset times, official incidents and local change alerts for ChatGPT, Claude and Gemini.
 - **Keep track of work:** independent task windows, evidenced response states, pinned items first, and per-thread notes/checklists with links back to the conversation.
 
-[Open monitor](https://llmsmonitor.ntus.info/) · [Product introduction](https://llmsmonitor.ntus.info/product.html) · [Extension ZIP](dist/LLMs-Monitor-v1.31.0.zip) · [Task/work-note guide](TASK_DETAILS.md) · [Specification](SPECIFICATION.md) · [Privacy](PRIVACY.md) · [Security review](SECURITY_REVIEW.md) · [Release history](CHANGELOG.md)
+[Open monitor](https://llmsmonitor.ntus.info/) · [Product introduction](https://llmsmonitor.ntus.info/product.html) · [Extension ZIP](dist/LLMs-Monitor-v1.32.0.zip) · [Task/work-note guide](TASK_DETAILS.md) · [Specification](SPECIFICATION.md) · [Privacy](PRIVACY.md) · [Security review](SECURITY_REVIEW.md) · [Release history](CHANGELOG.md)
 
 **Tibo reset alerts are not live on the current static Site.** The detector supports public usage/reset posts from Tibo (`@thsottiaux`, OpenAI staff) and selected company accounts, but requires a separately configured X server, secret, cache and minute cron. Tested synthetic detection is not proof of live delivery. See [setup and live acceptance](server/README.md). Posts are announcements, not confirmation that your individual limit has reset. Nerf Bench is [link-only](https://www.bridgebench.ai/nerf-bench).
 
@@ -65,6 +78,19 @@ Security and regression results are in [Security review](SECURITY_REVIEW.md); re
 
 <a id="ja"></a>
 
+## v1.32の更新
+
+**AI駆動開発を、見通しよく。** 残量・タスク一覧・リンク付き作業メモで、AIと進める作業の続きを把握します。
+
+- ChatGPT障害情報に［Tibo 𝕏］を追加。OpenAIスタッフのプロフィールへのリンクです。現在未設定の速報配信を有効化したり、個人のリセットを確認したりする機能ではありません。
+- 通知音OFFは予約済み音・遅れて再開した音も取消し、残量更新を待たず保存します。他の窓の設定保存でONへ戻らないよう対応。［試聴］は一度だけでON/OFFを変更しません。拡張機能はメイン画面を閉じても使用量・障害を監視します。停止音は通知音OFFで設定してください。
+- メモ登録は拡張機能処理の休止後も受け渡せます。Claude Codeスレッド名を取得し、メモタイトルを編集可能に。作業領域の空欄は「共通（未指定）」で旧defaultメモを保持し、手動選択をサービス別に記憶します。
+- **CodexヘルパーZIPはChrome拡張機能ではなく端末内インストーラー**です。展開してmacOSは `Install.command`、Linuxは[導入説明](native/README.md#ja)のコマンドを実行します。Chromeの［パッケージ化されていない拡張機能を読み込む］には、本体拡張ZIPを展開した `manifest.json` のあるフォルダーを指定します。
+
+アンインストール／保存領域の消去をせず上書き更新してください。公式会話タブは入力を保存したうえで手動再読込すると新しいメモ登録処理を使えます。[タスク・メモ取説](TASK_DETAILS.md#ja)。
+
+
+
 # 日本語 — LLMs モニター
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
@@ -73,13 +99,13 @@ Security and regression results are in [Security review](SECURITY_REVIEW.md); re
 
 [日本語チラシを拡大](assets/promotional/llms-monitor-a4-landscape-flyer-v1.jpg?raw=1)（以前の画面紹介。現行の説明は以下）
 
-**AIの残量も、作業の続きも。** 正式リリース準備版 **v1.31.0**。
+**AIの残量も、作業の続きも。** 正式リリース準備版 **v1.32.0**。
 
 ① **各種LLMの利用残量をリアルタイム表示！** リセット時刻、公式障害情報、数値変化も確認。
 
 ② **タスク一覧とスレッドごとの作業メモで、続きの作業を忘れない！** ピン留め優先、観測できた状態、リンク付き備忘録・チェックリストを別窓で表示。
 
-[モニター](https://llmsmonitor.ntus.info/) · [製品紹介](https://llmsmonitor.ntus.info/product.html) · [拡張機能ZIP](dist/LLMs-Monitor-v1.31.0.zip) · [タスク・作業メモ取説](TASK_DETAILS.md#ja) · [詳細仕様](SPECIFICATION.md#ja) · [プライバシー](PRIVACY.md#ja)
+[モニター](https://llmsmonitor.ntus.info/) · [製品紹介](https://llmsmonitor.ntus.info/product.html) · [拡張機能ZIP](dist/LLMs-Monitor-v1.32.0.zip) · [タスク・作業メモ取説](TASK_DETAILS.md#ja) · [詳細仕様](SPECIFICATION.md#ja) · [プライバシー](PRIVACY.md#ja)
 
 **※Tiboリセット通知は現在の静的サイトでは未稼働です。** Tibo氏（`@thsottiaux`、OpenAIスタッフ）・各社公式Xの利用枠／リセット投稿を検知する処理はありますが、別サーバー・X認証Secret・キャッシュ・1分cronが必要です。模擬データでの成功を実投稿の通知成功とは扱いません。[設定と実投稿検証](server/README.md#ja)を参照。告知は個人の残量がリセット済みである証明ではありません。Nerf Benchはリンクのみです。
 

@@ -5,6 +5,7 @@
  $('step-one').textContent=text('CodexとPython 3がこの端末にインストールされていることを確認します。','Install Codex and Python 3 on this computer.');
  $('step-two').textContent=text('連携ヘルパーを展開して導入し、次の拡張機能IDを指定します。','Extract and install the helper using this extension ID:');
  $('extension-id').textContent=chrome.runtime.id;$('download').textContent=text('Codex連携ヘルパー v1.30.0 をダウンロード','Download Codex helper v1.30.0');
+ $('install-help').textContent=text('このヘルパーはChrome拡張機能ではありません。ZIPを展開し、macOSは中のInstall.commandを実行します。拡張機能の「パッケージ化されていない拡張機能を読み込む」では選択しません。Linuxは導入説明のコマンドを使います。','This helper is a native installer. Extract the ZIP and run Install.command on macOS; use the guide command on Linux. Do not select this folder with Chrome’s Load unpacked.');
  $('step-three').textContent=text('接続を有効にし、任意の権限を許可します。タスク詳細で一覧を更新します。','Enable the optional permission, then refresh the task window.');
  $('enable').textContent=text('接続を有効にする','Enable connection');$('disable').textContent=text('無効にする','Disable');$('check').textContent=text('接続を確認','Check connection');$('guide').textContent=text('導入・削除の説明','Install / uninstall guide');
  $('limits').textContent=text('macOS／Linux向け。ピン留めの全件照合は端末内のID一覧が対象です。ブラウザとのアカウント一致・他のホストの全件は確認しません。共有サーバーへ接続できない場合、一覧は取得できますが状態は未確認です。','macOS/Linux. Pin completeness covers the local desktop ID list only. Browser account matching and other-host coverage are not verified. Without an existing shared server, lists are available but runtime states remain Unknown.');

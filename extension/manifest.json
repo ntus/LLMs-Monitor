@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "default_locale": "ja",
   "name": "__MSG_extensionName__",
-  "version": "1.31.0",
+  "version": "1.32.0",
   "description": "__MSG_extensionDescription__",
   "permissions": [
     "storage",
@@ -48,6 +48,7 @@
         "task-list.js",
         "task-status.js",
         "task-reader.js",
+        "task-note-metadata.js",
         "task-note-button.js",
         "locale.js",
         "preferences.js",

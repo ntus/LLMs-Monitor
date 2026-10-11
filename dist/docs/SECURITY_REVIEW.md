@@ -1,15 +1,37 @@
 Canonical guide / 正本: https://github.com/ntus/LLMs-Monitor/blob/main/SECURITY_REVIEW.md
 
-# Security review — v1.31.0
+# Security review — v1.32.0
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 <a id="en"></a>
 
-This review includes current v1.31.0 checks and historical evidence; it is not a guarantee that no vulnerabilities exist. A release owner should also test the packaged extension in current Chrome and Edge with real accounts and submit it to store review.
+This review includes current v1.32.0 checks and historical evidence; it is not a guarantee that no vulnerabilities exist. A release owner should also test the packaged extension in current Chrome and Edge with real accounts and submit it to store review.
 
 
-## Current release audit — 2026-10-11
+## v1.32 release audit — 2026-10-12
+
+User approved all manuals/full build and publication to the existing Site/GitHub. Explicit mute uses root-monitor/top-frame validation and a settings queue independent of quota work; current full-setting messages preserve sound. Prior GET results cannot undo local clicks. OFF invalidates audio generation, stops oscillators and all repeated/threshold timers, and late setup/resume checks mute before playback. OS notifications use silent:true. Preview changes neither mute nor the repeat clock. Legacy extensions retain explicit SETTINGS fallback (immediate cancellation requires the updated extension).
+
+Clicked note handoff narrowly replaces worker-only Map with trusted chrome.storage.session browser memory: 20 entries, two-minute read validity, single-use serialized consumption and expiry-alarm cleanup. Worker suspension is covered by a new-VM regression; browser/extension restart clears this area. Invalid origin/frame/service/duplicate parameters cannot read/consume. There is no storage.local handoff, content-script access expansion or server/log transfer. The new optional workspace preference contains manual provider-scoped labels only; default note identity remains unchanged. Claude title reader scopes the exact thread tile/region aria-label or exact sidebar anchor, never pane/message/draft text. The real selected Claude Code heading attributes were inspected; private names/IDs and QA fixtures remain outside the repository. Editor title updates use existing revision conflict checks and keep URLs/checklists.
+
+No manifest permission/host/CSP expansion, no native helper runtime change. Quota fetch/parsing, state/history/batching, API billing, task state/list acquisition, provider panel and floating lifecycle modules are compared to 51957e7; shared.js differs only in APP_VERSION and main CSS is byte-identical. Changed audio/settings and clicked-note modules have focused tests. Fixed Tibo 𝕏 link is staff information, not official status or evidence that the live feed is configured. The optional helper guide explicitly separates native Install.command from Chrome Load unpacked.
+
+Verification: all **266** CJS/MJS/Python regression tests pass; **20** existing core modules are byte-identical to 51957e7. current-asset/package/manifest reference and checksum checks. Synthetic Chrome 240/340px task/notes screens have no horizontal overflow; title edit/save/original-link/count/default retention, English/Japanese and both themes, main OFF→Preview→theme change remaining OFF and fixed Tibo 𝕏 links were checked. Tests use silent mock audio; no private production notes/chats/credentials are collected or changed.
+
+Remaining release gates: installed Chrome/Edge upgrade, real OS audio/notifications, native helper installation and live Tibo feed acceptance. Main-monitor closure intentionally does not uninstall/stop the extension’s background alarms; OFF is the sound preference. Preserve owner-only Site audience. This is evidence of bounded checks, not an absolute security/regression guarantee.
+
+Implementation sources: [Chrome session storage](https://developer.chrome.com/docs/extensions/reference/api/storage#property-session), [Chrome silent notification option](https://developer.chrome.com/docs/extensions/reference/api/notifications#property-NotificationOptions-silent).
+
+### 日本語 — v1.32
+
+フルビルド承認済み。通知音OFFを残量処理から分離し、遅延再開・予約／警告2音目・古いGET・他窓の一般設定を検証。OS通知はsilent指定、試聴で有効化しない。旧拡張にはSETTINGSの互換経路を残し、即時取消は更新済み拡張が必要。
+
+メモ受渡しだけprocess Mapからブラウザsessionメモリーへ限定変更。20件／2分／一度限り／専用待ち行列／アラーム消去、frame／origin／service／重複query拒否。処理休止後を別VMで検証し、再起動・拡張更新時は破棄。ディスク／server／logへの受渡し保存や権限追加なし。選択スレッドの見出し属性を実確認し、本文・入力は読まない。識別子／URL／チェックリストと保存競合保護を保持。手動領域選択だけ別キーに保存し、旧defaultを維持。
+
+模擬Chrome 240/340px、日英・両テーマ、編集／保存／リンク／件数、OFF→試聴→テーマ変更後もOFF、Tibo 𝕏リンクを確認。モック音声であり実OS音・実拡張更新・ヘルパー導入・Tiboライブ配信の受入は残る。個人メモ・本文・認証情報は検証物へ入れない。残量／履歴／API／一覧／状態／小窓ライフサイクルの基準差分も確認。所有者限定公開を維持し、絶対的な安全／デグレゼロの保証とはしない。
+
+## Historical v1.31 release audit — 2026-10-11
 
 The user approved a full app/extension/manual build. v1.31 adds a selected-service read-only overview, Task titles and bilingual release guides. Against commit `2d5b0bf773780ee81b39b0adb1f42f396268b95a`, 21 core modules (quota/state/history/audio/status/preferences/billing/window and existing task adapters) are byte-identical; manifest differs only in version and new main CSS is byte-identical to v1.30.0. Background changes add isolated TASKS_MONITOR dispatch/import/queue bypass only; intelligence changes are confined to source-link validation, initial-ready baseline and labels. No permission/origin expansion, new state key, quota parser, history migration or native helper runtime change.
 

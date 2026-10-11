@@ -6,7 +6,7 @@ Canonical guide / 正本: https://github.com/ntus/LLMs-Monitor/blob/main/SPECIFI
 
 <a id="en"></a>
 
-Document revision: 1.0 · Product version: **1.31.0** · Web UI: **1.31.0** · Web companion: `https://llmsmonitor.ntus.info/` (previous Site origin retained for compatibility)
+Document revision: 1.0 · Product version: **1.32.0** · Web UI: **1.32.0** · Web companion: `https://llmsmonitor.ntus.info/` (previous Site origin retained for compatibility)
 
 This English section defines the implementation contract for the beta. The [Japanese section](#ja) contains the full historical and field-level acceptance criteria. Implementers must read both sections and every ID in [`spec/requirements.json`](spec/requirements.json); neither translation overrides the other.
 
@@ -137,7 +137,7 @@ TASK-CODE-001 reads exact accessibility labels from rendered Claude Code sidebar
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.31.0
+対象製品版: 1.32.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -1477,3 +1477,27 @@ INTELLIGENCE-AUDIT-001: current static feed is unconfigured; do not claim Tibo l
 Validation v1.31.0 (2026-10-11): 255 automated tests pass (CJS + MJS, including the Python host suite), then full app/extension/helper/Markdown build. Chrome synthetic UI at 240/340px verifies no horizontal overflow, English/Japanese and standard/dark, expired —, actual 0%, previous values, login hiding and selected-service incident only. Japanese product hero is two lines at 340px. Against 2d5b0bf, 21 core acquisition/state/history/audio/status/billing/window/task modules and main CSS are byte-identical; manifest version-only. New overview tests execute the real background listener with a stalled main queue and verify no storage writes. X tests cover full-text reset matching, complete paging/cursor, response limits/deadline, stale feed, failed baseline, actual notification dispatch and repeated IDs. No actual X server/API/post delivery, installed Chrome/Edge upgrade or store approval is claimed. Proof/fixtures remain outside the repository and production notes are untouched.
 
 Package audit: extension ZIP 89 entries; optional helper ZIP 4 entries; 10 current Markdown manuals in dist/docs. No private fixture/screenshot/credential/bytecode files in packages. Retain the previous v1.30 main stylesheet at its URL for older cached clients.
+
+## v1.32.0 — Sound cancellation and independent note registration
+
+User-authorized full app/extension/manual build. SOUND-MUTE-001 makes explicit root-monitor sound changes a dedicated serialized settings operation independent of quota work. Other new-client SETTINGS writes preserve authoritative sound; old clients retain existing semantics. Pending clicks and request generations prevent older GET replies from undoing changes. OFF stops local/offscreen oscillators, repeated/threshold timers and late resume; audio rechecks mute after offscreen setup/resume. OS popup notifications set silent:true. Preview remains one-off and never enables the repeating notifier or changes settings. Existing thresholds, frequency patterns, before-publish acknowledgement, quota/history parsers and lifecycle are retained.
+
+TASK-REGISTER-001’s v1.29 process-memory implementation is narrowly superseded: the clicked metadata-only handoff uses trusted-context chrome.storage.session browser memory, bounded 20 entries, two-minute read expiry, one-use consumption, serialized access and expiry-alarm cleanup. It survives worker suspension, not browser/extension restart. No storage.local handoff, logs, server upload, message/draft read or new permissions. Receiver requires exact origin/tasks path/top frame and unique matching service/note params. Unsuccessful handoffs do not save a note.
+
+TASK-NOTE-UX-001 reads only an exact selected Claude project-thread tile and visible region aria-label or exact sidebar link, then conservative document-title fallback for ordinary conversations. Ambiguity stays unavailable. Editable saved-note titles preserve identity/URL/checklists. A blank workspace displays Shared (unspecified), maps to existing default, and last manual choice is remembered per service in a separate local preference. No inferred account names or migration.
+
+Fixed ChatGPT staff link label is Tibo 𝕏, separate from official incident status and the still-unconfigured live feed. Codex helper is explicitly a native installer; runtime remains 1.30.0, updated guide packaged. Product eyebrow: “AI駆動開発を、見通しよく。” / “A clearer view of AI-driven development.”
+
+### 日本語
+
+通知音OFFを取得待ち行列から分離し、予約音・2音目・遅延再開も停止。他窓の一般設定保存・古いGET応答で再ONにしない。試聴は設定を変更せず単発。ブラウザ通知は無音指定。既存の閾値・音パターン・音を待つ数値保存順序・残量／履歴解析・窓のライフサイクルは維持。
+
+メモ登録の旧processメモリーを、2分失効・最大20件・一度限り・アラーム消去のブラウザsessionメモリーへ限定変更。休止後も受け渡し、再起動／拡張更新時は破棄。厳密な送信元／service／frame／単一queryを検証し、本文・入力・認証は取得しない。選択Claudeスレッドの見出し属性を取得し、曖昧な名称は未取得。タイトル編集は識別子とURLを変えない。領域空欄は旧defaultの「共通（未指定）」で、手動選択をサービス別に記憶。アカウント推測・移行なし。
+
+取説全てを更新。Tibo 𝕏プロフィール追加は速報配信の稼働とは別。既存ヘルパー1.30.0の導入説明だけ改訂。実インストール・音質・ブラウザ通知挙動・ライブTiboは別受入でありデグレゼロの絶対保証とはしない。
+
+### v1.32 final build evidence — 2026-10-12
+
+266 CJS/MJS/Python checks passed. 20 quota/history/billing/task-acquisition/panel/lifecycle support modules compared byte-for-byte to 51957e7; existing permission/host/CSP arrays unchanged; main style-v1320 equals v1310. Native runtime files unchanged. Extension ZIP: manifest-referenced files and five bundled manuals match current source; helper ZIP keeps runtime 1.30.0 with revised guide. Ten hosted manuals match their canonical sources. ZIP CRC, forbidden-file inventory, version and diff checks pass; RELEASE-CHECKSUMS.txt records final archive SHA-256. Chrome synthetic fixtures (outside repo/deployment) verify notes and OFF/preview/theme behavior; no real private note/account data is used. Actual installed-package/OS audio/native helper/live Tibo remain manual gates.
+
+266件成功、20既存モジュールと権限／host／CSP・ヘルパーruntimeを維持。取説10件・拡張／ヘルパーZIP・版／CRC／禁止ファイル／差分／SHA-256を照合。模擬画面はリポジトリ外で、個人情報を使わない。実拡張更新・OS音・ヘルパー導入・Tiboライブの受入は別途。

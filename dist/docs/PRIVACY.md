@@ -6,9 +6,12 @@ Canonical guide / 正本: https://github.com/ntus/LLMs-Monitor/blob/main/PRIVACY
 
 <a id="en"></a>
 
+Registration uses a maximum 20-entry, two-minute, single-use title/link buffer in `chrome.storage.session`, not disk storage. It survives service-worker sleep; browser restart or extension reload/update clears it. Expired entries cannot be read and are cleaned by the next read/registration or expiry alarm. Content-script access to this session area is not enabled. An optional per-provider, user-chosen workspace preference uses `llms-task-note-workspaces-v1` in site-local storage; it is a label, not an automatically detected account. Existing saved-note keys and identities remain unchanged. Only explicit Save persists note titles/links/checklists.
+
+
 Last updated: 2026-10-11
 
-## Current task overview and saved notes (v1.31.0)
+## Current task overview and saved notes (v1.32.0)
 
 The independent task window receives only its selected provider’s already-saved plan, bounded usage windows and public incident summary through an origin/route/service/top-frame validated read-only RPC. No account identifier, history, settings, credits, authentication or other-provider data is returned by this overview. It does not acquire fresh quotas, change storage/history or trigger audio. Signed-out windows are hidden; expired values are unavailable, stale values marked previous. Automatic task titles/states remain in memory. Only explicitly saved work notes/checklists and selected validated title/link persist under the separate local notes key; export/copy needs a click. Notes differ by site origin/browser and chosen workspace label; no automatic cloud sharing.
 
@@ -51,13 +54,16 @@ The optional independent task window checks already-open provider conversation t
 
 <a id="ja"></a>
 
+メモ登録は最大20件・2分で失効する一度限りのタイトル／リンクを `chrome.storage.session`（ディスクではなくブラウザのメモリー内）で受け渡します。処理休止後も維持し、ブラウザ再起動・拡張再読込／更新で破棄します。失効した情報は取得不可で、次の読取／登録または失効アラームで消去します。コンテンツスクリプトへの保存領域アクセスは有効化しません。手動で選んだサービス別作業領域名をサイト内 `llms-task-note-workspaces-v1` へ保存します。アカウント名の自動取得ではありません。旧メモキー／識別子は維持し、メモは［保存］した場合だけ永続保存します。
+
+
 # 日本語 — LLMs モニター プライバシーポリシー
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 最終更新: 2026-10-11
 
-## 現行タスク概要と作業メモ（v1.31.0）
+## 現行タスク概要と作業メモ（v1.32.0）
 
 独立タスク窓へ、選択事業者の保存済みプラン・利用枠・公開障害要約だけを、origin／タスク経路／service／トップフレームを検証した読取専用RPCで返します。この概要はアカウントID・履歴・設定・クレジット・認証・他社情報を返さず、残量再取得・保存・履歴変更・音声を行いません。ログアウトでは枠を隠し、期限切れは未取得、古い値は前回値とします。自動一覧／状態はメモリー内のみ。明示保存する作業メモ・チェックリスト・選択したタイトル／検証済みリンクだけを別の端末内キーへ保存し、書出し／コピーはクリック時だけ。サイトURL／ブラウザー・指定作業領域ごとで、自動クラウド共有はありません。
 

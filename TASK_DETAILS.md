@@ -1,8 +1,18 @@
-# Task details and work notes — v1.31.0
+# Task details and work notes — v1.32.0
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 <a id="en"></a>
+
+## v1.32 — Registration, titles and workspace
+
+Click **Add to work notes** on an official conversation to open the independent editor; the main monitor need not remain open. The title and validated link are passed through a single-use handle with a two-minute expiry in `chrome.storage.session` (browser memory, not disk). Worker suspension no longer loses this handoff. Browser restart or extension reload/update clears it; click again on the refreshed official page after saving drafts. No automatic saving, sending or message/draft reading.
+
+Claude Code project threads use the selected thread pane’s exact heading attribute. Ambiguous/missing headings show **Thread (title unavailable)**; type the correct **Note title** in the editor. Existing notes can also be renamed without changing their link, identity or checklist. A project/browser title is not treated as a thread name.
+
+**Notes workspace (optional)** is your label, not a detected provider account. Blank means **Shared (unspecified)** and retains existing `default` notes; it does not move or delete them. The last manually chosen label is remembered per provider on this browser/site. Choose distinct labels yourself for distinct accounts. Saved titles open their original link and **Edit** stays on the right; note counts follow the selected workspace.
+
+
 
 ## Read your capacity and remember your work
 
@@ -12,7 +22,7 @@ Below the title, compact bars show **selected-provider saved usage** and its off
 
 ## Lists, pins and states
 
-Pair extension v1.31.0 in the main monitor on the same origin. Task lists start on opening and about once a minute while visible and Auto ON. Fresh inactive official homes provide sidebar/project/group names and explicit pins. The adapter expands/scrolls only its owned tabs and closes them in `finally`; existing user chats/drafts are not reloaded. Requests coalesce per service, with a 55-second cooldown, 20-second acquisition budget and 2.5-second reader bounds. Missing/loading/failed lists retain the previous list; an empty response is not proof of an empty account.
+Pair extension v1.32.0 in the main monitor on the same origin. Task lists start on opening and about once a minute while visible and Auto ON. Fresh inactive official homes provide sidebar/project/group names and explicit pins. The adapter expands/scrolls only its owned tabs and closes them in `finally`; existing user chats/drafts are not reloaded. Requests coalesce per service, with a 55-second cooldown, 20-second acquisition budget and 2.5-second reader bounds. Missing/loading/failed lists retain the previous list; an empty response is not proof of an empty account.
 
 ChatGPT normal and project conversations, Claude normal/Code/Cowork sessions, Gemini current-account conversations are grouped by verified labels. Unresolved membership is described as unconfirmed rather than “unassigned”; internal IDs are not display headings. Pins precede other items. Projects, chats and artifacts retain their type; a pinned project does not make every child chat pinned. Coverage is **rendered-list/partial**, with observed/accepted/rejected/limited/end-of-scan counts. Browser providers do not guarantee all account pins. ChatGPT browser pins can differ from the desktop app; Codex uses a separate opt-in local adapter.
 
@@ -44,6 +54,16 @@ Run CJS **and MJS** tests and full build, inspect ZIP/permission diff, verify 24
 
 <a id="ja"></a>
 
+## v1.32 — メモ登録・タイトル・作業領域
+
+公式会話の［作業メモへ登録］で独立した編集画面を開きます。メイン画面を閉じても登録できます。タイトルと検証済みリンクは `chrome.storage.session`（ブラウザのメモリー内、ディスク保存なし）の2分で失効する一度限りハンドルで受け渡します。拡張機能の処理が休止しても情報を失いません。ブラウザ再起動・拡張機能の再読込／更新では破棄されます。既存公式タブは入力を保存してから再読込し、再度登録してください。自動保存・送信・本文／入力の読取はしません。
+
+Claude Codeは選択中のスレッドの見出し属性を使い、プロジェクト名をスレッド名として扱いません。曖昧／未取得なら「スレッド（名称未取得）」とし、編集画面の［メモのタイトル］で指定できます。既存メモもリンク・識別子・チェックリストを保ったまま改名できます。
+
+［メモの作業領域（任意）］は利用者自身の区分名で、各社のアカウント名を自動取得したものではありません。空欄は「共通（未指定）」で、従来の `default` メモを引き続き表示します。メモを移動／削除しません。最後に選んだ名前をサービスごと・ブラウザ／サイト内で保持します。複数アカウントはご自身で名前を分けてください。保存済みタイトルから元リンクを開き、右端［編集］で修正でき、件数は選択領域に対応します。
+
+
+
 # 日本語 — タスク詳細と作業メモ
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
@@ -56,7 +76,7 @@ Run CJS **and MJS** tests and full build, inspect ZIP/permission diff, verify 24
 
 ## 一覧・ピン・状態
 
-同じURLで拡張v1.31.0を接続。表示中かつ自動ONなら起動時と約1分ごとに、新しい非アクティブ公式ホームのサイドバー／名前／ピンを取得します。展開・スクロールは自分で作ったタブだけで行い必ず終了。利用中の会話・入力タブを再読込しません。事業者ごとの重複要求を統合し、最短55秒・取得20秒・返信2.5秒の制限。未取得・失敗・描画途中では前回一覧を保持し、空応答を全件0と断定しません。
+同じURLで拡張v1.32.0を接続。表示中かつ自動ONなら起動時と約1分ごとに、新しい非アクティブ公式ホームのサイドバー／名前／ピンを取得します。展開・スクロールは自分で作ったタブだけで行い必ず終了。利用中の会話・入力タブを再読込しません。事業者ごとの重複要求を統合し、最短55秒・取得20秒・返信2.5秒の制限。未取得・失敗・描画途中では前回一覧を保持し、空応答を全件0と断定しません。
 
 確認済みプロジェクト／グループ名でまとめ、不明な所属は未確認とし、内部IDを見出しに出しません。ピンは優先表示しますが、プロジェクトのピンと子会話のピンは別です。取得数・未対応・上限・走査終了を表示し、**ブラウザー各社の全アカウント全件は保証しません**。ChatGPTブラウザーとデスクトップ／Codexのピンは別経路です。
 
