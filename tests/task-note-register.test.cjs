@@ -20,3 +20,23 @@ test('registration dispatch bypasses stalled quota queue without widening TASKS_
  const s=fs.readFileSync('extension/background.js','utf8');assert.match(s,/TASK_NOTE_REGISTER'&&!external/);assert.match(s,/TASK_NOTE_READ'&&external&&trusted/);assert.match(s,/\['TASKS_MONITOR','TASKS_READ','TASKS_STATE','TASK_NOTE_REGISTER','TASK_NOTE_READ'\]/);assert.match(s,/sender.frameId!==0/);
  const content=fs.readFileSync('extension/task-note-button.js','utf8');assert(!/\.innerText|\.textContent\s*[^=]|querySelector|\.storage|fetch\(|\.value\b|document\.body/.test(content));assert.match(content,/button.onclick/);assert.match(content,/mode:'closed'/);
 });
+
+test('Claude display:contents tile registers the selected thread through handoff and saves sibling threads separately',async()=>{
+ const metadata=vm.createContext({URL,LLMTaskList:T});vm.runInContext(fs.readFileSync('extension/task-note-metadata.js','utf8'),metadata);
+ const heading=(title,hidden=false)=>({closest:()=>hidden?{}:null,getClientRects:()=>[{}],getAttribute:()=>title,get textContent(){throw Error('conversation text must not be read')}});
+ const tile=(id,title,hidden=false)=>({closest:()=>hidden?{}:null,getClientRects:()=>[],getAttribute:()=>id,querySelectorAll:()=>[heading(title)],get textContent(){throw Error('pane text must not be read')}});
+ const first=tile('thread:cmsg_one','Synthetic first thread'),second=tile('thread:cmsg_two','Synthetic second thread'),project=tile('coordinator','Synthetic project');
+ const doc={title:'Synthetic project - Claude Code',querySelectorAll:()=>[project,first,second],get body(){throw Error('body must not be read')}};
+ const memory=new Map(),notesContext=vm.createContext({LLMTaskModel:M,TextEncoder,Date});vm.runInContext(fs.readFileSync('web/tasks-notes.js','utf8'),notesContext);const store=notesContext.LLMTaskNotes.create({getItem:k=>memory.get(k),setItem:(k,v)=>memory.set(k,v)}),x=setup();
+ for(const [thread,title]of [['one','Synthetic first thread'],['two','Synthetic second thread']]){
+  const url=`https://claude.ai/code/project/chan_demo?thread=cmsg_${thread}`,observed=metadata.LLMTaskNoteMetadata.title(doc,url,'claude');assert.equal(observed,title);
+  assert.equal((await x.api.register({service:'claude',url,title:observed},sender(url))).status,'opened');const target=x.opened.at(-1).url;
+  const result=await x.api.read({service:'claude',token:new URL(target).searchParams.get('note')},receiver(target));assert.equal(result.status,'ready');assert.equal(result.task.url,url);assert.equal(result.task.title,title);
+  store.save({...result.task,workspace:'default',current:'Synthetic next step'});
+ }
+ assert.equal(store.all().length,2);for(const n of store.all()){assert.equal(M.noteURL(n.url,'claude'),n.url);assert(n.url.includes('?thread='));assert.notEqual(n.title,'Synthetic project')}
+ const url='https://claude.ai/code/project/chan_demo?thread=cmsg_one';
+ doc.querySelectorAll=()=>[tile('thread:cmsg_one','Hidden thread',true)];assert.equal(metadata.LLMTaskNoteMetadata.title(doc,url,'claude'),'');
+ doc.querySelectorAll=()=>[first,first];assert.equal(metadata.LLMTaskNoteMetadata.title(doc,url,'claude'),'');
+ doc.querySelectorAll=()=>[Object.assign(Object.create(first),{querySelectorAll:()=>[heading('Hidden heading',true)]})];assert.equal(metadata.LLMTaskNoteMetadata.title(doc,url,'claude'),'');
+});

@@ -1,10 +1,10 @@
 const {test}=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const tick=()=>new Promise(r=>setImmediate(r)),read=f=>fs.readFileSync(f,'utf8');
-function audio(){let listener,changed,resume,settings={sound:true},starts=0,stops=0;const timers=[],event={addListener:f=>changed=f},param={setValueAtTime(){},exponentialRampToValueAtTime(){}};
+function audio(){let listener,resume,settings={sound:true},starts=0,stops=0;const timers=[],param={setValueAtTime(){},exponentialRampToValueAtTime(){}};
  class AudioContext{state='suspended';currentTime=0;destination={};resume(){return new Promise(r=>resume=r)}createOscillator(){return {frequency:param,connect(){return this},start(){starts++},stop(){stops++},disconnect(){}}}createGain(){return {gain:param,connect(){return this},disconnect(){}}}}
- const chrome={runtime:{id:'audio',onMessage:{addListener:f=>listener=f}},storage:{local:{get:async()=>({settings})},onChanged:event}};
+ const chrome={runtime:{id:'audio',onMessage:{addListener:f=>listener=f},sendMessage:async()=>({allowed:settings.sound!==false})}};
  vm.runInNewContext(read('extension/offscreen.js'),{chrome,AudioContext,Date,setTimeout:(fn,ms)=>{const t={fn,ms,cancelled:false};timers.push(t);return t},clearTimeout:t=>{if(t)t.cancelled=true}});
- return {send:(m,reply=()=>{})=>listener(m,{id:'audio'},reply),mute:()=>{settings={sound:false};changed({settings:{newValue:settings}},'local')},resume:()=>resume(),timers,starts:()=>starts,stops:()=>stops};
+ return {send:(m,reply=()=>{})=>listener(m,{id:'audio'},reply),mute:()=>{settings={sound:false};listener({type:'STOP_NOTIFICATION_SOUND'},{id:'audio'},()=>{})},resume:()=>resume(),timers,starts:()=>starts,stops:()=>stops};
 }
 test('offscreen OFF cancels pending resume, all repeated beats and threshold second tone',async()=>{
  let x=audio(),ack;x.send({type:'PLAY_CHANGE_SOUND',level:'critical'},r=>ack=r);await tick();x.mute();x.resume();await tick();assert.equal(x.starts(),0);assert.equal(ack.played,false);

@@ -6,7 +6,8 @@
   let u;try{u=new URL(url)}catch{return ''}
   if(service==='claude'&&/^\/code\/project\//.test(u.pathname)){
    const thread=u.searchParams.get('thread');if(!/^cmsg_[a-zA-Z0-9_-]+$/.test(thread||''))return '';
-   const panes=[...document.querySelectorAll('[data-tile-host]')].filter(e=>e.getAttribute('data-tile-host')==='thread:'+thread&&visible(e));
+   // Claude uses display:contents for tile hosts: only the heading has a box.
+   const panes=[...document.querySelectorAll('[data-tile-host]')].filter(e=>e.getAttribute('data-tile-host')==='thread:'+thread&&!e.closest('[hidden],[aria-hidden="true"]'));
    if(panes.length!==1)return '';
    const heads=[...panes[0].querySelectorAll('[data-pane-root][role="region"][aria-label][data-perf-screen="project_thread"]')].filter(visible);
    return heads.length===1?clean(heads[0].getAttribute('aria-label')):'';

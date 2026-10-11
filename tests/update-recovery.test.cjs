@@ -54,7 +54,7 @@ test('state RPC rejects unrelated origins, routes, child frames and mismatched s
 });
 function audioHarness(resume){let listen,started=0;const timers=[];const param={setValueAtTime(){},exponentialRampToValueAtTime(){}};
  class AudioContext{state='suspended';currentTime=0;destination={};resume=resume;createOscillator(){return {frequency:param,connect(){return this},start(){started++},stop(){}}}createGain(){return {gain:param,connect(){return this}}}}
- const c=vm.createContext({chrome:{storage:{local:{get:async()=>({settings:{sound:true}})},onChanged:{addListener(){}}},runtime:{id:'audio-test',onMessage:{addListener:f=>listen=f}}},AudioContext,Date,Number,setTimeout:(fn,ms)=>{timers.push({fn,ms});return timers.length},clearTimeout(){}});vm.runInContext(fs.readFileSync(path.join(root,'extension/offscreen.js'),'utf8'),c);
+ const c=vm.createContext({chrome:{runtime:{id:'audio-test',sendMessage:async()=>({allowed:true}),onMessage:{addListener:f=>listen=f}}},AudioContext,Date,Number,setTimeout:(fn,ms)=>{timers.push({fn,ms});return timers.length},clearTimeout(){}});vm.runInContext(fs.readFileSync(path.join(root,'extension/offscreen.js'),'utf8'),c);
  return {send:(m,reply)=>listen(m,{id:'audio-test'},reply),timers,started:()=>started};
 }
 test('audio acknowledges only after the first tone and schedules two remaining one-second beats',async()=>{

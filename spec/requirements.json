@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs モニター",
     "name_en": "LLMs Monitor",
-    "version": "1.32.0",
-    "package_filename": "LLMs-Monitor-v1.32.0.zip",
+    "version": "1.33.0",
+    "package_filename": "LLMs-Monitor-v1.33.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -19,7 +19,7 @@
       "gemini"
     ],
     "production_companion_origin": "https://llmsmonitor.ntus.info",
-    "web_version": "1.32.0",
+    "web_version": "1.33.0",
     "companion_origins": [
       "https://llmsmonitor.ntus.info",
       "https://llmsmonitor.ntusnog.chatgpt.site"
@@ -4837,7 +4837,8 @@
         "User approval 2026-10-11: all pins, official work-note registration, default-expanded collapsible sections; app + extension; no manual regeneration."
       ],
       "acceptance_criteria": [
-        "Pins, work notes and whole task tree are independently collapsible, expanded by default; preserve disclosure across refresh/language updates; global expand/collapse includes all sections."
+        "Pins, work notes and whole task tree are independently collapsible, expanded by default; preserve disclosure across refresh/language updates; global expand/collapse includes all sections.",
+        "Work notes precede Pinned items (Japanese: ピン留め); retain existing default-open disclosures and refresh/language state."
       ],
       "implementation_evidence": [
         {
@@ -5120,7 +5121,8 @@
         "User-approved fixes and full build 2026-10-12."
       ],
       "acceptance_criteria": [
-        "Exact selected Claude thread header metadata only; editable titles retain note identity/link/checklist. Blank workspace maps to legacy default, manual labels remembered per provider, no inferred account identity."
+        "Exact selected Claude thread header metadata only; editable titles retain note identity/link/checklist. Blank workspace maps to legacy default, manual labels remembered per provider, no inferred account identity.",
+        "Claude display:contents tile hosts may lack their own box; require exact query thread identity, no hidden ancestor and a unique visible thread header. Preserve full thread URL through registration, handoff and note storage, with sibling threads distinct. Never fall back to project title for a thread."
       ],
       "implementation_evidence": [
         {
@@ -5144,10 +5146,63 @@
         {
           "type": "manual",
           "procedure": "In-place extension update, current Chrome/Edge, worker sleep and multiple-window mute."
+        },
+        {
+          "type": "automated",
+          "path": "tests/task-note-register.test.cjs"
         }
       ],
       "known_limitations": [
         "Live installed-extension and provider-account acceptance remain separate; no absolute regression guarantee."
+      ]
+    },
+    {
+      "id": "SOUND-OFFSCREEN-001",
+      "category": "audio",
+      "introduced_in": "1.33.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "Offscreen audio uses only chrome.runtime. Query the worker for the sound boolean before/after resume, fail closed on missing/error/timeout, and cancel via STOP_NOTIFICATION_SOUND. Worker settings reads bypass the stalled quota queue and reject any sender except the exact own offscreen document. No private snapshot fields or new permissions.",
+      "source_requirements": [
+        "2026-10-12 user screenshot: offscreen storage.onChanged undefined; app + extension only, preserve manuals."
+      ],
+      "acceptance_criteria": [
+        "Runtime-only startup succeeds; ordinary three-beat and low/critical patterns retained.",
+        "Nested worker state query remains independent of quota refresh; only allowed boolean returned.",
+        "OFF during resume/repeat/status, missing/rejected/timed-out query and expired requests remain silent.",
+        "Unmodified hosted/bundled manuals and Codex helper hashes preserved by --skip-manuals."
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/offscreen.js",
+          "symbol": "soundAllowed"
+        },
+        {
+          "path": "extension/background.js",
+          "symbol": "AUDIO_SOUND_STATE"
+        },
+        {
+          "path": "build.py",
+          "symbol": "--skip-manuals"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/release-1330.test.cjs"
+        },
+        {
+          "type": "automated",
+          "path": "tests/release-1320.test.cjs"
+        },
+        {
+          "type": "manual",
+          "procedure": "In-place Chrome/Edge update, offscreen context startup and OS audible ON/OFF remain installed-package checks."
+        }
+      ],
+      "known_limitations": [
+        "v1.32 mocked offscreen incorrectly exposed storage; its 266 passing tests did not verify this browser boundary.",
+        "Preserved manuals retain v1.32 edition; current runtime/package are v1.33.0."
       ]
     }
   ]
