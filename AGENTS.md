@@ -173,3 +173,6 @@ SOUND-OFFSCREEN-001: Chrome offscreen documents expose only runtime extension AP
 JP: offscreenではruntime以外の拡張APIを使わず、模擬環境にも同じ制約を設ける。設定の真偽値だけを厳密な自身のoffscreenからWorkerへ問い合わせ、残量待ち行列を経由しない。OFFを停止メッセージで伝え、失敗／期限切れは無音。本体＋拡張のみ承認時は --skip-manuals で取説・ヘルパーのバイト列を維持する。
 
 TASK-NOTE-UX-001: Claude display:contents tile hosts have no rectangle. Select the exact thread ID without a host-box requirement, then require a unique visible heading and no hidden ancestor. Test full thread URL/title across registration, session handoff and explicit note storage; sibling threads must stay distinct. Never infer thread title from project/document heading. TASK-DISCLOSE-001: Work notes precede Pinned items / ピン留め, preserving default-open and disclosure state.
+
+DOC-CODEX-INSTALL-001: documentation-only builds use --manuals-only followed by exact changed guide filenames; exit before app inputs and reject mixed package/helper options. Preserve all runtime files, ZIPs and unnamed manuals. macOS guide must match actual installer paths/ID validation and distinguish enabled permission from successful host read; Windows remains unsupported, Linux implementation is not live acceptance. Do not install on the user's machine when only instructions were requested.
+JP: 取説だけなら変更した文書名を --manuals-only に指定し、本体／ZIP／未変更取説を保持。拡張機能ID入力・Python3.9以上・接続確認までの手順を実コードに照合。Windows未対応を隠さず、取説依頼で実機導入を行わない。

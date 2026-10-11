@@ -5204,6 +5204,51 @@
         "v1.32 mocked offscreen incorrectly exposed storage; its 266 passing tests did not verify this browser boundary.",
         "Preserved manuals retain v1.32 edition; current runtime/package are v1.33.0."
       ]
+    },
+    {
+      "id": "DOC-CODEX-INSTALL-001",
+      "category": "documentation",
+      "introduced_in": "1.33.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "MacOS-first helper installation guide matches actual installer; documentation-only build updates explicit selected manuals and never app assets, versions or ZIPs.",
+      "source_requirements": [
+        "2026-10-12 user: clear Codex helper installation manual for macOS first; build manuals only."
+      ],
+      "acceptance_criteria": [
+        "Separate native helper from Chrome extension; describe copy current extension ID, Python 3.9+, unzip, Install.command/Terminal, enable optional permission, Check connection and Refresh list.",
+        "Document exact paths, single-ID replacement, recognized binary search, metadata-only states and troubleshooting without security bypasses.",
+        "Windows unsupported; Linux standard-path implementation distinguished from live verification.",
+        "Explicit --manuals-only filenames; reject mixed build flags/unknown names before writes; preserve runtime/ZIP/unnamed-manual bytes."
+      ],
+      "implementation_evidence": [
+        {
+          "path": "native/README.md",
+          "symbol": "macos-ja"
+        },
+        {
+          "path": "build.py",
+          "symbol": "build_manuals"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/manual-build.test.cjs"
+        },
+        {
+          "type": "automated",
+          "path": "tests/test_codex_host.py"
+        },
+        {
+          "type": "manual",
+          "procedure": "Documentation commands and paths compared with current installer/host; no actual user installation performed."
+        }
+      ],
+      "known_limitations": [
+        "Current ZIP README remains its previous edition by explicit manuals-only scope.",
+        "Updated-guide installed macOS Chrome/Edge and Linux acceptance remains separate; Windows native installer unimplemented."
+      ]
     }
   ]
 }

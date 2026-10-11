@@ -1516,3 +1516,11 @@ TASK-NOTE-UX-001 / TASK-DISCLOSE-001 v1.33 additions: The live Claude Code tile 
 実機DOMのメタ情報で display:contents を確認。囲みの表示サイズで見出しを除外せず、URLのスレッドIDに一致する非hidden囲み＋一意で見える見出し属性だけを使う。親プロジェクト名への代替は禁止。同一プロジェクトの別スレッドについて、登録→受渡し→保存→リンクまで合成データで確認。既存メモは自動書換えせず編集可能に維持。作業メモを「ピン留め」の前へ配置し、既定展開・開閉状態保持は継続。
 
 Verification v1.33.0: 273 CJS/MJS tests pass. ZIP CRC and manifest/source versions match; permission/host/CSP sets and main CSS bytes unchanged. Sixteen preserved hosted/bundled manual/helper files match their pre-build SHA256 hashes. Local Chrome at 420px: work notes precede pins, no horizontal overflow, disclosure survives language switching, all sections initially expanded. Preview is synthetic/unconnected; it does not verify installed extension audio or signed-in registration.
+
+## 2026-10-12 — Codex installation manual update (runtime versions unchanged)
+
+DOC-CODEX-INSTALL-001: macOS-first bilingual guide covers the independent helper ZIP, exact own extension-ID selection, Python 3.9+ (host uses dict union), recognized bundled/PATH binaries, Finder extraction, Install.command and interactive Terminal fallback, installer registration vs permission enabled vs real Check connection, throttle, metadata-only states, per-user paths, ID replacement, updates and precise removal. Linux standard paths are documented without live acceptance; Windows installation is explicitly unsupported. Current guide is hosted separately because unchanged ZIP README stays its previous edition. --manuals-only explicitly selected filenames exits before reading app inputs; app source/assets/package/helper/version/checksums and unnamed manuals remain unchanged. No installation or permission changes are performed on the user's machine.
+
+取説だけを更新。macOS導入から実際の取得確認までを具体化し、Linux実機未確認・Windows導入未対応を明記。既存ZIP内の旧取説と現行Web取説を区別。本体v1.33.0／ヘルパーv1.30.0／保存データを維持し、指定文書以外はビルドしない。
+
+Documentation verification: 275 CJS/MJS tests pass, including the 5 embedded Python host/installer tests and two isolated manual-build safety tests. SHA256 comparison preserves all 178 unnamed existing runtime/package/manual files. Only the five selected hosted manuals and native source guide changed within the guarded artifact set. No user installation or browser permission was performed.

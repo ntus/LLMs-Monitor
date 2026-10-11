@@ -6,7 +6,7 @@ Canonical guide / 正本: https://github.com/ntus/LLMs-Monitor/blob/main/SPECIFI
 
 <a id="en"></a>
 
-Document revision: 1.0 · Product version: **1.32.0** · Web UI: **1.32.0** · Web companion: `https://llmsmonitor.ntus.info/` (previous Site origin retained for compatibility)
+Document revision: 1.0 · Product version: **1.33.0** · Web UI: **1.33.0** · Web companion: `https://llmsmonitor.ntus.info/` (previous Site origin retained for compatibility)
 
 This English section defines the implementation contract for the beta. The [Japanese section](#ja) contains the full historical and field-level acceptance criteria. Implementers must read both sections and every ID in [`spec/requirements.json`](spec/requirements.json); neither translation overrides the other.
 
@@ -137,7 +137,7 @@ TASK-CODE-001 reads exact accessibility labels from rendered Claude Code sidebar
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.32.0
+対象製品版: 1.33.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -1501,3 +1501,28 @@ Fixed ChatGPT staff link label is Tibo 𝕏, separate from official incident sta
 266 CJS/MJS/Python checks passed. 20 quota/history/billing/task-acquisition/panel/lifecycle support modules compared byte-for-byte to 51957e7; existing permission/host/CSP arrays unchanged; main style-v1320 equals v1310. Native runtime files unchanged. Extension ZIP: manifest-referenced files and five bundled manuals match current source; helper ZIP keeps runtime 1.30.0 with revised guide. Ten hosted manuals match their canonical sources. ZIP CRC, forbidden-file inventory, version and diff checks pass; RELEASE-CHECKSUMS.txt records final archive SHA-256. Chrome synthetic fixtures (outside repo/deployment) verify notes and OFF/preview/theme behavior; no real private note/account data is used. Actual installed-package/OS audio/native helper/live Tibo remain manual gates.
 
 266件成功、20既存モジュールと権限／host／CSP・ヘルパーruntimeを維持。取説10件・拡張／ヘルパーZIP・版／CRC／禁止ファイル／差分／SHA-256を照合。模擬画面はリポジトリ外で、個人情報を使わない。実拡張更新・OS音・ヘルパー導入・Tiboライブの受入は別途。
+
+## v1.33.0 — Runtime-only offscreen audio / 音声補助画面のAPI制限修正
+
+SOUND-OFFSCREEN-001 corrects a v1.32.0 defect: offscreen documents expose only chrome.runtime, so storage.onChanged caused startup failure and storage.local.get was unsupported too. The previous permissive audio mocks missed that boundary; 266 passing checks did not establish installed offscreen acceptance. The player now queries AUDIO_SOUND_STATE through runtime before and after audio resume. The worker validates its own extension ID, exact offscreen.html URL and top frame, reads only the sound boolean outside the quota queue, and forwards STOP_NOTIFICATION_SOUND on mute/storage change. Error/missing/expired replies fail closed with the existing 1.1-second acknowledgement limit. Frequencies, three one-second beats, threshold tones and before-publish sound acknowledgement remain unchanged.
+
+User-authorized app + extension build uses --package --skip-manuals. Runtime/Web/package version is 1.33.0; hosted and bundled manuals remain the unchanged v1.32 edition, and the helper ZIP remains 1.30.0. No account/history/note storage keys, quota acquisition, main monitor CSS layout, permission, host or CSP changes. Automated tests use the real nested worker/player listener with a runtime-only offscreen API. Installed Chrome/Edge audio/startup/OS verification is still a separate gate.
+
+JP: v1.32ではoffscreenで使えないstorage.onChanged／local.getを追加しており、起動時エラーが発生した。模擬APIにも誤ってstorageを設けたため既存テストでは検出できなかった。runtimeメッセージだけでWorkerへ再生可否を問い合わせ、厳密な自身のoffscreen／frame検証と残量待ち行列を経由しない真偽値読取を行う。OFFは停止メッセージ、設定変更イベントはWorker側で扱い、遅延再開・予約音・失敗時の無音と既存音パターンを維持する。
+
+本体＋拡張v1.33.0をビルド。利用者指定どおり未変更取説v1.32版・ヘルパーZIPは再生成しない。残量取得／履歴／メモ保存キー／主画面CSS寸法／権限を変えない。runtimeだけの模擬offscreenと実Worker listenerの循環通信を検証し、Chrome/Edge更新後の音質・OS音は実機受入として区別する。
+
+
+TASK-NOTE-UX-001 / TASK-DISCLOSE-001 v1.33 additions: The live Claude Code tile host uses display:contents and has no own rectangle, although its exact selected thread region is visible. Match the query thread ID and reject hidden ancestors; require a unique visible header attribute. Never substitute the parent project heading. End-to-end synthetic tests carry the full thread query and title through the actual session handoff and note store; sibling threads remain separate. Body/drafts are excluded. Existing incorrectly named notes are retained and remain editable; no silent migration. Installed updated-extension registration remains a manual check. Work notes now precede “Pinned items” / 「ピン留め」; disclosures remain expanded initially and retain their state.
+
+実機DOMのメタ情報で display:contents を確認。囲みの表示サイズで見出しを除外せず、URLのスレッドIDに一致する非hidden囲み＋一意で見える見出し属性だけを使う。親プロジェクト名への代替は禁止。同一プロジェクトの別スレッドについて、登録→受渡し→保存→リンクまで合成データで確認。既存メモは自動書換えせず編集可能に維持。作業メモを「ピン留め」の前へ配置し、既定展開・開閉状態保持は継続。
+
+Verification v1.33.0: 273 CJS/MJS tests pass. ZIP CRC and manifest/source versions match; permission/host/CSP sets and main CSS bytes unchanged. Sixteen preserved hosted/bundled manual/helper files match their pre-build SHA256 hashes. Local Chrome at 420px: work notes precede pins, no horizontal overflow, disclosure survives language switching, all sections initially expanded. Preview is synthetic/unconnected; it does not verify installed extension audio or signed-in registration.
+
+## 2026-10-12 — Codex installation manual update (runtime versions unchanged)
+
+DOC-CODEX-INSTALL-001: macOS-first bilingual guide covers the independent helper ZIP, exact own extension-ID selection, Python 3.9+ (host uses dict union), recognized bundled/PATH binaries, Finder extraction, Install.command and interactive Terminal fallback, installer registration vs permission enabled vs real Check connection, throttle, metadata-only states, per-user paths, ID replacement, updates and precise removal. Linux standard paths are documented without live acceptance; Windows installation is explicitly unsupported. Current guide is hosted separately because unchanged ZIP README stays its previous edition. --manuals-only explicitly selected filenames exits before reading app inputs; app source/assets/package/helper/version/checksums and unnamed manuals remain unchanged. No installation or permission changes are performed on the user's machine.
+
+取説だけを更新。macOS導入から実際の取得確認までを具体化し、Linux実機未確認・Windows導入未対応を明記。既存ZIP内の旧取説と現行Web取説を区別。本体v1.33.0／ヘルパーv1.30.0／保存データを維持し、指定文書以外はビルドしない。
+
+Documentation verification: 275 CJS/MJS tests pass, including the 5 embedded Python host/installer tests and two isolated manual-build safety tests. SHA256 comparison preserves all 178 unnamed existing runtime/package/manual files. Only the five selected hosted manuals and native source guide changed within the guarded artifact set. No user installation or browser permission was performed.

@@ -25,12 +25,12 @@ Update the extension in place; do not uninstall or clear browser storage. Save o
 
 
 
-Release preparation **v1.32.0** for Chrome/Edge desktop, with English and Japanese interfaces.
+Release preparation **v1.33.0** for Chrome/Edge desktop, with English and Japanese interfaces.
 
 - **See LLM usage remaining in real time:** current/weekly limits, reset times, official incidents and local change alerts for ChatGPT, Claude and Gemini.
 - **Keep track of work:** independent task windows, evidenced response states, pinned items first, and per-thread notes/checklists with links back to the conversation.
 
-[Open monitor](https://llmsmonitor.ntus.info/) · [Product introduction](https://llmsmonitor.ntus.info/product.html) · [Extension ZIP](dist/LLMs-Monitor-v1.32.0.zip) · [Task/work-note guide](TASK_DETAILS.md) · [Specification](SPECIFICATION.md) · [Privacy](PRIVACY.md) · [Security review](SECURITY_REVIEW.md) · [Release history](CHANGELOG.md)
+[Open monitor](https://llmsmonitor.ntus.info/) · [Product introduction](https://llmsmonitor.ntus.info/product.html) · [Extension ZIP](dist/LLMs-Monitor-v1.33.0.zip) · [Task/work-note guide](TASK_DETAILS.md) · [Specification](SPECIFICATION.md) · [Privacy](PRIVACY.md) · [Security review](SECURITY_REVIEW.md) · [Release history](CHANGELOG.md)
 
 **Tibo reset alerts are not live on the current static Site.** The detector supports public usage/reset posts from Tibo (`@thsottiaux`, OpenAI staff) and selected company accounts, but requires a separately configured X server, secret, cache and minute cron. Tested synthetic detection is not proof of live delivery. See [setup and live acceptance](server/README.md). Posts are announcements, not confirmation that your individual limit has reset. Nerf Bench is [link-only](https://www.bridgebench.ai/nerf-bench).
 
@@ -52,13 +52,15 @@ Only changed numeric values blink; local sound is sent before the display change
 
 Use standard/dark themes, language, volume, opacity, service ordering/hiding, fullscreen or a floating view. Hidden services continue acquisition/history. Always-on-top uses supported Document Picture-in-Picture after a click; native window chrome, sizing limits and OS transparency belong to the browser/OS. Floating incident details list only affected services, while usage cards remain available. History stores up to 10,000 changed values per window locally.
 
+For macOS helper setup: **Connect Codex → download and extract → run Install.command → paste the extension ID → Enable connection → Check connection → Refresh list**. The [step-by-step guide](https://github.com/ntus/LLMs-Monitor/blob/main/native/README.md#macos-en) includes a Terminal fallback, Python 3.9+ checks and troubleshooting. Linux has a command installer; Windows helper installation is not implemented. This guide update preserves app v1.33.0 and helper v1.30.0 ZIPs.
+
 ## Tasks and work notes
 
 **Task details** opens a tall separate window titled `LLMs Monitor -Task- ChatGPT` (or Claude/Gemini). Compact bars show that provider’s saved usage and incident without refreshing quotas or modifying the main monitor. Search/filter the list and collapse pins, notes or the tree; all sections start expanded.
 
 Observed states appear before every item. **Generating** means a visible stop control was observed; **Response idle** is not completion. Closed ordinary chats or unrecognized controls stay Unknown. Open-tab evidence expires after 15 seconds; exact Claude Code list evidence and shared Codex evidence after 90 seconds. Waiting cannot be inferred into finished work.
 
-Pinned projects/chats are prioritized when detected. Rendered-list coverage and rejected/limited counts are displayed; **all account pins are not guaranteed**. A pinned project does not pin every child chat. Browser ChatGPT and desktop Codex are different sources. Optional [Codex helper v1.30.0](dist/LLMs-Monitor-Codex-Helper-v1.30.0.zip), [installation guide](native/README.md), provides this computer’s Codex metadata/local pins; it is initially disabled. Runtime stays Unknown unless an existing shared server supplies evidence.
+Pinned projects/chats are prioritized when detected. Rendered-list coverage and rejected/limited counts are displayed; **all account pins are not guaranteed**. A pinned project does not pin every child chat. Browser ChatGPT and desktop Codex are different sources. Optional [Codex helper v1.30.0](dist/LLMs-Monitor-Codex-Helper-v1.30.0.zip), [macOS installation guide](https://github.com/ntus/LLMs-Monitor/blob/main/native/README.md#macos-en), provides this computer’s Codex metadata/local pins; it is initially disabled. Runtime stays Unknown unless an existing shared server supplies evidence.
 
 To remember a thread:
 
@@ -87,7 +89,7 @@ Security and regression results are in [Security review](SECURITY_REVIEW.md); re
 - ChatGPT障害情報に［Tibo 𝕏］を追加。OpenAIスタッフのプロフィールへのリンクです。現在未設定の速報配信を有効化したり、個人のリセットを確認したりする機能ではありません。
 - 通知音OFFは予約済み音・遅れて再開した音も取消し、残量更新を待たず保存します。他の窓の設定保存でONへ戻らないよう対応。［試聴］は一度だけでON/OFFを変更しません。拡張機能はメイン画面を閉じても使用量・障害を監視します。停止音は通知音OFFで設定してください。
 - メモ登録は拡張機能処理の休止後も受け渡せます。Claude Codeスレッド名を取得し、メモタイトルを編集可能に。作業領域の空欄は「共通（未指定）」で旧defaultメモを保持し、手動選択をサービス別に記憶します。
-- **CodexヘルパーZIPはChrome拡張機能ではなく端末内インストーラー**です。展開してmacOSは `Install.command`、Linuxは[導入説明](native/README.md#ja)のコマンドを実行します。Chromeの［パッケージ化されていない拡張機能を読み込む］には、本体拡張ZIPを展開した `manifest.json` のあるフォルダーを指定します。
+- **CodexヘルパーZIPはChrome拡張機能ではなく端末内インストーラー**です。展開してmacOSは `Install.command`、Linuxは[macOS導入手順](https://github.com/ntus/LLMs-Monitor/blob/main/native/README.md#macos-ja)のコマンドを実行します。Chromeの［パッケージ化されていない拡張機能を読み込む］には、本体拡張ZIPを展開した `manifest.json` のあるフォルダーを指定します。
 
 アンインストール／保存領域の消去をせず上書き更新してください。公式会話タブは入力を保存したうえで手動再読込すると新しいメモ登録処理を使えます。[タスク・メモ取説](TASK_DETAILS.md#ja)。
 
@@ -101,15 +103,17 @@ Security and regression results are in [Security review](SECURITY_REVIEW.md); re
 
 [日本語チラシを拡大](assets/promotional/llms-monitor-a4-landscape-flyer-v1.jpg?raw=1)（以前の画面紹介。現行の説明は以下）
 
-**AIの残量も、作業の続きも。** 正式リリース準備版 **v1.32.0**。
+**AIの残量も、作業の続きも。** 正式リリース準備版 **v1.33.0**。
 
 ① **各種LLMの利用残量をリアルタイム表示！** リセット時刻、公式障害情報、数値変化も確認。
 
 ② **タスク一覧とスレッドごとの作業メモで、続きの作業を忘れない！** ピン留め優先、観測できた状態、リンク付き備忘録・チェックリストを別窓で表示。
 
-[モニター](https://llmsmonitor.ntus.info/) · [製品紹介](https://llmsmonitor.ntus.info/product.html) · [拡張機能ZIP](dist/LLMs-Monitor-v1.32.0.zip) · [タスク・作業メモ取説](TASK_DETAILS.md#ja) · [詳細仕様](SPECIFICATION.md#ja) · [プライバシー](PRIVACY.md#ja)
+[モニター](https://llmsmonitor.ntus.info/) · [製品紹介](https://llmsmonitor.ntus.info/product.html) · [拡張機能ZIP](dist/LLMs-Monitor-v1.33.0.zip) · [タスク・作業メモ取説](TASK_DETAILS.md#ja) · [詳細仕様](SPECIFICATION.md#ja) · [プライバシー](PRIVACY.md#ja)
 
 **※Tiboリセット通知は現在の静的サイトでは未稼働です。** Tibo氏（`@thsottiaux`、OpenAIスタッフ）・各社公式Xの利用枠／リセット投稿を検知する処理はありますが、別サーバー・X認証Secret・キャッシュ・1分cronが必要です。模擬データでの成功を実投稿の通知成功とは扱いません。[設定と実投稿検証](server/README.md#ja)を参照。告知は個人の残量がリセット済みである証明ではありません。Nerf Benchはリンクのみです。
+
+CodexヘルパーのmacOS導入は **［Codexを接続］→ZIP展開→Install.command実行→拡張機能ID入力→［接続を有効にする］→［接続を確認］→［一覧を更新］**。詳しくは [macOS手順と困ったときの対処](https://github.com/ntus/LLMs-Monitor/blob/main/native/README.md#macos-ja) を参照。Python 3.9以上、ターミナルでの代替手順、Chrome／Edge別IDの注意点も掲載。Linuxはコマンド方式、Windowsヘルパーは未対応です。今回の取説更新では本体v1.33.0・ヘルパーv1.30.0のZIPは作り直しません。
 
 ## 導入・更新
 
@@ -135,7 +139,7 @@ Security and regression results are in [Security review](SECURITY_REVIEW.md); re
 
 各項目の先頭に状態を表示。［応答生成中］は停止ボタンの観測、［応答待機］は完了ではありません。通常会話のタブを閉じると未確認。開いた会話の観測は15秒、Claude Code一覧・共有Codexの観測は90秒で失効します。
 
-検出したピンを優先表示しますが、**アカウント全件は保証しません**。取得数・未対応・上限を表示。プロジェクトのピンは子の全会話のピンではありません。ブラウザーChatGPTとCodexは別経路。[任意ヘルパー](dist/LLMs-Monitor-Codex-Helper-v1.30.0.zip)と[導入説明](native/README.md#ja)で、この端末のCodex一覧・ローカルピンを取得できます。初期無効で、共有サーバーの根拠がなければ状態は未確認です。
+検出したピンを優先表示しますが、**アカウント全件は保証しません**。取得数・未対応・上限を表示。プロジェクトのピンは子の全会話のピンではありません。ブラウザーChatGPTとCodexは別経路。[任意ヘルパー](dist/LLMs-Monitor-Codex-Helper-v1.30.0.zip)と[macOS導入手順](https://github.com/ntus/LLMs-Monitor/blob/main/native/README.md#macos-ja)で、この端末のCodex一覧・ローカルピンを取得できます。初期無効で、共有サーバーの根拠がなければ状態は未確認です。
 
 **備忘録を作る手順**
 
@@ -152,3 +156,5 @@ Security and regression results are in [Security review](SECURITY_REVIEW.md); re
 `node --test tests/*.test.cjs tests/*.test.mjs` 後に `python3 build.py --package --codex-helper` で、本体・拡張機能・ヘルパー・現行Markdown取説（`dist/docs/`）を生成。このリポジトリにPDF取説はありません。通常の `python3 build.py` はZIP・取説成果物を維持。ヘルパー本体はコード未変更の1.30.0を継続します。
 
 [セキュリティ精査](SECURITY_REVIEW.md)・[ストア提出手順](STORE_SUBMISSION.md)を参照。現行Sitesの所有者限定公開は維持し、一般公開・ストア承認・実機確認・将来のaimon.ntus.info移行は別の正式公開作業です。Safari／Firefox／ネイティブモバイル／Windows用Codexヘルパー／全アカウント一覧は対応を保証しません。
+
+Documentation-only build / 取説だけのビルド: `python3 build.py --manuals-only CODEX_HELPER.md README.md TASK_DETAILS.md SPECIFICATION.md AGENTS.md` updates only the named hosted manuals; no app/version/ZIP changes.

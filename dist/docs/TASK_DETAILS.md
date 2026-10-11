@@ -42,7 +42,9 @@ Registration is independent and explicit: supported conversation route/top frame
 
 ## Optional Codex
 
-[Helper installation](native/README.md) is initially disabled and requires an extension-page permission click plus separate per-user helper installation. The helper runtime remains v1.30.0. Local read-only App Server metadata provides IDs/titles/pins/update times; previews, turns, events and authentication fields are discarded. Only fixed metadata methods are permitted. Desktop local pin IDs use an explicitly labelled compatibility adapter; the local audit is not a remote-host/account guarantee. Maximum 500 tasks. Independent metadata cannot observe runtime; an already-existing shared server can provide evidence valid for 90 seconds. Idle never implies completed. No task execution, automatic server start/restart, network port or cloud upload. Pause/Clear/import invalidates the separate Codex path too.
+macOS quick path: **Connect Codex → extract helper ZIP → Install.command (or `python3 install.py`) → paste the extension ID → Enable connection → Check connection → Refresh list**. Python 3.9+ is required. The helper is not an extension; do not use Load unpacked for it. Linux has a command installer; Windows installation is not implemented. The current installation guide is revised 2026-10-12; this update does not rebuild app/helper ZIPs.
+
+[macOS helper installation](https://github.com/ntus/LLMs-Monitor/blob/main/native/README.md#macos-en) is initially disabled and requires an extension-page permission click plus separate per-user helper installation. The helper runtime remains v1.30.0. Local read-only App Server metadata provides IDs/titles/pins/update times; previews, turns, events and authentication fields are discarded. Only fixed metadata methods are permitted. Desktop local pin IDs use an explicitly labelled compatibility adapter; the local audit is not a remote-host/account guarantee. Maximum 500 tasks. Independent metadata cannot observe runtime; an already-existing shared server can provide evidence valid for 90 seconds. Idle never implies completed. No task execution, automatic server start/restart, network port or cloud upload. Pause/Clear/import invalidates the separate Codex path too.
 
 ## Implementation and acceptance
 
@@ -99,7 +101,9 @@ Claude Codeは選択中のスレッドの見出し属性を使い、プロジェ
 
 ## 任意のCodex連携と保護範囲
 
-[導入説明](native/README.md#ja)に従い、専用画面のクリックと別ヘルパー導入で有効化。初期無効。コード未変更のヘルパー1.30.0はタイトル・ID・ローカルピン・更新日時・根拠のある状態だけを返し、preview／turn／認証を渡しません。端末内ピン形式は互換読取で、他ホスト・全アカウント保証ではありません。最大500件。独立メタ情報から稼働は推測せず、既存共有サーバーの観測のみ90秒有効。待機を完了とせず、サーバー起動／再起動・ポート公開・実行は行いません。停止／消去／読込でCodex保留応答も無効化します。
+macOSは **［Codexを接続］→ヘルパーZIP展開→Install.command（または `python3 install.py`）→拡張機能ID入力→［接続を有効にする］→［接続を確認］→［一覧を更新］**。Python 3.9以上が必要で、ヘルパーをChromeの拡張機能読込へ指定しません。Linuxはコマンド導入、Windowsは未対応。2026-10-12改訂の導入取説を参照してください。今回は本体・ヘルパーZIPを再生成しません。
+
+[macOSの詳しい導入手順](https://github.com/ntus/LLMs-Monitor/blob/main/native/README.md#macos-ja)に従い、専用画面のクリックと別ヘルパー導入で有効化。初期無効。コード未変更のヘルパー1.30.0はタイトル・ID・ローカルピン・更新日時・根拠のある状態だけを返し、preview／turn／認証を渡しません。端末内ピン形式は互換読取で、他ホスト・全アカウント保証ではありません。最大500件。独立メタ情報から稼働は推測せず、既存共有サーバーの観測のみ90秒有効。待機を完了とせず、サーバー起動／再起動・ポート公開・実行は行いません。停止／消去／読込でCodex保留応答も無効化します。
 
 Web・拡張の専用モジュールへ分離し、主画面には起動導線だけ。許可HTTPS origin・タスク経路・サービス・トップフレームを検証し、残量概要は重複service指定も拒否。必須／任意権限はv1.30から変更なし。JSONは512KiB・500項目・12階層、重複／循環／不正親子を拒否。リンクは厳密な公式会話URLまたは検証済みCodexリンクのみ、描画はtextContent、接続禁止CSPで本文や秘密を画面・ログ・配布物へ混入させません。自動一覧はメモリー内、手動保存メモだけを明示された別保存とします。
 

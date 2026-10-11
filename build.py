@@ -1,6 +1,26 @@
 from pathlib import Path
 import json, shutil, zipfile, sys
 root = Path(__file__).resolve().parent
+manual_sources = {name: name for name in ['README.md', 'TASK_DETAILS.md', 'PRIVACY.md', 'STORE_SUBMISSION.md', 'SECURITY_REVIEW.md', 'SPECIFICATION.md', 'AGENTS.md', 'CHANGELOG.md']}
+manual_sources.update({'CODEX_HELPER.md': 'native/README.md', 'INTELLIGENCE_SERVER.md': 'server/README.md'})
+
+def build_manuals(names):
+    if not names or any(name not in manual_sources for name in names):
+        raise SystemExit('Specify known manual filenames after --manuals-only (for example CODEX_HELPER.md).')
+    sources = {name: (root / manual_sources[name]).read_text() for name in names}
+    (root / 'dist' / 'docs').mkdir(exist_ok=True, parents=True)
+    for name, content in sources.items():
+        relative = manual_sources[name]
+        (root / 'dist' / 'docs' / name).write_text(f'Canonical guide / 正本: https://github.com/ntus/LLMs-Monitor/blob/main/{relative}\n\n' + content)
+
+# Exit before reading or touching app/package inputs for documentation-only work.
+if '--manuals-only' in sys.argv:
+    if sys.argv[1] != '--manuals-only' or any(arg.startswith('--') for arg in sys.argv[2:]):
+        raise SystemExit('--manuals-only cannot be combined with app/package/helper build options.')
+    build_manuals(sys.argv[2:])
+    print('Selected manuals built; app, extension and helper artifacts unchanged.')
+    sys.exit(0)
+
 manifest = json.loads((root / 'extension' / 'manifest.json').read_text())
 version = manifest['version']
 requirements = json.loads((root / 'spec' / 'requirements.json').read_text())
@@ -63,11 +83,7 @@ else:
     print(f'LLMs Monitor web assets built; store package v{version} preserved.')
 # Full release builds publish the current manuals alongside the app.
 if '--package' in sys.argv and '--skip-manuals' not in sys.argv:
-    (root / 'dist' / 'docs').mkdir(exist_ok=True)
-    for name in ['README.md', 'TASK_DETAILS.md', 'PRIVACY.md', 'STORE_SUBMISSION.md', 'SECURITY_REVIEW.md', 'SPECIFICATION.md', 'AGENTS.md', 'CHANGELOG.md']:
-        (root / 'dist' / 'docs' / name).write_text(f'Canonical guide / 正本: https://github.com/ntus/LLMs-Monitor/blob/main/{name}\n\n' + (root / name).read_text())
-    (root / 'dist' / 'docs' / 'CODEX_HELPER.md').write_text('Canonical guide / 正本: https://github.com/ntus/LLMs-Monitor/blob/main/native/README.md\n\n' + (root / 'native' / 'README.md').read_text())
-    (root / 'dist' / 'docs' / 'INTELLIGENCE_SERVER.md').write_text('Canonical guide / 正本: https://github.com/ntus/LLMs-Monitor/blob/main/server/README.md\n\n' + (root / 'server' / 'README.md').read_text())
+    build_manuals(list(manual_sources))
 # Separate opt-in packaging avoids regenerating an unchanged helper on later releases.
 if '--codex-helper' in sys.argv:
     helper_version = requirements['product']['codex_helper_version']
