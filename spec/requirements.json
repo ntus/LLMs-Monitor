@@ -19,7 +19,7 @@
       "gemini"
     ],
     "production_companion_origin": "https://llmsmonitor.ntus.info",
-    "web_version": "1.35.1",
+    "web_version": "1.35.2",
     "companion_origins": [
       "https://llmsmonitor.ntus.info",
       "https://llmsmonitor.ntusnog.chatgpt.site"
@@ -5434,6 +5434,46 @@
           "path": "tests/task-work-ui.test.cjs",
           "cases": [
             "saved-note titles open original links, Edit opens the same note, counts follow saves/deletes/provider/workspace/language"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "PRODUCT-GUIDE-001",
+      "category": "documentation",
+      "introduced_in": "Web 1.35.2",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "The product page includes a readable bilingual lower-half guide covering installation, usage, views, sound/status, tasks/pins/states, favorites/work notes, Codex, API balances and troubleshooting.",
+      "acceptance_criteria": [
+        "Static nine-chapter guide with labelled table of contents and stable anchors; language switch updates all guide text and links.",
+        "Explain actual feature limits and current versions without claiming live Tibo delivery, complete pins, idle completion, unsupported mobile/native helper support or automatic sharing.",
+        "Guide only reads static copy and existing product-language preference; no quota, notes, extension RPC or native calls. Preserve monitor behavior and extension/helper/manual bytes."
+      ],
+      "implementation_evidence": [
+        {
+          "path": "web/product-guide.js",
+          "symbol": "GUIDE/render"
+        },
+        {
+          "path": "web/product.html",
+          "symbol": "usage-guide"
+        },
+        {
+          "path": "web/product.css",
+          "symbol": "guide-layout"
+        },
+        {
+          "path": "build.py",
+          "symbol": "product-guide.js copy"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/product-site.test.cjs",
+          "cases": [
+            "bilingual product guide covers real workflows and current package links without private state access"
           ]
         }
       ]

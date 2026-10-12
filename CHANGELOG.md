@@ -1,3 +1,9 @@
+# Web 1.35.2 — 2026-10-12
+
+- Add a bilingual nine-chapter user guide to the lower half of the product page, with contents links, ordered setup/use steps, status tables and troubleshooting.
+- Explain favorites/work notes and macOS Codex setup alongside quota monitoring; preserve actual platform, pin coverage and Tibo delivery limits.
+- Product Web build only; monitor/task logic, extension/helper ZIPs and existing bundled manuals unchanged.
+
 # Web 1.35.1 — 2026-10-12
 
 - Rename saved notes to Favorites; add explicit ★/☆ membership to task/pin/Codex rows.
