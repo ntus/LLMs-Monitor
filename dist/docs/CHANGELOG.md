@@ -1,5 +1,11 @@
 Canonical guide / 正本: https://github.com/ntus/LLMs-Monitor/blob/main/CHANGELOG.md
 
+# Web 1.35.1 — 2026-10-12
+
+- Rename saved notes to Favorites; add explicit ★/☆ membership to task/pin/Codex rows.
+- Preserve legacy notes and unfavorited content; add scoped drag/keyboard ordering and JSON round-trip.
+- App and changed guides only; extension/helper ZIPs preserved.
+
 # 1.35.0 — 2026-10-12
 
 - Return the last validated Codex list to task windows during native acquisition cooldown, including immediately after successful setup checks.

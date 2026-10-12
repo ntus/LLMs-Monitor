@@ -13,7 +13,7 @@
  const reasonLabel=task=>t({'not-open':'notOpen','no-signal':'noSignal',conflict:'stateConflict',stale:'stateStale',unavailable:'stateUnavailable'}[task.stateReason]||'unknown');
  function node(task,children,opened,filtering){
   const item=el('li',undefined,'task-node'),detail=el('details');detail.dataset.taskId=task.id;detail.open=filtering||opened.has('task:'+task.id);
-  const summary=el('summary'),title=el('span',M.stateIcon(task)+' '+(task.pinned?'📌 ':'')+task.title,'task-title'),badge=el('span',stateLabel(task),'task-state');badge.dataset.status=task.status;if(task.status==='unknown'&&task.stateReason)badge.title=reasonLabel(task);summary.append(title,badge);detail.append(summary);
+  const summary=el('summary'),title=el('span',M.stateIcon(task)+' '+(task.pinned?'📌 ':'')+task.title,'task-title'),badge=el('span',stateLabel(task),'task-state');badge.dataset.status=task.status;if(task.status==='unknown'&&task.stateReason)badge.title=reasonLabel(task);if(globalThis.LLMTaskWork&&task.url)summary.append(LLMTaskWork.star(task));summary.append(title,badge);detail.append(summary);
   const meta=el('div',undefined,'task-meta');meta.append(el('p',`${t('updated')}: ${when(task.updatedAt)}`));if(task.stateObservedAt)meta.append(el('p',`${t('observed')}: ${when(task.stateObservedAt)}`,'task-observed'));else if(task.stateReason)meta.append(el('p',reasonLabel(task)));if(task.summary)meta.append(el('p',task.summary));
   if(task.listedLabel)meta.append(el('p',t('codeListNote')));
   if(task.url){const link=el('a',t('open')+' ↗');link.href=task.url;link.target='_blank';link.rel='noopener noreferrer';meta.append(link)}if(globalThis.LLMTaskWork)meta.append(LLMTaskWork.button(task));detail.append(meta);

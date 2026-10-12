@@ -25,3 +25,14 @@ test('sidebar adapter obtains project labels independently of duplicate pinned/r
 test('only fresh provider homes may expand sidebar groups; user conversations are never prepared',()=>{
  const fs=require('node:fs');assert(fs.readFileSync('extension/task-reader.js','utf8').includes('[T.HOMES[service]'));let clicks=0;const doc={querySelectorAll:()=>[{getClientRects:()=>[{}],querySelectorAll:()=>Array.from({length:80},()=>({getClientRects:()=>[{}],click:()=>clicks++}))}]};assert.equal(T.prepare(doc,'claude'),50);assert.equal(clicks,50);
 });
+
+test('favorites migrate legacy notes, preserve unfavorited content and ordered links through export/import',()=>{
+ const mem=storage();mem.setItem(N.KEY,JSON.stringify({schemaVersion:1,notes:[{...note(),revision:1}]}));const s=N.create(mem);assert.equal(s.all()[0].favorite,true);assert.equal(s.all()[0].favoriteOrder,null);
+ const old=s.all()[0];s.save({...old,favorite:false},old.revision);assert.equal(s.all()[0].current,'Review');assert.equal(s.all()[0].favorite,false);
+ const a=s.save({...s.all()[0],favorite:true},2),b=s.save({...note(),url:'https://chatgpt.com/c/second'});s.reorder('chatgpt','personal',[b,a]);assert.equal(s.get('chatgpt','personal',b.url).favoriteOrder,0);assert.equal(s.get('chatgpt','personal',a.url).favoriteOrder,1);
+ const copied=N.create(storage());copied.import(s.export());assert.equal(copied.get('chatgpt','personal',a.url).favoriteOrder,1);assert.equal(copied.get('chatgpt','personal',a.url).checklist[0].done,true);
+});
+test('favorite reorder detects concurrent edits and scope mismatch atomically',()=>{
+ const s=N.create(storage()),a=s.save(note()),b=s.save({...note(),url:'https://chatgpt.com/c/second'});s.save({...a,current:'New content'},a.revision);const before=s.export();assert.throws(()=>s.reorder('chatgpt','personal',[b,a]),/conflict/);assert.equal(s.export(),before);
+ assert.throws(()=>s.reorder('chatgpt','other',[b,a]));assert.throws(()=>s.reorder('claude','personal',[b,a]));assert.throws(()=>s.reorder('chatgpt','personal',[b,b]));assert.equal(s.export(),before);
+});

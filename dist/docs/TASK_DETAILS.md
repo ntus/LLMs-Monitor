@@ -114,3 +114,9 @@ CJS＋MJSテスト、フルビルド、ZIP・権限差分、240〜420px・日英
 Use [helper v1.30.1](https://llmsmonitor.ntus.info/LLMs-Monitor-Codex-Helper-v1.30.1.zip), reinstall once with the current browser extension ID, then Check connection. **Refresh list / ［一覧を更新］** is in **LLMs Monitor → ChatGPT card → Task details**, not the official ChatGPT site. The unchanged extension setup links to old helper 1.30.0; the independent task window and updated guide link to 1.30.1. Metadata-only states remain Unknown; installation is not required each refresh.
 
 v1.30.1を一度導入し直して［接続を確認］。その後、**LLMs MonitorのChatGPTカード → ［タスク詳細］ → ［一覧を更新］**。公式ChatGPTにはこの更新ボタンはありません。ヘルパー更新リンクは新しいタスク画面／取説から使います。
+
+## Favorites and display order / お気に入りと表示順
+
+EN: Saved notes are now **Favorites**. Use ☆ on a browser task, official-pin row or Codex task to add its title/link; ★ removes the favorite without deleting the work note. Existing saved notes become favorites automatically. Use Edit to write notes. Removed favorites remain under **Other work notes**, including items no longer in the acquired list. Drag the ⋮⋮ handle to reorder, or focus it and use Up/Down keys. Order is saved per service/workspace and retained in JSON export/import. This local list does not change official pins. Refresh older task windows after the update.
+
+JP: 「保存済みメモ」は **［お気に入り］** になりました。通常タスク・ピン留め欄・Codexタスクの **☆** でタイトルとリンクを登録し、**★** で解除します。解除してもメモ本文は削除しません。既存メモはお気に入りとして引き継ぎます。右端の［編集］で作業メモを記入できます。解除した項目は、最新一覧から消えていても **［その他の作業メモ］** から編集・再登録できます。**⋮⋮** をドラッグして順番を変えるか、ハンドルにフォーカスして上下キーで移動します。順番はサービス・作業領域ごとに保存され、JSON書出し／読込みにも含まれます。公式ピン留めは変更しません。更新前から開いているタスク窓は再読み込みしてください。

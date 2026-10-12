@@ -65,3 +65,7 @@ test('日英切替とフローティング同期・透明度を全表示面へ�
  assert(css.includes('.floating-body .widget .history-log'));
  assert(css.includes('html:fullscreen .card h2{font-size:21px}'));
 });
+
+test('task-window asset cache versions match the current Web release',()=>{
+ const digits=ledger.product.web_version.replaceAll('.','');const assets=[...read('web/tasks.html').matchAll(/(?:src|href)="(tasks[^"?]+)\?v=(\d+)"/g)];assert(assets.length>5);for(const asset of assets)assert.equal(asset[2],digits,asset[1]);
+});

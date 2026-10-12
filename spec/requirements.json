@@ -19,7 +19,7 @@
       "gemini"
     ],
     "production_companion_origin": "https://llmsmonitor.ntus.info",
-    "web_version": "1.35.0",
+    "web_version": "1.35.1",
     "companion_origins": [
       "https://llmsmonitor.ntus.info",
       "https://llmsmonitor.ntusnog.chatgpt.site"
@@ -5385,6 +5385,55 @@
           "path": "tests/task-codex.test.cjs",
           "cases": [
             "setup success reaches a different task window during cooldown with no extra native process"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "TASK-FAVORITES-001",
+      "category": "task_notes",
+      "introduced_in": "Web 1.35.1",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "Rename saved notes to Favorites, allow explicit star membership and scoped persistent drag/keyboard order without deleting note content.",
+      "acceptance_criteria": [
+        "Legacy saved notes default to favorite, retaining identity/URLs/content; optional favoriteOrder/favoriteOnly fields preserve schemaVersion 1.",
+        "Star controls on browser tasks, pins and Codex explicitly save validated title/link; new favorite-only records do not claim working state. Unstar preserves content and exposes Other work notes.",
+        "Order is scoped by service/workspace, persists and exports/imports; revision mismatches reject reorder atomically. Drag payload contains no title/URL and foreign drag sources are ignored.",
+        "Default-open Work notes remains before official Pins; favorites are separate from provider pins; unchanged main modules and extension/helper ZIPs preserved."
+      ],
+      "implementation_evidence": [
+        {
+          "path": "web/tasks-notes.js",
+          "symbol": "validate/reorder"
+        },
+        {
+          "path": "web/tasks-work.js",
+          "symbol": "star/favorites/move/savedList"
+        },
+        {
+          "path": "web/tasks-page.js",
+          "symbol": "node"
+        },
+        {
+          "path": "web/tasks-codex.js",
+          "symbol": "render"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/task-work.test.cjs",
+          "cases": [
+            "favorites migrate legacy notes, preserve unfavorited content and ordered links through export/import",
+            "favorite reorder detects concurrent edits and scope mismatch atomically"
+          ]
+        },
+        {
+          "type": "automated",
+          "path": "tests/task-work-ui.test.cjs",
+          "cases": [
+            "saved-note titles open original links, Edit opens the same note, counts follow saves/deletes/provider/workspace/language"
           ]
         }
       ]
