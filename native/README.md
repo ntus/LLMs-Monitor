@@ -2,7 +2,7 @@
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja) · [macOS](#macos-ja)
 
-Guide revised **2026-10-12** for Web / extension **v1.34.0**. Helper runtime / download remains **v1.30.1**; this release preserves its ZIP and updates the hosted guide separately.
+Guide revised **2026-10-12** for Web / extension **v1.35.0**. Helper runtime / download remains **v1.30.1**; this release preserves its ZIP and updates the hosted guide separately.
 
 <a id="en"></a>
 
@@ -246,3 +246,9 @@ JP: 上記リンクまたは **LLMs Monitor → ChatGPTカードの［タスク�
 EN: In extension 1.34.0, open **Connect Codex**. If it reports that the native API is unavailable despite granted permission, use **Restart extension**. This explicit action briefly stops all monitor updates and may close setup pages; saved settings/history/work notes remain, but pending session-memory note registrations are cleared. Reopen **Connect Codex** from the task window and click **Check connection**. If unresolved, save drafts, fully quit Chrome / Edge and reopen it. Recovery has not yet passed installed-browser acceptance; a terminal helper check alone does not prove browser connectivity. Do not reinstall the helper solely because the API is missing.
 
 JP: 拡張v1.34.0の［Codexを接続］で、権限許可済みなのにAPIが利用できないと表示されたら、［拡張機能を再起動］を押します。明示操作で全モニター更新が一時停止し、設定画面は閉じることがあります。保存済み設定・履歴・作業メモは保持しますが、未完了のsessionメモリー内メモ登録は失効します。タスク窓の［Codexを接続］から開き直し、［接続を確認］を押してください。直らない場合は入力を保存し、Chrome／Edgeを完全終了して再度開きます。復旧成功は実機で未確認で、ターミナルの成功だけではブラウザー接続成功としません。API未提供だけを理由にヘルパーを再導入する必要はありません。v1.34.0の接続画面は既存ヘルパー1.30.1へのリンクを案内します。
+
+### v1.35.0: connection succeeds but the task window stays unavailable
+
+EN: Update the main extension to 1.35.0 in the same browser profile (keep its ID). Reload the task window and use Refresh list. Successful check results are now shared with task windows during the 55-second acquisition cooldown, in memory only, preserving the original observation timestamp. Helper 1.30.1 does not need reinstallation when the ID is unchanged. Live browser acceptance is still required.
+
+JP: 接続確認で件数が出てもタスク窓が取得失敗のままなら、同じプロファイルで本体拡張を1.35.0へ更新し、タスク窓を再読み込みして［一覧を更新］します。取得制限55秒の間も、成功した一覧をメモリー内だけで他のタスク窓へ渡します。観測時刻は更新しません。IDが同じならヘルパー1.30.1の再導入は不要です。実機確認は引き続き必要です。

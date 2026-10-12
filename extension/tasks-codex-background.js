@@ -4,7 +4,7 @@
  const KEY='llms-codex-enabled-v1',HOST='info.ntus.llmsmonitor.codex';
  const ORIGINS=new Set(['https://llmsmonitor.ntus.info','https://llmsmonitor.ntusnog.chatgpt.site']);
  const UUID=/^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i;
- let pending=null,lastRead=0,epoch=0;
+ let pending=null,lastRead=0,epoch=0,recent=null;
  function allowed(message,sender,external){
   let u;try{u=new URL(sender.url)}catch{return false}
   if(sender.frameId!==0)return false;
@@ -30,19 +30,19 @@
   const generation=epoch,c=await config();if(generation!==epoch||!c.enabled||!c.permission)return {status:'disabled'};
   if(!c.apiAvailable)return {status:'native-api-unavailable'};
   if(pending)return pending;
-  if(lastRead&&Date.now()-lastRead<55000)return {status:'cooldown'};
+  if(lastRead&&Date.now()-lastRead<55000)return recent&&Date.now()-Date.parse(recent.checkedAt)<=90000?normalize(recent):{status:'cooldown'};
   lastRead=Date.now();
   const operation=new Promise(resolve=>{let port,done=false;const finish=value=>{if(done)return;done=true;clearTimeout(timer);try{port?.disconnect()}catch{}resolve(generation===epoch?normalize(value):{status:'disabled'})},timer=setTimeout(()=>finish({status:'unavailable'}),24000);
    try{port=chrome.runtime.connectNative(HOST);port.onMessage.addListener(finish);port.onDisconnect.addListener(()=>{const ignored=chrome.runtime.lastError;finish({status:'unavailable'})});port.postMessage({type:'CODEX_TASKS_READ'})}catch{finish({status:'unavailable'})}
   });pending=operation;
-  try{return await operation}finally{if(pending===operation)pending=null}
+  try{const result=await operation;if(generation===epoch&&result.status==='ready')recent=result;return result}finally{if(pending===operation)pending=null}
  }
  async function handle(message,sender,external){
   if(!allowed(message,sender,external))return {status:'unavailable'};
   if(message.type==='TASKS_CODEX_SETUP'){await GlanceWindows.createNormalTab(chrome,chrome.runtime.getURL('codex-setup.html'));return {status:'opened'}}
   if(message.type==='CODEX_CONFIG_READ')return config();
   if(message.type==='CODEX_CONFIGURE'){
-   const enabled=message.enabled===true&&await chrome.permissions.contains({permissions:['nativeMessaging']});epoch++;lastRead=0;await chrome.storage.local.set({[KEY]:enabled});return {enabled};
+   const enabled=message.enabled===true&&await chrome.permissions.contains({permissions:['nativeMessaging']});epoch++;lastRead=0;recent=null;await chrome.storage.local.set({[KEY]:enabled});return {enabled};
   }
   return read();
  }

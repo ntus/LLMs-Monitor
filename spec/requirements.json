@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs モニター",
     "name_en": "LLMs Monitor",
-    "version": "1.34.0",
-    "package_filename": "LLMs-Monitor-v1.34.0.zip",
+    "version": "1.35.0",
+    "package_filename": "LLMs-Monitor-v1.35.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -19,7 +19,7 @@
       "gemini"
     ],
     "production_companion_origin": "https://llmsmonitor.ntus.info",
-    "web_version": "1.34.0",
+    "web_version": "1.35.0",
     "companion_origins": [
       "https://llmsmonitor.ntus.info",
       "https://llmsmonitor.ntusnog.chatgpt.site"
@@ -5357,6 +5357,34 @@
           "cases": [
             "granted permission with an absent native API reports recovery without launching, throttling or changing saved data",
             "setup distinguishes missing API and restarts only on an explicit button click without altering storage"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "TASK-CODEX-HANDOFF-001",
+      "category": "reliability",
+      "introduced_in": "1.35.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "Codex connection checks and task-window reads share the last validated memory-only success during acquisition cooldown instead of withholding the successful list.",
+      "acceptance_criteria": [
+        "Return validated success during the 55-second cooldown without launching a new host; checkedAt is unchanged and evidence expires after 90 seconds.",
+        "Check enabled, optional permission and API availability before replying with cached metadata; exact sender route/origin checks remain mandatory.",
+        "Clear the success on explicit configure; no disk, session storage, logging or network persistence. Extension restart clears memory."
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/tasks-codex-background.js",
+          "symbol": "recent/read/CODEX_CONFIGURE"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/task-codex.test.cjs",
+          "cases": [
+            "setup success reaches a different task window during cooldown with no extra native process"
           ]
         }
       ]

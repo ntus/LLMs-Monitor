@@ -1,3 +1,9 @@
+# 1.35.0 — 2026-10-12
+
+- Return the last validated Codex list to task windows during native acquisition cooldown, including immediately after successful setup checks.
+- Preserve acquisition throttle, timestamps, permission guards and memory-only metadata; clear on configuration.
+- No helper rebuild or unchanged manual regeneration. Installed-browser handoff remains a live acceptance check.
+
 # 1.34.0 — 2026-10-12
 
 - Distinguish granted native permission with an absent Chrome API from helper installation failure.

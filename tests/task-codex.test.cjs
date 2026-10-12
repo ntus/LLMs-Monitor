@@ -21,7 +21,7 @@ test('native access is opt-in and exact origin, task route, provider, own setup 
  x.enable();x.disablePermission();assert.equal((await x.api.handle(m,external(),true)).status,'disabled');assert.equal(x.ports.length,0);
 });
 test('native requests coalesce, throttle and invalidate responses after disable without mutating quota history',async()=>{
- const x=setup();x.enable();const before=structuredClone(x.stored),m={type:'TASKS_CODEX_READ',service:'chatgpt'};const a=x.api.handle(m,external(),true),b=x.api.handle(m,external(),true);await new Promise(setImmediate);assert.equal(x.ports.length,1);x.ports[0].reply(reply());assert.equal((await a).status,'ready');assert.equal((await b).status,'ready');assert.equal((await x.api.handle(m,external(),true)).status,'cooldown');
+ const x=setup();x.enable();const before=structuredClone(x.stored),m={type:'TASKS_CODEX_READ',service:'chatgpt'};const a=x.api.handle(m,external(),true),b=x.api.handle(m,external(),true);await new Promise(setImmediate);assert.equal(x.ports.length,1);x.ports[0].reply(reply());assert.equal((await a).status,'ready');assert.equal((await b).status,'ready');assert.equal((await x.api.handle(m,external(),true)).status,'ready');assert.equal(x.ports.length,1);
  x.tick();const c=x.api.handle(m,external(),true);await new Promise(setImmediate);await x.api.handle({type:'CODEX_CONFIGURE',enabled:false},internal(),false);x.ports[1].reply(reply());assert.equal((await c).status,'disabled');assert.deepEqual(x.stored,before);
 });
 test('native result validation discards private fields and malformed snapshots; optional permission is not a required grant',()=>{
@@ -63,4 +63,11 @@ test('setup distinguishes missing API and restarts only on an explicit button cl
  await elements.check.onclick();assert.equal(elements.restart.hidden,false);assert.equal(elements.check.disabled,false);assert.equal(reloads,0);
  status='unavailable';await elements.check.onclick();assert.equal(elements.restart.hidden,true);elements.restart.onclick();assert.equal(reloads,1);
  const html=fs.readFileSync('extension/codex-setup.html','utf8');assert.match(html,/id="restart" type="button" hidden/);assert.match(html,/Helper-v1\.30\.1\.zip/);
+});
+
+test('setup success reaches a different task window during cooldown with no extra native process',async()=>{
+ const x=setup();x.enable();const check=x.api.handle({type:'CODEX_CHECK'},internal(),false);await new Promise(setImmediate);x.ports[0].reply(reply());assert.equal((await check).status,'ready');
+ const received=await x.api.handle({type:'TASKS_CODEX_READ',service:'chatgpt'},external(),true);assert.equal(received.status,'ready');assert.equal(received.tasks.length,1);assert.equal(x.ports.length,1);
+ assert.equal((await x.api.handle({type:'TASKS_CODEX_READ',service:'chatgpt'},external('https://evil.test/tasks?service=chatgpt'),true)).status,'unavailable');
+ await x.api.handle({type:'CODEX_CONFIGURE',enabled:false},internal(),false);assert.equal((await x.api.handle({type:'TASKS_CODEX_READ',service:'chatgpt'},external(),true)).status,'disabled');
 });

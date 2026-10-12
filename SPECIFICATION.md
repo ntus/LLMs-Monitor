@@ -135,7 +135,7 @@ TASK-CODE-001 reads exact accessibility labels from rendered Claude Code sidebar
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.34.0
+対象製品版: 1.35.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -1544,3 +1544,9 @@ Verification: 275 Node CJS/MJS tests pass, including 7 Python host cases (shared
 TASK-CODEX-API-001: Live Chrome screenshot shows permission=true, enabled=true, connectNative=undefined. Installed helper 1.30.1 independently returns 18 tasks / 6 matched pins with valid native framing, but Chrome connection still fails. This release distinguishes missing native API from helper failure, checks availability before launching/throttling, and adds an explicit setup-page Restart extension action. No automatic restart or privilege expansion. Saved state remains; extension restart temporarily interrupts monitor updates and clears browser-session note handoffs under the existing two-minute contract. Reopen Connect Codex from the task window afterward; save drafts before a full browser restart if required. Recovery success on installed Chrome/Edge is unverified. Helper ZIP/runtime and unchanged manuals are preserved.
 
 Verification: 277 CJS/MJS regression tests pass (including the existing Python suite). Fifteen main acquisition/state/history/audio/settings/CSS modules are byte-identical to the previous release; shared.js differs only in APP_VERSION. New ZIP CRC and exact source entries checked; both helper ZIPs and unnamed manuals retain hashes. Installed Chrome/Edge recovery remains unverified.
+
+## v1.35.0 Codex successful check / task-window handoff
+
+TASK-CODEX-HANDOFF-001: Setup and task windows share one 55-second native read throttle. Previously a successful setup check returned its list only to that caller; subsequent task reads received cooldown and retained an unavailable/disabled display. Return the most recent validated success during cooldown from worker memory only, keeping checkedAt and the existing 90-second freshness limit. Permission/enabled/API and strict route guards precede access; configure clears the result, worker restart discards it. No disk/session/log persistence, no new host process during cooldown, no main-monitor writes. This reproduces one path causing the reported display mismatch; installed-browser acceptance remains required.
+
+Verification: all 278 CJS/MJS regressions pass, including the existing Python host tests and successful setup-to-task cooldown reuse. Main acquisition/state/history/audio modules retain previous bytes, package CRC/source entries match, helper ZIPs and unchanged manuals retain hashes. Installed-browser handoff acceptance remains pending.

@@ -184,3 +184,9 @@ Shared socket existence no longer consumes the whole host deadline: all shared m
 No permission, CSP, host or native adapter expansion. Setup exposes only enabled/permission/API-availability booleans and an explicit runtime.reload button. Missing API is checked before native launch/cooldown; no settings/history/notes writes or automatic restart. Restart briefly suspends the extension and clears session-memory note handoffs; persisted data remains. Helper ZIPs unchanged. Real Chrome reports granted permission but undefined API; recovery success remains a live acceptance gate.
 
 Verification: 277 CJS/MJS regression tests pass (including the existing Python suite). Fifteen main acquisition/state/history/audio/settings/CSS modules are byte-identical to the previous release; shared.js differs only in APP_VERSION. New ZIP CRC and exact source entries checked; both helper ZIPs and unnamed manuals retain hashes. Installed Chrome/Edge recovery remains unverified.
+
+## v1.35.0 Codex cooldown result handoff
+
+Validated automatic metadata is shared across authorized read callers in worker memory only, within the existing 90-second observation validity. Strict sender guards, enabled/native permission/API checks precede reuse. Explicit configuration resets the cache; extension restart drops it. No storage, logs, remote transfer or additional permissions; acquisition throttle remains 55 seconds. Main quota/history/audio modules and unchanged helper ZIPs retain bytes. Live installation acceptance remains unverified.
+
+Verification: all 278 CJS/MJS regressions pass, including the existing Python host tests and successful setup-to-task cooldown reuse. Main acquisition/state/history/audio modules retain previous bytes, package CRC/source entries match, helper ZIPs and unchanged manuals retain hashes. Installed-browser handoff acceptance remains pending.
