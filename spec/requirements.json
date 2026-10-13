@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs モニター",
     "name_en": "LLMs Monitor",
-    "version": "1.36.0",
-    "package_filename": "LLMs-Monitor-v1.36.0.zip",
+    "version": "1.37.0",
+    "package_filename": "LLMs-Monitor-v1.37.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -19,7 +19,7 @@
       "gemini"
     ],
     "production_companion_origin": "https://llmsmonitor.ntus.info",
-    "web_version": "1.36.0",
+    "web_version": "1.37.0",
     "companion_origins": [
       "https://llmsmonitor.ntus.info",
       "https://llmsmonitor.ntusnog.chatgpt.site"
@@ -5495,7 +5495,8 @@
         "EOD PSTは固定UTC-08:00の当日末目安、現地時刻表示・tooltip・期限後非表示",
         "主画面／小窓／PiP／サイト内パネルの共通マーク",
         "ヘルパーと既存ビルド済み取説のバイトを保持",
-        "ChatGPTタスク詳細にも同じfuture-onlyマーク。概要RPCは公開告知1件だけ、他サービスへ返さない"
+        "ChatGPTタスク詳細にも同じfuture-onlyマーク。概要RPCは公開告知1件だけ、他サービスへ返さない",
+        "共有URLのs/tを各1個だけ許可し値を保存しない。無効／権限／ページ／投稿／未来期限の不足を表示で区別"
       ],
       "implementation_evidence": [
         {
