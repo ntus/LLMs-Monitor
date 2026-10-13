@@ -67,6 +67,11 @@ for relative, needles in checks.items():
     for needle in needles:
         if needle not in source:
             raise SystemExit(f'{relative} is missing version contract: {needle}')
+# Installer assets are private to the extension setup page; no web-accessible entry.
+installer_assets = root / 'extension' / 'native'
+installer_assets.mkdir(exist_ok=True)
+for name in ['codex_host.py', 'install.py', 'Install.command']:
+    shutil.copy2(root / 'native' / name, installer_assets / name)
 package = root / 'dist' / f'LLMs-Monitor-v{version}.zip'
 if '--package' in sys.argv:
     if '--skip-manuals' not in sys.argv:

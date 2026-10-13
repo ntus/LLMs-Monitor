@@ -31,12 +31,12 @@
   let alerts=prior.alerts||[],readerState='permission-required';
   try{
    if(!await chrome.permissions.contains({permissions:['scripting'],origins:[ORIGIN]}))throw Error('Permission unavailable');
-   readerState='no-public-page';const tabs=(await chrome.tabs.query({url:ORIGIN})).filter(t=>route(t.url)).slice(0,3);if(!tabs.length)throw Error('No public page');
-   readerState='no-public-posts';const rows=[];for(const tab of tabs){try{const result=await chrome.scripting.executeScript({target:{tabId:tab.id,frameIds:[0]},func:readPage});for(const item of result)if(item.frameId===0&&Array.isArray(item.result))rows.push(...item.result.slice(0,50));}catch{}}
+   readerState='api-unavailable';if(typeof chrome.scripting?.executeScript!=='function')throw Error('Public reader API unavailable');readerState='no-public-page';const tabs=(await chrome.tabs.query({url:ORIGIN})).filter(t=>route(t.url)).slice(0,3);if(!tabs.length)throw Error('No public page');
+   readerState='no-public-posts';const rows=[],boundedRead=async tab=>{let timer;try{return await Promise.race([chrome.scripting.executeScript({target:{tabId:tab.id,frameIds:[0]},func:readPage}),new Promise((_,reject)=>{timer=setTimeout(()=>reject(Error('Public reader timeout')),1500)})])}finally{clearTimeout(timer)}};await Promise.all(tabs.map(async tab=>{try{for(const item of await boundedRead(tab))if(item.frameId===0&&Array.isArray(item.result))rows.push(...item.result.slice(0,50));}catch{}}));
    if(!rows.length)throw Error('No public posts');
    const merged=new Map(alerts.map(a=>[a.id,a]));for(const row of rows){const a=classify(row,now);if(a){const previous=merged.get(a.id);if(!previous)merged.set(a.id,a);else if(a.resetAt&&a.resetAt!==previous.resetAt)merged.set(a.id,{...a,detectedAt:previous.detectedAt||a.detectedAt});}}
    alerts=[...merged.values()].filter(a=>now-a.publishedAt<=604800000).sort((a,b)=>b.publishedAt-a.publishedAt).slice(0,50);
-   return {status:'ready',readerState:'ready',checkedAt:now,lastReadyAt:now,alerts};
+   return {status:'ready',readerState:'ready',readerInfo:{pages:tabs.length,posts:rows.length,resetPosts:rows.filter(row=>classify(row,now)).length},checkedAt:now,lastReadyAt:now,alerts};
   }catch{return {...prior,status:'unavailable',readerState,checkedAt:now,alerts};}
  }
  root.GlanceTiboReader={ORIGIN,KEY,route,deadline,classify,readPage,read};if(typeof module!=='undefined')module.exports=root.GlanceTiboReader;

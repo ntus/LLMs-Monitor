@@ -424,3 +424,9 @@ Optional, free Tibo public-page reader; short reset announcements; future-deadli
 Fix rejected s/t public share links and show bounded Tibo acquisition reasons. No tracking values retained, no additional permissions or manual/helper rebuild. 共有リンクと未表示理由の案内を修正。
 
 v1.37 also isolates per-tab failures and repairs a previously missing deadline on the same post without duplicate alerts.
+
+## v1.38.0 — 2026-10-13
+
+Claude billing probe uses an owned inactive official billing tab only after existing opt-in permission; it is independent of the quota queue, coalesced, bounded and cleaned up. User-activated/navigated tabs are retained. API balances remain separate from quotas/history. Codex setup prepares an entirely local ZIP with a validated exact extension ID, executable macOS entrypoint and no network upload; native authorization remains exact. Existing enabled connections are checked on opening setup. Tibo public readers run bounded per-tab reads independently, report bounded counts/API availability, and support explicit diagnostics without quota-queue blocking. Advice must not obscure the feed/status content.
+
+本体・拡張機能v1.38.0／ヘルパーv1.30.2をビルドし、取説は正本だけ更新。既存dist/docsを再生成しない。実端末のClaude自動取得と初回専用ZIP導入は利用者確認が必要。Tibo告知の取得は利用者が動作確認し、アドバイスON時の重なりを報告。予定期限は実際の個別残量回復時刻ではない。

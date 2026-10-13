@@ -2,7 +2,7 @@
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja) · [macOS](#macos-ja)
 
-Guide revised **2026-10-12** for Web / extension **v1.35.0**. Helper runtime / download remains **v1.30.1**; this release preserves its ZIP and updates the hosted guide separately.
+Guide revised **2026-10-13** for Web / extension **v1.38.0**, helper **v1.30.2**. Prefer the personalized installer described in the v1.38 section below; older ID-entry steps describe the generic installer.
 
 <a id="en"></a>
 
@@ -252,3 +252,9 @@ JP: 拡張v1.34.0の［Codexを接続］で、権限許可済みなのにAPIが�
 EN: Update the main extension to 1.35.0 in the same browser profile (keep its ID). Reload the task window and use Refresh list. Successful check results are now shared with task windows during the 55-second acquisition cooldown, in memory only, preserving the original observation timestamp. Helper 1.30.1 does not need reinstallation when the ID is unchanged. Live browser acceptance is still required.
 
 JP: 接続確認で件数が出てもタスク窓が取得失敗のままなら、同じプロファイルで本体拡張を1.35.0へ更新し、タスク窓を再読み込みして［一覧を更新］します。取得制限55秒の間も、成功した一覧をメモリー内だけで他のタスク窓へ渡します。観測時刻は更新しません。IDが同じならヘルパー1.30.1の再導入は不要です。実機確認は引き続き必要です。
+
+## v1.38 / helper v1.30.2 — simplified connection (2026-10-13)
+
+EN: In Connect Codex, select **Save installer ZIP for this extension**. Extract it, run Install.command on macOS (or `python3 ./install.py` in that folder on macOS/Linux), then select **Connect (enable and check)** and allow the optional native permission. This ZIP includes this extension’s exact ID; no copy or ID input is required. If macOS blocks double-click, use the Python command in the extracted folder. The generic download still asks for an ID. Existing configured connections are checked automatically when setup opens; no installer is needed each refresh. Update an unpacked extension by overwriting the same folder and reloading it to retain its ID. A different installation ID requires a new personalized installer. Windows/iOS/Android remain future targets, not supported by this native helper.
+
+JP: ［Codexを接続］で **［この端末用の導入ZIPを保存］** を押し、展開します。macOSは Install.command、ダブルクリックが拒否された場合やLinuxは展開フォルダーで `python3 ./install.py` を実行。その後 **［接続する（有効化・確認）］** を押して任意権限を許可します。このZIPには現在の拡張機能IDが自動設定され、コピー・入力は不要です。汎用ZIPでは従来どおりID入力が必要です。既存の接続は設定画面を開くと確認され、毎回のインストールは不要。拡張機能更新は同じ展開フォルダーへ上書きして再読み込みしIDを維持します。別のIDで導入した場合だけ専用ZIPを作り直してください。Windows／iOS／Androidのヘルパー対応は今後の要件です。
