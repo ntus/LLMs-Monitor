@@ -1588,3 +1588,5 @@ Validation 2026-10-13: live public DOM confirms author/tweetText/time structure 
 Accept only the standard s/t share query keys (each unique) on the exact public author route, in both tab selection and injected reader. Do not retain their values; exported alerts use canonical query-free post links. Reject other keys, credentials, fragments and private routes. Feed disclosure now distinguishes disabled, missing permission, absent page, unreadable posts and no future deadline. No host expansion, reloads, quota/history/native/manual changes. Live installed-extension state remains unverified.
 
 共有URLのs/tだけを許可し、値を保存せず正規URLに変換。無効／権限なし／ページなし／本人投稿を読めない／未来の期限告知なしを区別して案内する。本体＋拡張機能のみ、取説の再ビルドなし。
+
+Additional v1.37 hardening: one failed public tab does not discard other readable tabs. A later complete read of the same post can fill/correct its announced deadline, retaining first detection time and post-ID notification deduplication. Real user quota screenshot confirms 8%→100% at 14:04:25, but does not establish Tibo as the cause.

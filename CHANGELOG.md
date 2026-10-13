@@ -422,3 +422,5 @@ Optional, free Tibo public-page reader; short reset announcements; future-deadli
 ## 1.37.0 — 2026-10-13
 
 Fix rejected s/t public share links and show bounded Tibo acquisition reasons. No tracking values retained, no additional permissions or manual/helper rebuild. 共有リンクと未表示理由の案内を修正。
+
+v1.37 also isolates per-tab failures and repairs a previously missing deadline on the same post without duplicate alerts.
