@@ -1,5 +1,0 @@
-/* Keep feed/status content reachable when the advice ribbon is enabled. */
-body:has(#advisor:not([hidden])) main{padding-bottom:140px}
-body:has(#advisor:not([hidden])) .provider-status-host .provider-status-popover{bottom:calc(100% + 62px);max-height:55vh;overflow:auto}
-html:fullscreen body:has(#advisor:not([hidden])) main{padding-bottom:140px}
-html:fullscreen body:has(#advisor:not([hidden])) footer{margin-bottom:62px}

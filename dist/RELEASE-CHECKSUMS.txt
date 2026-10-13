@@ -1,4 +1,4 @@
 5c2f1ca984c53ea6f06aec16f9185f307d1c05f21182635a1b42b272161c779b  LLMs-Monitor-Codex-Helper-v1.30.0.zip
 aa83ae1b500ece2c20422d351baa2ac7279319e7b3da4c282f37ceeb90cab3fb  LLMs-Monitor-Codex-Helper-v1.30.1.zip
 f0320bdf73b06d8d7492489662c9fb56b55167d05fd93a7ce8756d5fa86bfbf8  LLMs-Monitor-Codex-Helper-v1.30.2.zip
-f59583eca7a00b481cb1bef0a777dff75256636b5573fb5befff5e6160e537d6  LLMs-Monitor-v1.38.0.zip
+3d41797b94de3f638a4385c39fa5c755e11a796bee02e3e3334ad8aa1e9096df  LLMs-Monitor-v1.39.0.zip

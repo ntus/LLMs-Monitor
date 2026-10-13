@@ -220,3 +220,9 @@ Claude billing probe uses an owned inactive official billing tab only after exis
 本体・拡張機能v1.38.0／ヘルパーv1.30.2をビルドし、取説は正本だけ更新。既存dist/docsを再生成しない。実端末のClaude自動取得と初回専用ZIP導入は利用者確認が必要。Tibo告知の取得は利用者が動作確認し、アドバイスON時の重なりを報告。予定期限は実際の個別残量回復時刻ではない。
 
 Verification for v1.38: 297 regression tests passed before the additional one-click sequence check. Synthetic local layout shows expanded Tibo feed and status above Advice ON. All 10 standalone manual checksums are unchanged. Generic/personalized ZIP integrity and exact-origin installer tests pass; no real user native installation was changed.
+
+## v1.39.0 — Tibo / expanded status layout (2026-10-13)
+
+Measure the complete fixed status dock with ResizeObserver; expanded content flows inside the dock and is bounded/scrollable. Reserve measured height for main content and place the advice ribbon above it independently of ON/OFF. ChatGPT reset entitlement includes a separate Tibo public profile link below the row; a verified future reset announcement uses a warning, dated label, tooltip and exact post link. After expiry restore the plain profile link. Available count stays inside its official usage link. Preserve quotas/history/audio, optional permissions and native helper. Build app/extension only, retain helper/manual bytes.
+
+Verification v1.39: 300 regression tests passed. Local synthetic expanded-status screens with Advice OFF and ON retain readable Tibo feed. ZIP integrity verified; helper ZIPs and 10 standalone manuals unchanged. Live installed-browser upgrade remains user acceptance.
