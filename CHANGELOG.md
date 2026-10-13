@@ -414,3 +414,7 @@ Fix the v1.32 offscreen startup regression by using runtime-only audio messages 
 
 EN: Fix a stalled shared Codex socket exhausting the entire metadata deadline. Bound shared initialization/pin/list reads to four seconds, then retain time for independent metadata. Fallback states remain Unknown. Current Web task-window helper download and related guides updated; extension ZIP1.33.0, old helper and unrelated manuals preserved. Future native targets include macOS, Windows, iOS and Android; no native applications or cloud sync are shipped by this repair.
 JP: 共有socket待機で代替一覧も失敗する不具合を修正。共有処理を4秒で区切り、全体21秒の残りでメタ一覧を取得。稼働状態は未確認。Web／ヘルパー／関連取説だけ更新、拡張ZIP1.33.0・旧ヘルパー・未変更取説を維持。将来アプリのmacOS／Windows／iOS／Androidを必須対象として記録、今回実装はしない。
+
+## 1.36.0 — 2026-10-13
+
+Optional, free Tibo public-page reader; short reset announcements; future-deadline-only dated Reset? marks in ChatGPT main and shared subviews. No auto reload or paid API. 本体＋拡張機能のみビルド、関連取説は正本更新のみ。

@@ -60,7 +60,7 @@ test('API credit display uses separate currency balance and official links in bo
  const manifest=JSON.parse(fs.readFileSync('extension/manifest.json'));
  assert.deepEqual(manifest.permissions,['storage','alarms','offscreen','notifications']);
  assert.deepEqual(manifest.optional_permissions,['scripting','nativeMessaging']);
- assert.equal(manifest.optional_host_permissions.length,3);
+ assert.deepEqual([...manifest.optional_host_permissions].sort(),['https://platform.openai.com/*','https://platform.claude.com/*','https://aistudio.google.com/*','https://x.com/*'].sort());assert(!manifest.host_permissions.includes('https://x.com/*'));
  const setup=fs.readFileSync('extension/api-setup.js','utf8');assert.match(setup,/chrome\.permissions\.request/);
 });
 

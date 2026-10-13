@@ -128,6 +128,14 @@ Modules: `extension/task-status.js` observes scoped controls; `task-state-backgr
 
 TASK-CODE-001 reads exact accessibility labels from rendered Claude Code sidebar session links via a fresh inactive Code home, alongside the normal sidebar. Individual conversation tabs need not be open. Input-needed and idle are list observations; unread replies and merged pull requests never imply completion. One-minute acquisition remains bounded and closes both owned tabs; partial success is accepted. List evidence expires after 90 seconds, open-tab evidence after 15 seconds; conflicting evidence stays unknown. No quota/history/audio, permission, message-body or credential changes. Official list labels were inspected on 2026-10-11; installed-package end-to-end behavior is still unverified.
 
+
+## v1.36 — Free Tibo public-page reading
+
+In the monitor, choose **Tibo connections**, allow optional `https://x.com/*` access, then keep a signed-in Tibo profile/post open in Chrome. Only rendered public posts by `@thsottiaux` are inspected once per minute; there is no automatic reload, hidden crawl, paid API, credential extraction or DM/input reading. Undisplayed new posts are not discovered. Missing page/access restrictions show unavailable, preserving prior public alerts; first read is silent and later post IDs notify once. No private usage or notes are sent to X.
+
+ChatGPT main and all shared subviews show **Tibo 𝕏 Reset? (YYYYMMDD HH:MM)** only when an announced future deadline can be parsed. Currently explicit “by EOD PST time” is converted from the posting day's fixed UTC−08:00 end (23:59) to the device timezone. It is an approximate deadline, not an exact execution time. Tooltip shows the announcement/timezone; click opens the exact source post. The mark disappears at the deadline. Short announcements without a deadline still enter the feed, but do not receive a dated mark. Personal quota recovery remains unverified until official usage changes.
+
+The server feed remains unconfigured; this optional browser reader does not deploy or use it. Installed-package permission/notification acceptance is pending.
 <a id="ja"></a>
 
 # 日本語 — LLMs モニター 詳細仕様書
@@ -135,7 +143,7 @@ TASK-CODE-001 reads exact accessibility labels from rendered Claude Code sidebar
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.35.0
+対象製品版: 1.36.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -1564,3 +1572,13 @@ Verification: all 281 CJS/MJS tests pass including Python host regressions. Synt
 PRODUCT-GUIDE-001: Lower-half product guide includes nine bilingual chapters and labelled contents navigation: setup, quotas/resets, views, sounds/official incidents/Tibo link, tasks/pins/states, favorites/work notes, desktop Codex/macOS install, optional API balances and troubleshooting/backups. Guide copy uses static DOM text/table rendering, fixed source/download links and existing product language selection only. No monitor data, note storage, private acquisition or native operation. Static source guide matches README/TASK_DETAILS/native guide behavior; no full pin/runtime/mobile/store/Tibo claims. Product asset cache versions and footer use Web 1.35.2. Extension/helper/runtime and existing manual artifacts preserved.
 
 Verification: 282 CJS/MJS tests pass including the Python host suite. Local browser confirms Japanese/English rendering, nine chapters, stable contents navigation and zero horizontal overflow at desktop 1280px and mobile 390px (including all guide tables). Static guide has no monitor/note/RPC access. All extension/native/ZIP/bundled-manual and monitor/task logic bytes match the previous release.
+
+## v1.36 — 無料のTibo公開ページ読取り
+
+メインの［Tibo連携］から任意の `https://x.com/*` アクセスを許可し、Chromeでログイン済みのTiboプロフィールまたは投稿を開いてください。1分ごとに、画面に表示済みの `@thsottiaux` 本人の公開投稿だけを確認します。自動リロード・裏の巡回・有料API・認証取得・DM／入力欄読取りは行いません。未表示の新着は検知できず、ページなし・アクセス制限は取得不能になります。初回は無音、以後の新しい投稿IDを一度だけ通知します。利用残量・メモをXへ送りません。
+
+予定期限を読み取れる場合だけ、ChatGPTのメインと共通サブ画面に **Tibo 𝕏 Reset? (YYYYMMDD HH:MM)** を表示します。現在は明示的な「by EOD PST time」を、投稿日のPST（固定UTC−08:00）の当日末23:59という目安に解釈し、端末の現地時間へ換算します。正確な実施時刻ではありません。ツールチップで内容・タイムゾーンを確認でき、クリックで当該投稿へ移動、期限後は非表示です。日時のない短文告知は速報に表示しますが日時付きマークを出しません。個人の残量回復は公式使用量の変化で別途確認します。
+
+サーバー配信は引き続き未設定です。この任意ブラウザ経路はサーバー配置・有料API利用をしません。更新済み拡張機能の権限・通知の実機確認は未完了です。
+
+Validation 2026-10-13: live public DOM confirms author/tweetText/time structure in original and Japanese auto-translation. Main/shared-subview synthetic UI verifies small dated mark, title tooltip and exact post link. Task overview carries at most one public future announcement for ChatGPT only, no other-provider/private feed. Announced EOD PST is approximate, not proof of reset. Installed extension grant/notification tests remain pending. Built manuals/native/helper unchanged.

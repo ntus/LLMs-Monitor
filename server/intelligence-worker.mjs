@@ -8,7 +8,7 @@ const clean=value=>String(value??'').replace(/\s+/g,' ').trim().slice(0,360);
 function power(text){for(const match of String(text).matchAll(/(\d{2,3}(?:\.\d+)?)\s*%/g)){const value=Number(match[1]);if(value>=0&&value<=200)return value}return null}
 function classify(post,user,now=Date.now()){
  const raw=String(post?.note_tweet?.text||post?.text||'').slice(0,25000),text=clean(raw),account=Object.keys(ACCOUNTS).find(name=>name.toLowerCase()===String(user?.username||'').toLowerCase()),config=ACCOUNTS[account];if(!config||!/^\d{1,25}$/.test(String(post?.id||'')))return null;
- let kind='';if(SIGNALS.reset.test(raw)&&(SIGNALS.usage.test(raw)||/\bCodex\b/i.test(raw)))kind='reset';else if(SIGNALS.recovery.test(raw)&&SIGNALS.usage.test(raw))kind='recovery';else if(SIGNALS.usage.test(raw))kind='usage';else return null;
+ let kind='';if(SIGNALS.reset.test(raw)&&!(/password|credential|パスワード|認証/i.test(raw))&&(SIGNALS.usage.test(raw)||/\bCodex\b/i.test(raw)||account==='thsottiaux'&&(/\bglobal\s+reset\b/i.test(raw)||/^Day\s+\d{1,3}\s*\/\s*Reset[.!\s]*$/i.test(raw))))kind='reset';else if(SIGNALS.recovery.test(raw)&&SIGNALS.usage.test(raw))kind='recovery';else if(SIGNALS.usage.test(raw))kind='usage';else return null;
  const currentPower=null,severity=kind==='reset'||kind==='usage'?'warning':'info';
  return {id:String(post.id),provider:config.provider,kind,severity,account:`@${account}${config.role==='staff'?' · OpenAI staff':' · official'}`,title:kind==='reset'?'Usage reset update':kind==='recovery'?'Usage recovery update':'Usage-limit update',summary:text,url:`https://x.com/${account}/status/${post.id}`,publishedAt:Date.parse(post.created_at)||null,detectedAt:now,currentPower};
 }
