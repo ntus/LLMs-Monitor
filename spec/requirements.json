@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs モニター",
     "name_en": "LLMs Monitor",
-    "version": "1.37.0",
-    "package_filename": "LLMs-Monitor-v1.37.0.zip",
+    "version": "1.38.0",
+    "package_filename": "LLMs-Monitor-v1.38.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -19,12 +19,12 @@
       "gemini"
     ],
     "production_companion_origin": "https://llmsmonitor.ntus.info",
-    "web_version": "1.37.0",
+    "web_version": "1.38.0",
     "companion_origins": [
       "https://llmsmonitor.ntus.info",
       "https://llmsmonitor.ntusnog.chatgpt.site"
     ],
-    "codex_helper_version": "1.30.1"
+    "codex_helper_version": "1.30.2"
   },
   "normative_language": {
     "MUST": "必須。未達の場合はリリース不可。",
@@ -5510,6 +5510,35 @@
         {
           "path": "tests/tibo-reader.test.cjs",
           "symbol": "deadline, isolation, baseline"
+        }
+      ],
+      "verification": "mixed"
+    },
+    {
+      "id": "CONNECTION-SIMPLE-001",
+      "category": "connection",
+      "introduced_in": "1.38.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "Permit opt-in bounded owned Claude billing acquisition and local exact-ID Codex installer generation; keep advice from obscuring feed/status content.",
+      "acceptance_criteria": [
+        "No unauthorized acquisition or user tab navigation/closure",
+        "Personalized ZIP preserves exact native origin validation and executable installer",
+        "No paid X API; bounded independent reader diagnostics",
+        "Standalone manuals unchanged; helper separately versioned"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "tests/helper-package.test.cjs",
+          "symbol": "personalized ZIP"
+        },
+        {
+          "path": "tests/claude-billing-probe.test.cjs",
+          "symbol": "owned tab tests"
+        },
+        {
+          "path": "extension/style-v1380.css",
+          "symbol": "advice clearance"
         }
       ],
       "verification": "mixed"

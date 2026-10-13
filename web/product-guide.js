@@ -7,7 +7,7 @@
     "title": "From first connection<br>to your next task.",
     "intro": "A practical guide to everyday use. Read in order, or jump to the feature you need.",
     "toc": "On this page",
-    "revision": "Guide updated 12 October 2026 · Web 1.37.0 / extension 1.37.0 · helper 1.30.1",
+    "revision": "Guide updated 12 October 2026 · Web 1.38.0 / extension 1.38.0 · helper 1.30.2",
     "chapters": [
       {
         "id": "setup",
@@ -28,8 +28,8 @@
           },
           {
             "type": "link",
-            "text": "Download main extension v1.37.0 ↓",
-            "url": "LLMs-Monitor-v1.37.0.zip"
+            "text": "Download main extension v1.38.0 ↓",
+            "url": "LLMs-Monitor-v1.38.0.zip"
           },
           {
             "type": "note",
@@ -222,18 +222,18 @@
           {
             "type": "steps",
             "items": [
-              "Open ChatGPT Task details → Codex — Desktop → Connect Codex and copy the extension ID shown there.",
+              "Open ChatGPT Task details → Codex — Desktop → Connect Codex and choose Save installer ZIP for this extension. The ID is included automatically.",
               "In macOS Terminal, check python3 --version. Python 3.9+ and Codex on this Mac are required.",
-              "Download and extract helper v1.30.1. It is a native installer, not a Chrome extension; it has no manifest.json.",
-              "Run Install.command, paste the ID at its prompt and press Return. If double-click fails, run python3 ./install.py in the extracted folder. No sudo is needed.",
+              "Download and extract helper v1.30.2. It is a native installer, not a Chrome extension; it has no manifest.json.",
+              "Run Install.command; the personalized ZIP needs no ID entry. If double-click fails, run python3 ./install.py in the extracted folder. No sudo is needed.",
               "Enable connection and grant the optional native permission. Check connection must report N tasks and P/Q pins.",
               "Return to the task window and Refresh list. You do not run the installer each refresh. Re-register the allowed ID if the extension ID changes."
             ]
           },
           {
             "type": "link",
-            "text": "Download Codex helper v1.30.1 ↓",
-            "url": "LLMs-Monitor-Codex-Helper-v1.30.1.zip"
+            "text": "Download Codex helper v1.30.2 ↓",
+            "url": "LLMs-Monitor-Codex-Helper-v1.30.2.zip"
           },
           {
             "type": "link",
@@ -329,7 +329,7 @@
     "title": "導入から、<br>作業の続きまで。",
     "intro": "毎日の使い方を、このページで一通り。順に読むことも、必要な項目だけ確認することもできます。",
     "toc": "使い方の目次",
-    "revision": "2026年10月12日更新 · Web 1.37.0／拡張機能1.37.0 · ヘルパー1.30.1",
+    "revision": "2026年10月12日更新 · Web 1.38.0／拡張機能1.38.0 · ヘルパー1.30.2",
     "chapters": [
       {
         "id": "setup",
@@ -350,8 +350,8 @@
           },
           {
             "type": "link",
-            "text": "本体拡張機能 v1.37.0 をダウンロード ↓",
-            "url": "LLMs-Monitor-v1.37.0.zip"
+            "text": "本体拡張機能 v1.38.0 をダウンロード ↓",
+            "url": "LLMs-Monitor-v1.38.0.zip"
           },
           {
             "type": "note",
@@ -544,18 +544,18 @@
           {
             "type": "steps",
             "items": [
-              "ChatGPTの［タスク詳細］→［Codex — デスクトップ］→［Codexを接続］を開き、表示された拡張機能IDをコピーします。",
+              "ChatGPTの［タスク詳細］→［Codex — デスクトップ］→［Codexを接続］を開き、［この端末用の導入ZIPを保存］を押します。IDは自動設定されます。",
               "macOSのターミナルで python3 --version を確認します。Python 3.9以上と、このMacで利用するCodexが必要です。",
-              "ヘルパー v1.30.1のZIPをダウンロードして展開します。これはChrome拡張機能ではなく、manifest.json はありません。",
-              "Install.command を実行し、質問に手順1のIDを貼り付けてReturn。ダブルクリックで動かない場合は、展開フォルダーで python3 ./install.py を実行します。sudo は不要です。",
+              "ヘルパー v1.30.2のZIPをダウンロードして展開します。これはChrome拡張機能ではなく、manifest.json はありません。",
+              "Install.command を実行し、専用ZIPならID入力は不要です。ダブルクリックで動かない場合は、展開フォルダーで python3 ./install.py を実行します。sudo は不要です。",
               "接続画面で［接続を有効にする］を押し、任意の連携権限を許可。［接続を確認］で「取得 N件・ピン留め P/Q件」が出ることを確認します。",
               "タスク画面へ戻り［一覧を更新］。以降の更新で毎回インストーラーを実行する必要はありません。IDが変わった場合だけ許可IDも再登録します。"
             ]
           },
           {
             "type": "link",
-            "text": "Codexヘルパー v1.30.1 をダウンロード ↓",
-            "url": "LLMs-Monitor-Codex-Helper-v1.30.1.zip"
+            "text": "Codexヘルパー v1.30.2 をダウンロード ↓",
+            "url": "LLMs-Monitor-Codex-Helper-v1.30.2.zip"
           },
           {
             "type": "link",

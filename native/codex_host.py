@@ -13,7 +13,7 @@ import sys
 import time
 
 HOST = "info.ntus.llmsmonitor.codex"
-VERSION = "1.30.1"
+VERSION = "1.30.2"
 LIMIT = 500
 ACQUIRE_SECONDS = 21
 SHARED_SECONDS = 4

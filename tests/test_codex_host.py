@@ -191,6 +191,18 @@ class HostTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             H.RPC.call(object(), "turn/start", {})
 
+    def test_personalized_installer_uses_only_valid_configured_extension_id(self):
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory)
+            with patch.object(I, "__file__", str(base / "install.py")):
+                self.assertIsNone(I.configured_id())
+                (base / "extension-id.json").write_text(json.dumps({"extension_id": "a" * 32}))
+                self.assertEqual(I.configured_id(), "a" * 32)
+                for invalid in ("*", "a" * 31, "a" * 32 + ";"):
+                    (base / "extension-id.json").write_text(json.dumps({"extension_id": invalid}))
+                    with self.assertRaises(ValueError):
+                        I.configured_id()
+
     def test_installer_is_per_user_exact_origin_and_preserves_other_hosts(self):
         with tempfile.TemporaryDirectory(prefix="codex helper ") as directory:
             home = Path(directory)

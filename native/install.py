@@ -42,12 +42,24 @@ def install(extension_id, home, platform):
     return base
 
 
+def configured_id():
+    config = Path(__file__).with_name("extension-id.json")
+    if not config.exists():
+        return None
+    if config.stat().st_size > 1024:
+        raise ValueError("Invalid installer configuration")
+    value = json.loads(config.read_text()).get("extension_id")
+    if not isinstance(value, str) or not re.fullmatch(r"[a-p]{32}", value):
+        raise ValueError("Invalid configured extension ID")
+    return value
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Install the local Codex metadata helper for Chrome/Edge")
     parser.add_argument("--extension-id")
     args = parser.parse_args()
-    extension_id = args.extension_id or input("LLMs Monitor extension ID / 拡張機能ID: ").strip()
     try:
+        extension_id = args.extension_id or configured_id() or input("LLMs Monitor extension ID / 拡張機能ID: ").strip()
         install(extension_id, Path.home(), sys.platform)
         print("Installed. Open LLMs Monitor Codex connection settings and enable access.\n導入完了。LLMs MonitorのCodex連携画面で接続を有効にしてください。")
     except (OSError, ValueError) as error:

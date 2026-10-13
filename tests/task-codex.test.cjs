@@ -29,7 +29,7 @@ test('native result validation discards private fields and malformed snapshots; 
  const manifest=JSON.parse(fs.readFileSync('extension/manifest.json'));assert(manifest.optional_permissions.includes('nativeMessaging'));assert(!manifest.permissions.includes('nativeMessaging'));assert.deepEqual([...manifest.optional_host_permissions].sort(),['https://platform.openai.com/*','https://platform.claude.com/*','https://aistudio.google.com/*','https://x.com/*'].sort());assert(!manifest.host_permissions.includes('https://x.com/*'));
  const setupSource=fs.readFileSync('extension/codex-setup.js','utf8');assert.match(setupSource,/\.onclick=async.*chrome\.permissions\.request/);assert(!/fetch\(|AudioContext|GlanceState|turn\/start/.test(fs.readFileSync('extension/tasks-codex-background.js','utf8')));
 });
-test('Python host metadata projection, paging, protocol and installation tests pass',()=>{const r=cp.spawnSync('python3',['tests/test_codex_host.py'],{encoding:'utf8',env:{...process.env,PYTHONDONTWRITEBYTECODE:'1'}});assert.equal(r.status,0,r.stdout+r.stderr);assert.match(r.stderr,/Ran 7 tests/)});
+test('Python host metadata projection, paging, protocol and installation tests pass',()=>{const r=cp.spawnSync('python3',['tests/test_codex_host.py'],{encoding:'utf8',env:{...process.env,PYTHONDONTWRITEBYTECODE:'1'}});assert.equal(r.status,0,r.stdout+r.stderr);assert.match(r.stderr,/Ran 8 tests/)});
 test('Codex controller discards pending read on clear/import/pause and removes stale loading notice',async()=>{
  class Element{constructor(){this.dataset={};this.children=[];this.textContent=''}append(...nodes){this.children.push(...nodes)}replaceChildren(...nodes){this.children=nodes}querySelectorAll(){return []}}
  const elements=Object.fromEntries(['codex-heading','codex-tasks','codex-section'].map(k=>[k,new Element()])),document={hidden:false,createElement:()=>new Element(),getElementById:id=>elements[id],addEventListener(){}};
@@ -56,13 +56,13 @@ test('granted permission with an absent native API reports recovery without laun
  x.chrome.runtime.connectNative=saved;const pending=x.api.handle({type:'CODEX_CHECK'},internal(),false);await new Promise(setImmediate);assert.equal(x.ports.length,1);x.ports[0].reply(reply());assert.equal((await pending).status,'ready');
 });
 test('setup distinguishes missing API and restarts only on an explicit button click without altering storage',async()=>{
- const elements=Object.fromEntries(['description','step-one','step-two','extension-id','download','install-help','step-three','enable','disable','check','guide','limits','result','restart','restart-help'].map(id=>[id,{textContent:'',hidden:true}]));let reloads=0,status='native-api-unavailable';
+ const elements=Object.fromEntries(['description','step-one','step-two','technical-label','extension-id','download','install-help','step-three','enable','disable','check','guide','limits','result','restart','restart-help'].map(id=>[id,{textContent:'',hidden:true}]));let reloads=0,status='native-api-unavailable';
  const chrome={runtime:{id:'a'.repeat(32),reload(){reloads++},sendMessage:async m=>m.type==='CODEX_CONFIG_READ'?{enabled:true,permission:true,apiAvailable:false}:{status}},permissions:{request:async()=>true,remove:async()=>{}}};
  const c=vm.createContext({chrome,navigator:{language:'ja'},document:{documentElement:{},getElementById:id=>elements[id]}});vm.runInContext(fs.readFileSync('extension/codex-setup.js','utf8'),c);await new Promise(setImmediate);
  assert.equal(reloads,0);assert.equal(elements.restart.hidden,false);assert.match(elements.result.textContent,/接続API/);assert(!elements.result.textContent.includes('ヘルパー導入'));
  await elements.check.onclick();assert.equal(elements.restart.hidden,false);assert.equal(elements.check.disabled,false);assert.equal(reloads,0);
  status='unavailable';await elements.check.onclick();assert.equal(elements.restart.hidden,true);elements.restart.onclick();assert.equal(reloads,1);
- const html=fs.readFileSync('extension/codex-setup.html','utf8');assert.match(html,/id="restart" type="button" hidden/);assert.match(html,/Helper-v1\.30\.1\.zip/);
+ const html=fs.readFileSync('extension/codex-setup.html','utf8');assert.match(html,/id="restart" type="button" hidden/);assert.match(html,/src="helper-package\.js"/);assert.match(html,/id="download" type="button"/);
 });
 
 test('setup success reaches a different task window during cooldown with no extra native process',async()=>{
@@ -70,4 +70,10 @@ test('setup success reaches a different task window during cooldown with no extr
  const received=await x.api.handle({type:'TASKS_CODEX_READ',service:'chatgpt'},external(),true);assert.equal(received.status,'ready');assert.equal(received.tasks.length,1);assert.equal(x.ports.length,1);
  assert.equal((await x.api.handle({type:'TASKS_CODEX_READ',service:'chatgpt'},external('https://evil.test/tasks?service=chatgpt'),true)).status,'unavailable');
  await x.api.handle({type:'CODEX_CONFIGURE',enabled:false},internal(),false);assert.equal((await x.api.handle({type:'TASKS_CODEX_READ',service:'chatgpt'},external(),true)).status,'disabled');
+});
+
+test('one connect click requests optional permission before configuring and checking',async()=>{
+ const ids=['description','step-one','step-two','technical-label','extension-id','download','install-help','step-three','enable','disable','check','guide','limits','result','restart','restart-help'],elements=Object.fromEntries(ids.map(id=>[id,{textContent:'',hidden:true}])),calls=[];
+ const chrome={runtime:{id:'a'.repeat(32),sendMessage:async m=>{calls.push(m.type);return m.type==='CODEX_CONFIG_READ'?{enabled:false,permission:false}:m.type==='CODEX_CHECK'?{status:'ready',tasks:[],pinAudit:{resolved:0,observed:0},runtime:'metadata'}:{ok:true}}},permissions:{request:async()=>{calls.push('permission');return true}}};
+ const c=vm.createContext({chrome,navigator:{language:'ja'},document:{documentElement:{},getElementById:id=>elements[id]}});vm.runInContext(fs.readFileSync('extension/codex-setup.js','utf8'),c);await new Promise(setImmediate);calls.length=0;await elements.enable.onclick();assert.deepEqual(calls,['permission','CODEX_CONFIGURE','CODEX_CHECK']);assert.match(elements.result.textContent,/取得 0件/);
 });
