@@ -418,3 +418,9 @@ JP: 共有socket待機で代替一覧も失敗する不具合を修正。共有�
 ## 1.36.0 — 2026-10-13
 
 Optional, free Tibo public-page reader; short reset announcements; future-deadline-only dated Reset? marks in ChatGPT main and shared subviews. No auto reload or paid API. 本体＋拡張機能のみビルド、関連取説は正本更新のみ。
+
+## 1.37.0 — 2026-10-13
+
+Fix rejected s/t public share links and show bounded Tibo acquisition reasons. No tracking values retained, no additional permissions or manual/helper rebuild. 共有リンクと未表示理由の案内を修正。
+
+v1.37 also isolates per-tab failures and repairs a previously missing deadline on the same post without duplicate alerts.

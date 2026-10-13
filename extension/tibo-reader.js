@@ -1,6 +1,6 @@
 (function(root){
  const ORIGIN='https://x.com/*',KEY='llms-tibo-reader-v1';
- function route(value){try{const u=new URL(value);return u.origin==='https://x.com'&&!u.username&&!u.password&&!u.search&&!u.hash&&/^\/thsottiaux(?:\/status\/\d{1,25})?\/?$/.test(u.pathname)}catch{return false}}
+ function route(value){try{const u=new URL(value);return u.origin==='https://x.com'&&!u.username&&!u.password&&!u.hash&&[...u.searchParams.keys()].every(k=>['s','t'].includes(k))&&new Set(u.searchParams.keys()).size===[...u.searchParams.keys()].length&&/^\/thsottiaux(?:\/status\/\d{1,25})?\/?$/.test(u.pathname)}catch{return false}}
  function deadline(text,publishedAt){
   // EOD PST is a stated deadline (fixed UTC-08:00), not a verified execution time.
   if(!(/\b(?:by|today|tonight)\b/i.test(text)||/本日|今日/.test(text))||!(/\bEOD\s+PST(?:\s+time)?\b/i.test(text)||/PST(?:時間)?\s*EODまで/i.test(text)))return null;
@@ -18,7 +18,7 @@
  }
  // Only rendered public articles from the fixed author; never inspect inputs or account/session data.
  function readPage(){
-  const u=new URL(location.href);if(u.origin!=='https://x.com'||u.search||u.hash||!/^\/thsottiaux(?:\/status\/\d{1,25})?\/?$/.test(u.pathname))return [];
+  const u=new URL(location.href);if(u.origin!=='https://x.com'||u.username||u.password||u.hash||[...u.searchParams.keys()].some(k=>!['s','t'].includes(k))||new Set(u.searchParams.keys()).size!==[...u.searchParams.keys()].length||!/^\/thsottiaux(?:\/status\/\d{1,25})?\/?$/.test(u.pathname))return [];
   return Array.from(document.querySelectorAll('article[data-testid="tweet"]')).slice(0,50).flatMap(article=>{
    if(article.getBoundingClientRect().width===0)return [];
    const name=article.querySelector('[data-testid="User-Name"]'),author=name&&Array.from(name.querySelectorAll('a[href]')).find(a=>a.textContent.trim()==='@thsottiaux'&&a.getAttribute('href')==='/thsottiaux');
@@ -28,16 +28,16 @@
  }
  async function read(chrome,prior,now=Date.now()){
   const enabled=(await chrome.storage.local.get(KEY))[KEY]===true;if(!enabled)return null;
-  let alerts=prior.alerts||[];
+  let alerts=prior.alerts||[],readerState='permission-required';
   try{
    if(!await chrome.permissions.contains({permissions:['scripting'],origins:[ORIGIN]}))throw Error('Permission unavailable');
-   const tabs=(await chrome.tabs.query({url:ORIGIN})).filter(t=>route(t.url)).slice(0,3);if(!tabs.length)throw Error('No public page');
-   const rows=[];for(const tab of tabs){const result=await chrome.scripting.executeScript({target:{tabId:tab.id,frameIds:[0]},func:readPage});for(const item of result)if(item.frameId===0&&Array.isArray(item.result))rows.push(...item.result.slice(0,50));}
+   readerState='no-public-page';const tabs=(await chrome.tabs.query({url:ORIGIN})).filter(t=>route(t.url)).slice(0,3);if(!tabs.length)throw Error('No public page');
+   readerState='no-public-posts';const rows=[];for(const tab of tabs){try{const result=await chrome.scripting.executeScript({target:{tabId:tab.id,frameIds:[0]},func:readPage});for(const item of result)if(item.frameId===0&&Array.isArray(item.result))rows.push(...item.result.slice(0,50));}catch{}}
    if(!rows.length)throw Error('No public posts');
-   const merged=new Map(alerts.map(a=>[a.id,a]));for(const row of rows){const a=classify(row,now);if(a&&!merged.has(a.id))merged.set(a.id,a);}
+   const merged=new Map(alerts.map(a=>[a.id,a]));for(const row of rows){const a=classify(row,now);if(a){const previous=merged.get(a.id);if(!previous)merged.set(a.id,a);else if(a.resetAt&&a.resetAt!==previous.resetAt)merged.set(a.id,{...a,detectedAt:previous.detectedAt||a.detectedAt});}}
    alerts=[...merged.values()].filter(a=>now-a.publishedAt<=604800000).sort((a,b)=>b.publishedAt-a.publishedAt).slice(0,50);
-   return {status:'ready',checkedAt:now,lastReadyAt:now,alerts};
-  }catch{return {...prior,status:'unavailable',checkedAt:now,alerts};}
+   return {status:'ready',readerState:'ready',checkedAt:now,lastReadyAt:now,alerts};
+  }catch{return {...prior,status:'unavailable',readerState,checkedAt:now,alerts};}
  }
  root.GlanceTiboReader={ORIGIN,KEY,route,deadline,classify,readPage,read};if(typeof module!=='undefined')module.exports=root.GlanceTiboReader;
 })(globalThis);

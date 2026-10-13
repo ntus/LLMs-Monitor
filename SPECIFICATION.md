@@ -143,7 +143,7 @@ The server feed remains unconfigured; this optional browser reader does not depl
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.36.0
+対象製品版: 1.37.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -1582,3 +1582,11 @@ Verification: 282 CJS/MJS tests pass including the Python host suite. Local brow
 サーバー配信は引き続き未設定です。この任意ブラウザ経路はサーバー配置・有料API利用をしません。更新済み拡張機能の権限・通知の実機確認は未完了です。
 
 Validation 2026-10-13: live public DOM confirms author/tweetText/time structure in original and Japanese auto-translation. Main/shared-subview synthetic UI verifies small dated mark, title tooltip and exact post link. Task overview carries at most one public future announcement for ChatGPT only, no other-provider/private feed. Announced EOD PST is approximate, not proof of reset. Installed extension grant/notification tests remain pending. Built manuals/native/helper unchanged.
+
+## v1.37.0 — Tibo shared-link recovery
+
+Accept only the standard s/t share query keys (each unique) on the exact public author route, in both tab selection and injected reader. Do not retain their values; exported alerts use canonical query-free post links. Reject other keys, credentials, fragments and private routes. Feed disclosure now distinguishes disabled, missing permission, absent page, unreadable posts and no future deadline. No host expansion, reloads, quota/history/native/manual changes. Live installed-extension state remains unverified.
+
+共有URLのs/tだけを許可し、値を保存せず正規URLに変換。無効／権限なし／ページなし／本人投稿を読めない／未来の期限告知なしを区別して案内する。本体＋拡張機能のみ、取説の再ビルドなし。
+
+Additional v1.37 hardening: one failed public tab does not discard other readable tabs. A later complete read of the same post can fill/correct its announced deadline, retaining first detection time and post-ID notification deduplication.
