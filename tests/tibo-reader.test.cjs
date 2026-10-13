@@ -25,3 +25,5 @@ test('opt-in public reader does not navigate, fetch or launch tabs, and preserve
 });
 
 test('Japanese auto-translated public posts preserve fixed-zone announced deadlines',()=>{const translated={...row,text:'本日PST時間EODまでにグローバルリセット着陸。楽しんでください。'};assert.equal(R.classify(translated,at).resetAt,R.classify(row,at).resetAt);assert.equal(R.classify({...row,text:'8日目/ リセット'},at).kind,'reset');});
+
+test('marker rejects impossible dates, unrelated provider and hostile tooltip text',()=>{const a=R.classify(row,at);for(const bad of [{...a,resetAt:1e30},{...a,provider:'anthropic'},{...a,publishedAt:at+1}])assert.equal(I.tiboMark({alerts:[bad]},'ja',at),'');const html=I.tiboMark({alerts:[{...a,summary:'"<img src=x onerror=evil()>"'}]},'ja',at);assert(!html.includes('<img'));assert(html.includes('&quot;'));});

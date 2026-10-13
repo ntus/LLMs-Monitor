@@ -125,7 +125,8 @@
       "service": "selected route service only",
       "usage": "plan<=80, status, capturedAt, <=6 windows(label<=80, finite remaining 0..100/null, resetAt, expired)",
       "incident": "selected service state, summary<=180, checkedAt, fixed official URL",
-      "excluded": "history, settings, account identifiers, credits, other-provider values; no storage writes"
+      "excluded": "history, settings, account identifiers, credits, other-provider values; no storage writes",
+      "tiboFeed": "optional ChatGPT-only public future Tibo reset announcement; <=1 sanitized row, no other feed accounts"
     }
   },
   "requirements": [
@@ -5493,7 +5494,8 @@
         "本人／経路／トップフレーム検証、5秒上限、DM／入力不読取",
         "EOD PSTは固定UTC-08:00の当日末目安、現地時刻表示・tooltip・期限後非表示",
         "主画面／小窓／PiP／サイト内パネルの共通マーク",
-        "ヘルパーと既存ビルド済み取説のバイトを保持"
+        "ヘルパーと既存ビルド済み取説のバイトを保持",
+        "ChatGPTタスク詳細にも同じfuture-onlyマーク。概要RPCは公開告知1件だけ、他サービスへ返さない"
       ],
       "implementation_evidence": [
         {

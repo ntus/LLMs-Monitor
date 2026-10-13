@@ -1580,3 +1580,5 @@ Verification: 282 CJS/MJS tests pass including the Python host suite. Local brow
 予定期限を読み取れる場合だけ、ChatGPTのメインと共通サブ画面に **Tibo 𝕏 Reset? (YYYYMMDD HH:MM)** を表示します。現在は明示的な「by EOD PST time」を、投稿日のPST（固定UTC−08:00）の当日末23:59という目安に解釈し、端末の現地時間へ換算します。正確な実施時刻ではありません。ツールチップで内容・タイムゾーンを確認でき、クリックで当該投稿へ移動、期限後は非表示です。日時のない短文告知は速報に表示しますが日時付きマークを出しません。個人の残量回復は公式使用量の変化で別途確認します。
 
 サーバー配信は引き続き未設定です。この任意ブラウザ経路はサーバー配置・有料API利用をしません。更新済み拡張機能の権限・通知の実機確認は未完了です。
+
+Validation 2026-10-13: live public DOM confirms author/tweetText/time structure in original and Japanese auto-translation. Main/shared-subview synthetic UI verifies small dated mark, title tooltip and exact post link. Task overview carries at most one public future announcement for ChatGPT only, no other-provider/private feed. Announced EOD PST is approximate, not proof of reset. Installed extension grant/notification tests remain pending. Built manuals/native/helper unchanged.
