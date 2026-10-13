@@ -10,7 +10,7 @@
   const id=clean(row.id).slice(0,100),url=safeUrl(row.url),provider=Object.hasOwn(providers,row.provider)?row.provider:'',kind=['usage','reset','recovery','model-update'].includes(row.kind)?row.kind:'',severity=['info','warning','critical'].includes(row.severity)?row.severity:'info';
   if(!id||!url||!provider||!kind)return null;
   const number=value=>Number.isFinite(Number(value))?Number(value):null;
-  return {id,provider,kind,severity,account:clean(row.account).slice(0,80),title:clean(row.title).slice(0,160),summary:clean(row.summary),url,publishedAt:number(row.publishedAt),detectedAt:number(row.detectedAt),model:clean(row.model).slice(0,100),currentPower:number(row.currentPower),previousPower:number(row.previousPower)};
+  return {id,provider,kind,severity,account:clean(row.account).slice(0,80),title:clean(row.title).slice(0,160),summary:clean(row.summary),url,publishedAt:number(row.publishedAt),detectedAt:number(row.detectedAt),model:clean(row.model).slice(0,100),currentPower:number(row.currentPower),previousPower:number(row.previousPower),resetAt:number(row.resetAt)};
  }
  function normalize(feed){
   const alerts=(Array.isArray(feed?.alerts)?feed.alerts:[]).map(normalizeAlert).filter(Boolean).sort((a,b)=>(b.publishedAt||b.detectedAt||0)-(a.publishedAt||a.detectedAt||0)).slice(0,50);
@@ -19,12 +19,18 @@
  function key(feed){return normalize(feed).alerts.map(row=>row.id).sort().join('|')}
  function newAlerts(previous,current){const before=new Set(normalize(previous).alerts.map(row=>row.id));if(!normalize(previous).lastReadyAt||normalize(current).status!=='ready')return [];return normalize(current).alerts.filter(row=>!before.has(row.id));}
  function label(row,language){const ja=language!=='en';if(row.kind==='recovery')return ja?'利用枠の復旧情報':'Usage recovery';if(row.kind==='reset')return ja?'リセット速報':'Reset update';if(row.kind==='usage')return ja?'利用枠速報':'Usage-limit update';return ja?'モデル速報':'Model update'}
+ function tiboMark(feed,language='en',now=Date.now()){
+  const row=normalize(feed).alerts.find(a=>a.kind==='reset'&&/^@thsottiaux(?: · OpenAI staff)?$/.test(a.account)&&a.url===`https://x.com/thsottiaux/status/${a.id}`&&Number.isFinite(a.resetAt)&&a.resetAt>now&&a.publishedAt>0&&a.publishedAt<=now);
+  if(!row)return '';const d=new Date(row.resetAt),p=n=>String(n).padStart(2,'0'),stamp=`${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`,ja=language!=='en';
+  const tip=`${row.summary} · ${d.toLocaleString(ja?'ja-JP':'en-US',{timeZoneName:'short'})} · ${ja?'告知のEOD PST期限を換算した目安です。正確な実施時刻・個人の残量回復は未確認。':'Approximate announced EOD PST deadline; exact execution and personal quota recovery are unverified.'}${normalize(feed).status!=='ready'?(ja?' 最新取得は未確認。':' Latest read unavailable.'):''}`;
+  return `<a class="tibo-reset-mark" href="${row.url}" target="_blank" rel="noopener noreferrer" title="${escape(tip)}" aria-label="${escape('Tibo 𝕏 Reset? ('+stamp+') · '+tip)}">Tibo 𝕏 Reset? (${stamp})</a>`;
+ }
  function view(feed,language='en',open=false){
   const data=normalize(feed),ja=language!=='en',latest=data.alerts[0],state=data.status==='ready'?'ready':data.status==='unconfigured'?'unconfigured':'unavailable';
   const title=latest?`${label(latest,language)} · ${providers[latest.provider]}`:state==='ready'?(ja?'AI速報':'AI intelligence'):state==='unconfigured'?(ja?'AI速報の接続待ち':'AI feed setup required'):(ja?'AI速報を確認できません':'AI feed unavailable');
   const body=latest?`<article class="intelligence-item ${latest.severity}"><div><strong>${escape(latest.title||label(latest,language))}</strong><span>${escape(latest.summary)}</span><small>${escape([latest.account,latest.model].filter(Boolean).join(' · '))}</small></div><a href="${latest.url}" target="_blank" rel="noopener noreferrer">${ja?'出典 ↗':'Source ↗'}</a></article>`:`<p>${escape(state==='ready'?(ja?'該当する新着情報はありません。':'No matching updates.'):(ja?'利用残量の取得には影響しません。':'Usage monitoring is unaffected.'))}</p>`;
-  const note=state==='unconfigured'?(ja?'X速報用サーバーの接続設定が必要です。利用残量や公式障害監視は独立して動作します。':'The X feed requires server configuration. Quota and official incident monitoring operate separately.'):(ja?'1分ごとに確認。X投稿は外部情報であり、各社公式の利用量とは区別して表示します。':'Checked every minute. X posts are external intelligence, separate from official provider usage values.');
+  const note=state==='unconfigured'?(ja?'無料のTibo公開ページ読取りは［Tibo連携］で有効化できます。対象ページを開いてください。利用残量・公式障害監視とは独立です。':'Enable free public-page reading in Tibo connections and keep the public page open. Quota and official status monitoring are independent.'):(ja?'1分ごとに表示済み投稿を確認。自動リロードはしません。告知は個人の残量回復を意味しません。':'Checks rendered posts each minute without reloading. Announcements do not confirm personal quota recovery.');
   return `<details class="intelligence-feed ${state}${latest?' has-alert':''}"${open?' open':''}><summary>◉ ${escape(title)}${latest&&latest.severity!=='info'?' ⚠︎':''}</summary><div class="intelligence-popover">${body}<small>${escape(note)}</small></div></details>`;
  }
- root.GlanceIntelligence={FEED_URL,providers,clean,safeUrl,normalizeAlert,normalize,key,newAlerts,label,view};if(typeof module!=='undefined')module.exports=root.GlanceIntelligence;
+ root.GlanceIntelligence={tiboMark,FEED_URL,providers,clean,safeUrl,normalizeAlert,normalize,key,newAlerts,label,view};if(typeof module!=='undefined')module.exports=root.GlanceIntelligence;
 })(globalThis);

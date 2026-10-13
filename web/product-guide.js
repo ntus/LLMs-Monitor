@@ -7,7 +7,7 @@
     "title": "From first connection<br>to your next task.",
     "intro": "A practical guide to everyday use. Read in order, or jump to the feature you need.",
     "toc": "On this page",
-    "revision": "Guide updated 12 October 2026 · Web 1.35.2 / extension 1.35.0 · helper 1.30.1",
+    "revision": "Guide updated 12 October 2026 · Web 1.36.0 / extension 1.36.0 · helper 1.30.1",
     "chapters": [
       {
         "id": "setup",
@@ -28,8 +28,8 @@
           },
           {
             "type": "link",
-            "text": "Download main extension v1.35.0 ↓",
-            "url": "LLMs-Monitor-v1.35.0.zip"
+            "text": "Download main extension v1.36.0 ↓",
+            "url": "LLMs-Monitor-v1.36.0.zip"
           },
           {
             "type": "note",
@@ -114,7 +114,7 @@
           },
           {
             "type": "note",
-            "text": "Tibo 𝕏 links to an OpenAI staff profile. Automatic Tibo / company X alerts are not configured on the current static Site and live delivery is unverified. A public reset announcement is not proof that your own allowance reset."
+            "text": "Enable free Tibo connections in the monitor, then keep a signed-in public Tibo profile/post open. Rendered posts are checked each minute without reloading. A future announced EOD PST deadline gets a dated Tibo 𝕏 Reset? link; its tooltip explains the approximate deadline and the mark disappears at expiry. Undisplayed new posts cannot be detected. Server delivery remains unconfigured; personal quota recovery is separate."
           },
           {
             "type": "link",
@@ -329,7 +329,7 @@
     "title": "導入から、<br>作業の続きまで。",
     "intro": "毎日の使い方を、このページで一通り。順に読むことも、必要な項目だけ確認することもできます。",
     "toc": "使い方の目次",
-    "revision": "2026年10月12日更新 · Web 1.35.2／拡張機能1.35.0 · ヘルパー1.30.1",
+    "revision": "2026年10月12日更新 · Web 1.36.0／拡張機能1.36.0 · ヘルパー1.30.1",
     "chapters": [
       {
         "id": "setup",
@@ -350,8 +350,8 @@
           },
           {
             "type": "link",
-            "text": "本体拡張機能 v1.35.0 をダウンロード ↓",
-            "url": "LLMs-Monitor-v1.35.0.zip"
+            "text": "本体拡張機能 v1.36.0 をダウンロード ↓",
+            "url": "LLMs-Monitor-v1.36.0.zip"
           },
           {
             "type": "note",
@@ -436,7 +436,7 @@
           },
           {
             "type": "note",
-            "text": "Tibo 𝕏はOpenAIスタッフのプロフィールへのリンクです。Tibo・公式X投稿の自動通知は現在の静的サイトでは未設定で、実配信は未検証です。投稿による一斉リセットの案内と、ご自身の残量が実際にリセットされたことは別です。"
+            "text": "メインの［Tibo連携］で無料の任意読取りを許可し、ログイン済みのTibo公開ページを開いてください。表示済みの本人投稿を1分ごとに確認し、自動リロードはしません。未来のEOD PST期限が読めれば日時付きTibo 𝕏 Reset?を表示し、ツールチップで目安期限を説明、期限後は非表示にします。未表示の新着は検知できません。サーバー配信は未設定で、個人の残量回復は別途確認します。"
           },
           {
             "type": "link",

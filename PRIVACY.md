@@ -50,6 +50,14 @@ When a user opens Task details, automatic acquisition reads only visible sidebar
 
 The optional independent task window checks already-open provider conversation tabs approximately every five seconds while visible and Auto ON. It reads only editable-composer presence and scoped button accessibility/test attributes and visibility, not messages, draft values, credentials or account data. States remain in memory and expire after 15 seconds. No tabs are navigated, no new permissions are requested, and no titles or states are stored or uploaded. Tests reject route/account mismatches, stale or conflicting observations and unauthorized RPC senders. Actual installed-extension generation checks remain required after the update; mock fixtures are not account-level proof.
 
+
+## v1.36 — Free Tibo public-page reading
+
+In the monitor, choose **Tibo connections**, allow optional `https://x.com/*` access, then keep a signed-in Tibo profile/post open in Chrome. Only rendered public posts by `@thsottiaux` are inspected once per minute; there is no automatic reload, hidden crawl, paid API, credential extraction or DM/input reading. Undisplayed new posts are not discovered. Missing page/access restrictions show unavailable, preserving prior public alerts; first read is silent and later post IDs notify once. No private usage or notes are sent to X.
+
+ChatGPT main and all shared subviews show **Tibo 𝕏 Reset? (YYYYMMDD HH:MM)** only when an announced future deadline can be parsed. Currently explicit “by EOD PST time” is converted from the posting day's fixed UTC−08:00 end (23:59) to the device timezone. It is an approximate deadline, not an exact execution time. Tooltip shows the announcement/timezone; click opens the exact source post. The mark disappears at the deadline. Short announcements without a deadline still enter the feed, but do not receive a dated mark. Personal quota recovery remains unverified until official usage changes.
+
+The server feed remains unconfigured; this optional browser reader does not deploy or use it. Installed-package permission/notification acceptance is pending.
 <a id="ja"></a>
 
 メモ登録は最大20件・2分で失効する一度限りのタイトル／リンクを `chrome.storage.session`（ディスクではなくブラウザのメモリー内）で受け渡します。処理休止後も維持し、ブラウザ再起動・拡張再読込／更新で破棄します。失効した情報は取得不可で、次の読取／登録または失効アラームで消去します。コンテンツスクリプトへの保存領域アクセスは有効化しません。手動で選んだサービス別作業領域名をサイト内 `llms-task-note-workspaces-v1` へ保存します。アカウント名の自動取得ではありません。旧メモキー／識別子は維持し、メモは［保存］した場合だけ永続保存します。
@@ -108,3 +116,11 @@ JP: 自動取得した一覧は従来どおりメモリ内のみ。利用者が�
 Disabled by default. A direct extension-page click grants optional nativeMessaging; a separately installed per-user helper allows only your chosen extension ID. It reads local Codex titles, IDs, pins and evidenced states through read-only App Server metadata. Standard API preview fields and turn/event contents are discarded, never used as titles, displayed, stored or uploaded. Only the desktop local pin-ID field is used from the compatibility state file; other settings/auth fields are not forwarded. Runtime cannot be inferred from an independent metadata process. Lists remain in the independent task window; explicit work-note saving retains the existing browser/site-local behavior. No task execution, exposed local network port, administrator access or cloud sync. Disable in the setup page; remove only the helper and its specific native-host manifests to uninstall.
 
 初期は無効。専用画面のクリックで任意nativeMessagingを許可し、別途導入した端末内ヘルパーを指定拡張IDだけに許可する。Codexのタイトル・ID・ローカルピン・根拠のある状態を読取専用APIで取得。API標準previewとturn／イベント内容は使用・表示・保存・アップロードせず除外する。互換設定ファイルではピンID欄だけ使用し、その他設定／認証情報は転送しない。独立した取得プロセスから稼働を推測しない。一覧はタスク小窓内のメモリのみ、明示保存メモは従来のブラウザ・サイト内保存。実行・ポート公開・管理者権限・クラウド同期なし。停止と削除は[導入説明](native/README.md)を参照。
+
+## v1.36 — 無料のTibo公開ページ読取り
+
+メインの［Tibo連携］から任意の `https://x.com/*` アクセスを許可し、Chromeでログイン済みのTiboプロフィールまたは投稿を開いてください。1分ごとに、画面に表示済みの `@thsottiaux` 本人の公開投稿だけを確認します。自動リロード・裏の巡回・有料API・認証取得・DM／入力欄読取りは行いません。未表示の新着は検知できず、ページなし・アクセス制限は取得不能になります。初回は無音、以後の新しい投稿IDを一度だけ通知します。利用残量・メモをXへ送りません。
+
+予定期限を読み取れる場合だけ、ChatGPTのメインと共通サブ画面に **Tibo 𝕏 Reset? (YYYYMMDD HH:MM)** を表示します。現在は明示的な「by EOD PST time」を、投稿日のPST（固定UTC−08:00）の当日末23:59という目安に解釈し、端末の現地時間へ換算します。正確な実施時刻ではありません。ツールチップで内容・タイムゾーンを確認でき、クリックで当該投稿へ移動、期限後は非表示です。日時のない短文告知は速報に表示しますが日時付きマークを出しません。個人の残量回復は公式使用量の変化で別途確認します。
+
+サーバー配信は引き続き未設定です。この任意ブラウザ経路はサーバー配置・有料API利用をしません。更新済み拡張機能の権限・通知の実機確認は未完了です。

@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "default_locale": "ja",
   "name": "__MSG_extensionName__",
-  "version": "1.35.0",
+  "version": "1.36.0",
   "description": "__MSG_extensionDescription__",
   "permissions": [
     "storage",
@@ -80,6 +80,7 @@
   "optional_host_permissions": [
     "https://platform.openai.com/*",
     "https://platform.claude.com/*",
-    "https://aistudio.google.com/*"
+    "https://aistudio.google.com/*",
+    "https://x.com/*"
   ]
 }

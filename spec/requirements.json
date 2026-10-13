@@ -1,13 +1,13 @@
 {
   "schema_version": "1.0.0",
   "ledger_id": "llms-token-usage-monitor-requirements",
-  "last_updated": "2026-10-12",
+  "last_updated": "2026-10-13",
   "authoritative": true,
   "product": {
     "name_ja": "LLMs モニター",
     "name_en": "LLMs Monitor",
-    "version": "1.35.0",
-    "package_filename": "LLMs-Monitor-v1.35.0.zip",
+    "version": "1.36.0",
+    "package_filename": "LLMs-Monitor-v1.36.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -19,7 +19,7 @@
       "gemini"
     ],
     "production_companion_origin": "https://llmsmonitor.ntus.info",
-    "web_version": "1.35.2",
+    "web_version": "1.36.0",
     "companion_origins": [
       "https://llmsmonitor.ntus.info",
       "https://llmsmonitor.ntusnog.chatgpt.site"
@@ -5477,6 +5477,39 @@
           ]
         }
       ]
+    },
+    {
+      "id": "TIBO-PUBLIC-001",
+      "category": "intelligence",
+      "introduced_in": "1.36.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "任意許可後、開いているTibo公開ページの本人投稿だけを1分ごとに読む。有料API・自動リロード・秘密取得を禁止。予定期限が未来の場合だけChatGPT全画面に日時付きReset?リンクを表示する。",
+      "source_requirements": [
+        "2026-10-13 user: free reader; dated future Reset? mark; no manuals build"
+      ],
+      "acceptance_criteria": [
+        "初回無音・ID重複通知なし・失敗時保持",
+        "本人／経路／トップフレーム検証、5秒上限、DM／入力不読取",
+        "EOD PSTは固定UTC-08:00の当日末目安、現地時刻表示・tooltip・期限後非表示",
+        "主画面／小窓／PiP／サイト内パネルの共通マーク",
+        "ヘルパーと既存ビルド済み取説のバイトを保持"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/tibo-reader.js",
+          "symbol": "route/classify/readPage/read"
+        },
+        {
+          "path": "extension/intelligence.js",
+          "symbol": "tiboMark"
+        },
+        {
+          "path": "tests/tibo-reader.test.cjs",
+          "symbol": "deadline, isolation, baseline"
+        }
+      ],
+      "verification": "mixed"
     }
   ]
 }
