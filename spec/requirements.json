@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs モニター",
     "name_en": "LLMs Monitor",
-    "version": "1.38.0",
-    "package_filename": "LLMs-Monitor-v1.38.0.zip",
+    "version": "1.39.0",
+    "package_filename": "LLMs-Monitor-v1.39.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -19,7 +19,7 @@
       "gemini"
     ],
     "production_companion_origin": "https://llmsmonitor.ntus.info",
-    "web_version": "1.38.0",
+    "web_version": "1.39.0",
     "companion_origins": [
       "https://llmsmonitor.ntus.info",
       "https://llmsmonitor.ntusnog.chatgpt.site"
@@ -5496,7 +5496,9 @@
         "主画面／小窓／PiP／サイト内パネルの共通マーク",
         "ヘルパーと既存ビルド済み取説のバイトを保持",
         "ChatGPTタスク詳細にも同じfuture-onlyマーク。概要RPCは公開告知1件だけ、他サービスへ返さない",
-        "共有URLのs/tを各1個だけ許可し値を保存しない。無効／権限／ページ／投稿／未来期限の不足を表示で区別"
+        "共有URLのs/tを各1個だけ許可し値を保存しない。無効／権限／ページ／投稿／未来期限の不足を表示で区別",
+        "Reset entitlement always offers a profile link, future reset uses dated warning and exact post URL; count included in official link",
+        "Status dock actual expanded height is reserved independently of advice setting"
       ],
       "implementation_evidence": [
         {
@@ -5510,6 +5512,10 @@
         {
           "path": "tests/tibo-reader.test.cjs",
           "symbol": "deadline, isolation, baseline"
+        },
+        {
+          "path": "tests/tibo-entitlement.test.cjs",
+          "symbol": "profile, warning, expiry, count"
         }
       ],
       "verification": "mixed"

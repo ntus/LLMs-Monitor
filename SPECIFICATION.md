@@ -143,7 +143,7 @@ The server feed remains unconfigured; this optional browser reader does not depl
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.38.0
+対象製品版: 1.39.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -1583,7 +1583,7 @@ Verification: 282 CJS/MJS tests pass including the Python host suite. Local brow
 
 Validation 2026-10-13: live public DOM confirms author/tweetText/time structure in original and Japanese auto-translation. Main/shared-subview synthetic UI verifies small dated mark, title tooltip and exact post link. Task overview carries at most one public future announcement for ChatGPT only, no other-provider/private feed. Announced EOD PST is approximate, not proof of reset. Installed extension grant/notification tests remain pending. Built manuals/native/helper unchanged.
 
-## v1.38.0 — Tibo shared-link recovery
+## v1.39.0 — Tibo shared-link recovery
 
 Accept only the standard s/t share query keys (each unique) on the exact public author route, in both tab selection and injected reader. Do not retain their values; exported alerts use canonical query-free post links. Reject other keys, credentials, fragments and private routes. Feed disclosure now distinguishes disabled, missing permission, absent page, unreadable posts and no future deadline. No host expansion, reloads, quota/history/native/manual changes. Live installed-extension state remains unverified.
 
@@ -1591,8 +1591,12 @@ Accept only the standard s/t share query keys (each unique) on the exact public 
 
 Additional v1.37 hardening: one failed public tab does not discard other readable tabs. A later complete read of the same post can fill/correct its announced deadline, retaining first detection time and post-ID notification deduplication.
 
-## v1.38.0 — 2026-10-13
+## v1.39.0 — 2026-10-13
 
 Claude billing probe uses an owned inactive official billing tab only after existing opt-in permission; it is independent of the quota queue, coalesced, bounded and cleaned up. User-activated/navigated tabs are retained. API balances remain separate from quotas/history. Codex setup prepares an entirely local ZIP with a validated exact extension ID, executable macOS entrypoint and no network upload; native authorization remains exact. Existing enabled connections are checked on opening setup. Tibo public readers run bounded per-tab reads independently, report bounded counts/API availability, and support explicit diagnostics without quota-queue blocking. Advice must not obscure the feed/status content.
 
-本体・拡張機能v1.38.0／ヘルパーv1.30.2をビルドし、取説は正本だけ更新。既存dist/docsを再生成しない。実端末のClaude自動取得と初回専用ZIP導入は利用者確認が必要。Tibo告知の取得は利用者が動作確認し、アドバイスON時の重なりを報告。予定期限は実際の個別残量回復時刻ではない。
+本体・拡張機能v1.39.0／ヘルパーv1.30.2をビルドし、取説は正本だけ更新。既存dist/docsを再生成しない。実端末のClaude自動取得と初回専用ZIP導入は利用者確認が必要。Tibo告知の取得は利用者が動作確認し、アドバイスON時の重なりを報告。予定期限は実際の個別残量回復時刻ではない。
+
+## v1.39.0 — Tibo / expanded status layout (2026-10-13)
+
+Measure the complete fixed status dock with ResizeObserver; expanded content flows inside the dock and is bounded/scrollable. Reserve measured height for main content and place the advice ribbon above it independently of ON/OFF. ChatGPT reset entitlement includes a separate Tibo public profile link below the row; a verified future reset announcement uses a warning, dated label, tooltip and exact post link. After expiry restore the plain profile link. Available count stays inside its official usage link. Preserve quotas/history/audio, optional permissions and native helper. Build app/extension only, retain helper/manual bytes.
