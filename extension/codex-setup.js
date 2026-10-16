@@ -1,5 +1,6 @@
-(()=>{'use strict';
- const ja=navigator.language.startsWith('ja'),$=id=>document.getElementById(id),text=(jp,en)=>ja?jp:en,send=message=>chrome.runtime.sendMessage(message);
+(async()=>{'use strict';
+ const initial=await chrome.runtime.sendMessage({type:'GET'}).catch(()=>null);
+ const ja=initial?.settings?.language?initial.settings.language==='ja':navigator.language.startsWith('ja'),$=id=>document.getElementById('codex-'+id)||document.getElementById(id),text=(jp,en)=>ja?jp:en,send=message=>chrome.runtime.sendMessage(message);
  document.documentElement.lang=ja?'ja':'en';
  $('description').textContent=text('同じ端末のCodexのピン留めとタスクを、ChatGPTタスク詳細の専用欄に表示します。会話本文・入力内容・認証情報は画面へ渡しません。','Show local Codex pins and tasks in the independent ChatGPT task window. Messages, drafts and credentials are not forwarded.');
  $('step-one').textContent=text('CodexとPython 3がこの端末にインストールされていることを確認します。','Install Codex and Python 3 on this computer.');

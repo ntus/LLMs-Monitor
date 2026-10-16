@@ -187,3 +187,10 @@ Web v1.35.1：★／☆でお気に入り登録・解除、ドラッグ／上下
 EN: In Connect Codex, select **Save installer ZIP for this extension**. Extract it, run Install.command on macOS (or `python3 ./install.py` in that folder on macOS/Linux), then select **Connect (enable and check)** and allow the optional native permission. This ZIP includes this extension’s exact ID; no copy or ID input is required. If macOS blocks double-click, use the Python command in the extracted folder. The generic download still asks for an ID. Existing configured connections are checked automatically when setup opens; no installer is needed each refresh. Update an unpacked extension by overwriting the same folder and reloading it to retain its ID. A different installation ID requires a new personalized installer. Windows/iOS/Android remain future targets, not supported by this native helper.
 
 JP: ［Codexを接続］で **［この端末用の導入ZIPを保存］** を押し、展開します。macOSは Install.command、ダブルクリックが拒否された場合やLinuxは展開フォルダーで `python3 ./install.py` を実行。その後 **［接続する（有効化・確認）］** を押して任意権限を許可します。このZIPには現在の拡張機能IDが自動設定され、コピー・入力は不要です。汎用ZIPでは従来どおりID入力が必要です。既存の接続は設定画面を開くと確認され、毎回のインストールは不要。拡張機能更新は同じ展開フォルダーへ上書きして再読み込みしIDを維持します。別のIDで導入した場合だけ専用ZIPを作り直してください。Windows／iOS／Androidのヘルパー対応は今後の要件です。
+
+
+## v1.45.0 — Setup / 追加連携
+
+Single own top-level setup.html groups required sign-in guidance, optional API/Codex/Tibo and up-to-three service selection. Additional Grok/DeepSeek/Perplexity/Genspark account readers are experimental, disabled by default, exact-route/top-frame validated and separately permissioned. Never read chats, auto-navigate/reload, use paid APIs or convert credit balances to quota percentages. Preserve native exact-ID installation and existing no-window acquisition safeguards. Task helper action opens personalized installation/check, not a generic ZIP. Existing helper and standalone manual files remain unchanged. Live additional-provider layouts and installed automatic Claude billing remain acceptance limits.
+
+日本語：セットアップ画面に任意設定を集約。追加4社は公式残高・契約画面の試験読取りで初期無効、実アカウントの形式は未検証。最大3サービスを選択。Codexは同画面からID入力不要のZIP保存・接続確認。ヘルパーと既存取説配布物は再生成しません。

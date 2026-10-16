@@ -124,3 +124,10 @@ Disabled by default. A direct extension-page click grants optional nativeMessagi
 予定期限を読み取れる場合だけ、ChatGPTのメインと共通サブ画面に **Tibo 𝕏 Reset? (YYYYMMDD HH:MM)** を表示します。現在は明示的な「by EOD PST time」を、投稿日のPST（固定UTC−08:00）の当日末23:59という目安に解釈し、端末の現地時間へ換算します。正確な実施時刻ではありません。ツールチップで内容・タイムゾーンを確認でき、クリックで当該投稿へ移動、期限後は非表示です。日時のない短文告知は速報に表示しますが日時付きマークを出しません。個人の残量回復は公式使用量の変化で別途確認します。
 
 サーバー配信は引き続き未設定です。この任意ブラウザ経路はサーバー配置・有料API利用をしません。更新済み拡張機能の権限・通知の実機確認は未完了です。
+
+
+## Optional additional services / 任意の追加連携 (v1.45)
+
+Grok (grok.com/dashboard), DeepSeek (platform.deepseek.com usage/top_up), Perplexity (www.perplexity.ai/account/details), and Genspark (www.genspark.ai/credit-usage) have separately granted optional host access. Only explicit labelled balance/count rows from those account pages are retained in llms-additional-services-v1. They are not chat percentages, never sent to the operator, and expire from current display after 125 seconds. No chat bodies, credentials, paid API calls, automatic page opening or reloading. Disabling clears the provider's values; revoking permission prevents reading. Live page-layout coverage is experimental.
+
+追加4社は各社別の任意アクセスです。指定した公式残高・契約ページの明示された残高／回数だけを別保存し、本文・認証情報を読まず運営へ送信しません。自動巡回・リロード・有料APIなし。解除で対象値を消去。実画面の形式は試験対応です。

@@ -14,6 +14,7 @@
  const copy={en:{title:'Remaining usage',ready:'Official usage · every minute',previous:'Previous usage · waiting for update',loading:'Updating · previous usage',unknown:'Usage unavailable',login:'Sign in on the official site',pair:'Connect or update the extension',reset:'Reset',expired:'Reset passed · awaiting update',alert:'Service incident',old:'Previous incident · status update pending',status:'Official status unavailable',source:'Official status ↗'},ja:{title:'利用残量',ready:'公式使用量 · 約1分ごと',previous:'前回の残量 · 更新待ち',loading:'更新中 · 前回の残量',unknown:'残量未取得',login:'公式サイトでログイン',pair:'拡張機能の接続・更新が必要です',reset:'リセット',expired:'リセット済み · 再取得待ち',alert:'サービス障害',old:'前回の障害情報 · 更新待ち',status:'公式障害情報を確認できません',source:'公式ステータス ↗'}};
  const el=(tag,text,cls)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n;};
  const LABELS={en:{'現在のセッション':'Current session','週間':'Weekly','Work / Codex · 5時間':'Work / Codex · 5 hours','週間 (Work / Codex)':'Weekly (Work / Codex)'},ja:{'Current session':'現在のセッション','Weekly':'週間','Work / Codex · 5 hours':'Work / Codex · 5時間','Weekly (Work / Codex)':'週間 (Work / Codex)'}};
+ function countdown(at,now=Date.now(),lang=language){const n=Math.ceil((at-now)/60000);if(!Number.isFinite(n)||n<=0)return '';const d=Math.floor(n/1440),h=Math.floor(n%1440/60),m=n%60;return lang==='ja'?`（あと${d?d+'日':''}${h?h+'時間':''}${m||(!d&&!h)?m+'分':''}）`:` (${d?d+'d ':''}${h?h+'h ':''}${m||(!d&&!h)?m+'m ':''}left)`;}
  function render(){
   const host=document.getElementById('task-monitor');if(!host)return;
   const c=copy[language],data=last&&normalize(last,service),u=data?.usage,p=data?.incident;
@@ -24,7 +25,7 @@
   for(const w of u?.windows||[]){
    const label=LABELS[language][w.label]||w.label,row=el('div',undefined,'task-usage-row'),head=el('div',undefined,'task-usage-label');head.append(el('span',label),el('strong',w.remaining===null?'—':`${Math.round(w.remaining)}%`));row.append(head);
    const track=el('div',undefined,'task-usage-track');track.setAttribute('role','progressbar');track.setAttribute('aria-label',label);track.setAttribute('aria-valuemin','0');track.setAttribute('aria-valuemax','100');if(w.remaining!==null){track.setAttribute('aria-valuenow',String(w.remaining));const bar=el('span');bar.style.width=w.remaining+'%';track.append(bar);}else track.setAttribute('aria-valuetext',c.unknown);row.append(track);
-   if(w.expired)row.append(el('small',c.expired));else if(w.resetAt)row.append(el('small',`${c.reset} ${new Date(w.resetAt).toLocaleString(language==='ja'?'ja-JP':'en-US',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false})}`));host.append(row);
+   if(w.expired)row.append(el('small',c.expired));else if(w.resetAt)row.append(el('small',`${c.reset} ${new Date(w.resetAt).toLocaleString(language==='ja'?'ja-JP':'en-US',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false})}${countdown(w.resetAt)}`));host.append(row);
   }
   if(p?.state==='issue'||!p?.current||p?.state==='unknown'){
    const incident=el('div',undefined,'task-incident');if(p?.state==='issue')incident.classList.add('issue');incident.append(el('strong',p?.state==='issue'?(p.current&&connected?c.alert:c.old):c.status));if(p?.state==='issue')incident.append(el('span',p.summary));
@@ -33,5 +34,5 @@
  }
  async function read(){if(busy||document.hidden)return;busy=true;try{const r=await root.LLMTaskBridge.monitor(service);if(normalize(r,service)){last=r;connected=true;}else connected=false;}catch{connected=false;}finally{busy=false;render();}}
  function mount(s,l){service=s;language=l==='ja'?'ja':'en';render();if(!started){started=true;read();setInterval(()=>{render();read()},10000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)read()});}}
- root.LLMTaskMonitor={normalize,mount};if(typeof module!=='undefined')module.exports=root.LLMTaskMonitor;
+ root.LLMTaskMonitor={normalize,mount,countdown};if(typeof module!=='undefined')module.exports=root.LLMTaskMonitor;
 })(globalThis);

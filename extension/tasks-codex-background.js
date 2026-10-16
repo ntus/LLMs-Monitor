@@ -9,7 +9,7 @@
   let u;try{u=new URL(sender.url)}catch{return false}
   if(sender.frameId!==0)return false;
   if(external)return ORIGINS.has(u.origin)&&/^\/tasks(?:\.html)?$/.test(u.pathname)&&u.searchParams.get('service')==='chatgpt'&&message.service==='chatgpt'&&['TASKS_CODEX_READ','TASKS_CODEX_SETUP'].includes(message.type);
-  return sender.id===chrome.runtime.id&&sender.url===chrome.runtime.getURL('codex-setup.html')&&['CODEX_CONFIG_READ','CODEX_CONFIGURE','CODEX_CHECK'].includes(message.type);
+  return sender.id===chrome.runtime.id&&[chrome.runtime.getURL('codex-setup.html'),chrome.runtime.getURL('setup.html')].includes(sender.url)&&['CODEX_CONFIG_READ','CODEX_CONFIGURE','CODEX_CHECK'].includes(message.type);
  }
  const stamp=v=>{const n=typeof v==='string'?Date.parse(v):NaN;return Number.isFinite(n)&&n>0?new Date(n).toISOString():null};
  function normalize(value){
@@ -39,7 +39,7 @@
  }
  async function handle(message,sender,external){
   if(!allowed(message,sender,external))return {status:'unavailable'};
-  if(message.type==='TASKS_CODEX_SETUP'){await GlanceWindows.createNormalTab(chrome,chrome.runtime.getURL('codex-setup.html'));return {status:'opened'}}
+  if(message.type==='TASKS_CODEX_SETUP'){await GlanceWindows.createNormalTab(chrome,chrome.runtime.getURL('setup.html'));return {status:'opened'}}
   if(message.type==='CODEX_CONFIG_READ')return config();
   if(message.type==='CODEX_CONFIGURE'){
    const enabled=message.enabled===true&&await chrome.permissions.contains({permissions:['nativeMessaging']});epoch++;lastRead=0;recent=null;await chrome.storage.local.set({[KEY]:enabled});return {enabled};
