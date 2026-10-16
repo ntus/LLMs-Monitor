@@ -15,3 +15,12 @@ body:has(#advisor:not([hidden])) main,html:fullscreen body:has(#advisor:not([hid
 .gauge-reset{left:16%;right:16%;max-width:68%;bottom:17%;font-size:clamp(11px,.95vw,15px);line-height:1.35}.gauge-reset strong{display:block;font-size:inherit;line-height:1.35;margin-top:3px}
 html:fullscreen .gauge-reset{font-size:clamp(10px,1.05vw,16px)}
 @media(max-width:700px) and (orientation:portrait){html:fullscreen .gauge-value .gauge-caption{font-size:8px}html:fullscreen .gauge-reset{font-size:8px;bottom:7%}}
+
+#intelligence-main[hidden]{display:none!important}
+#connection.connected{height:34px;min-height:34px;max-height:34px;box-sizing:border-box;margin-bottom:8px;display:flex;align-items:center;flex-wrap:nowrap;gap:7px}
+#connection .notice-copy{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#connection .connection-tibo,#connection .connection-next,#connection .connection-source{flex:none;font-size:10px;padding:3px 6px;white-space:nowrap;color:var(--accent);border:1px solid var(--line);border-radius:5px;background:transparent;text-decoration:none}
+#connection.connection-alert{border-color:#bc9555;color:#f1d29a}
+html:fullscreen #connection{display:flex!important;margin:0;height:28px;min-height:28px;max-height:28px}
+html:fullscreen main{grid-template-rows:auto auto minmax(0,1fr) auto}
+@media(max-width:620px){#connection.connected strong{max-width:78px;overflow:hidden;text-overflow:ellipsis}#connection .badge{display:none}#connection .connection-tibo{font-size:9px;padding:3px}}

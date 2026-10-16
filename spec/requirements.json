@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs モニター",
     "name_en": "LLMs Monitor",
-    "version": "1.43.0",
-    "package_filename": "LLMs-Monitor-v1.43.0.zip",
+    "version": "1.44.0",
+    "package_filename": "LLMs-Monitor-v1.44.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -19,7 +19,7 @@
       "gemini"
     ],
     "production_companion_origin": "https://llmsmonitor.ntus.info",
-    "web_version": "1.43.0",
+    "web_version": "1.44.0",
     "companion_origins": [
       "https://llmsmonitor.ntus.info",
       "https://llmsmonitor.ntusnog.chatgpt.site"
@@ -5662,6 +5662,42 @@
         "tests/quiet-tabs.test.cjs",
         "tests/changes.test.cjs"
       ]
+    },
+    {
+      "id": "CONNECTION-STRIP-001",
+      "category": "display",
+      "introduced_in": "1.44.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "Provider warnings, Tibo news and connection state rotate in the existing connection row every five seconds without new main-card/footer space. Claude billing runs independently from quota fetches with bounded owned-tab lifetime. Gemini unavailable official data is never estimated.",
+      "acceptance_criteria": [
+        "Single fixed-height connection row with escaped warning text, validated public source links and manual next/setup controls",
+        "Keep provider-status dock independent; preserve compact/floating provider warning behavior",
+        "Claude slow billing page may finish after 9 seconds, no new windows and unchanged optional permission boundary",
+        "Gemini account-qualified usage route supported; invalid/null utilization never fabricated as full remaining",
+        "No tab creation for Gemini fallback; only existing official usage pages read",
+        "Unknown task count is an em dash, not zero",
+        "Google /sorry/429/unusual-traffic stops account traversal; persist 15-minute blocked or five-minute error cooldown, manual refresh retries once; never solve CAPTCHA"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "tests/connection-feed.test.cjs",
+          "symbol": "bounded text/source URL"
+        },
+        {
+          "path": "tests/claude-billing-probe.test.cjs",
+          "symbol": "slow reader"
+        },
+        {
+          "path": "tests/usage-recovery.test.cjs",
+          "symbol": "existing tabs only"
+        },
+        {
+          "path": "tests/google-backoff.test.cjs",
+          "symbol": "cooldown/manual retry"
+        }
+      ],
+      "verification": "mixed"
     }
   ]
 }

@@ -143,7 +143,7 @@ The server feed remains unconfigured; this optional browser reader does not depl
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.43.0
+対象製品版: 1.44.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -1643,10 +1643,18 @@ Automatic quota-confirmation, API-billing and task-acquisition tabs share an ext
 
 日本語: 3社の見出しを各社のメインページへリンク。残り使用量ラベルを数値の上へ移動し、30％未満だけ赤字、リセットと大きめの残り時間は下側へ。残り時間の括弧を除去し、60分の繰上げを修正。点滅時も数値のサイズを維持する。自動取得タブは専用の最小化・非アクティブ・ミュート窓に集約し、作業中のタブ列へ追加せず、既存ページの自動リロードを廃止。取得完了で所有タブを閉じ、最後なら専用窓も閉じる。利用者が開いた窓や遷移したタブは保護。タスクバー表示や最小化時の抑制はブラウザー仕様に依存。認証エラー時は前回値を保持し、手動リンクは通常どおり開く。追加権限・有料APIは使わない。今回もアプリ＋拡張ZIPのみ、既存取説アーカイブとヘルパーは維持。
 
-Validation v1.43.0: 312 automated checks pass. Browser synthetic data verifies 29% red / 30% normal, heading destinations, caption ordering and no number/reset overlap at a narrow desktop viewport. Owned-window lifecycle is tested with synthetic Chrome; installed Chrome/Edge focus behavior remains a manual acceptance limit. No paid API was invoked.
+Validation v1.44.0: 312 automated checks pass. Browser synthetic data verifies 29% red / 30% normal, heading destinations, caption ordering and no number/reset overlap at a narrow desktop viewport. Owned-window lifecycle is tested with synthetic Chrome; installed Chrome/Edge focus behavior remains a manual acceptance limit. No paid API was invoked.
 
 ## 2026-10-16 emergency correction — automatic window proliferation
 
 Supersedes the v1.42 minimized-host requirement: acquisition must never call windows.create/update/remove or create about:blank. Use an explicit existing non-incognito normal window ID and active:false; with no normal window, skip acquisition. Keep serialized session ownership and the 12-tab cap. Close only inactive owned tabs still on their acquisition route (or the exact allowed Claude usage redirect). Never close existing windows or user-adopted/navigated tabs. Older minimized-host records must not trigger window replacement. This intentionally allows temporary inactive acquisition tabs in an existing normal window to prevent automatic window creation.
 
-Release validation: 313 full regression tests pass, including 60 repeated/concurrent acquisition attempts with zero window mutations, popup-only skip, old record migration and adopted-tab protection. App/extension v1.43.0 built with unchanged manuals/helper ZIPs. Hosted v1.42 source was reconciled without dropping its changes. Installed-browser upgrade and a sustained real-user no-popup check remain user acceptance gates.
+Release validation: 313 full regression tests pass, including 60 repeated/concurrent acquisition attempts with zero window mutations, popup-only skip, old record migration and adopted-tab protection. App/extension v1.44.0 built with unchanged manuals/helper ZIPs. Hosted v1.42 source was reconciled without dropping its changes. Installed-browser upgrade and a sustained real-user no-popup check remain user acceptance gates.
+
+## v1.44.0 — compact information and acquisition (2026-10-16)
+
+Main provider warning and Tibo feed move into the existing fixed-height connection row, rotating every five seconds plus manual next; plain-text tooltip/source and Tibo setup remain available. Remove main-card notice/footer feed only; retain floating warning and independent official incidents. Claude optional billing acquisition starts before quotas finish, coalesces, waits up to 35 seconds with 45-second ownership cleanup, and never creates a window. Gemini plan discovery is bounded to three seconds after valid quota rows, validates utilization as an explicit number within 0..1, and accepts account-qualified official usage routes. On API failure read up to three existing official usage tabs only; no new Gemini page/window. User confirms the official Gemini usage page also lacks values: no individual quota recovery is claimed. Unavailable task count is unknown, not zero. No new permissions, paid API, helper or standalone manual regeneration.
+
+Gemini field evidence 2026-10-16: user reported Google /sorry reCAPTCHA at official usage URL, then confirmed values returned after their own manual verification. Do not automate or bypass CAPTCHA. Detect explicit Google /sorry, 429 and bounded unusual-traffic text; abort account exploration on the first challenge. Persist a 15-minute retry-after for challenge or five minutes for other acquisition failure. Explicit trusted Refresh permits one retry; successful fetch clears cooldown. Never store challenge page text, IP, challenge tokens or network identifiers.
+
+Validation v1.44: 321 regression tests passed, including a delayed Claude balance after the former nine-second cutoff, invalid Gemini utilization, CAPTCHA early abort and persisted cooldown/manual retry. Synthetic browser confirmed a single 34px connection row with warnings/Tibo and validated source link. Actual signed-in Claude balance refresh still needs installed-extension acceptance. Gemini challenge recovery was confirmed by the user manually, not by an automated CAPTCHA action.
