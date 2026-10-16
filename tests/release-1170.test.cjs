@@ -9,7 +9,7 @@ test('existing ChatGPT usage tabs with a missing reader are recovered only when 
  assert.match(background,/needsChatGPTEntitlementRead\(snapshot\)/);
  assert.match(background,/chrome\.tabs\.query\(\{url:'https:\/\/chatgpt\.com\/settings\/usage\*'\}\)/);
  assert.match(background,/chrome\.tabs\.reload\(tab\.id\)/);
- assert.match(background,/readerReloadedAt\.get\(tab\.id\)/);
+ assert.match(background,/GlanceQuietTabs\.create\(URLS\.chatgpt\)/);assert(!background.slice(background.indexOf('async function ensureClaudeUsageReader'),background.indexOf('function timebox')).includes('chrome.tabs.reload(tab.id)'));
 });
 test('floating primary changed digits inherit their full size in normal and pinned windows',()=>{
  const css=read('extension/style-v152.css');
@@ -36,6 +36,6 @@ test('ChatGPT official card wording remains parseable',()=>{
 });
 test('dormant ChatGPT usage tabs are recovered and expiry can be read without a permanently open tab',()=>{
  const background=read('extension/background.js'),content=read('extension/content.js');
- for(const token of ['needsChatGPTEntitlementRead','GLANCE_USAGE_READER_PING','GLANCE_USAGE_READER_READ','chrome.tabs.reload(tab.id)','chrome.tabs.create({url:URLS.chatgpt,active:false})','closeTemporaryUsageTab'])assert(background.includes(token));
+ for(const token of ['needsChatGPTEntitlementRead','GLANCE_USAGE_READER_PING','GLANCE_USAGE_READER_READ','GlanceQuietTabs.create(URLS.chatgpt)','closeTemporaryUsageTab'])assert(background.includes(token));
  for(const token of ['GLANCE_USAGE_READER_PING','GLANCE_USAGE_READER_READ'])assert(content.includes(token));
 });

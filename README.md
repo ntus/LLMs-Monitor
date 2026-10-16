@@ -23,12 +23,12 @@ Update the extension in place; do not uninstall or clear browser storage. Save o
 
 
 
-Release preparation **Web v1.35.1 / extension v1.35.0** for Chrome/Edge desktop, with English and Japanese interfaces.
+Release preparation **Web v1.42.0 / extension v1.42.0** for Chrome/Edge desktop, with English and Japanese interfaces.
 
 - **See LLM usage remaining in real time:** current/weekly limits, reset times, official incidents and local change alerts for ChatGPT, Claude and Gemini.
 - **Keep track of work:** independent task windows, evidenced response states, pinned items first, and per-thread notes/checklists with links back to the conversation.
 
-[Open monitor](https://llmsmonitor.ntus.info/) · [Product introduction](https://llmsmonitor.ntus.info/product.html) · [Extension ZIP](dist/LLMs-Monitor-v1.35.0.zip) · [Task/work-note guide](TASK_DETAILS.md) · [Specification](SPECIFICATION.md) · [Privacy](PRIVACY.md) · [Security review](SECURITY_REVIEW.md) · [Release history](CHANGELOG.md)
+[Open monitor](https://llmsmonitor.ntus.info/) · [Product introduction](https://llmsmonitor.ntus.info/product.html) · [Extension ZIP](dist/LLMs-Monitor-v1.42.0.zip) · [Task/work-note guide](TASK_DETAILS.md) · [Specification](SPECIFICATION.md) · [Privacy](PRIVACY.md) · [Security review](SECURITY_REVIEW.md) · [Release history](CHANGELOG.md)
 
 **Tibo reset alerts are not live on the current static Site.** The detector supports public usage/reset posts from Tibo (`@thsottiaux`, OpenAI staff) and selected company accounts, but requires a separately configured X server, secret, cache and minute cron. Tested synthetic detection is not proof of live delivery. See [setup and live acceptance](server/README.md). Posts are announcements, not confirmation that your individual limit has reset. Nerf Bench is [link-only](https://www.bridgebench.ai/nerf-bench).
 
@@ -46,11 +46,11 @@ Gauges and bars show obtained remaining values, with resets and weekly session e
 
 Credits, Claude cloud-session credits, reset entitlements and optional API billing balances are separate. Claude API promotional credit gets its own line. Links open official settings; resets, purchases and account changes are never performed automatically. API billing connections start disabled and require a direct permission click; keep the billing page open. Coverage depends on what that account exposes.
 
-Only changed numeric values blink; local sound is sent before the display change. At most three tones, one second apart. Downward crossings of 5% and 1% have distinct gentle warning tones. Sound defaults on, but browser/OS restrictions can require a first gesture. Official incident checks are separate from X alerts and personal usage.
+Only changed numeric values blink; local sound is sent before the display change. Tones follow changes to the displayed whole-percent quota only: fractional changes that round to the same number and credit changes are silent. At most three tones, one second apart. Downward crossings into 5% and 1% have distinct gentle warning tones. Provider pacing warnings shown on official usage pages appear in the matching card. Sound defaults on, but browser/OS restrictions can require a first gesture. Official incident checks are separate from X alerts and personal usage.
 
 Use standard/dark themes, language, volume, opacity, service ordering/hiding, fullscreen or a floating view. Hidden services continue acquisition/history. Always-on-top uses supported Document Picture-in-Picture after a click; native window chrome, sizing limits and OS transparency belong to the browser/OS. Floating incident details list only affected services, while usage cards remain available. History stores up to 10,000 changed values per window locally.
 
-For macOS helper setup: **Connect Codex → download and extract → run Install.command → paste the extension ID → Enable connection → Check connection → Refresh list**. The [step-by-step guide](https://github.com/ntus/LLMs-Monitor/blob/main/native/README.md#macos-en) includes a Terminal fallback, Python 3.9+ checks and troubleshooting. Linux has a command installer; Windows helper installation is not implemented. Web v1.35.1 uses helper v1.30.1; the extension ZIP is v1.35.0.
+For macOS helper setup: **Connect Codex → download and extract → run Install.command → paste the extension ID → Enable connection → Check connection → Refresh list**. The [step-by-step guide](https://github.com/ntus/LLMs-Monitor/blob/main/native/README.md#macos-en) includes a Terminal fallback, Python 3.9+ checks and troubleshooting. Linux has a command installer; Windows helper installation is not implemented. Web v1.42.0 uses helper v1.30.2; the extension ZIP is v1.42.0.
 
 ## Tasks and work notes
 
@@ -109,17 +109,17 @@ The server feed remains unconfigured; this optional browser reader does not depl
 
 [日本語チラシを拡大](assets/promotional/llms-monitor-a4-landscape-flyer-v1.jpg?raw=1)（以前の画面紹介。現行の説明は以下）
 
-**AIの残量も、作業の続きも。** 正式リリース準備版 **Web v1.35.1／拡張v1.35.0**。
+**AIの残量も、作業の続きも。** 正式リリース準備版 **Web v1.42.0／拡張v1.42.0**。
 
 ① **各種LLMの利用残量をリアルタイム表示！** リセット時刻、公式障害情報、数値変化も確認。
 
 ② **タスク一覧とスレッドごとの作業メモで、続きの作業を忘れない！** ピン留め優先、観測できた状態、リンク付き備忘録・チェックリストを別窓で表示。
 
-[モニター](https://llmsmonitor.ntus.info/) · [製品紹介](https://llmsmonitor.ntus.info/product.html) · [拡張機能ZIP](dist/LLMs-Monitor-v1.35.0.zip) · [タスク・作業メモ取説](TASK_DETAILS.md#ja) · [詳細仕様](SPECIFICATION.md#ja) · [プライバシー](PRIVACY.md#ja)
+[モニター](https://llmsmonitor.ntus.info/) · [製品紹介](https://llmsmonitor.ntus.info/product.html) · [拡張機能ZIP](dist/LLMs-Monitor-v1.42.0.zip) · [タスク・作業メモ取説](TASK_DETAILS.md#ja) · [詳細仕様](SPECIFICATION.md#ja) · [プライバシー](PRIVACY.md#ja)
 
 **※Tiboリセット通知は現在の静的サイトでは未稼働です。** Tibo氏（`@thsottiaux`、OpenAIスタッフ）・各社公式Xの利用枠／リセット投稿を検知する処理はありますが、別サーバー・X認証Secret・キャッシュ・1分cronが必要です。模擬データでの成功を実投稿の通知成功とは扱いません。[設定と実投稿検証](server/README.md#ja)を参照。告知は個人の残量がリセット済みである証明ではありません。Nerf Benchはリンクのみです。
 
-CodexヘルパーのmacOS導入は **［Codexを接続］→ZIP展開→Install.command実行→拡張機能ID入力→［接続を有効にする］→［接続を確認］→［一覧を更新］**。詳しくは [macOS手順と困ったときの対処](https://github.com/ntus/LLMs-Monitor/blob/main/native/README.md#macos-ja) を参照。Python 3.9以上、ターミナルでの代替手順、Chrome／Edge別IDの注意点も掲載。Linuxはコマンド方式、Windowsヘルパーは未対応です。Web v1.35.1／ヘルパーv1.30.1へ更新、拡張機能ZIPはv1.35.0です。
+CodexヘルパーのmacOS導入は **［Codexを接続］→ZIP展開→Install.command実行→拡張機能ID入力→［接続を有効にする］→［接続を確認］→［一覧を更新］**。詳しくは [macOS手順と困ったときの対処](https://github.com/ntus/LLMs-Monitor/blob/main/native/README.md#macos-ja) を参照。Python 3.9以上、ターミナルでの代替手順、Chrome／Edge別IDの注意点も掲載。Linuxはコマンド方式、Windowsヘルパーは未対応です。Web v1.42.0／ヘルパーv1.30.2へ更新、拡張機能ZIPはv1.42.0です。
 
 ## 導入・更新
 
@@ -135,7 +135,7 @@ CodexヘルパーのmacOS導入は **［Codexを接続］→ZIP展開→Install.
 
 クレジット、Claudeクラウドセッションクレジット、リセット権、任意のAPI残高は区別します。Claude APIのプロモーションクレジットは別行。リンクは公式設定を開き、購入・権利行使・契約変更は自動実行しません。API連携は初期無効で、拡張機能内のクリックによる任意権限許可後、開いている請求画面を読み取ります。
 
-変化した数値だけ点滅し、音を送出してから表示変更します。最大3音・1秒間隔、残量5%以下／1%以下への下降時は別の穏やかな警告音。通知音は初期ONですが、ブラウザー・OSによって初回操作が必要です。公式障害監視、X速報、個人残量は独立しています。
+変化した数値だけ点滅し、音を送出してから表示変更します。音はゲージと同じ整数％の残量変化だけが対象で、表示に出ない小数変化やクレジット変化では鳴りません。最大3音・1秒間隔、残量が5％以下／1％以下へ下降した時は別の穏やかな警告音。公式利用状況画面のペース警告は該当カード内に表示します。通知音は初期ONですが、ブラウザー・OSによって初回操作が必要です。公式障害監視、X速報、個人残量は独立しています。
 
 標準／ダーク、日英、音量、透明度、表示サービス・順序、全画面、小窓に対応。非表示サービスも取得・履歴保存を継続。最前面は対応ブラウザーのDocument PiPでクリック後に起動し、外枠のURL表示・サイズ限界・OS透過はブラウザー／OS仕様です。小窓の障害詳細は障害中のサービスだけに絞り、残量カードは維持。変化履歴は枠ごと最大10,000件を端末内に保存します。
 

@@ -17,7 +17,7 @@
   let created=null;
   try{
    // A fresh inactive home prevents reuse of an old sidebar after account changes.
-   created=await chrome.tabs.create({url,active:false});const started=Date.now();
+   created=await (root.GlanceQuietTabs?root.GlanceQuietTabs.create(url):chrome.tabs.create({url,active:false}));const started=Date.now();
    while(Date.now()-started<20000){const r=await request(created.id,service);if(r?.status==='ready'){try{await bounded(chrome.tabs.sendMessage(created.id,{type:'TASK_LIST_PREPARE',service}));}catch{}await new Promise(resolve=>setTimeout(resolve,400));const refreshed=await request(created.id,service);let latest=refreshed?.status==='ready'?refreshed:r;
     const pins=new Map(),tasks=new Map();let rejected=0,observed=0,sectionSeen=false,limited=false,finished=false,stable=0;
     const merge=x=>{if(x?.status!=='ready')return;latest=x;for(const p of x.snapshot.pins||[])pins.set(p.url,p);for(const t of x.snapshot.tasks||[])tasks.set(t.id,t);rejected=Math.max(rejected,x.snapshot.pinAudit?.rejected||0);observed=Math.max(observed,x.snapshot.pinAudit?.observed||0);sectionSeen ||= x.snapshot.pinAudit?.sectionSeen===true;limited ||= x.snapshot.pinAudit?.limited===true;};merge(r);merge(latest);
@@ -29,7 +29,7 @@
     }
     return {status:'ready',snapshot:{...latest.snapshot,pins:[...pins.values()].slice(0,500),tasks:[...tasks.values()].slice(0,500),pinAudit:{observed:Math.max(observed,pins.size+rejected),accepted:pins.size,rejected,limited:limited||pins.size>500,sectionSeen,scanFinished:finished}}};}await new Promise(resolve=>setTimeout(resolve,800));}
    return {status:'unavailable'};
-  }catch{return {status:'unavailable'}}finally{if(Number.isInteger(created?.id))try{await chrome.tabs.remove(created.id)}catch{}}
+  }catch{return {status:'unavailable'}}finally{if(Number.isInteger(created?.id))try{await (root.GlanceQuietTabs?root.GlanceQuietTabs.release(created.id):chrome.tabs.remove(created.id))}catch{}}
  }
  function read(service){
   if(!Object.hasOwn(T.HOSTS,service))return Promise.resolve({status:'unavailable'});

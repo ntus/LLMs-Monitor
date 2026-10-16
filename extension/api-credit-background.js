@@ -17,17 +17,17 @@
  async function cleanupProbe(expectedId){
   const record=(await chrome.storage.session?.get(PROBE_KEY))?.[PROBE_KEY];if(!record||expectedId!==undefined&&record.id!==expectedId||expectedId===undefined&&record.expiresAt>Date.now())return;
   await chrome.storage.session.remove(PROBE_KEY);await chrome.alarms.clear(PROBE_ALARM);
-  try{const tab=await chrome.tabs.get(record.id);if(!tab.active&&tab.url===A.PROVIDERS.claude.url)await chrome.tabs.remove(record.id)}catch{}return true;
+  try{const tab=await chrome.tabs.get(record.id);if(!tab.active&&tab.url===A.PROVIDERS.claude.url)await (root.GlanceQuietTabs?root.GlanceQuietTabs.release(record.id):chrome.tabs.remove(record.id))}catch{}return true;
  }
  function startClaudeProbe(){
   if(claudeProbe)return claudeProbe;if(!chrome.storage.session||Date.now()-lastProbeAt<60000)return Promise.resolve();
   const operation=(async()=>{await cleanupProbe();if((await chrome.storage.session.get(PROBE_KEY))[PROBE_KEY])return;const state=await chrome.storage.local.get('apiCredits');if(!state.apiCredits?.claude?.enabled||!await permitted('claude'))return;lastProbeAt=Date.now();let owned;
-   try{owned=await chrome.tabs.create({url:A.PROVIDERS.claude.url,active:false});if(!Number.isInteger(owned?.id))return;const started=Date.now();await chrome.storage.session.set({[PROBE_KEY]:{id:owned.id,expiresAt:started+15000}});chrome.alarms.create(PROBE_ALARM,{when:started+15000});let injected=false;
+   try{owned=await (root.GlanceQuietTabs?root.GlanceQuietTabs.create(A.PROVIDERS.claude.url):chrome.tabs.create({url:A.PROVIDERS.claude.url,active:false}));if(!Number.isInteger(owned?.id))return;const started=Date.now();await chrome.storage.session.set({[PROBE_KEY]:{id:owned.id,expiresAt:started+15000}});chrome.alarms.create(PROBE_ALARM,{when:started+15000});let injected=false;
     while(Date.now()-started<9000){const current=await chrome.storage.local.get('apiCredits');if(!current.apiCredits?.claude?.enabled||!await permitted('claude'))break;const tab=await bounded(chrome.tabs.get(owned.id),700);if(tab.url&&tab.url!==A.PROVIDERS.claude.url)break;
      if(tab.status==='complete'){try{await bounded(chrome.tabs.sendMessage(owned.id,{type:'API_CREDIT_READ'}),1000)}catch{if(!injected){injected=true;await bounded(chrome.scripting.executeScript({target:{tabId:owned.id},files:['api-credits.js','api-credit-reader.js']}),1000)}}const row=(await chrome.storage.local.get('apiCredits')).apiCredits?.claude;if(row?.capturedAt>=started&&['ready','login','postpaid'].includes(row.status))break;}
      await new Promise(resolve=>setTimeout(resolve,250));
     }
-   }catch{}finally{if(Number.isInteger(owned?.id)){let handled=false;try{handled=await cleanupProbe(owned.id)}catch{}if(!handled)try{const tab=await chrome.tabs.get(owned.id);if(!tab.active&&tab.url===A.PROVIDERS.claude.url)await chrome.tabs.remove(owned.id)}catch{}}}
+   }catch{}finally{if(Number.isInteger(owned?.id)){let handled=false;try{handled=await cleanupProbe(owned.id)}catch{}if(!handled)try{const tab=await chrome.tabs.get(owned.id);if(!tab.active&&tab.url===A.PROVIDERS.claude.url)await (root.GlanceQuietTabs?root.GlanceQuietTabs.release(owned.id):chrome.tabs.remove(owned.id))}catch{}}}
   })();claudeProbe=operation;operation.finally(()=>{if(claudeProbe===operation)claudeProbe=null}).catch(()=>{});return operation;
  }
  async function refresh(only){

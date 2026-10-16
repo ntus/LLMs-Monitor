@@ -1,0 +1,17 @@
+/* Status expands in its dock; reserve its measured height independently of advice. */
+:root{--status-dock-height:38px}
+.provider-status-host .provider-status-popover{position:static;max-height:45dvh;overflow:auto;box-sizing:border-box;margin:7px 0 0}
+main,html:fullscreen main{padding-bottom:calc(var(--status-dock-height) + 24px)}
+body:has(#advisor:not([hidden])) main,html:fullscreen body:has(#advisor:not([hidden])) main{padding-bottom:calc(var(--status-dock-height) + 84px)}
+.advisor,html:fullscreen .advisor{bottom:calc(var(--status-dock-height) + 8px)}
+.entitlement-tibo{margin-top:5px;font-size:10px;line-height:1.6}
+
+/* Readable main gauge hierarchy; changed-number spans must retain numeral size. */
+.service-home{color:inherit;text-decoration:none}.service-home:hover{text-decoration:underline;text-underline-offset:3px}
+.gauge-value{display:flex;flex-direction:column;align-items:center;transform:translateY(-24%);line-height:1.05}
+.gauge-value .gauge-caption{font-size:clamp(11px,1.05vw,16px);font-weight:550;line-height:1.3;margin:0 0 5px;letter-spacing:0;color:var(--muted)}
+.gauge-number{font:inherit;white-space:nowrap}.gauge-number small{font-size:.36em;letter-spacing:0}.gauge-number .changed-number{display:inline;font:inherit;letter-spacing:inherit;margin:0}
+.gauge-number.quota-low,.gauge-number.quota-low .changed-number{color:#ff8899!important}:root[data-theme="standard"] .gauge-number.quota-low,:root[data-theme="standard"] .gauge-number.quota-low .changed-number{color:#bd344c!important}
+.gauge-reset{left:16%;right:16%;max-width:68%;bottom:17%;font-size:clamp(11px,.95vw,15px);line-height:1.35}.gauge-reset strong{display:block;font-size:inherit;line-height:1.35;margin-top:3px}
+html:fullscreen .gauge-reset{font-size:clamp(10px,1.05vw,16px)}
+@media(max-width:700px) and (orientation:portrait){html:fullscreen .gauge-value .gauge-caption{font-size:8px}html:fullscreen .gauge-reset{font-size:8px;bottom:7%}}

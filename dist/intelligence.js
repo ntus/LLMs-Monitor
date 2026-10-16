@@ -22,7 +22,7 @@
  function tiboDetails(feed,language='en',now=Date.now()){
   const row=normalize(feed).alerts.find(a=>a.provider==='openai'&&a.kind==='reset'&&/^@thsottiaux(?: · OpenAI staff)?$/.test(a.account)&&a.url===`https://x.com/thsottiaux/status/${a.id}`&&Number.isFinite(a.resetAt)&&Number.isFinite(new Date(a.resetAt).getTime())&&a.resetAt>now&&a.resetAt-now<=604800000&&a.publishedAt>0&&a.publishedAt<=now&&now-a.publishedAt<=604800000);
   if(!row)return null;const d=new Date(row.resetAt),p=n=>String(n).padStart(2,'0'),stamp=`${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`,ja=language!=='en';
-  const tip=`${row.summary} · ${d.toLocaleString(ja?'ja-JP':'en-US',{timeZoneName:'short'})} · ${ja?'告知のEOD PST期限を換算した目安です。正確な実施時刻・個人の残量回復は未確認。':'Approximate announced EOD PST deadline; exact execution and personal quota recovery are unverified.'}${normalize(feed).status!=='ready'?(ja?' 最新取得は未確認。':' Latest read unavailable.'):''}`;
+  const tip=`${row.summary} · ${d.toLocaleString(ja?'ja-JP':'en-US',{timeZoneName:'short'})} · ${ja?'告知の予定期限を投稿日時から換算した目安です。正確な実施時刻・個人の残量回復は未確認。':'Approximate announced deadline calculated from the post timestamp; exact execution and personal quota recovery are unverified.'}${normalize(feed).status!=='ready'?(ja?' 最新取得は未確認。':' Latest read unavailable.'):''}`;
   return {url:row.url,label:`Tibo 𝕏 Reset? (${stamp})`,title:tip};
  }
  function tiboMark(feed,language='en',now=Date.now()){const mark=tiboDetails(feed,language,now);if(!mark)return '';return `<a class="tibo-reset-mark" href="${mark.url}" target="_blank" rel="noopener noreferrer" title="${escape(mark.title)}" aria-label="${escape(mark.label+' · '+mark.title)}">${escape(mark.label)}</a>`;

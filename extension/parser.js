@@ -24,6 +24,11 @@ function parse(doc,service){
  if(service==='chatgpt')for(const e of doc.querySelectorAll('progress,[role="progressbar"]')){const l=label(e,doc);if(!/残りの利用可能量|remaining/i.test(l))continue;const text=vicinity(e,true);const v=remaining(text);if(v===null)continue;const weekly=/週|week/i.test(text),five=/5\s*時間|5.hour|five.hour/i.test(text),resetText=reset(text);if(!weekly&&!five||weekly&&five)continue;windows.push({label:weekly?'週間 (Work / Codex)':'Work / Codex · 5時間',remaining:v,reset:resetText,resetAt:resetTime(resetText)});}
  return windows.slice(0,6);
 }
+function parseNotice(doc,service){
+ const lines=String(doc?.body?.innerText||'').split(/\n+/).map(clean).filter(Boolean);if(!lines.length)return '';
+ const patterns=service==='claude'?[/ご注意ください/i,/このペースだと/i,/heads?\s*up[,!:]?/i,/at this pace/i,/you may reach your limit/i]:service==='chatgpt'?[/you(?:'|’)ll reach your limit/i,/利用上限に達する見込み/i,/you are approaching your limit/i]:[/you(?:'|’)ve reached your limit/i,/利用上限に近づいています/i];
+ for(let i=0;i<lines.length;i++){if(!patterns.some(pattern=>pattern.test(lines[i])))continue;let text=lines[i];while(text.length<280&&i+1<lines.length&&(!/[。！？.!?](?:[」』”’)]?)$/.test(text)||/^ご注意ください[。！!]?$/i.test(text)))text+=' '+lines[++i];const lead=text.match(/^ご注意ください[。！!]/),tail=lead?text.slice(lead[0].length):text,tailEnd=tail.search(/[。！？.!?](?:[」』”’)]?|$)/),end=lead?lead[0].length+(tailEnd>=0?tailEnd:tail.length):tailEnd;return text.slice(0,end>=0?Math.min(end+1,280):280);}return '';
+}
 function creditValue(text){
  const t=clean(text),jp=t.match(/([$＄€£￥¥][\d,.]+)\s*中\s*([$＄€£￥¥][\d,.]+)\s*が?残/),en=t.match(/([$€£￥¥][\d,.]+)\s*(?:remaining|left)/i);
  if(jp)return `残り ${jp[2]} / ${jp[1]}`;
@@ -98,6 +103,6 @@ function parsePlan(doc,service){
  }
  return '未取得';
 }
-root.GlanceParser={parse,used,remaining,reset,resetTime,parseExtras,creditValue,expiryTime,chatGPTReset,parsePlan,normalizePlan,planFromObject};
+root.GlanceParser={parse,parseNotice,used,remaining,reset,resetTime,parseExtras,creditValue,expiryTime,chatGPTReset,parsePlan,normalizePlan,planFromObject};
 if(typeof module!=='undefined')module.exports=root.GlanceParser;
 })(globalThis);
