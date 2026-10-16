@@ -35,7 +35,7 @@
   $('capture').textContent=snapshot?`${t('captured')}: ${when(snapshot.capturedAt)}${stale?' · '+t('stale'):''}`:'';$('coverage').textContent=snapshot?.source==='demo'?'':snapshot?.source==='official-sidebar'?t('autoCoverage')+(service==='claude'?' '+t('codeListNote'):''):snapshot?.coverage||'';
   updateStateText();globalThis.LLMTaskWork?.pins(snapshot);
   const tasks=snapshot?M.select(snapshot,$('search').value,$('status').value):[];
-  $('count').textContent=snapshot?`${tasks.length} / ${snapshot.tasks.length}`:'0';$('count').title=t('taskDetails');
+  $('count').textContent=snapshot?`${tasks.length} / ${snapshot.tasks.length}`:'—';$('count').title=t('taskDetails');
   $('copy').disabled=!tasks.length&&!globalThis.LLMTaskCodex?.hasData();$('clear').disabled=reading||(!snapshot&&!globalThis.LLMTaskCodex?.hasData());$('demo').disabled=reading;$('task-file').disabled=reading;
   $('notice').textContent=noticeKey?t(noticeKey):'';$('auto').textContent=t('automatic')+' '+(automatic?'ON':'OFF');$('auto').setAttribute('aria-pressed',String(automatic));$('task-refresh').textContent=t('refresh');$('task-refresh').disabled=acquiring;
   if(!tasks.length){$('tree').replaceChildren(el('p',t(snapshot?'noResults':'empty'),'task-empty'));$('tree').dataset.rendered='false';return}
