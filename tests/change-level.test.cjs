@@ -1,0 +1,4 @@
+const {test}=require('node:test');const assert=require('node:assert/strict');const changeLevel=require('../extension/change-level.js');
+const old={capturedAt:1000,windows:[{label:'現在のセッション',remaining:69.1}],extras:[{label:'使用クレジット',value:'残り $5.00'}]};
+test('通知音の対象は画面表示上の整数残量だけ',()=>{assert.equal(changeLevel(old,{status:'ready',windows:[{label:'現在のセッション',remaining:69.4}],extras:[{label:'使用クレジット',value:'残り $0.00'}]}),'');assert.equal(changeLevel(old,{status:'ready',windows:[{label:'現在のセッション',remaining:68.4}]}),'normal');});
+test('警告音の閾値は表示残量が5%以下・1%以下へ下がったときだけ',()=>{assert.equal(changeLevel({...old,windows:[{label:'現在のセッション',remaining:6.1}]},{status:'ready',windows:[{label:'現在のセッション',remaining:4.9}]}),'low');assert.equal(changeLevel({...old,windows:[{label:'現在のセッション',remaining:2.1}]},{status:'ready',windows:[{label:'現在のセッション',remaining:.8}]}),'critical');});

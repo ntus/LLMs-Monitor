@@ -1,13 +1,13 @@
 {
   "schema_version": "1.0.0",
   "ledger_id": "llms-token-usage-monitor-requirements",
-  "last_updated": "2026-10-13",
+  "last_updated": "2026-10-16",
   "authoritative": true,
   "product": {
     "name_ja": "LLMs モニター",
     "name_en": "LLMs Monitor",
-    "version": "1.39.0",
-    "package_filename": "LLMs-Monitor-v1.39.0.zip",
+    "version": "1.43.0",
+    "package_filename": "LLMs-Monitor-v1.43.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -19,7 +19,7 @@
       "gemini"
     ],
     "production_companion_origin": "https://llmsmonitor.ntus.info",
-    "web_version": "1.39.0",
+    "web_version": "1.43.0",
     "companion_origins": [
       "https://llmsmonitor.ntus.info",
       "https://llmsmonitor.ntusnog.chatgpt.site"
@@ -960,7 +960,7 @@
       "introduced_in": "1.2.0",
       "status": "implemented",
       "priority": "MUST",
-      "normative_requirement": "各service×利用枠について初回成功値をbaselineとして1件記録し、以後はremaining数値が変化した場合だけ新しい履歴を追加しなければならない。同値更新を追加してはならず、各利用枠で最新10000件を保持する。",
+      "normative_requirement": "各service×利用枠について初回成功値をbaselineとして1件記録し、以後は画面表示上の整数remaining（Math.round）が変化した場合だけ新しい履歴を追加しなければならない。内部小数の変化で表示整数％が同じ場合は重複記録しない。既存の保存履歴は保持し、各利用枠で最新10000件を保持する。",
       "source_requirements": [
         "User request: history textbox reflects changes only",
         "README 1.2.0",
@@ -1129,13 +1129,15 @@
       "introduced_in": "1.4.0",
       "status": "implemented",
       "priority": "MUST",
-      "normative_requirement": "通知音をONにした場合、拡張機能backgroundが数値変化を検出するとoffscreen documentで880Hzの短い音を1秒間隔で最大3回再生しなければならない。音量1〜50およびON/OFF設定を保存し、文字だけの変更、初回取得、同値更新では鳴らしてはならない。",
+      "normative_requirement": "通知音をONにした場合、拡張機能backgroundが画面表示上の整数％残量（Math.round）に変化を検出したときだけoffscreen documentで音を再生しなければならない。補足情報・クレジット・文字だけの変更、整数表示が変わらない小数変化、初回取得、同値更新では鳴らしてはならない。音量1〜50およびON/OFF設定を保存する。",
       "source_requirements": [
         "Historical sound notification requirement",
         "v1.5.0 offscreen notification requirement"
       ],
       "acceptance_criteria": [
-        "connected monitor pageが閉じていても数値変更で最大3回鳴る。",
+        "connected monitor pageが閉じていても表示整数％の変化で最大3回鳴る。",
+        "小数値の変化で表示整数％が同じ場合、補足クレジット変化の場合は鳴らない。",
+        "残量が5%・1%以下へ下降して閾値を初めて横切るときだけ、それぞれの警告音を使う。",
         "offscreen permissionとAUDIO_PLAYBACK reasonを使用する。",
         "sound=falseでoffscreen再生messageを送らない。",
         "試聴と音量変更が利用できる。"
@@ -5498,7 +5500,8 @@
         "ChatGPTタスク詳細にも同じfuture-onlyマーク。概要RPCは公開告知1件だけ、他サービスへ返さない",
         "共有URLのs/tを各1個だけ許可し値を保存しない。無効／権限／ページ／投稿／未来期限の不足を表示で区別",
         "Reset entitlement always offers a profile link, future reset uses dated warning and exact post URL; count included in official link",
-        "Status dock actual expanded height is reserved independently of advice setting"
+        "Status dock actual expanded height is reserved independently of advice setting",
+        "前置き付きDay N/Reset及び全角スラッシュの自動翻訳を検知。同一公開会話の本人返信が親告知から10分以内の場合だけ、Landing within the next N hoursを投稿日時から1〜24時間の予定上限へ変換する。相対返信だけのプロフィール表示、他人・別会話・遅い返信は関連付けない。"
       ],
       "implementation_evidence": [
         {
@@ -5548,6 +5551,117 @@
         }
       ],
       "verification": "mixed"
+    },
+    {
+      "id": "PROVIDER-NOTICE-001",
+      "category": "provider_usage_notice",
+      "introduced_in": "1.40.0",
+      "status": "implemented",
+      "priority": "SHOULD",
+      "normative_requirement": "公式利用状況画面に表示された、提供者が明示する利用上限到達予測・ペース警告を、限定した日本語／英語の導入句から検出して元の短文を最大280文字で表示する。抽出対象は当該公式利用状況ページの可視テキストに限定し、任意の会話本文、フォーム、認証情報、隠しデータを取得・送信しない。非表示または取得失敗時は不明として扱い、残量値や履歴を変更しない。",
+      "source_requirements": [
+        "User request 2026-10-15: provider usage warning display"
+      ],
+      "acceptance_criteria": [
+        "Claudeの「ご注意ください」「このペースだと」警告を抽出し、対象カードと共通小窓に表示する。",
+        "ChatGPT/Geminiの許可リストにある警告句も同様に扱う。",
+        "警告句がない通常本文からは何も抽出しない。",
+        "表示文字列はHTML escapeし、280文字で切り詰める。",
+        "API更新でDOM警告を消さず、次の公式ページ読取で警告がなくなれば消す。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/parser.js",
+          "symbol": "parseNotice"
+        },
+        {
+          "path": "extension/content.js",
+          "symbol": "usage-page warning snapshot"
+        },
+        {
+          "path": "extension/shared.js",
+          "symbol": "widget provider notice"
+        },
+        {
+          "path": "extension/app.js",
+          "symbol": "provider warning card"
+        }
+      ],
+      "test_evidence": [
+        "tests/parser.test.cjs"
+      ]
+    },
+    {
+      "id": "QUIET-ACQUISITION-001",
+      "category": "acquisition",
+      "introduced_in": "1.42.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "2026-10-16小窓増殖対策で専用窓方式を廃止。自動取得はウィンドウを作成・フォーカス・最小化・削除せず、既存の通常窓IDを明示して非アクティブの所有タブだけ作る。通常窓なしは取得見送り。最大12所有タブ・セッション直列化・利用者が開いた／遷移したタブ保護を維持。",
+      "source_requirements": [
+        "User request 2026-10-16"
+      ],
+      "acceptance_criteria": [
+        "並列・反復60取得でwindows.create/update/remove呼出しゼロ、about:blank作成ゼロ。",
+        "通常窓なし／popupだけの状態で自動作成しない。",
+        "古い専用窓の所有記録から新しい窓を作らない。既存の窓は自動削除しない。",
+        "所有する非アクティブの同一ページ／許可済み設定リダイレクトだけ片付け、利用者の会話とアクティブタブを保持。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/quiet-tabs.js",
+          "symbol": "QUIET-ACQUISITION-001"
+        },
+        {
+          "path": "extension/background.js",
+          "symbol": "QUIET-ACQUISITION-001"
+        },
+        {
+          "path": "extension/api-credit-background.js",
+          "symbol": "QUIET-ACQUISITION-001"
+        },
+        {
+          "path": "extension/task-background.js",
+          "symbol": "QUIET-ACQUISITION-001"
+        }
+      ],
+      "test_evidence": [
+        "tests/quiet-tabs.test.cjs",
+        "tests/changes.test.cjs"
+      ]
+    },
+    {
+      "id": "GAUGE-142",
+      "category": "presentation",
+      "introduced_in": "1.42.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "3社のタイトルは各社メイン画面へのリンクとし、利用状況確認リンクは保持する。メイン残量は30％未満だけ赤字とし、残り使用量を数値上、リセット時刻と残り時間を下に表示する。残り時間は括弧を付けず分の繰上げを正しく処理する。",
+      "source_requirements": [
+        "User request 2026-10-16"
+      ],
+      "acceptance_criteria": [
+        "29％は赤、30％は通常色。",
+        "ラベルとリセットが数値と重ならず、点滅でも数値サイズを保つ。"
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/app.js",
+          "symbol": "GAUGE-142"
+        },
+        {
+          "path": "extension/shared.js",
+          "symbol": "GAUGE-142"
+        },
+        {
+          "path": "extension/style-v1420.css",
+          "symbol": "GAUGE-142"
+        }
+      ],
+      "test_evidence": [
+        "tests/quiet-tabs.test.cjs",
+        "tests/changes.test.cjs"
+      ]
     }
   ]
 }
