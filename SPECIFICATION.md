@@ -143,7 +143,7 @@ The server feed remains unconfigured; this optional browser reader does not depl
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.39.0
+対象製品版: 1.43.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -1600,3 +1600,53 @@ Claude billing probe uses an owned inactive official billing tab only after exis
 ## v1.39.0 — Tibo / expanded status layout (2026-10-13)
 
 Measure the complete fixed status dock with ResizeObserver; expanded content flows inside the dock and is bounded/scrollable. Reserve measured height for main content and place the advice ribbon above it independently of ON/OFF. ChatGPT reset entitlement includes a separate Tibo public profile link below the row; a verified future reset announcement uses a warning, dated label, tooltip and exact post link. After expiry restore the plain profile link. Available count stays inside its official usage link. Preserve quotas/history/audio, optional permissions and native helper. Build app/extension only, retain helper/manual bytes.
+
+## v1.40.0 — Provider usage warnings and display-aligned alerts (2026-10-15)
+
+Web and extension releases are both v1.40.0; the independent Codex helper remains v1.30.2.
+
+The official usage-page reader now captures a narrowly allowlisted provider pacing/limit warning from visible text (for example Claude's 「ご注意ください。このペースだと…」) and shows the short, escaped message inside that provider's main and floating cards. It is not fetched from conversation bodies, hidden DOM or arbitrary page text. A later official-page read clears a warning that is no longer present; API-only refreshes preserve the last observed notice. Missing notices do not change quota values or history.
+
+The alert source compared raw fractional quota values and every extra-credit balance. That caused tones when the visible whole percentage had not changed and when prepaid/API credit changed. Sound and newly recorded history now follow the rounded whole percentage displayed by the gauge; extra credit changes and sub-percent changes within the same displayed integer are silent. Existing history is retained. Low/critical sound is reserved for a downward crossing into 5% or 1% or less.
+
+Claude prepaid-credit normalization now reads only finite scalar amounts or recognized nested amount fields. USD is shown to two decimals. Unknown object shapes are omitted instead of becoming `[object Object]`, and expiry values before 2000 are rejected to prevent bogus 1970 dates. This does not prove the live account API's current response shape; compare the next signed-in update with Claude's official Usage page.
+
+Validation: app and extension ZIP built with --package --skip-manuals. All 306 automated checks pass; ZIP integrity and source equality verified. Existing bundled/hosted manuals and helper ZIPs remain byte-identical. Installed-extension audio, browser UI and signed-in provider validation remain pending.
+
+<a id="ja"></a>
+
+## v1.40.0 — 公式警告表示と通知音の誤発火修正（2026-10-15）
+
+公式利用状況画面の可視テキストから、Claudeの「ご注意ください。このペースだと…」など、許可した利用ペース／上限警告の短文だけを取得し、該当事業者のメインカードと小窓に表示します。会話本文、隠しDOM、ページ内の任意テキストは取得しません。次の公式画面読取で警告が消えていれば表示を解除し、APIだけの更新では最後に読んだ警告を保持します。警告の有無は残量・履歴を変更しません。
+
+従来は残量の内部小数値と補足クレジットの変化も音の対象でした。表示上は同じ整数％なのに鳴ることや、前払い／APIクレジットの変動で鳴る問題が起こり得ます。音と新規履歴はゲージに表示する整数％の変化に合わせ、同じ整数表示内の小数変化とクレジット変化では通知しません。既存履歴は保持します。警告音は残量が5％以下または1％以下へ下降して境界を越えた時だけ使います。
+
+Claude前払いクレジットは有限の数値または既知のネスト金額だけを読み、USDは小数点以下2桁で表示します。不明なオブジェクト形式は `[object Object]` と表示せず、2000年以前の期限値は1970年などの誤表示を防ぐため無効として扱います。実アカウントAPIの最新形式を確認したことにはならないため、次回のログイン済み更新を公式Usage画面と照合してください。
+
+検証: --package --skip-manualsでアプリと拡張ZIPをビルドし、全306件の自動テスト、ZIPの整合性・ソース一致を確認。既存の取説配布コピーとヘルパーZIPは同一バイトで保持。インストール済み拡張機能の音声、ブラウザーUI、実アカウント照合は未確認です。
+
+
+## v1.41.0 — Tibo Day 10 announcement and relative timing
+
+The previous classifier anchored the entire Day N/Reset post; a leading sentence excluded the 15 October 2026 announcement. The classifier now accepts that explicit day/reset signature inside a longer post and its Japanese/fullwidth-slash translation. Same-author timing in a visible status conversation can provide an approximate deadline only when its parent reset announcement is also read, its conversation ID matches, and it was posted within ten minutes after the parent. Landing within the next 1–24 hours uses the timing post timestamp, links directly to that post and expires the marker at the announced upper bound. Profile-only timing posts and unrelated authors/conversations do not receive inferred context. Existing EOD PST handling, opt-in access, silent first read, post-ID deduplication, bounded reads and no automatic page navigation/reload remain. No individual quota recovery is inferred. App/extension build only; manual archives and helper stay unchanged.
+
+日本語: 前置きのあるDay 10/ Resetが全文一致条件から漏れていたため、明示的な日数／リセット表現を文中でも検知。本人の相対時刻返信は、同じ公開会話の親告知も読め、投稿差が10分以内の場合だけ関連付ける。「今後N時間以内」は1〜24時間の予定上限として返信日時から換算し、当該返信へリンクする。プロフィール上の返信単独、他人、別会話、10分超の返信には適用しない。EOD PST、初回無音、投稿ID重複排除、任意権限、1分間隔の表示済み投稿読取を維持し、予定上限後はマークを消す。個別残量の回復確認とは別。アプリ＋拡張ZIPのみ、取説配布コピーとヘルパーを維持する。
+
+Validation v1.41.0: all 308 CJS/MJS checks pass. ZIP CRC and runtime/source equality verified; permission/host/CSP sets, existing hosted/bundled manuals and helper ZIPs unchanged. The public browser DOM verified the parent and timing reply text/timestamps; installed-extension update and live notification remain unverified.
+
+
+## v1.42.0 — Quiet acquisition and main gauge hierarchy (2026-10-16)
+
+ChatGPT/Claude/Gemini headings link to their main service pages in a new tab; usage-confirmation actions still open official usage settings. The main remaining-usage caption precedes the number, which turns red strictly below 30%. Reset time/countdown stay below with larger responsive text and no enclosing parentheses. Minute rounding carries into hours/days instead of displaying 60 minutes. Changed-number spans retain full numeral size.
+
+Automatic quota-confirmation, API-billing and task-acquisition tabs share an extension-owned minimized, unfocused, muted browser window. Ownership is serialized and held in session storage. User work windows are not selected as acquisition destinations, and existing user pages are not reloaded automatically. Owned tabs are closed after acquisition; the minimized host closes after its final acquisition tab. If the user opens the host or navigates an owned tab, that content is preserved and the host is abandoned. Browser/OS taskbar representation and page throttling remain browser constraints; authentication errors retain previous values. Manual heading/usage links open normally on click. No new permissions, API calls or third-party credential handling are added.
+
+日本語: 3社の見出しを各社のメインページへリンク。残り使用量ラベルを数値の上へ移動し、30％未満だけ赤字、リセットと大きめの残り時間は下側へ。残り時間の括弧を除去し、60分の繰上げを修正。点滅時も数値のサイズを維持する。自動取得タブは専用の最小化・非アクティブ・ミュート窓に集約し、作業中のタブ列へ追加せず、既存ページの自動リロードを廃止。取得完了で所有タブを閉じ、最後なら専用窓も閉じる。利用者が開いた窓や遷移したタブは保護。タスクバー表示や最小化時の抑制はブラウザー仕様に依存。認証エラー時は前回値を保持し、手動リンクは通常どおり開く。追加権限・有料APIは使わない。今回もアプリ＋拡張ZIPのみ、既存取説アーカイブとヘルパーは維持。
+
+Validation v1.43.0: 312 automated checks pass. Browser synthetic data verifies 29% red / 30% normal, heading destinations, caption ordering and no number/reset overlap at a narrow desktop viewport. Owned-window lifecycle is tested with synthetic Chrome; installed Chrome/Edge focus behavior remains a manual acceptance limit. No paid API was invoked.
+
+## 2026-10-16 emergency correction — automatic window proliferation
+
+Supersedes the v1.42 minimized-host requirement: acquisition must never call windows.create/update/remove or create about:blank. Use an explicit existing non-incognito normal window ID and active:false; with no normal window, skip acquisition. Keep serialized session ownership and the 12-tab cap. Close only inactive owned tabs still on their acquisition route (or the exact allowed Claude usage redirect). Never close existing windows or user-adopted/navigated tabs. Older minimized-host records must not trigger window replacement. This intentionally allows temporary inactive acquisition tabs in an existing normal window to prevent automatic window creation.
+
+Release validation: 313 full regression tests pass, including 60 repeated/concurrent acquisition attempts with zero window mutations, popup-only skip, old record migration and adopted-tab protection. App/extension v1.43.0 built with unchanged manuals/helper ZIPs. Hosted v1.42 source was reconciled without dropping its changes. Installed-browser upgrade and a sustained real-user no-popup check remain user acceptance gates.

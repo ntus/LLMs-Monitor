@@ -434,3 +434,9 @@ Claude billing probe uses an owned inactive official billing tab only after exis
 ## v1.39.0 — Tibo / expanded status layout (2026-10-13)
 
 Measure the complete fixed status dock with ResizeObserver; expanded content flows inside the dock and is bounded/scrollable. Reserve measured height for main content and place the advice ribbon above it independently of ON/OFF. ChatGPT reset entitlement includes a separate Tibo public profile link below the row; a verified future reset announcement uses a warning, dated label, tooltip and exact post link. After expiry restore the plain profile link. Available count stays inside its official usage link. Preserve quotas/history/audio, optional permissions and native helper. Build app/extension only, retain helper/manual bytes.
+
+## v1.43.0 — 2026-10-16 emergency window correction
+
+Automatic acquisition never creates/focuses/minimizes/removes a browser window or creates about:blank. It uses an explicit existing normal window and inactive, owned, muted tabs. No normal window means acquisition is skipped; prior data stays. Preserve user-adopted/navigated tabs and old window contents. This supersedes the unreleased v1.42 minimized-host design.
+
+Also retains pending v1.40–v1.42 work: bounded provider notices, display-aligned history and alert thresholds, safe Claude credit parsing, relative Tibo announcement timing and gauge readability. App/extension only; existing helper/manual artifacts unchanged.

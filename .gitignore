@@ -1,0 +1,3 @@
+
+# User-extracted ZIP folders are not deployment assets.
+dist/LLMs-Monitor-v*/

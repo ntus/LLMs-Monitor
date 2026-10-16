@@ -29,7 +29,7 @@ This file is the starting point for every future Codex or LLM edit. Follow the u
 - Any interim Site slug or origin change must update `manifest.externally_connectable`, the background `ALLOWED` set, Web links, privacy and release documents, and regression tests in one package release before the renamed URL is reported usable.
 - X intelligence must remain isolated from private usage state. Never add an X token to client code or repository; preserve silent first baseline, post-ID deduplication, source-role labels, and one-minute polling tests.
 - Claude weekly API zero follows the same official-page confirmation rule as the five-hour window. Parse the visible weekly used percentage and weekday reset separately; never record an unverified zero in history or alerts.
-- A numeric-change alert must dispatch its sound before the changed snapshot becomes visible to renderers; keep provider-status polling at one minute and cover both rules with regression tests.
+- A numeric-change alert must dispatch its sound before the changed snapshot becomes visible to renderers; sound/history comparisons use the rounded integer percentage shown in the UI and exclude credits/extras. Preserve low/critical sound only on downward threshold crossings. Keep provider-status polling at one minute and cover both rules with regression tests.
 - Preserve the exact official ChatGPT reset entitlement wording when it contains a verified expiry. A partial API refresh must not replace that wording with an unavailable deadline. When Claude API reports 0% but the currently open official usage page reports a positive balance for the same active session, suppress the contradictory 0% and its history/sound event.
 
 - Keep Nerf Bench link-only unless the user explicitly restores monitoring; older v1.10 requirements are superseded in v1.17.0. Test flashing primary digits in both floating layouts at their inherited full font size. On package updates, recheck already-open ChatGPT usage tabs for rendered reset expiry without inventing dates.
@@ -203,3 +203,24 @@ Claude billing probe uses an owned inactive official billing tab only after exis
 ## v1.39.0 — Tibo / expanded status layout (2026-10-13)
 
 Measure the complete fixed status dock with ResizeObserver; expanded content flows inside the dock and is bounded/scrollable. Reserve measured height for main content and place the advice ribbon above it independently of ON/OFF. ChatGPT reset entitlement includes a separate Tibo public profile link below the row; a verified future reset announcement uses a warning, dated label, tooltip and exact post link. After expiry restore the plain profile link. Available count stays inside its official usage link. Preserve quotas/history/audio, optional permissions and native helper. Build app/extension only, retain helper/manual bytes.
+
+
+## v1.40.0 — Provider notices and quiet, display-aligned alerts (2026-10-15)
+
+Read only allowlisted short provider pacing/limit warnings from the visible official usage page and show them in the provider card and shared floating widget. Escape and cap at 280 characters. API snapshots preserve the latest DOM notice; a later DOM read with no notice clears it. No page body, credentials, or hidden data is collected or transmitted.
+
+Usage-change sounds and new history rows compare rounded integer remaining percentages, matching the displayed gauge. Ignore credit/extra changes and fractional changes that render identically. Distinct low/critical sounds occur only when remaining drops across 5%/1%. Preserve all old history and update the raw comparison baseline on every read.
+
+Claude prepaid-credit parsing accepts finite scalar or recognized nested amount fields, formats USD to two decimals, and omits malformed objects. Expiry timestamps before 2000 are invalid; never render epoch-like 1970 dates from small numeric fields.
+
+
+TIBO-PUBLIC-001 v1.41: Match explicit Day N/Reset within prefixed posts and fullwidth Japanese translation. Relative timing requires same visible status-conversation ID, a separately classified parent reset post by Tibo, same author and 0–10 minute publication gap. Accept only 1–24 hour landing phrases. Never infer conversation context from profile adjacency or claim individual reset completion. Preserve exact source reply link, deadline expiry, old EOD behavior, opt-in boundary and deduplication.
+
+
+QUIET-ACQUISITION-001 / GAUGE-142: Automatic quota/API/task tabs must use GlanceQuietTabs, a serialized session-owned minimized/unfocused/muted host. Never add automatic pages to the work window or reload user pages. Release only owned tabs; preserve opened/navigated host content. Manual main-service heading links and usage-setting buttons remain distinct. Gauge caption precedes number, number is red strictly below 30%, countdown has no parentheses and correctly carries rounded minutes. Keep changed-number spans inline and full-size. App/package-only publishing preserves existing manual/helper bytes.
+
+## 2026-10-16 emergency correction — automatic window proliferation
+
+Supersedes the v1.42 minimized-host requirement: acquisition must never call windows.create/update/remove or create about:blank. Use an explicit existing non-incognito normal window ID and active:false; with no normal window, skip acquisition. Keep serialized session ownership and the 12-tab cap. Close only inactive owned tabs still on their acquisition route (or the exact allowed Claude usage redirect). Never close existing windows or user-adopted/navigated tabs. Older minimized-host records must not trigger window replacement. This intentionally allows temporary inactive acquisition tabs in an existing normal window to prevent automatic window creation.
+
+Release validation: 313 full regression tests pass, including 60 repeated/concurrent acquisition attempts with zero window mutations, popup-only skip, old record migration and adopted-tab protection. App/extension v1.43.0 built with unchanged manuals/helper ZIPs. Hosted v1.42 source was reconciled without dropping its changes. Installed-browser upgrade and a sustained real-user no-popup check remain user acceptance gates.
