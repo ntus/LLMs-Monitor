@@ -2,7 +2,7 @@
 (function(root){
  const KEY='llms-quiet-tabs-v1';let queue=Promise.resolve();
  const serial=fn=>{const p=queue.then(fn);queue=p.catch(()=>{});return p};
- const samePage=(actual,expected)=>actual===expected||expected==='https://claude.ai/settings/usage'&&actual==='https://claude.ai/new#settings/usage';
+ const samePage=(actual,expected)=>actual===expected||expected==='https://platform.claude.com/settings/billing'&&actual==='https://platform.claude.com/settings/billing/'||expected==='https://claude.ai/settings/usage'&&actual==='https://claude.ai/new#settings/usage';
  const read=async()=>((await chrome.storage.session.get(KEY))[KEY]||{tabs:[]});
  const save=state=>chrome.storage.session.set({[KEY]:state});
  function create(url){return serial(async()=>{

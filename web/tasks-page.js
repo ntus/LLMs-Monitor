@@ -27,7 +27,7 @@
   $('task-brand-title').textContent=`LLMs Monitor -Task- ${names[service][0]}`;
   globalThis.LLMTaskMonitor?.mount(service,language);
   document.title=$('task-brand-title').textContent;
-  document.documentElement.style.setProperty('--provider',names[service][2]);$('heading').textContent=names[service][0];$('service-mark').textContent=names[service][1];
+  document.documentElement.style.setProperty('--provider',names[service][2]);const home=el('a',names[service][0]);home.href={chatgpt:'https://chatgpt.com/',claude:'https://claude.ai/new',gemini:'https://gemini.google.com/app'}[service];home.target='_blank';home.rel='noopener noreferrer';$('heading').replaceChildren(home);$('service-mark').textContent=names[service][1];
   document.querySelectorAll('[data-copy]').forEach(n=>{n.textContent=t(n.dataset.copy)});$('language').textContent=language==='ja'?'🇯🇵JP':'🌍EN';$('theme').textContent=theme==='dark'?'☼':'◐';$('theme').title=t(theme==='dark'?'light':'dark');$('theme').setAttribute('aria-label',$('theme').title);
   $('search').placeholder=t('search');$('search').setAttribute('aria-label',t('search'));$('status').setAttribute('aria-label',t('filter'));for(const option of $('status').options)option.textContent=snapshot?.source==='official-sidebar'&&['running','idle'].includes(option.value)?t(option.value==='running'?'liveRunning':'liveIdle'):t(option.value);$('tree').setAttribute('aria-label',t('taskDetails'));
   $('source').textContent=snapshot?t(snapshot.source==='demo'?'sample':snapshot.source==='official-sidebar'?'autoSource':'local'):t('notConnected');document.body.dataset.source=snapshot?.source||'none';

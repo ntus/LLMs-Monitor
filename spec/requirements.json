@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs モニター",
     "name_en": "LLMs Monitor",
-    "version": "1.44.0",
-    "package_filename": "LLMs-Monitor-v1.44.0.zip",
+    "version": "1.45.0",
+    "package_filename": "LLMs-Monitor-v1.45.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -19,7 +19,7 @@
       "gemini"
     ],
     "production_companion_origin": "https://llmsmonitor.ntus.info",
-    "web_version": "1.44.0",
+    "web_version": "1.45.0",
     "companion_origins": [
       "https://llmsmonitor.ntus.info",
       "https://llmsmonitor.ntusnog.chatgpt.site"
@@ -5698,6 +5698,110 @@
         }
       ],
       "verification": "mixed"
+    },
+    {
+      "id": "SETUP-UNIFIED-001",
+      "category": "reliability",
+      "introduced_in": "1.45.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "Unify required and optional setup in one own top-level extension page. Route task Codex installation to personalized ZIP and connection check; preserve exact native ID and permission boundaries.",
+      "acceptance_criteria": [
+        "Unify required and optional setup in one own top-level extension page. Route task Codex installation to personalized ZIP and connection check; preserve exact native ID and permission boundaries.",
+        "No new required permissions, paid API calls, credential input or automatic windows; existing data retained."
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/setup.html"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/additional-services.test.cjs"
+        }
+      ],
+      "known_limitations": [
+        "New provider account layouts and installed extension end-to-end behavior require live acceptance."
+      ]
+    },
+    {
+      "id": "ADDITIONAL-SERVICES-001",
+      "category": "reliability",
+      "introduced_in": "1.45.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "Offer Grok, DeepSeek, Perplexity and Genspark as optional experimental account-page adapters; show up to three chosen services across surfaces. Never infer chat percentages from credits/counts or create/reload pages automatically.",
+      "acceptance_criteria": [
+        "Offer Grok, DeepSeek, Perplexity and Genspark as optional experimental account-page adapters; show up to three chosen services across surfaces. Never infer chat percentages from credits/counts or create/reload pages automatically.",
+        "No new required permissions, paid API calls, credential input or automatic windows; existing data retained."
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/additional-services.js"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/additional-services.test.cjs"
+        }
+      ],
+      "known_limitations": [
+        "New provider account layouts and installed extension end-to-end behavior require live acceptance."
+      ]
+    },
+    {
+      "id": "TASK-COUNTDOWN-001",
+      "category": "reliability",
+      "introduced_in": "1.45.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "Task popup service titles link to official homes and future reset timestamps include rounded countdowns, suppressed after expiry.",
+      "acceptance_criteria": [
+        "Task popup service titles link to official homes and future reset timestamps include rounded countdowns, suppressed after expiry.",
+        "No new required permissions, paid API calls, credential input or automatic windows; existing data retained."
+      ],
+      "implementation_evidence": [
+        {
+          "path": "web/tasks-monitor.js"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/additional-services.test.cjs"
+        }
+      ],
+      "known_limitations": [
+        "New provider account layouts and installed extension end-to-end behavior require live acceptance."
+      ]
+    },
+    {
+      "id": "CLAUDE-BILLING-RETRY-001",
+      "category": "reliability",
+      "introduced_in": "1.45.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "Read a fresh owned inactive Claude billing page even if an existing billing page is open; allow exact trailing slash redirect, wait through transient login and delayed promotional data within bounded acquisition.",
+      "acceptance_criteria": [
+        "Read a fresh owned inactive Claude billing page even if an existing billing page is open; allow exact trailing slash redirect, wait through transient login and delayed promotional data within bounded acquisition.",
+        "No new required permissions, paid API calls, credential input or automatic windows; existing data retained."
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/api-credit-background.js"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/additional-services.test.cjs"
+        }
+      ],
+      "known_limitations": [
+        "New provider account layouts and installed extension end-to-end behavior require live acceptance."
+      ]
     }
   ]
 }

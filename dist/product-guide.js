@@ -7,7 +7,7 @@
     "title": "From first connection<br>to your next task.",
     "intro": "A practical guide to everyday use. Read in order, or jump to the feature you need.",
     "toc": "On this page",
-    "revision": "Guide updated 12 October 2026 · Web 1.44.0 / extension 1.44.0 · helper 1.30.2",
+    "revision": "Guide updated 16 October 2026 · Web 1.45.0 / extension 1.45.0 · helper 1.30.2",
     "chapters": [
       {
         "id": "setup",
@@ -15,7 +15,7 @@
         "blocks": [
           {
             "type": "p",
-            "text": "Use desktop Chrome or Edge on macOS, Windows or Linux. Ordinary usage monitoring does not require the Codex helper."
+            "text": "Use desktop Chrome or Edge on macOS, Windows or Linux. Ordinary usage monitoring does not require the Codex helper. Setup groups required connection and optional API, Codex, Tibo and up-to-three service selection. Additional Grok, DeepSeek, Perplexity and Genspark readers are experimental and only read supported account-page values."
           },
           {
             "type": "steps",
@@ -28,8 +28,8 @@
           },
           {
             "type": "link",
-            "text": "Download main extension v1.44.0 ↓",
-            "url": "LLMs-Monitor-v1.44.0.zip"
+            "text": "Download main extension v1.45.0 ↓",
+            "url": "LLMs-Monitor-v1.45.0.zip"
           },
           {
             "type": "note",
@@ -224,15 +224,15 @@
             "items": [
               "Open ChatGPT Task details → Codex — Desktop → Connect Codex and choose Save installer ZIP for this extension. The ID is included automatically.",
               "In macOS Terminal, check python3 --version. Python 3.9+ and Codex on this Mac are required.",
-              "Download and extract helper v1.30.2. It is a native installer, not a Chrome extension; it has no manifest.json.",
+              "Extract the personalized installer ZIP saved from Setup. It is a native installer, not a Chrome extension; it has no manifest.json.",
               "Run Install.command; the personalized ZIP needs no ID entry. If double-click fails, run python3 ./install.py in the extracted folder. No sudo is needed.",
-              "Enable connection and grant the optional native permission. Check connection must report N tasks and P/Q pins.",
+              "In Setup → Codex, select Connect (enable and check) and grant the optional native permission. Check connection must report N tasks and P/Q pins.",
               "Return to the task window and Refresh list. You do not run the installer each refresh. Re-register the allowed ID if the extension ID changes."
             ]
           },
           {
             "type": "link",
-            "text": "Download Codex helper v1.30.2 ↓",
+            "text": "Advanced: generic Codex helper v1.30.2 (ID entry required) ↓",
             "url": "LLMs-Monitor-Codex-Helper-v1.30.2.zip"
           },
           {
@@ -253,8 +253,8 @@
           {
             "type": "steps",
             "items": [
-              "Open API connection for a provider and enable only the billing sources you want.",
-              "Grant optional billing-page access on the setup-page click, then keep the official billing page open. No API-key paste is required.",
+              "Open Setup → Optional → API balances and enable only the billing sources you want.",
+              "Grant optional billing-page access on click. Claude reads a fresh inactive billing page automatically when signed in; other API sources need an open official billing page. No API-key paste is required.",
               "Read the obtained balance. Claude promotional credit has a separate line from purchased credit. If an official page exposes no supported value, it stays unavailable."
             ]
           },
@@ -329,7 +329,7 @@
     "title": "導入から、<br>作業の続きまで。",
     "intro": "毎日の使い方を、このページで一通り。順に読むことも、必要な項目だけ確認することもできます。",
     "toc": "使い方の目次",
-    "revision": "2026年10月12日更新 · Web 1.44.0／拡張機能1.44.0 · ヘルパー1.30.2",
+    "revision": "2026年10月16日更新 · Web 1.45.0／拡張機能1.45.0 · ヘルパー1.30.2",
     "chapters": [
       {
         "id": "setup",
@@ -337,7 +337,7 @@
         "blocks": [
           {
             "type": "p",
-            "text": "Chrome／Edgeのデスクトップ版で使います。本体モニターはmacOS・Windows・Linux向けです。利用残量の取得にCodexヘルパーは必要ありません。"
+            "text": "Chrome／Edgeのデスクトップ版で使います。本体モニターはmacOS・Windows・Linux向けです。利用残量の取得にCodexヘルパーは必要ありません。セットアップに必須接続と任意のAPI・Codex・Tibo・最大3サービスの選択を集約しています。追加4社は公式残高・契約画面に表示される対応項目だけを読む試験機能です。"
           },
           {
             "type": "steps",
@@ -350,8 +350,8 @@
           },
           {
             "type": "link",
-            "text": "本体拡張機能 v1.44.0 をダウンロード ↓",
-            "url": "LLMs-Monitor-v1.44.0.zip"
+            "text": "本体拡張機能 v1.45.0 をダウンロード ↓",
+            "url": "LLMs-Monitor-v1.45.0.zip"
           },
           {
             "type": "note",
@@ -436,7 +436,7 @@
           },
           {
             "type": "note",
-            "text": "メインの［Tibo連携］で無料の任意読取りを許可し、ログイン済みのTibo公開ページを開いてください。表示済みの本人投稿を1分ごとに確認し、自動リロードはしません。未来のEOD PST期限が読めれば日時付きTibo 𝕏 Reset?を表示し、ツールチップで目安期限を説明、期限後は非表示にします。未表示の新着は検知できません。サーバー配信は未設定で、個人の残量回復は別途確認します。"
+            "text": "メインの［設定］→［Tibo 𝕏］で無料の任意読取りを許可し、ログイン済みのTibo公開ページを開いてください。表示済みの本人投稿を1分ごとに確認し、自動リロードはしません。未来のEOD PST期限が読めれば日時付きTibo 𝕏 Reset?を表示し、ツールチップで目安期限を説明、期限後は非表示にします。未表示の新着は検知できません。サーバー配信は未設定で、個人の残量回復は別途確認します。"
           },
           {
             "type": "link",
@@ -546,15 +546,15 @@
             "items": [
               "ChatGPTの［タスク詳細］→［Codex — デスクトップ］→［Codexを接続］を開き、［この端末用の導入ZIPを保存］を押します。IDは自動設定されます。",
               "macOSのターミナルで python3 --version を確認します。Python 3.9以上と、このMacで利用するCodexが必要です。",
-              "ヘルパー v1.30.2のZIPをダウンロードして展開します。これはChrome拡張機能ではなく、manifest.json はありません。",
+              "セットアップで保存したID設定済みの専用ZIPを展開します。これはChrome拡張機能ではなく、manifest.json はありません。",
               "Install.command を実行し、専用ZIPならID入力は不要です。ダブルクリックで動かない場合は、展開フォルダーで python3 ./install.py を実行します。sudo は不要です。",
-              "接続画面で［接続を有効にする］を押し、任意の連携権限を許可。［接続を確認］で「取得 N件・ピン留め P/Q件」が出ることを確認します。",
+              "セットアップのCodex欄で［接続する（有効化・確認）］を押し、任意の連携権限を許可。［接続を確認］で「取得 N件・ピン留め P/Q件」が出ることを確認します。",
               "タスク画面へ戻り［一覧を更新］。以降の更新で毎回インストーラーを実行する必要はありません。IDが変わった場合だけ許可IDも再登録します。"
             ]
           },
           {
             "type": "link",
-            "text": "Codexヘルパー v1.30.2 をダウンロード ↓",
+            "text": "上級者向け：汎用ヘルパー v1.30.2（ID入力が必要）↓",
             "url": "LLMs-Monitor-Codex-Helper-v1.30.2.zip"
           },
           {
@@ -575,8 +575,8 @@
           {
             "type": "steps",
             "items": [
-              "各サービスの［API連携］から専用設定を開き、利用したいサービスだけ有効にします。",
-              "クリック時に求められる公式請求画面の任意権限を許可し、その請求画面を開いたまま取得します。APIキーの貼り付けは求めません。",
+              "［セットアップ］→［オプション］→［API残高］で利用したいサービスだけ有効にします。",
+              "クリック時に公式請求画面の任意アクセスを許可します。Claudeはログイン済みなら一時的な非アクティブ画面から自動取得。他社APIは公式請求画面を開いておきます。APIキーの貼り付けは求めません。",
               "取得できた残高を確認します。Claudeのプロモーションクレジットは購入残高と別の1行です。公式画面に取得可能な表示がなければ未取得のままです。"
             ]
           },

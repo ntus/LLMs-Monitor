@@ -24,3 +24,5 @@ html:fullscreen .gauge-reset{font-size:clamp(10px,1.05vw,16px)}
 html:fullscreen #connection{display:flex!important;margin:0;height:28px;min-height:28px;max-height:28px}
 html:fullscreen main{grid-template-rows:auto auto minmax(0,1fr) auto}
 @media(max-width:620px){#connection.connected strong{max-width:78px;overflow:hidden;text-overflow:ellipsis}#connection .badge{display:none}#connection .connection-tibo{font-size:9px;padding:3px}}
+
+.additional-card .additional-balances{padding:24px 0;min-height:100px}.additional-card p,.additional-card small{line-height:1.6}.additional-card .extra-line{gap:10px;flex-wrap:wrap}.additional-card a{color:var(--color)}.setup-options{padding:16px;grid-column:1/-1}#setup>h2,#setup>p{grid-column:1/-1}.widget .additional-card{min-height:0}.widget .additional-card h2{font-size:15px}.widget .additional-card .additional-balances{min-height:0;padding:12px 0}

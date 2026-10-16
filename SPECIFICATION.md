@@ -143,7 +143,7 @@ The server feed remains unconfigured; this optional browser reader does not depl
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.44.0
+対象製品版: 1.45.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -1658,3 +1658,20 @@ Main provider warning and Tibo feed move into the existing fixed-height connecti
 Gemini field evidence 2026-10-16: user reported Google /sorry reCAPTCHA at official usage URL, then confirmed values returned after their own manual verification. Do not automate or bypass CAPTCHA. Detect explicit Google /sorry, 429 and bounded unusual-traffic text; abort account exploration on the first challenge. Persist a 15-minute retry-after for challenge or five minutes for other acquisition failure. Explicit trusted Refresh permits one retry; successful fetch clears cooldown. Never store challenge page text, IP, challenge tokens or network identifiers.
 
 Validation v1.44: 321 regression tests passed, including a delayed Claude balance after the former nine-second cutoff, invalid Gemini utilization, CAPTCHA early abort and persisted cooldown/manual retry. Synthetic browser confirmed a single 34px connection row with warnings/Tibo and validated source link. Actual signed-in Claude balance refresh still needs installed-extension acceptance. Gemini challenge recovery was confirmed by the user manually, not by an automated CAPTCHA action.
+
+
+## v1.45.0 — unified setup and optional service selection / セットアップ集約
+
+Required extension installation/pairing remains in the main Setup section; its optional action opens a single own top-level setup.html with provider selection, API balances, personalized Codex ZIP/connection check, Tibo and additional services. Existing standalone pages remain compatible. Exact own-ID/page/top-frame guards accept only this additional audited setup route; no iframe, native wildcard or automatic grant. Task Codex link no longer downloads the generic ID-prompting helper. Existing helper/manual artifacts are not regenerated.
+
+Grok, DeepSeek, Perplexity and Genspark are experimental opt-in rendered account-page adapters. New optional host access is granted independently on a direct click. Only exact approved account/balance routes and explicitly labelled numeric balances/counts are accepted; ambiguous duplicate labels, percentages and budgets are rejected. No chat DOM, API keys, paid calls, navigation, reloads, account aggregation, quota history or notification changes. Values are stored separately and expire from current display after 125 seconds. Defaults remain the existing three providers; chosen service order is preserved and all monitor surfaces display at most three. No live-account support guarantee is claimed for new layouts; missing fields remain unavailable.
+
+Claude starts a fresh inactive owned billing acquisition even when an existing billing page is open, rather than rereading only an already-rendered stale SPA. Exact /settings/billing/ redirect is allowed; transient login does not end acquisition, and a primary balance alone waits 2.5 seconds for promotional data, within the existing 35-second cap. User-adopted tabs remain protected. Official signed-in page inspection confirmed the existing localized balance/promo labels and bounded ancestor layout; automatic installed-extension acceptance remains separate.
+
+Task detail popup now links provider headings to official homes and appends a local countdown to future reset timestamps. Round upward and carry 60 minutes into hours; expired timestamps retain the existing awaiting-update state.
+
+日本語：メインのセットアップから、必須の導入・接続と任意の設定を区別。任意設定は専用の1画面にAPI残高・Codex・Tibo・最大3サービス選択を集約。Codexの汎用ZIPリンクをID設定済みZIPの作成・接続確認へ変更。追加4社は試験対応で、公式の残高・契約画面を利用者が開いた場合だけ、明示された残高／回数を読取り。残量％へ換算せず、未取得を0や100％にしない。各社別の任意許可、初期無効、画面形式は実アカウント未検証。Claudeは既に開いた請求画面の古い表示だけに依存せず、一時的な非アクティブ所有タブから取り直す。小窓の見出しリンクとリセット後の残り時間を追加。
+
+Additional v1.45 regression hardening: Claude completion now requires a validated snapshot from the exact owned probe tab; a concurrent response from an existing billing tab cannot satisfy it. Cleanup drops quiet-tab ownership even when the user adopts/navigates the tab, without deleting that content. Additional-service readers check enabled/permission/route before reading DOM, through a boolean-only independent RPC; revoked/disabled readers do not inspect page text. No response is put behind the global acquisition queue.
+
+Validation v1.45: 334 regression tests passed. Synthetic browser verification confirms three-card mixed core/additional rendering, existing 29% red gauge, Japanese/English controls, three-service selection rejection and successful replacement, unique setup IDs, hidden recovery controls and no horizontal overflow at normal and 390px widths. ZIP CRC/source equality and helper/standalone-manual hashes verified. No real installed-extension replacement or additional-provider account login was performed; those remain live acceptance limits.
