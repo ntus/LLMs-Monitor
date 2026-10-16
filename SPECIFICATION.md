@@ -1635,7 +1635,7 @@ The previous classifier anchored the entire Day N/Reset post; a leading sentence
 Validation v1.41.0: all 308 CJS/MJS checks pass. ZIP CRC and runtime/source equality verified; permission/host/CSP sets, existing hosted/bundled manuals and helper ZIPs unchanged. The public browser DOM verified the parent and timing reply text/timestamps; installed-extension update and live notification remain unverified.
 
 
-## v1.43.0 — Quiet acquisition and main gauge hierarchy (2026-10-16)
+## v1.42.0 — Quiet acquisition and main gauge hierarchy (2026-10-16)
 
 ChatGPT/Claude/Gemini headings link to their main service pages in a new tab; usage-confirmation actions still open official usage settings. The main remaining-usage caption precedes the number, which turns red strictly below 30%. Reset time/countdown stay below with larger responsive text and no enclosing parentheses. Minute rounding carries into hours/days instead of displaying 60 minutes. Changed-number spans retain full numeral size.
 
@@ -1649,4 +1649,4 @@ Validation v1.43.0: 312 automated checks pass. Browser synthetic data verifies 2
 
 Supersedes the v1.42 minimized-host requirement: acquisition must never call windows.create/update/remove or create about:blank. Use an explicit existing non-incognito normal window ID and active:false; with no normal window, skip acquisition. Keep serialized session ownership and the 12-tab cap. Close only inactive owned tabs still on their acquisition route (or the exact allowed Claude usage redirect). Never close existing windows or user-adopted/navigated tabs. Older minimized-host records must not trigger window replacement. This intentionally allows temporary inactive acquisition tabs in an existing normal window to prevent automatic window creation.
 
-Draft validation: 313 full regression tests pass, including 60 repeated/concurrent acquisition attempts with zero window mutations, popup-only skip, old record migration and adopted-tab protection. Installed-browser behavior remains to be checked after the approved app/extension build. Unrelated pre-existing v1.40–v1.42 edits remain intact; no build/publication for this correction yet.
+Release validation: 313 full regression tests pass, including 60 repeated/concurrent acquisition attempts with zero window mutations, popup-only skip, old record migration and adopted-tab protection. App/extension v1.43.0 built with unchanged manuals/helper ZIPs. Hosted v1.42 source was reconciled without dropping its changes. Installed-browser upgrade and a sustained real-user no-popup check remain user acceptance gates.
