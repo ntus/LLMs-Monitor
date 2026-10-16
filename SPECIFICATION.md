@@ -1643,4 +1643,4 @@ Automatic quota-confirmation, API-billing and task-acquisition tabs share an ext
 
 日本語: 3社の見出しを各社のメインページへリンク。残り使用量ラベルを数値の上へ移動し、30％未満だけ赤字、リセットと大きめの残り時間は下側へ。残り時間の括弧を除去し、60分の繰上げを修正。点滅時も数値のサイズを維持する。自動取得タブは専用の最小化・非アクティブ・ミュート窓に集約し、作業中のタブ列へ追加せず、既存ページの自動リロードを廃止。取得完了で所有タブを閉じ、最後なら専用窓も閉じる。利用者が開いた窓や遷移したタブは保護。タスクバー表示や最小化時の抑制はブラウザー仕様に依存。認証エラー時は前回値を保持し、手動リンクは通常どおり開く。追加権限・有料APIは使わない。今回もアプリ＋拡張ZIPのみ、既存取説アーカイブとヘルパーは維持。
 
-Validation v1.42.0: 311 automated checks pass. Browser synthetic data verifies 29% red / 30% normal, heading destinations, caption ordering and no number/reset overlap at a narrow desktop viewport. Owned-window lifecycle is tested with synthetic Chrome; installed Chrome/Edge focus behavior remains a manual acceptance limit. No paid API was invoked.
+Validation v1.42.0: 312 automated checks pass. Browser synthetic data verifies 29% red / 30% normal, heading destinations, caption ordering and no number/reset overlap at a narrow desktop viewport. Owned-window lifecycle is tested with synthetic Chrome; installed Chrome/Edge focus behavior remains a manual acceptance limit. No paid API was invoked.

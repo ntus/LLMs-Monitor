@@ -2,6 +2,7 @@
 (function(root){
  const KEY='llms-quiet-tabs-v1';let queue=Promise.resolve();
  const serial=fn=>{const p=queue.then(fn);queue=p.catch(()=>{});return p};
+ const samePage=(actual,expected)=>actual===expected||expected==='https://claude.ai/settings/usage'&&actual==='https://claude.ai/new#settings/usage';
  const read=async()=>((await chrome.storage.session.get(KEY))[KEY]||{tabs:[]});
  const save=state=>chrome.storage.session.set({[KEY]:state});
  function create(url){return serial(async()=>{
@@ -17,7 +18,7 @@
   const state=await read(),owned=state.tabs.find(t=>t.id===id);if(!owned)return false;
   state.tabs=state.tabs.filter(t=>t.id!==id);let win,tab;
   try{win=await chrome.windows.get(state.windowId,{populate:true});tab=win.tabs?.find(t=>t.id===id)}catch{}
-  if(win&&win.state==='minimized'&&tab&&(tab.url===owned.url||tab.pendingUrl===owned.url)){
+  if(win&&win.state==='minimized'&&tab&&(samePage(tab.url,owned.url)||samePage(tab.pendingUrl,owned.url))){
    await chrome.tabs.remove(id);
    const others=(win.tabs||[]).filter(t=>t.id!==id&&t.id!==state.blankId);
    if(!others.length&&!state.tabs.length){await chrome.windows.remove(state.windowId);await chrome.storage.session.remove(KEY);return true;}
