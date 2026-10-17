@@ -194,3 +194,10 @@ JP: ［Codexを接続］で **［この端末用の導入ZIPを保存］** を�
 Single own top-level setup.html groups required sign-in guidance, optional API/Codex/Tibo and up-to-three service selection. Additional Grok/DeepSeek/Perplexity/Genspark account readers are experimental, disabled by default, exact-route/top-frame validated and separately permissioned. Never read chats, auto-navigate/reload, use paid APIs or convert credit balances to quota percentages. Preserve native exact-ID installation and existing no-window acquisition safeguards. Task helper action opens personalized installation/check, not a generic ZIP. Existing helper and standalone manual files remain unchanged. Live additional-provider layouts and installed automatic Claude billing remain acceptance limits.
 
 日本語：セットアップ画面に任意設定を集約。追加4社は公式残高・契約画面の試験読取りで初期無効、実アカウントの形式は未検証。最大3サービスを選択。Codexは同画面からID入力不要のZIP保存・接続確認。ヘルパーと既存取説配布物は再生成しません。
+
+
+## v1.46 quick changes / 操作の変更
+
+Use the button after Advice to switch Remaining / Used display; stored history and alerts continue using remaining quota. Turning Sound from OFF to ON plays one preview, replacing the old Test button. Product → Setup now sit together in the header. Open “Stored only in this browser” for the local-storage explanation. Public updates carry publication/read dates and original links; displayed same-author replies are bounded, while unseen replies remain unverified. Enable optional ClaudeDevs reading separately in Setup → Tibo / public posts; keep the relevant public conversation rendered.
+
+アドバイス右のボタンで残量／使用量の表示を切替。保存履歴・通知は残量基準を維持。通知音をOFF→ONで確認音が鳴り、独立した試聴ボタンは廃止。ヘッダーは製品紹介→セットアップの順です。「ブラウザ内だけに保存」を開くと保存範囲の説明が出ます。公開情報は日時・出典付き、本人の表示済み補足だけを扱い未表示の返信は未確認。ClaudeDevsはセットアップで別途任意に有効化します。

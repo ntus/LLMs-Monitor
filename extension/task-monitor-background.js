@@ -14,8 +14,8 @@
   const status=snapshot.status==='login'?'login':snapshot.status==='loading'?'loading':snapshot.status==='ready'&&fresh?'ready':capture?'previous':'unknown';
   const p=saved?.providerStatus?.[service]||{},checkedAt=time(p.checkedAt),current=!!checkedAt&&checkedAt<=now+5000&&now-checkedAt<125000;
   const feed=service==='chatgpt'&&root.GlanceIntelligence?root.GlanceIntelligence.normalize(saved?.intelligenceFeed):null,tiboFeed=feed&&root.GlanceIntelligence.tiboDetails(feed,'en',now)?{status:feed.status,alerts:feed.alerts.filter(a=>root.GlanceIntelligence.tiboDetails({status:feed.status,alerts:[a]},'en',now)).slice(0,1)}:null;
-  return {...(tiboFeed?{tiboFeed}:{}),schemaVersion:1,service,extensionVersion:text(chrome.runtime.getManifest().version,30),checkedAt:now,usage:{plan:text(snapshot.plan,80),status,capturedAt:capture,windows},incident:{state:['ok','issue','recovered'].includes(p.state)?p.state:'unknown',summary:text(p.summary,180),checkedAt,current,url:URLS[service]}};
+  return {...(tiboFeed?{tiboFeed}:{}),schemaVersion:1,usageDisplay:saved.settings?.usageDisplay==='used'?'used':'remaining',service,extensionVersion:text(chrome.runtime.getManifest().version,30),checkedAt:now,usage:{plan:text(snapshot.plan,80),status,capturedAt:capture,windows},incident:{state:['ok','issue','recovered'].includes(p.state)?p.state:'unknown',summary:text(p.summary,180),checkedAt,current,url:URLS[service]}};
  }
- async function handle(message,sender,external){if(!allowed(message,sender,external))return {status:'unavailable'};return project(await chrome.storage.local.get(['data','providerStatus',...(message.service==='chatgpt'?['intelligenceFeed']:[])]),message.service);}
+ async function handle(message,sender,external){if(!allowed(message,sender,external))return {status:'unavailable'};return project(await chrome.storage.local.get(['data','providerStatus','settings',...(message.service==='chatgpt'?['intelligenceFeed']:[])]),message.service);}
  root.LLMTaskMonitorBackground={allowed,project,handle};
 })(globalThis);

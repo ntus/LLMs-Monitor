@@ -5,7 +5,7 @@
   return [...new Set(selected),...SERVICES.filter(id=>!selected.includes(id))];
  }
  function hidden(value){return Array.isArray(value)?[...new Set(value.filter(id=>CATALOG.includes(id)))]:[];}
- function normalize(settings={}){return {...settings,serviceOrder:order(settings.serviceOrder),hiddenServices:hidden(settings.hiddenServices??ADDITIONAL)};}
+ function normalize(settings={}){return {...settings,usageDisplay:settings.usageDisplay==='used'?'used':'remaining',serviceOrder:order(settings.serviceOrder),hiddenServices:hidden(settings.hiddenServices??ADDITIONAL)};}
  function visible(settings={}){const selected=normalize(settings);return selected.serviceOrder.filter(id=>!selected.hiddenServices.includes(id)).slice(0,3);}
  root.GlancePreferences={SERVICES,ADDITIONAL,CATALOG,order,hidden,normalize,visible};
  if(typeof module!=='undefined')module.exports=root.GlancePreferences;

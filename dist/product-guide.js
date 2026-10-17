@@ -7,7 +7,7 @@
     "title": "From first connection<br>to your next task.",
     "intro": "A practical guide to everyday use. Read in order, or jump to the feature you need.",
     "toc": "On this page",
-    "revision": "Guide updated 16 October 2026 · Web 1.45.0 / extension 1.45.0 · helper 1.30.2",
+    "revision": "Guide updated 17 October 2026 · Web 1.46.0 / extension 1.46.0 · helper 1.30.2",
     "chapters": [
       {
         "id": "setup",
@@ -28,8 +28,8 @@
           },
           {
             "type": "link",
-            "text": "Download main extension v1.45.0 ↓",
-            "url": "LLMs-Monitor-v1.45.0.zip"
+            "text": "Download main extension v1.46.0 ↓",
+            "url": "LLMs-Monitor-v1.46.0.zip"
           },
           {
             "type": "note",
@@ -108,7 +108,7 @@
             "type": "list",
             "items": [
               "Sound OFF cancels queued tones too. Closing the main monitor does not stop the installed extension’s checks. Turn sound OFF to mute them.",
-              "Preview is a single test playback and does not change ON / OFF. Adjust volume as needed; browser / OS rules may require an initial gesture.",
+              "Turning Sound from OFF to ON plays one preview. There is no separate Test button. Adjust volume as needed; browser / OS rules may require an initial gesture.",
               "Numeric changes play at most three tones, one second apart. Downward crossings of 5% and 1% use distinct caution tones. Only changed numbers blink."
             ]
           },
@@ -329,7 +329,7 @@
     "title": "導入から、<br>作業の続きまで。",
     "intro": "毎日の使い方を、このページで一通り。順に読むことも、必要な項目だけ確認することもできます。",
     "toc": "使い方の目次",
-    "revision": "2026年10月16日更新 · Web 1.45.0／拡張機能1.45.0 · ヘルパー1.30.2",
+    "revision": "2026年10月17日更新 · Web 1.46.0／拡張機能1.46.0 · ヘルパー1.30.2",
     "chapters": [
       {
         "id": "setup",
@@ -350,8 +350,8 @@
           },
           {
             "type": "link",
-            "text": "本体拡張機能 v1.45.0 をダウンロード ↓",
-            "url": "LLMs-Monitor-v1.45.0.zip"
+            "text": "本体拡張機能 v1.46.0 をダウンロード ↓",
+            "url": "LLMs-Monitor-v1.46.0.zip"
           },
           {
             "type": "note",
@@ -430,7 +430,7 @@
             "type": "list",
             "items": [
               "［通知音 OFF］で予約済みの音も停止します。メイン画面を閉じるだけでは、拡張機能の取得・監視は停止しません。音を止めたい場合はOFFにしてください。",
-              "［試聴］は確認用の一度だけの再生です。通知音のON／OFFは変更しません。音量も調整できます。ブラウザー／OSの制限で、最初の操作が必要な場合があります。",
+              "［通知音］をOFFからONにすると確認音が一度鳴ります。独立した試聴ボタンはありません。音量も調整できます。ブラウザー／OSの制限で最初の操作が必要な場合があります。",
               "数値変化では最大3回、1秒間隔で鳴ります。残量が5%・1%を下回るときは別の注意音です。数値が変わった部分だけが点滅します。"
             ]
           },
