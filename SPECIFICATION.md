@@ -143,7 +143,7 @@ The server feed remains unconfigured; this optional browser reader does not depl
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.46.0
+対象製品版: 1.47.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -1690,3 +1690,9 @@ HEADER-PRIVACY-001: header order is Product, Setup, browser-local disclosure. Th
 日本語：残量／使用量ボタンをアドバイスの右に置き、表示だけ反転。履歴保存・通知判定は残量基準で保持。試聴ボタンを廃止し通知音OFF→ONで一度だけ確認音。投稿日時・確認日時・予定期限を区別し、本人の表示済み補足に日時とリンクを追加。Tiboプロフィールリンクは常設。ClaudeDevsは独立した任意設定、表示済み投稿と同一著者の返信だけを読み取り、未表示の返信は未確認。セットアップは製品紹介の右へ移動し、ブラウザ内保存の説明をクリック／キーボード／hoverで提供。配布済み取説・ヘルパーの再生成なし。
 
 Validation v1.46: 344 regression tests passed. Synthetic browser verification confirms 8% remaining → 92% used, weekly 25% → 75%, unchanged $20 credit, reload persistence, Japanese/English control placement, Product/Setup header order and keyboard/click storage disclosure. Public rendered Tibo conversation 2111244596131111253 (2026-10-16T23:55:11Z) and own replies 2111244957851984181 / 2111245052513259606 were inspected; this usage-efficiency announcement is not treated as a reset. Unseen replies and live installed-extension replacement remain unverified.
+
+## v1.47.0 — compact controls and movable advice
+
+COMPACT-UI-147: Header language control follows browser-local disclosure. Tibo and ClaudeDevs labels link to profiles; message bodies and source actions link to the exact validated article. Main weekly reset renders verified local date/time plus countdown in one bold line, fitting available width without changing stored reset metadata. Suppress the session-estimate pending note; retain actual supported estimates. Display the legacy first-message state as メッセージ待ち / Waiting for message without changing acquisition values. Advice supports pointer drag (excluding links/buttons), pointer cancellation and keyboard arrows/Home; clamp after movement and viewport/size changes, never open windows or persist private content. Gauge caption moves down five pixels in both display modes. Existing helper/manual packages are preserved.
+
+Validation v1.47: all 347 regression tests pass. Synthetic browser checks confirm same-row local disclosure/language controls at narrow width with no horizontal overflow, a bold single-line weekly reset at fitted 14.5px, pointer movement from bottom to upper viewport, arrow-key movement and Home reset, abbreviated waiting state, no pending session note and no console errors. Existing helper and standalone guide bytes are unchanged. Installed-extension upgrade and real-account collection were not performed.
