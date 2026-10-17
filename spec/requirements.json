@@ -1,13 +1,13 @@
 {
   "schema_version": "1.0.0",
   "ledger_id": "llms-token-usage-monitor-requirements",
-  "last_updated": "2026-10-17",
+  "last_updated": "2026-10-18",
   "authoritative": true,
   "product": {
     "name_ja": "LLMs モニター",
     "name_en": "LLMs Monitor",
-    "version": "1.47.0",
-    "package_filename": "LLMs-Monitor-v1.47.0.zip",
+    "version": "1.48.0",
+    "package_filename": "LLMs-Monitor-v1.48.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -19,7 +19,7 @@
       "gemini"
     ],
     "production_companion_origin": "https://llmsmonitor.ntus.info",
-    "web_version": "1.47.0",
+    "web_version": "1.48.0",
     "companion_origins": [
       "https://llmsmonitor.ntus.info",
       "https://llmsmonitor.ntusnog.chatgpt.site"
@@ -5927,6 +5927,21 @@
       "tests/compact-ui.test.cjs",
       "extension/style-v1470.css",
       "extension/app.js"
+    ]
+  },
+  "weekly_gauge_148": {
+    "id": "WEEKLY-GAUGE-148",
+    "status": "implemented",
+    "requirements": [
+      "Outer current-session ring and inner weekly ring with both percentages",
+      "Weekly horizontal track twice primary thickness",
+      "Per-window forecast warning from sufficient fresh current-cycle canonical remaining history only",
+      "No quota/history/audio mutations; unknown stays unknown"
+    ],
+    "evidence": [
+      "tests/depletion-risk.test.cjs",
+      "extension/advice.js",
+      "extension/style-v1480.css"
     ]
   }
 }

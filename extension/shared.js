@@ -1,5 +1,5 @@
 (function(root){
- const APP_VERSION='1.47.0',HISTORY_LIMIT=10000,L=root.GlanceLocale||{language:()=> 'ja',t:key=>key,label:value=>String(value??''),locale:()=> 'ja-JP'},P=root.GlancePreferences||{visible:()=>['chatgpt','claude','gemini']},S=root.GlanceProviderStatus||{view:()=>''},I=root.GlanceIntelligence||{view:()=>''};
+ const APP_VERSION='1.48.0',HISTORY_LIMIT=10000,L=root.GlanceLocale||{language:()=> 'ja',t:key=>key,label:value=>String(value??''),locale:()=> 'ja-JP'},P=root.GlancePreferences||{visible:()=>['chatgpt','claude','gemini']},S=root.GlanceProviderStatus||{view:()=>''},I=root.GlanceIntelligence||{view:()=>''};
  const services={chatgpt:{name:'ChatGPT',home:'https://chatgpt.com/',color:'#6dd8bf',mark:'◎',url:'https://chatgpt.com/settings/usage?tab=overview'},claude:{name:'Claude',home:'https://claude.ai/new',color:'#eda681',mark:'✳',url:'https://claude.ai/settings/usage'},gemini:{name:'Gemini',home:'https://gemini.google.com/app',color:'#93b3ff',mark:'✦',url:'https://gemini.google.com/usage'}};
  Object.assign(services,root.GlanceAdditional?.PROVIDERS||{});
  const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -50,6 +50,7 @@
  function shownPlan(value){return !value||value==='未取得'?L.t('planMissing'):value;}
  function decorate(container,data={},settings={}){
   fitResetLines(container);
+  const widgetRisk=container.classList.contains('widget')||!!container.querySelector('.widget-row');if(widgetRisk){P.visible(settings).forEach((id,index)=>{const node=container.querySelectorAll('.widget-row')[index],s=data[id];if(!node)return;const primary=root.GlanceAdvice?.depletionRisk?.(s,s?.windows?.[0]);node.querySelector('.primary-track')?.classList.toggle('quota-forecast-risk',!!primary);const weeks=[...node.querySelectorAll('.widget-limit + .track')];weeks.forEach((track,i)=>{track.classList.add('weekly-quota-track');const risk=root.GlanceAdvice?.depletionRisk?.(s,s?.windows?.[i+1]);track.classList.toggle('quota-forecast-risk',!!risk);track.title=root.GlanceAdvice?.riskText?.(risk)||''})});}
   const widget=container.classList.contains('widget')||!!container.querySelector('.widget-row'),nodes=[...container.querySelectorAll(widget?'.widget-row':'.card')];
   P.visible(settings).forEach((id,index)=>{
    const s=data[id],weekly=(s?.windows||[]).find(w=>/(?:週間|今週|week)/i.test(w.label)),node=nodes[index];if(!weekly||!node)return;

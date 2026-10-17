@@ -13,6 +13,20 @@
   const burn=spanHours>=.25?consumed/spanHours:null,left=hours(window?.resetAt,now),projected=remaining!==null&&burn!==null&&left!==null?Math.max(0,remaining-burn*left):null;
   return {samples:rows.length,spanHours,consumed,burn,hoursLeft:left,remaining,projected};
  }
+ function depletionRisk(service,window,now=Date.now()){
+  const remaining=pct(window?.remaining),until=Number(window?.resetAt)-now,weekly=/(?:週間|今週|week)/i.test(window?.label||'');
+  if(service?.status!=='ready'||!service.capturedAt||now-service.capturedAt>125000||service.capturedAt>now+60000||window?.expired||remaining===null||!window.resetAt||until<=0||!Number.isFinite(until))return null;
+  const horizon=(weekly?7*24:5)*3600000;let rows=rowsFor(service,window).filter(r=>Number.isFinite(r?.capturedAt)&&r.capturedAt>=now-horizon&&r.capturedAt<=now&&pct(r.remaining)!==null).sort((a,b)=>a.capturedAt-b.capturedAt);
+  // A rise marks a new/reset cycle. Never borrow consumption from its predecessor.
+  let start=0;for(let i=1;i<rows.length;i++)if(rows[i].remaining>rows[i-1].remaining)start=i;rows=rows.slice(start);
+  if(rows.length<3||Math.round(rows.at(-1).remaining)!==Math.round(remaining))return null;
+  if(service.capturedAt>rows.at(-1).capturedAt)rows.push({capturedAt:service.capturedAt,remaining});
+  const span=(rows.at(-1).capturedAt-rows[0].capturedAt)/3600000,consumed=rows[0].remaining-rows.at(-1).remaining;
+  if(span<(weekly?6:.25)||consumed<=0)return null;const burn=consumed/span,hoursToEmpty=remaining/burn;
+  if(hoursToEmpty>=until/3600000)return null;
+  return {at:now+hoursToEmpty*3600000,burn,samples:rows.length,weekly};
+ }
+ function riskText(risk){return risk?(isEn()?'At this pace, likely to run out before reset (estimate from local history).':'このペースではリセット前に使い切る見込みです（端末内履歴からの推定）。'):'';}
  function weeklyWindow(service){return (service?.windows||[]).find(window=>/(?:週間|今週|week)/i.test(window.label))||(service?.windows||[])[1]||(service?.windows||[])[0];}
  function sessionEquivalent(service,now=Date.now()){
   const current=service?.windows?.[0],weekly=weeklyWindow(service);if(!current||!weekly||current===weekly||pct(weekly.remaining)===null)return null;
@@ -57,5 +71,5 @@
   const baseline=items.length?items:[{id:'waiting',service:'MONITOR',tone:'learning',title:isEn()?'Waiting for analysis data':'分析データを待っています',text:isEn()?'Connect each service to analyze usage pace and plan fit from change history.':'各サービスへ接続すると、残量の変化履歴から利用ペースとプラン適合度を判定します。',evidence:isEn()?'At least three changes are required':'判定には残量変化3件以上を使用します'}];
   return [...baseline,...sourcedUpdates(now)];
  }
- root.GlanceAdvice={stats,usageAdvice,resetAdvice,sessionEquivalent,sourcedUpdates,build};if(typeof module!=='undefined')module.exports=root.GlanceAdvice;
+ root.GlanceAdvice={depletionRisk,riskText,stats,usageAdvice,resetAdvice,sessionEquivalent,sourcedUpdates,build};if(typeof module!=='undefined')module.exports=root.GlanceAdvice;
 })(globalThis);

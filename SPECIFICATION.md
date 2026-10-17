@@ -143,7 +143,7 @@ The server feed remains unconfigured; this optional browser reader does not depl
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.47.0
+対象製品版: 1.48.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -1696,3 +1696,8 @@ Validation v1.46: 344 regression tests passed. Synthetic browser verification co
 COMPACT-UI-147: Header language control follows browser-local disclosure. Tibo and ClaudeDevs labels link to profiles; message bodies and source actions link to the exact validated article. Main weekly reset renders verified local date/time plus countdown in one bold line, fitting available width without changing stored reset metadata. Suppress the session-estimate pending note; retain actual supported estimates. Display the legacy first-message state as メッセージ待ち / Waiting for message without changing acquisition values. Advice supports pointer drag (excluding links/buttons), pointer cancellation and keyboard arrows/Home; clamp after movement and viewport/size changes, never open windows or persist private content. Gauge caption moves down five pixels in both display modes. Existing helper/manual packages are preserved.
 
 Validation v1.47: all 347 regression tests pass. Synthetic browser checks confirm same-row local disclosure/language controls at narrow width with no horizontal overflow, a bold single-line weekly reset at fitted 14.5px, pointer movement from bottom to upper viewport, arrow-key movement and Home reset, abbreviated waiting state, no pending session note and no console errors. Existing helper and standalone guide bytes are unchanged. Installed-extension upgrade and real-account collection were not performed.
+
+## v1.48.0 — weekly overview
+WEEKLY-GAUGE-148: Outer ring remains current session, inner ring and labeled percentage show weekly quota. Both follow remaining/used mode; unknown stays unknown. Weekly horizontal bars are twice primary thickness. Independent amber forecast warnings require ready/fresh quota, future known reset, three current-cycle observations, at least 15 minutes for session / six hours for weekly and positive consumption. Reset increases split history; prior cycles, stale data and absent deadlines cannot generate forecasts. These are estimates, not provider facts; canonical quota/history/audio are unchanged. Keep previous low-quota red indicator. Existing helper/manual packages stay unchanged.
+
+Validation v1.48: 351 tests passed. Synthetic browser checks show current 40% and weekly 25%, both amber with sufficient depletion history; used mode shows 60% and 75% without altering risk decisions. Weekly bars measure 8px versus primary 4px. Unknown weekly values remain —. Japanese/English and desktop/390px layouts have no horizontal overflow or console errors. Includes idle-time and reset-cycle forecast regression tests. Existing helper/manual hashes preserved; real installed-extension acceptance remains unverified.
