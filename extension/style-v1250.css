@@ -6,3 +6,5 @@
 
 /* Public author replies remain bounded and scroll within the existing feed. */
 .author-comments{margin:8px 0;padding-left:16px;max-height:160px;overflow:auto;overflow-wrap:anywhere}.author-comments li{margin:6px 0}.author-comments a,.author-comments span{display:block}.author-comments a{font-size:11px}
+
+.widget-reset.weekly-reset{white-space:nowrap;font-weight:750;min-width:0}.widget-reset.weekly-reset strong{display:inline;font:inherit}

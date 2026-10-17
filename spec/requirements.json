@@ -1,13 +1,13 @@
 {
   "schema_version": "1.0.0",
   "ledger_id": "llms-token-usage-monitor-requirements",
-  "last_updated": "2026-10-16",
+  "last_updated": "2026-10-17",
   "authoritative": true,
   "product": {
     "name_ja": "LLMs モニター",
     "name_en": "LLMs Monitor",
-    "version": "1.46.0",
-    "package_filename": "LLMs-Monitor-v1.46.0.zip",
+    "version": "1.47.0",
+    "package_filename": "LLMs-Monitor-v1.47.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -19,7 +19,7 @@
       "gemini"
     ],
     "production_companion_origin": "https://llmsmonitor.ntus.info",
-    "web_version": "1.46.0",
+    "web_version": "1.47.0",
     "companion_origins": [
       "https://llmsmonitor.ntus.info",
       "https://llmsmonitor.ntusnog.chatgpt.site"
@@ -5806,7 +5806,7 @@
     {
       "id": "USAGE-DISPLAY-001",
       "category": "presentation",
-      "introduced_in": "1.46.0",
+      "introduced_in": "1.47.0",
       "status": "implemented",
       "priority": "MUST",
       "normative_requirement": "Toggle remaining/used presentation immediately after Advice. Invert only rendered quota percentages/previous values/history with unknowns unchanged; preserve canonical acquisition, history and sound thresholds. Sync settings across all monitor surfaces and task overview.",
@@ -5833,7 +5833,7 @@
     {
       "id": "SOUND-ON-PREVIEW-001",
       "category": "presentation",
-      "introduced_in": "1.46.0",
+      "introduced_in": "1.47.0",
       "status": "implemented",
       "priority": "MUST",
       "normative_requirement": "Remove separate test sound control; an explicit OFF-to-ON action previews once, while OFF cancels pending previews and startup/sync remain silent.",
@@ -5860,7 +5860,7 @@
     {
       "id": "POST-DETAILS-001",
       "category": "presentation",
-      "introduced_in": "1.46.0",
+      "introduced_in": "1.47.0",
       "status": "implemented",
       "priority": "MUST",
       "normative_requirement": "Show post publication date/time and source links, separate read/deadline timestamps, and bounded same-author replies from the verified visible conversation. No inferred reply completeness, hidden crawling, reload, paid API or credential reads. ClaudeDevs requires independent opt-in.",
@@ -5887,7 +5887,7 @@
     {
       "id": "HEADER-PRIVACY-001",
       "category": "presentation",
-      "introduced_in": "1.46.0",
+      "introduced_in": "1.47.0",
       "status": "implemented",
       "priority": "MUST",
       "normative_requirement": "Place Setup after Product in the top right; provide keyboard/click popup and hover explanation of browser-local storage boundaries and data removal.",
@@ -5911,5 +5911,22 @@
         }
       ]
     }
-  ]
+  ],
+  "compact_ui_147": {
+    "id": "COMPACT-UI-147",
+    "status": "implemented",
+    "requirements": [
+      "Language button after local disclosure",
+      "Tibo and ClaudeDevs profile and article-body links",
+      "Bounded draggable advice with keyboard movement",
+      "Compact waiting copy and no pending session-estimate note",
+      "Single-line bold weekly reset with date and countdown",
+      "Gauge caption five pixels lower"
+    ],
+    "evidence": [
+      "tests/compact-ui.test.cjs",
+      "extension/style-v1470.css",
+      "extension/app.js"
+    ]
+  }
 }

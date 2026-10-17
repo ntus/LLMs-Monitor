@@ -466,3 +466,7 @@ POST-DETAILS-001: show publication time and direct source link, separate observe
 HEADER-PRIVACY-001: header order is Product, Setup, browser-local disclosure. The disclosure supports native keyboard/click details and hover title explaining browser/profile/site storage, no automatic operator upload/cross-device sync, removal risk and explicit note export. No sharing/audience changes.
 
 日本語：残量／使用量ボタンをアドバイスの右に置き、表示だけ反転。履歴保存・通知判定は残量基準で保持。試聴ボタンを廃止し通知音OFF→ONで一度だけ確認音。投稿日時・確認日時・予定期限を区別し、本人の表示済み補足に日時とリンクを追加。Tiboプロフィールリンクは常設。ClaudeDevsは独立した任意設定、表示済み投稿と同一著者の返信だけを読み取り、未表示の返信は未確認。セットアップは製品紹介の右へ移動し、ブラウザ内保存の説明をクリック／キーボード／hoverで提供。配布済み取説・ヘルパーの再生成なし。
+
+## v1.47.0 — compact controls and movable advice
+
+COMPACT-UI-147: Header language control follows browser-local disclosure. Tibo and ClaudeDevs labels link to profiles; message bodies and source actions link to the exact validated article. Main weekly reset renders verified local date/time plus countdown in one bold line, fitting available width without changing stored reset metadata. Suppress the session-estimate pending note; retain actual supported estimates. Display the legacy first-message state as メッセージ待ち / Waiting for message without changing acquisition values. Advice supports pointer drag (excluding links/buttons), pointer cancellation and keyboard arrows/Home; clamp after movement and viewport/size changes, never open windows or persist private content. Gauge caption moves down five pixels in both display modes. Existing helper/manual packages are preserved.
