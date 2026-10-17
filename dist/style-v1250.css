@@ -8,3 +8,5 @@
 .author-comments{margin:8px 0;padding-left:16px;max-height:160px;overflow:auto;overflow-wrap:anywhere}.author-comments li{margin:6px 0}.author-comments a,.author-comments span{display:block}.author-comments a{font-size:11px}
 
 .widget-reset.weekly-reset{white-space:nowrap;font-weight:750;min-width:0}.widget-reset.weekly-reset strong{display:inline;font:inherit}
+
+.widget-row .primary-track{height:4px!important}.widget-row .weekly-quota-track{height:8px!important}.widget .quota-forecast-risk i{background:#ffb454!important}.widget .quota-forecast-risk{outline:1px solid #ffb45488;outline-offset:2px}
