@@ -131,3 +131,10 @@ Disabled by default. A direct extension-page click grants optional nativeMessagi
 Grok (grok.com/dashboard), DeepSeek (platform.deepseek.com usage/top_up), Perplexity (www.perplexity.ai/account/details), and Genspark (www.genspark.ai/credit-usage) have separately granted optional host access. Only explicit labelled balance/count rows from those account pages are retained in llms-additional-services-v1. They are not chat percentages, never sent to the operator, and expire from current display after 125 seconds. No chat bodies, credentials, paid API calls, automatic page opening or reloading. Disabling clears the provider's values; revoking permission prevents reading. Live page-layout coverage is experimental.
 
 追加4社は各社別の任意アクセスです。指定した公式残高・契約ページの明示された残高／回数だけを別保存し、本文・認証情報を読まず運営へ送信しません。自動巡回・リロード・有料APIなし。解除で対象値を消去。実画面の形式は試験対応です。
+
+
+## v1.46 public author replies / 公開投稿の補足返信
+
+ClaudeDevs public-post reading is a separate disabled-by-default setting; the existing Tibo grant alone does not enable it. Both readers inspect only already-rendered public author posts on exact author/profile/status routes after optional X/scripting permission. Up to three bounded same-author replies with publication time and direct links may accompany a public announcement. The monitor does not navigate/reload to retrieve missing replies and does not inspect DMs, inputs or credentials. Public-author baseline metadata is local and independent of private quota/history.
+
+ClaudeDevsの読取りは独立した初期無効の設定です。既存のTibo許可だけでは有効化しません。正規の公開投稿・同一著者の補足返信（最大3件）だけを日時・リンク付きで扱い、自動巡回・リロード・DM・入力欄・認証情報の読取りはしません。

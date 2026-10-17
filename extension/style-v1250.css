@@ -3,3 +3,6 @@
 .floating-body .intelligence-feed[open],.pip-body .intelligence-feed[open]{max-height:min(100px,18dvh)}
 .floating-body .provider-status[open],.pip-body .provider-status[open]{max-height:min(110px,19dvh)}
 .floating-body .intelligence-feed summary,.pip-body .intelligence-feed summary{overflow-wrap:anywhere;line-height:1.3}
+
+/* Public author replies remain bounded and scroll within the existing feed. */
+.author-comments{margin:8px 0;padding-left:16px;max-height:160px;overflow:auto;overflow-wrap:anywhere}.author-comments li{margin:6px 0}.author-comments a,.author-comments span{display:block}.author-comments a{font-size:11px}

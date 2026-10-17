@@ -2,7 +2,7 @@
  const select=selector=>document.querySelector('#setup-tibo '+(selector.startsWith('#')?'#tibo-'+selector.slice(1):selector))||document.querySelector(selector);
 const R=GlanceTiboReader,say=(a,b)=>ja?a:b;let ja=GlanceLocale.detect()==='ja';
 function paint(){
-document.documentElement.lang=ja?'ja':'en';select('#check').textContent=say('今すぐ読取りを確認','Check reading now');select('#restart').textContent=say('拡張機能を再起動','Restart extension');
+document.documentElement.lang=ja?'ja':'en';if(select('#claude-enable'))select('#claude-enable').textContent=say('Claude公式ポスト・本人返信を有効化（任意）','Enable Claude public posts and author replies (optional)');if(select('#claude-disable'))select('#claude-disable').textContent=say('Claudeポスト読取りを解除','Disable Claude public reading');select('#check').textContent=say('今すぐ読取りを確認','Check reading now');select('#restart').textContent=say('拡張機能を再起動','Restart extension');
 select('#help').textContent=say('無料の公開ページ読取りです。任意アクセスを許可し、Chromeでログイン済みのTiboプロフィールまたは投稿を開いておいてください。表示済みの本人の公開投稿を1分ごとに確認します。ページを自動リロードせず、新着が未表示なら検知できません。制限・ログアウト・ページ未表示は取得不能として表示します。DM・入力欄・認証情報は読みません。リセット告知と個人の残量回復は別です。初回取得は無音、その後の新しい投稿を一度だけ通知します。日時付きマークには予定期限が記載された本人投稿の表示が必要です。','Free public-page reading. Grant optional access and keep a signed-in Tibo profile or post open in Chrome. Checks rendered posts by Tibo each minute without reloading; undisplayed updates cannot be detected. Restrictions, sign-out or missing pages show unavailable. No DMs, inputs or credentials are read. Reset announcements are separate from personal quota recovery. The first read is silent; later new posts notify once. A dated mark requires a visible post stating its deadline.');
 select('#enable').textContent=say('アクセスを許可して有効化','Allow access and enable');select('#disable').textContent=say('無効化','Disable');
 }
@@ -15,5 +15,9 @@ function showReading(feed){const data=GlanceIntelligence.normalize(feed),reason=
 select('#check').onclick=async()=>{const b=select('#check');b.disabled=true;try{showReading(await chrome.runtime.sendMessage({type:'TIBO_CHECK'}));}catch{select('#result').textContent=say('読取り確認に失敗しました','Read check failed');}finally{b.disabled=false}};
 
 select('#restart').textContent=say('拡張機能を再起動','Restart extension');select('#restart').onclick=()=>chrome.runtime.reload();
+
+
+if(select('#claude-enable'))select('#claude-enable').onclick=async()=>{try{if(!await chrome.permissions.request({permissions:['scripting'],origins:[R.ORIGIN]}))return;const r=await chrome.runtime.sendMessage({type:'CLAUDE_PUBLIC_CONFIGURE',enabled:true});select('#result').textContent=r.ok?say('Claude公式の公開投稿・本人返信を表示した会話ページを開いてください。自動巡回はしません。','Open a ClaudeDevs public post conversation with author replies displayed. No automatic navigation.'):say('有効化できません。','Could not enable.')}catch{select('#result').textContent=say('権限を確認してください。','Check permission.')}};
+if(select('#claude-disable'))select('#claude-disable').onclick=async()=>{await chrome.runtime.sendMessage({type:'CLAUDE_PUBLIC_CONFIGURE',enabled:false});select('#result').textContent=say('Claudeポスト読取りを解除しました。','Claude public reading disabled.')};
 
 })();

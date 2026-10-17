@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs モニター",
     "name_en": "LLMs Monitor",
-    "version": "1.45.0",
-    "package_filename": "LLMs-Monitor-v1.45.0.zip",
+    "version": "1.46.0",
+    "package_filename": "LLMs-Monitor-v1.46.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -19,7 +19,7 @@
       "gemini"
     ],
     "production_companion_origin": "https://llmsmonitor.ntus.info",
-    "web_version": "1.45.0",
+    "web_version": "1.46.0",
     "companion_origins": [
       "https://llmsmonitor.ntus.info",
       "https://llmsmonitor.ntusnog.chatgpt.site"
@@ -5801,6 +5801,114 @@
       ],
       "known_limitations": [
         "New provider account layouts and installed extension end-to-end behavior require live acceptance."
+      ]
+    },
+    {
+      "id": "USAGE-DISPLAY-001",
+      "category": "presentation",
+      "introduced_in": "1.46.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "Toggle remaining/used presentation immediately after Advice. Invert only rendered quota percentages/previous values/history with unknowns unchanged; preserve canonical acquisition, history and sound thresholds. Sync settings across all monitor surfaces and task overview.",
+      "acceptance_criteria": [
+        "Toggle remaining/used presentation immediately after Advice. Invert only rendered quota percentages/previous values/history with unknowns unchanged; preserve canonical acquisition, history and sound thresholds. Sync settings across all monitor surfaces and task overview.",
+        "Preserve existing settings/history/native helper and built manual artifacts."
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/shared.js"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/usage-display.test.cjs"
+        },
+        {
+          "type": "automated",
+          "path": "tests/tibo-reader.test.cjs"
+        }
+      ]
+    },
+    {
+      "id": "SOUND-ON-PREVIEW-001",
+      "category": "presentation",
+      "introduced_in": "1.46.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "Remove separate test sound control; an explicit OFF-to-ON action previews once, while OFF cancels pending previews and startup/sync remain silent.",
+      "acceptance_criteria": [
+        "Remove separate test sound control; an explicit OFF-to-ON action previews once, while OFF cancels pending previews and startup/sync remain silent.",
+        "Preserve existing settings/history/native helper and built manual artifacts."
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/app.js"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/usage-display.test.cjs"
+        },
+        {
+          "type": "automated",
+          "path": "tests/tibo-reader.test.cjs"
+        }
+      ]
+    },
+    {
+      "id": "POST-DETAILS-001",
+      "category": "presentation",
+      "introduced_in": "1.46.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "Show post publication date/time and source links, separate read/deadline timestamps, and bounded same-author replies from the verified visible conversation. No inferred reply completeness, hidden crawling, reload, paid API or credential reads. ClaudeDevs requires independent opt-in.",
+      "acceptance_criteria": [
+        "Show post publication date/time and source links, separate read/deadline timestamps, and bounded same-author replies from the verified visible conversation. No inferred reply completeness, hidden crawling, reload, paid API or credential reads. ClaudeDevs requires independent opt-in.",
+        "Preserve existing settings/history/native helper and built manual artifacts."
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/tibo-reader.js"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/usage-display.test.cjs"
+        },
+        {
+          "type": "automated",
+          "path": "tests/tibo-reader.test.cjs"
+        }
+      ]
+    },
+    {
+      "id": "HEADER-PRIVACY-001",
+      "category": "presentation",
+      "introduced_in": "1.46.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "Place Setup after Product in the top right; provide keyboard/click popup and hover explanation of browser-local storage boundaries and data removal.",
+      "acceptance_criteria": [
+        "Place Setup after Product in the top right; provide keyboard/click popup and hover explanation of browser-local storage boundaries and data removal.",
+        "Preserve existing settings/history/native helper and built manual artifacts."
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/index.html"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/usage-display.test.cjs"
+        },
+        {
+          "type": "automated",
+          "path": "tests/tibo-reader.test.cjs"
+        }
       ]
     }
   ]
