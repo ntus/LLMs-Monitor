@@ -473,3 +473,6 @@ COMPACT-UI-147: Header language control follows browser-local disclosure. Tibo a
 
 ## v1.48.0 — weekly overview
 WEEKLY-GAUGE-148: Outer ring remains current session, inner ring and labeled percentage show weekly quota. Both follow remaining/used mode; unknown stays unknown. Weekly horizontal bars are twice primary thickness. Independent amber forecast warnings require ready/fresh quota, future known reset, three current-cycle observations, at least 15 minutes for session / six hours for weekly and positive consumption. Reset increases split history; prior cycles, stale data and absent deadlines cannot generate forecasts. These are estimates, not provider facts; canonical quota/history/audio are unchanged. Keep previous low-quota red indicator. Existing helper/manual packages stay unchanged.
+
+## v1.49.0 — ring hierarchy and reset grouping
+WEEKLY-GAUGE-149 supersedes v1.48 ring order: weekly is outer radius51/stroke7, current session inner radius42/stroke3.5. Explicit 5-hour/current and weekly labels map to distinct colors shared by their text and rings. Show each percentage followed immediately by its own reset datetime/countdown on a translucent background; unknown deadlines remain unknown. Keep remaining/used mode, low-quota red and current-cycle forecast rules unchanged. Existing helper and standalone manuals remain byte-identical.

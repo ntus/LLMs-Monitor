@@ -143,7 +143,7 @@ The server feed remains unconfigured; this optional browser reader does not depl
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.48.0
+対象製品版: 1.49.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -1701,3 +1701,8 @@ Validation v1.47: all 347 regression tests pass. Synthetic browser checks confir
 WEEKLY-GAUGE-148: Outer ring remains current session, inner ring and labeled percentage show weekly quota. Both follow remaining/used mode; unknown stays unknown. Weekly horizontal bars are twice primary thickness. Independent amber forecast warnings require ready/fresh quota, future known reset, three current-cycle observations, at least 15 minutes for session / six hours for weekly and positive consumption. Reset increases split history; prior cycles, stale data and absent deadlines cannot generate forecasts. These are estimates, not provider facts; canonical quota/history/audio are unchanged. Keep previous low-quota red indicator. Existing helper/manual packages stay unchanged.
 
 Validation v1.48: 351 tests passed. Synthetic browser checks show current 40% and weekly 25%, both amber with sufficient depletion history; used mode shows 60% and 75% without altering risk decisions. Weekly bars measure 8px versus primary 4px. Unknown weekly values remain —. Japanese/English and desktop/390px layouts have no horizontal overflow or console errors. Includes idle-time and reset-cycle forecast regression tests. Existing helper/manual hashes preserved; real installed-extension acceptance remains unverified.
+
+## v1.49.0 — ring hierarchy and reset grouping
+WEEKLY-GAUGE-149 supersedes v1.48 ring order: weekly is outer radius51/stroke7, current session inner radius42/stroke3.5. Explicit 5-hour/current and weekly labels map to distinct colors shared by their text and rings. Show each percentage followed immediately by its own reset datetime/countdown on a translucent background; unknown deadlines remain unknown. Keep remaining/used mode, low-quota red and current-cycle forecast rules unchanged. Existing helper and standalone manuals remain byte-identical.
+
+Validation v1.49: 353 full regression tests pass, plus six targeted gauge/forecast tests after CSS refinement. Synthetic browser checks confirm outer weekly r51/stroke7 and inner current r42/stroke3.5; labeled 5-hour100% / weekly4% invert to 0% /96% in used mode. Each reset is grouped immediately under its quota, urgent icon stays inline, background alpha is .62. Japanese/English and 1280/390px layouts show no horizontal overflow or console errors. ZIP/source equality and unchanged helper/manual hashes verified. Live installed-extension update remains unverified.

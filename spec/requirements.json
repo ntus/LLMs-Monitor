@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs モニター",
     "name_en": "LLMs Monitor",
-    "version": "1.48.0",
-    "package_filename": "LLMs-Monitor-v1.48.0.zip",
+    "version": "1.49.0",
+    "package_filename": "LLMs-Monitor-v1.49.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -19,7 +19,7 @@
       "gemini"
     ],
     "production_companion_origin": "https://llmsmonitor.ntus.info",
-    "web_version": "1.48.0",
+    "web_version": "1.49.0",
     "companion_origins": [
       "https://llmsmonitor.ntus.info",
       "https://llmsmonitor.ntusnog.chatgpt.site"
@@ -5942,6 +5942,21 @@
       "tests/depletion-risk.test.cjs",
       "extension/advice.js",
       "extension/style-v1480.css"
+    ]
+  },
+  "weekly_gauge_149": {
+    "id": "WEEKLY-GAUGE-149",
+    "status": "implemented",
+    "supersedes": "WEEKLY-GAUGE-148 ring order only",
+    "requirements": [
+      "Outer weekly radius51 stroke7; inner current radius42 stroke3.5",
+      "Explicit current-window and weekly percentages with matching distinct ring/text colors",
+      "Each percentage immediately followed by own verified reset datetime and countdown on translucent background",
+      "Preserve raw quotas, display inversion, forecast rules and unknowns"
+    ],
+    "evidence": [
+      "tests/gauge-layout.test.cjs",
+      "extension/style-v1490.css"
     ]
   }
 }
