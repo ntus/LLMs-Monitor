@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs モニター",
     "name_en": "LLMs Monitor",
-    "version": "1.50.0",
-    "package_filename": "LLMs-Monitor-v1.50.0.zip",
+    "version": "1.51.0",
+    "package_filename": "LLMs-Monitor-v1.51.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -19,7 +19,7 @@
       "gemini"
     ],
     "production_companion_origin": "https://llmsmonitor.ntus.info",
-    "web_version": "1.50.0",
+    "web_version": "1.51.0",
     "companion_origins": [
       "https://llmsmonitor.ntus.info",
       "https://llmsmonitor.ntusnog.chatgpt.site"
@@ -5978,6 +5978,26 @@
       "extension/monitor-design.js",
       "extension/style-v1500.css",
       "tests/dashboard-redesign.test.cjs"
+    ]
+  },
+  "dashboard_151": {
+    "id": "DASHBOARD-151",
+    "status": "implemented-with-live-acceptance-pending",
+    "requirements": [
+      "Horizontal reset date and countdown; dark same-hue weekly ring and matching text; five-second low-quota blink",
+      "Initially expanded options; exact own top-level inline permission setup; external same-tab transition only",
+      "Automatic acquisition uses monitor window only; no unrelated fallback or window mutation",
+      "Unchanged render reuse and selected-card generation preserve all acquisition/history",
+      "App-frontmost detached advice; one committed new-volume preview"
+    ],
+    "evidence": [
+      "tests/dashboard-151.test.cjs",
+      "tests/quiet-tabs.test.cjs",
+      "extension/monitor-design.js"
+    ],
+    "limits": [
+      "Regular ChatGPT Chat quota source unverified; no invented percentage",
+      "Installed browser permission/native/audio and real multi-window checks remain user acceptance"
     ]
   }
 }

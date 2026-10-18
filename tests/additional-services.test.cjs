@@ -38,6 +38,8 @@ test('new setup message routes reject foreign IDs, child frames, fragments and e
  for(const sender of [{...own,id:'foreign'},{...own,frameId:1},{...own,url:own.url+'#codex'},{...own,url:'https://llmsmonitor.ntus.info/'}])for(const type of ['ADDITIONAL_CONFIGURE','API_CREDITS_CONFIGURE']){await assert.rejects(()=>vm.runInContext('handle',c)({type,service:'grok',enabled:false},sender,false));assert.deepEqual(saved,before)}
  await assert.rejects(()=>vm.runInContext('handle',c)({type:'ADDITIONAL_CONFIGURE',service:'grok',enabled:false},own,true));
  const configured=await vm.runInContext('handle',c)({type:'ADDITIONAL_CONFIGURE',service:'grok',enabled:false},own,false);assert.equal(configured.ok,true);assert.deepEqual(saved.data,before.data);assert.deepEqual(saved.history,before.history);
+ // Only explicitly allowlisted own main URLs get inline configuration; frames/Web remain denied.
+ for(const url of [chrome.runtime.getURL('index.html'),chrome.runtime.getURL('index.html')+'#setup']){const main={...own,url};assert.equal((await vm.runInContext('handle',c)({type:'ADDITIONAL_CONFIGURE',service:'grok',enabled:false},main,false)).ok,true);await assert.rejects(()=>vm.runInContext('handle',c)({type:'ADDITIONAL_CONFIGURE',service:'grok',enabled:false},{...main,frameId:1},false));}
  // Reader authorization is independent of a blocked global acquisition queue.
  vm.runInContext('queue=new Promise(()=>{})',c);const status=await new Promise(resolve=>listener({type:'ADDITIONAL_READER_STATUS',service:'grok'},{id:own.id,url:A.PROVIDERS.grok.url,frameId:0,tab:{id:4}},resolve));assert.equal(status.enabled,false);
 });

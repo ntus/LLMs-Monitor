@@ -9,7 +9,7 @@
   let u;try{u=new URL(sender.url)}catch{return false}
   if(sender.frameId!==0)return false;
   if(external)return ORIGINS.has(u.origin)&&/^\/tasks(?:\.html)?$/.test(u.pathname)&&u.searchParams.get('service')==='chatgpt'&&message.service==='chatgpt'&&['TASKS_CODEX_READ','TASKS_CODEX_SETUP'].includes(message.type);
-  return sender.id===chrome.runtime.id&&[chrome.runtime.getURL('codex-setup.html'),chrome.runtime.getURL('setup.html')].includes(sender.url)&&['CODEX_CONFIG_READ','CODEX_CONFIGURE','CODEX_CHECK'].includes(message.type);
+  return sender.id===chrome.runtime.id&&[chrome.runtime.getURL('codex-setup.html'),chrome.runtime.getURL('setup.html'),chrome.runtime.getURL('index.html'),chrome.runtime.getURL('index.html')+'#setup'].includes(sender.url)&&['CODEX_CONFIG_READ','CODEX_CONFIGURE','CODEX_CHECK'].includes(message.type);
  }
  const stamp=v=>{const n=typeof v==='string'?Date.parse(v):NaN;return Number.isFinite(n)&&n>0?new Date(n).toISOString():null};
  function normalize(value){

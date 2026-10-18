@@ -11,4 +11,5 @@
 
 .widget-row .primary-track{height:4px!important}.widget-row .weekly-quota-track{height:8px!important}.widget .quota-forecast-risk i{background:#ffb454!important}.widget .quota-forecast-risk{outline:1px solid #ffb45488;outline-offset:2px}
 
-.widget .quota-attention{animation:quota-percent-pulse 1.3s ease-in-out infinite!important}@keyframes quota-percent-pulse{0%,100%{opacity:1}50%{opacity:.32}}@media(prefers-reduced-motion:reduce){.widget .quota-attention{animation:none!important;text-decoration:underline dotted;text-underline-offset:3px}}
+.widget .quota-attention{animation:quota-percent-pulse 5s ease-in-out infinite!important}@keyframes quota-percent-pulse{0%,100%{opacity:1}50%{opacity:.32}}@media(prefers-reduced-motion:reduce){.widget .quota-attention{animation:none!important;text-decoration:underline dotted;text-underline-offset:3px}}
+.widget .quota-attention .changed-number{animation:none!important}
