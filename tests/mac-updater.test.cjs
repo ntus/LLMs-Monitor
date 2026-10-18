@@ -8,3 +8,14 @@ test('local update reload requires a newer marker and matching manifest/key; sta
 });
 test('automatic updater reload waits for refresh/settings queues and adds no privileges or Web route',()=>{const s=fs.readFileSync('extension/background.js','utf8');a(s.includes('await refresh();await updateSettings(async()=>{if(await GlanceUpdateReload.check())chrome.runtime.reload()})'));a(!s.includes("message.type==='UPDATE_RELOAD'"));const m=JSON.parse(fs.readFileSync('extension/manifest.json'));a(!m.permissions.includes('management'));});
 test('promotional balance shows observation time and explains page-read delay without claiming realtime',()=>{const A=require('../extension/api-credits.js'),now=Date.now();A.set({claude:{enabled:true,status:'unavailable',capturedAt:now,promotional:{status:'ready',currency:'USD',amount:12.34,capturedAt:now}}});const html=A.view('claude');a(html.includes('12.34'));a(html.includes('読取 '));a(html.includes('約1分ごとの読取り'));a(!html.includes('自動更新待ち'));});
+
+test('initial-install archive uses one stable folder and matches every flat store package file',()=>{const r=spawnSync('python3',['-c',`import json,zipfile
+from pathlib import Path
+v=json.loads(Path('extension/manifest.json').read_text())['version']
+with zipfile.ZipFile('dist/LLMs-Monitor.zip') as initial,zipfile.ZipFile('dist/LLMs-Monitor-v'+v+'.zip') as flat:
+ assert initial.testzip() is None and flat.testzip() is None
+ assert set(initial.namelist())=={'LLMs-Monitor/'+n for n in flat.namelist()}
+ assert 'manifest.json' in flat.namelist()
+ for n in flat.namelist(): assert initial.read('LLMs-Monitor/'+n)==flat.read(n)
+ assert json.loads(initial.read('LLMs-Monitor/manifest.json'))['version']==v
+`],{encoding:'utf8'});a.equal(r.status,0,r.stdout+r.stderr);a(fs.readFileSync('dist/index.html','utf8').includes('href="LLMs-Monitor.zip"'));});

@@ -54,7 +54,7 @@ for html_name in ['index.html', 'privacy.html']:
         html = html.replace('</body>', f'<script src="app-web.js?v={web_version.replace('.', '')}"></script><script src="task-launcher.js?v={web_version.replace('.', '')}"></script></body>')
     target.write_text(html)
 checks = {
-    'dist/index.html': [version, version_css, f'LLMs-Monitor-v{version}.zip'],
+    'dist/index.html': [version, version_css, 'LLMs-Monitor.zip'],
     'dist/shared.js': [f"const APP_VERSION='{version}'"],
     'SPECIFICATION.md': [f'対象製品版: {version}'],
     'STORE_SUBMISSION.md': [version],
@@ -84,6 +84,11 @@ if '--package' in sys.argv:
     with zipfile.ZipFile(package, 'w', zipfile.ZIP_DEFLATED) as archive:
         for path in sorted((root / 'extension').rglob('*')):
             if path.is_file() and path.name != '.DS_Store': archive.write(path, path.relative_to(root / 'extension'))
+    # Initial manual installation has a stable top-level folder; store/updater ZIP stays flat.
+    with zipfile.ZipFile(root / 'dist' / 'LLMs-Monitor.zip', 'w', zipfile.ZIP_DEFLATED) as install:
+        with zipfile.ZipFile(package) as source:
+            for entry in source.infolist():
+                install.writestr('LLMs-Monitor/' + entry.filename, source.read(entry))
     (root / 'dist' / 'update.json').write_text(json.dumps({'schemaVersion':1,'version':version,'package':package.name,'sha256':hashlib.sha256(package.read_bytes()).hexdigest()}, indent=2)+'\n')
     print(f'LLMs Monitor v{version} package created; unchanged Codex helper preserved.')
 else:

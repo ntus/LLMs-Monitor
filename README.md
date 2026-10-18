@@ -28,7 +28,7 @@ Release preparation **Web v1.42.0 / extension v1.42.0** for Chrome/Edge desktop,
 - **See LLM usage remaining in real time:** current/weekly limits, reset times, official incidents and local change alerts for ChatGPT, Claude and Gemini.
 - **Keep track of work:** independent task windows, evidenced response states, pinned items first, and per-thread notes/checklists with links back to the conversation.
 
-[Open monitor](https://llmsmonitor.ntus.info/) · [Product introduction](https://llmsmonitor.ntus.info/product.html) · [Extension ZIP](dist/LLMs-Monitor-v1.42.0.zip) · [Task/work-note guide](TASK_DETAILS.md) · [Specification](SPECIFICATION.md) · [Privacy](PRIVACY.md) · [Security review](SECURITY_REVIEW.md) · [Release history](CHANGELOG.md)
+[Open monitor](https://llmsmonitor.ntus.info/) · [Product introduction](https://llmsmonitor.ntus.info/product.html) · [Extension ZIP](dist/LLMs-Monitor.zip) · [Task/work-note guide](TASK_DETAILS.md) · [Specification](SPECIFICATION.md) · [Privacy](PRIVACY.md) · [Security review](SECURITY_REVIEW.md) · [Release history](CHANGELOG.md)
 
 **Tibo reset alerts are not live on the current static Site.** The detector supports public usage/reset posts from Tibo (`@thsottiaux`, OpenAI staff) and selected company accounts, but requires a separately configured X server, secret, cache and minute cron. Tested synthetic detection is not proof of live delivery. See [setup and live acceptance](server/README.md). Posts are announcements, not confirmation that your individual limit has reset. Nerf Bench is [link-only](https://www.bridgebench.ai/nerf-bench).
 
@@ -115,7 +115,7 @@ The server feed remains unconfigured; this optional browser reader does not depl
 
 ② **タスク一覧とスレッドごとの作業メモで、続きの作業を忘れない！** ピン留め優先、観測できた状態、リンク付き備忘録・チェックリストを別窓で表示。
 
-[モニター](https://llmsmonitor.ntus.info/) · [製品紹介](https://llmsmonitor.ntus.info/product.html) · [拡張機能ZIP](dist/LLMs-Monitor-v1.42.0.zip) · [タスク・作業メモ取説](TASK_DETAILS.md#ja) · [詳細仕様](SPECIFICATION.md#ja) · [プライバシー](PRIVACY.md#ja)
+[モニター](https://llmsmonitor.ntus.info/) · [製品紹介](https://llmsmonitor.ntus.info/product.html) · [拡張機能ZIP](dist/LLMs-Monitor.zip) · [タスク・作業メモ取説](TASK_DETAILS.md#ja) · [詳細仕様](SPECIFICATION.md#ja) · [プライバシー](PRIVACY.md#ja)
 
 **※Tiboリセット通知は現在の静的サイトでは未稼働です。** Tibo氏（`@thsottiaux`、OpenAIスタッフ）・各社公式Xの利用枠／リセット投稿を検知する処理はありますが、別サーバー・X認証Secret・キャッシュ・1分cronが必要です。模擬データでの成功を実投稿の通知成功とは扱いません。[設定と実投稿検証](server/README.md#ja)を参照。告知は個人の残量がリセット済みである証明ではありません。Nerf Benchはリンクのみです。
 
@@ -211,3 +211,7 @@ Use the button after Advice to switch Remaining / Used display; stored history a
 Macの更新操作をまとめる場合は [更新ツールの説明](tools/mac-updater/README.md) を参照してください。Codexヘルパーとは別のアプリで、既存の拡張機能フォルダーを初回だけ登録します。
 
 Claude APIの取得は請求画面の読込みとプロモーションクレジットの安定を待ち、途中の未取得値や他タブの古い値で表示を上書きしません（最大35秒）。実アカウントでの確認は必要です。
+
+## Fixed installation folder / 固定フォルダー導入（v1.59.0）
+初回用 [LLMs-Monitor.zip](dist/LLMs-Monitor.zip) は、版番号を含まない **LLMs-Monitor** フォルダーを含みます。今後も使う場所へ置き、Chrome／Edgeでそのフォルダーを読み込んでください。2回目以降はMac更新アプリで同じ場所を更新し、ZIPの再展開・フォルダーの移動や改名はしません。既存の版番号付きフォルダーもそのまま更新できます。固定名へ移行する場合は新規読込みになり、ID・設定・任意権限・Codex登録が引き継がれる保証はありません。
+The initial-install ZIP contains a stable LLMs-Monitor folder. Keep it in a permanent location, load that folder once, then use the Mac updater in place. Existing versioned installation paths stay supported. Moving an existing installation can change its ID and require permission/native registration again; settings/history migration is not automatic. Store submissions and the updater feed retain the versioned flat ZIP.

@@ -7,7 +7,7 @@
     "title": "From first connection<br>to your next task.",
     "intro": "A practical guide to everyday use. Read in order, or jump to the feature you need.",
     "toc": "On this page",
-    "revision": "Guide updated 17 October 2026 · Web 1.58.0 / extension 1.58.0 · helper 1.30.2",
+    "revision": "Guide updated 19 October 2026 · Web 1.59.0 / extension 1.59.0 · helper 1.30.2",
     "chapters": [
       {
         "id": "setup",
@@ -20,7 +20,7 @@
           {
             "type": "steps",
             "items": [
-              "Download and extract the main extension ZIP. Until store publication, open chrome://extensions or edge://extensions, enable Developer mode and use Load unpacked to select the main folder containing manifest.json.",
+              "Download LLMs-Monitor.zip, extract its LLMs-Monitor folder and keep it in a permanent location. Until store publication, open chrome://extensions or edge://extensions, enable Developer mode and use Load unpacked to select the main folder containing manifest.json.",
               "Sign in to the official ChatGPT, Claude and Gemini sites in that same browser profile. Enter login details only on their official sites.",
               "Open the monitor, copy the 32-letter ID from extension details and enter it in Extension ID, then Connect. The extension’s own monitor does not need Web pairing.",
               "Keep the browser running. Supported usage and official incidents update about once a minute. Allow time after first connection or sleep; use Refresh now if needed."
@@ -28,12 +28,12 @@
           },
           {
             "type": "link",
-            "text": "Download main extension v1.58.0 ↓",
-            "url": "LLMs-Monitor-v1.58.0.zip"
+            "text": "Download main extension v1.59.0 ↓",
+            "url": "LLMs-Monitor.zip"
           },
           {
             "type": "note",
-            "text": "Update the existing unpacked folder in place and reload the extension. Do not uninstall or clear storage. If the folder change creates a new ID, update Web pairing and the Codex helper’s allowed ID too."
+            "text": "Keep the same loaded folder. On Mac, register it once with the updater app; later updates replace its contents in place. Do not repeatedly extract the initial ZIP or choose a numbered duplicate. Do not uninstall or clear storage. If the folder change creates a new ID, update Web pairing and the Codex helper’s allowed ID too."
           }
         ]
       },
@@ -329,7 +329,7 @@
     "title": "導入から、<br>作業の続きまで。",
     "intro": "毎日の使い方を、このページで一通り。順に読むことも、必要な項目だけ確認することもできます。",
     "toc": "使い方の目次",
-    "revision": "2026年10月17日更新 · Web 1.58.0／拡張機能1.58.0 · ヘルパー1.30.2",
+    "revision": "2026年10月19日更新 · Web 1.59.0／拡張機能1.59.0 · ヘルパー1.30.2",
     "chapters": [
       {
         "id": "setup",
@@ -342,7 +342,7 @@
           {
             "type": "steps",
             "items": [
-              "本体拡張機能のZIPをダウンロードし、展開します。ストア公開前はChromeの chrome://extensions、Edgeの edge://extensions を開き、デベロッパーモードをON。「パッケージ化されていない拡張機能を読み込む」で manifest.json のある本体フォルダーを選びます。",
+              "LLMs-Monitor.zipを展開し、中の「LLMs-Monitor」フォルダーを今後も使う場所に置きます。ストア公開前はChromeの chrome://extensions、Edgeの edge://extensions を開き、デベロッパーモードをON。「パッケージ化されていない拡張機能を読み込む」で manifest.json のある本体フォルダーを選びます。",
               "同じブラウザー・同じプロファイルでChatGPT／Claude／Geminiの公式サイトへログインします。ログイン情報は公式サイトで入力します。",
               "モニターを開き、拡張機能の詳細画面にある32文字のIDを「拡張機能ID」へ入力して［接続］。拡張機能内のモニターを使う場合、このWeb側のID入力は不要です。",
               "ブラウザーを起動したままにすると、対応する利用残量と公式障害情報が約1分ごとに更新されます。最初の取得やスリープ後は少し待ち、必要なら［今すぐ更新］を押します。"
@@ -350,12 +350,12 @@
           },
           {
             "type": "link",
-            "text": "本体拡張機能 v1.58.0 をダウンロード ↓",
-            "url": "LLMs-Monitor-v1.58.0.zip"
+            "text": "本体拡張機能 v1.59.0 をダウンロード ↓",
+            "url": "LLMs-Monitor.zip"
           },
           {
             "type": "note",
-            "text": "更新は同じ読込フォルダーへ上書きし、拡張機能を再読み込みします。アンインストールや保存領域の消去は不要です。フォルダー変更でIDが変わったら、Webの接続IDとCodexヘルパーの許可IDも揃えます。"
+            "text": "Macは更新アプリに読込フォルダーを一度登録し、以降は同じ場所の中身を更新します。初回ZIPの再展開や「LLMs-Monitor 2」への切替はしません。他のOSは同じ場所へ上書きして再読み込みします。アンインストールや保存領域の消去は不要です。フォルダー変更でIDが変わったら、Webの接続IDとCodexヘルパーの許可IDも揃えます。"
           }
         ]
       },

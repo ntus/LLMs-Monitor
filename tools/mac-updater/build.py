@@ -6,7 +6,7 @@ import tempfile
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[2]
-VERSION = '1.0.0'
+VERSION = '1.0.1'
 LAUNCH = '''#!/bin/zsh
 set -eu
 for candidate in /Library/Frameworks/Python.framework/Versions/Current/bin/python3 /opt/homebrew/bin/python3 /usr/local/bin/python3 /usr/bin/python3; do

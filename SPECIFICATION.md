@@ -143,7 +143,7 @@ The server feed remains unconfigured; this optional browser reader does not depl
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.58.0
+対象製品版: 1.59.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -1792,3 +1792,5 @@ API-TIME-158: Promotional/API balances remain rendered billing-page observations
 Final validation v1.58.0: 390 regression cases passed after adding the billing observation-time display. Python updater8-case tests rerun after final validation hardening. Required permissions and existing acquisition paths unchanged.
 
 CLAUDE-HYDRATION-158: Buffer owned billing snapshots until promotional balance is stable across observations for two seconds and the page has had at least five seconds; missing promo waits up to the existing 35-second bound. Do not publish loading snapshots. Publish one final observation and reject other billing tabs during acquisition and for 60 seconds afterward. A loading timeout retains the previous observation with its original timestamp; do not invent amounts or bypass billing scope validation. Signed-in provider hydration remains manual acceptance.
+
+INSTALL-FOLDER-159: Initial-install download LLMs-Monitor.zip contains exactly one top-level LLMs-Monitor directory, with manifest.json directly inside. Keep versioned store/updater package flat and update.json pointed at it. Subsequent Mac updates replace the registered folder in place, never create a version-specific sibling, rename or migrate an installed extension. Existing versioned targets remain supported to preserve IDs/settings. Moving an existing installation to the fixed folder is explicit new installation, with possible changed ID and permissions/native registration; do not promise automatic history migration. Do not use Finder repeated extraction for updates.
