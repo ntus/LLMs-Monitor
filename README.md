@@ -215,3 +215,5 @@ Claude APIの取得は請求画面の読込みとプロモーションクレジ�
 ## Fixed installation folder / 固定フォルダー導入（v1.59.0）
 初回用 [LLMs-Monitor.zip](dist/LLMs-Monitor.zip) は、版番号を含まない **LLMs-Monitor** フォルダーを含みます。今後も使う場所へ置き、Chrome／Edgeでそのフォルダーを読み込んでください。2回目以降はMac更新アプリで同じ場所を更新し、ZIPの再展開・フォルダーの移動や改名はしません。既存の版番号付きフォルダーもそのまま更新できます。固定名へ移行する場合は新規読込みになり、ID・設定・任意権限・Codex登録が引き継がれる保証はありません。
 The initial-install ZIP contains a stable LLMs-Monitor folder. Keep it in a permanent location, load that folder once, then use the Mac updater in place. Existing versioned installation paths stay supported. Moving an existing installation can change its ID and require permission/native registration again; settings/history migration is not automatic. Store submissions and the updater feed retain the versioned flat ZIP.
+
+v1.60.0: 週間残量が残り日数の均等配分より少ない場合は、履歴不足でも％だけを5秒周期でゆっくり点滅させます（目安）。Grokの日付からの想定も表示の注意判定にだけ使用。設定・メイン画面は既存タブを再利用し、取得用タブも更新後に厳密に識別できるものだけ再利用します。旧版などのタブは自動で一括削除しません。同じフォルダー・IDならGrok許可は毎回不要ですが、新しいIDへの移行では再許可が必要です。

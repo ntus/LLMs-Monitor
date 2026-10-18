@@ -1,3 +1,10 @@
+# 1.60.0 — 2026-10-19
+
+- Add a visual weekly time-budget guideline before sufficient local history exists, including Grok estimated date-only reset. Keep percentage-only five-second pulse and original quota/history/audio semantics.
+- Reuse own setup/main pages on explicit opens; recover strictly identified automatic acquisition tabs after extension reload and relinquish user-adopted tabs. Legacy unmarked/other-extension tabs are not bulk-closed.
+- Do not treat billing progress meters as permanent loading; upgrade open billing readers. Keep Grok enabling idempotent and refresh setup state with extension identity.
+- Live signed-in unattended billing, multiple extension installations and browser reload need final user acceptance. Codex helper/manual packages unchanged.
+
 # 1.59.0 — 2026-10-19
 
 - Initial-install ZIP contains a fixed LLMs-Monitor directory; setup/product download links use it. Store and updater packages remain flat/versioned.

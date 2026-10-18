@@ -285,3 +285,5 @@ UPDATER-158: keep updater separate from the metadata-only Codex host. User choos
 RELOAD-158: only a newer local updater marker plus matching on-disk manifest may trigger reload after quota refresh and settings queues complete. No new permissions or Web restart routes. First update from v1.57 or earlier requires one manual reload. Keep existing explicit restart guard unchanged.
 
 INSTALL-FOLDER-159: Fixed-folder initial-install ZIP changes packaging only. Existing updater target validation, same-path replacement, rollback, permission checks and no-profile-access restrictions remain. No automatic migration or native registration changes.
+
+TABS-160: recovery requires matching opener monitor, current extension mute attribution, normal window, inactive exact route. User activation/navigation relinquishes marker. No management permission or URL-only ownership. Legacy duplicates and multiple installed extensions require user review. PACE-160 estimated-date fallback is visual only; no history/audio change.
