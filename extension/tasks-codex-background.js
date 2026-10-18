@@ -11,9 +11,10 @@
   if(external)return ORIGINS.has(u.origin)&&/^\/tasks(?:\.html)?$/.test(u.pathname)&&u.searchParams.get('service')==='chatgpt'&&message.service==='chatgpt'&&['TASKS_CODEX_READ','TASKS_CODEX_SETUP'].includes(message.type);
   return sender.id===chrome.runtime.id&&[chrome.runtime.getURL('codex-setup.html'),chrome.runtime.getURL('setup.html'),chrome.runtime.getURL('index.html'),chrome.runtime.getURL('index.html')+'#setup'].includes(sender.url)&&['CODEX_CONFIG_READ','CODEX_CONFIGURE','CODEX_CHECK'].includes(message.type);
  }
+ const failure=error=>/access to.*native.*forbidden/i.test(error?.message||'')?'helper-registration-required':/(?:native messaging host.*not found|specified native.*not found)/i.test(error?.message||'')?'helper-required':'unavailable';
  const stamp=v=>{const n=typeof v==='string'?Date.parse(v):NaN;return Number.isFinite(n)&&n>0?new Date(n).toISOString():null};
  function normalize(value){
-  if(value?.status!=='ready')return {status:['codex-not-found','unavailable','native-api-unavailable','helper-required'].includes(value?.status)?value.status:'unavailable'};
+  if(value?.status!=='ready')return {status:['codex-not-found','unavailable','native-api-unavailable','helper-required','helper-registration-required'].includes(value?.status)?value.status:'unavailable'};
   if(value.schemaVersion!==1||value.scope!=='local-desktop'||!['shared','metadata-only'].includes(value.runtime)||!stamp(value.checkedAt)||!Array.isArray(value.tasks)||value.tasks.length>500)return {status:'unavailable'};
   const checked=Date.parse(value.checkedAt);if(checked>Date.now()+5000||Date.now()-checked>90000)return {status:'unavailable'};
   const seen=new Set(),tasks=[];
@@ -33,7 +34,7 @@
   if(lastRead&&Date.now()-lastRead<55000)return recent&&Date.now()-Date.parse(recent.checkedAt)<=90000?normalize(recent):{status:'cooldown'};
   lastRead=Date.now();
   const operation=new Promise(resolve=>{let port,done=false;const finish=value=>{if(done)return;done=true;clearTimeout(timer);try{port?.disconnect()}catch{}resolve(generation===epoch?normalize(value):{status:'disabled'})},timer=setTimeout(()=>finish({status:'unavailable'}),24000);
-   try{port=chrome.runtime.connectNative(HOST);port.onMessage.addListener(finish);port.onDisconnect.addListener(()=>{const error=chrome.runtime.lastError;finish({status:/(?:native messaging host.*not found|specified native.*not found|access to.*native.*forbidden)/i.test(error?.message||'')?'helper-required':'unavailable'})});port.postMessage({type:'CODEX_TASKS_READ'})}catch(error){finish({status:/(?:native messaging host.*not found|specified native.*not found|access to.*native.*forbidden)/i.test(error?.message||'')?'helper-required':'unavailable'})}
+   try{port=chrome.runtime.connectNative(HOST);port.onMessage.addListener(finish);port.onDisconnect.addListener(()=>{const error=chrome.runtime.lastError;finish({status:failure(error)})});port.postMessage({type:'CODEX_TASKS_READ'})}catch(error){finish({status:failure(error)})}
   });pending=operation;
   try{const result=await operation;if(generation===epoch&&result.status==='ready')recent=result;return result}finally{if(pending===operation)pending=null}
  }

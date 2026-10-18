@@ -143,7 +143,7 @@ The server feed remains unconfigured; this optional browser reader does not depl
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.56.0
+対象製品版: 1.57.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -1772,3 +1772,11 @@ HELPER-156: native helper remains v1.30.2. Connection success means no reinstall
 GROK-AUTO-156: User explicitly requests automatic acquisition without opening Usage manually. When Grok quota opt-in is enabled, reuse one owned inactive dashboard tab in the monitor normal window, at most one reload/minute; never reload user-owned/active/navigated tabs. Persist tab identity in session storage and coalesce concurrent work. Closing the tab, login redirects or repeated missing quota pauses acquisition until explicit retry or verified recovery; no window creation or CAPTCHA automation. Disable releases only owned unactivated tabs. Existing non-Grok acquisition restrictions remain.
 
 Validation v1.56.0: 382 regression tests passed, including one-owned-tab reuse, concurrency/throttle, close/redirect/failure pauses, permission and active-tab checks. Browser fixture at 300x720 confirmed seven saved-order service rows at min-height150px with vertical overflow in normal and PiP layouts. These are synthetic data; real installed-extension/sign-in round-trip and native OS always-on-top activation remain manual acceptance checks. Helper/manual hashes preserved. ZIP CRC and changed runtime source parity verified.
+
+## v1.57.0 — persistent choices, registration status and popup/audio controls
+SELECTION-157: scoped settings writes must preserve unrelated selected providers; timestamped Web backup can restore choices to a newly paired default extension, without granting optional reader permissions. Preserve newer explicit deselection and existing settings keys.
+CODEX-157: distinguish native access forbidden from missing host. Same helper version does not prove current extension ID registration. Personalized ZIP filename includes its target ID; no native installation or allowlist is changed automatically.
+FLOAT-157: newly created normal popup requests width190, matching PiP. Preserve existing window dimensions and explicit-only launch. Browser chrome may affect visible content width.
+AUDIO-157: changed slider commit turns sound On and previews new volume once; unchanged values/blur do not replay, and a later explicit Off cancels pending preview/enabling. This supersedes v1.51 volume-does-not-enable requirement.
+
+Validation v1.57.0: all 386 regression tests passed. Real background handlers tested for partial volume/language writes, retained Grok selection and explicit deselection timestamp. Slider tests cover enable-on-change, no blur replay and later-Off cancellation. Missing native host and forbidden registration remain separate statuses; personalized download filenames include target extension ID. Synthetic browser preview verified the registration warning. Native installation was inspected read-only, never modified. Actual OS popup content width, audible output and authenticated native connection remain manual checks. Helper/manual hashes and ZIP CRC/runtime source parity verified.

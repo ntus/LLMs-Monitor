@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs モニター",
     "name_en": "LLMs Monitor",
-    "version": "1.56.0",
-    "package_filename": "LLMs-Monitor-v1.56.0.zip",
+    "version": "1.57.0",
+    "package_filename": "LLMs-Monitor-v1.57.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -19,7 +19,7 @@
       "gemini"
     ],
     "production_companion_origin": "https://llmsmonitor.ntus.info",
-    "web_version": "1.56.0",
+    "web_version": "1.57.0",
     "companion_origins": [
       "https://llmsmonitor.ntus.info",
       "https://llmsmonitor.ntusnog.chatgpt.site"
@@ -6072,5 +6072,11 @@
     "FLOAT-156": "Normal and always-on-top windows use persisted selected services including additional providers; bounded readable rows and vertical scrolling.",
     "HELPER-156": "Helper remains 1.30.2; successful connection does not require reinstall, changed extension ID requires personalized registration.",
     "GROK-AUTO-156": "Explicit user override: one owned reusable inactive dashboard tab in monitor window; minute throttle, coalescing, persisted ownership, pause on close/redirect/repeated unavailable quota, permission and enable checks, no user-tab reload or automatic windows."
+  },
+  "dashboard_157": {
+    "SELECTION-157": "Field-scoped settings updates preserve selection from stale clients; timestamped browser backup restores selection to newly paired default extension, never enables optional access.",
+    "CODEX-157": "Native forbidden means registration/access denied, not missing helper. Installer filenames include target extension ID; native helper remains1.30.2.",
+    "FLOAT-157": "Normal popup initial width190 matches PiP requested width; existing popup sizes unchanged.",
+    "AUDIO-157": "Changed volume commits enable notification sound and preview once; unchanged/blur no replay; later explicit Off wins."
   }
 }
