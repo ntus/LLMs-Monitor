@@ -1,3 +1,7 @@
 
 # User-extracted ZIP folders are not deployment assets.
 dist/LLMs-Monitor-v*/
+
+# Python test/build cache
+__pycache__/
+*.pyc
