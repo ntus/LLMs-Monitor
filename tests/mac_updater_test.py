@@ -59,6 +59,17 @@ class Updater(unittest.TestCase):
         self.assertEqual(U.rollback(self.target, result['backup']), '1.57.0')
         self.old()
 
+    def test_two_updates_keep_fixed_target_and_no_versioned_siblings(self):
+        target = self.base / 'LLMs-Monitor'
+        self.target.rename(target)
+        for v in ['1.58.0', '1.59.0']:
+            result = U.apply(target, *package(manifest(v)))
+            self.assertEqual(result['target'], str(target))
+            self.assertEqual(json.loads((target / 'manifest.json').read_text())['version'], v)
+            self.assertTrue(Path(result['backup']).is_dir())
+        self.assertFalse(list(self.base.glob('LLMs-Monitor-v*')))
+        self.assertEqual(self.profile.read_text(), 'private-state-fixture')
+
     def test_failed_final_swap_restores_original(self):
         calls = []
         def replace(a, b):

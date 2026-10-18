@@ -1,3 +1,9 @@
+# 1.59.0 — 2026-10-19
+
+- Initial-install ZIP contains a fixed LLMs-Monitor directory; setup/product download links use it. Store and updater packages remain flat/versioned.
+- Keep registered paths unchanged on later updates; document one-time fixed-path installation and existing-installation migration limits. Mac updater v1.0.1 clarifies the setup and macOS first-open steps; no installed extension is moved automatically.
+- Codex helper and standalone manual artifacts remain unchanged.
+
 # Web 1.35.2 — 2026-10-12
 
 - Add a bilingual nine-chapter user guide to the lower half of the product page, with contents links, ordered setup/use steps, status tables and troubleshooting.

@@ -19,7 +19,7 @@ import uuid
 import unicodedata
 import zipfile
 
-TOOL_VERSION = '1.0.0'
+TOOL_VERSION = '1.0.1'
 FEED = 'https://raw.githubusercontent.com/ntus/LLMs-Monitor/main/dist/update.json'
 BASE = 'https://raw.githubusercontent.com/ntus/LLMs-Monitor/main/dist/'
 MAX_BYTES = 30 * 1024 * 1024
@@ -226,7 +226,7 @@ def main():
             return
         if not settings.get('target'):
             target, _ = target_manifest(choose_target())
-            confirmation = subprocess.run(['/usr/bin/osascript', '-e', 'on run argv', '-e', 'button returned of (display dialog (item 1 of argv) buttons {"中止", "このフォルダーを使う"} default button "中止" with title "LLMs Monitor 初回登録")', '-e', 'end run', '更新先：' + str(target) + '\n現在の版：' + _['version'] + '\n\nChrome／Edgeが現在読み込んでいるフォルダーですか？ 次回からこの場所を使います。'], capture_output=True, text=True)
+            confirmation = subprocess.run(['/usr/bin/osascript', '-e', 'on run argv', '-e', 'button returned of (display dialog (item 1 of argv) buttons {"中止", "このフォルダーを使う"} default button "中止" with title "LLMs Monitor 初回登録")', '-e', 'end run', '更新先：' + str(target) + '\n現在の版：' + _['version'] + '\n\nChrome／Edgeが現在読み込んでいるフォルダーですか？ 次回以降も、この同じ場所の中身だけを更新します。フォルダー名に版番号があっても変更しません。'], capture_output=True, text=True)
             if confirmation.returncode != 0 or confirmation.stdout.strip() != 'このフォルダーを使う':
                 return
             settings['target'] = str(target)
