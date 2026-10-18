@@ -143,7 +143,7 @@ The server feed remains unconfigured; this optional browser reader does not depl
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.50.0
+対象製品版: 1.51.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -1713,3 +1713,19 @@ Connection/feed messages, optional advice, incidents and collapsed diagnostics s
 Main setup explains ZIP extraction, browser extensions page, Developer mode, Load unpacked, pairing and official sign-in. Service selection/floating controls and optional-provider explanations are inline. Only permission-sensitive grants/native installation continue through the unchanged exact own-extension setup boundary; no Web origin gains configure privileges. Existing standalone helper/manual packages are not regenerated.
 
 Validation v1.50: 355 regression tests passed. Synthetic browser checks confirm the six-row text order, independent 100%/4% quotas, no dates inside the circles, percent-only low-capacity animation, pale same-hue outer ring, and a unified bottom dock. Main setup expands inline; API details remain open across language changes and refreshes. Desktop 1280px and narrow/zoom-equivalent 576px/318px layouts have no horizontal overflow. Fullscreen control was exercised and its layout observed; after correcting viewport-based typography, a 240px circle uses 43.2px primary and 20.4px weekly type with content fitting the center. Browser connection became intermittent during final screenshot saving; no final image-capture success or installed-extension/real-account acceptance is claimed. ZIP CRC/source equality and 13 unchanged helper/manual hashes verified.
+
+## v1.51.0 — readable quotas, inline setup, monitor-window acquisition and render reuse
+
+DASHBOARD-151 supersedes v1.50 color/timing: outer weekly ring and weekly number use provider hue mixed with 28% black; current label shares current percentage color, caption is bold. Both horizontal reset lines include local date/time and parenthesized remaining time. Percentage-only low-quota pulse is five seconds, versus ordinary one-second value-change pulse; nested change animation is suppressed while warning pulse applies. Reduced motion stays static. Options are initially expanded by explicit user choice.
+
+Own top-level extension index mounts the existing setup controls directly, without frames. Exact own index is added to the permission/native setup allowlist; external origins and subframes still cannot configure optional readers. From the Web monitor an explicit settings button replaces that same tab with the extension monitor rather than opening another tab. Personalized native installer remains unchanged. This supersedes v1.50 separate own setup requirement without granting Web configure privileges.
+
+QUIET-MONITOR-151: automatic temporary quota/billing/task tabs are inactive/muted and restricted to a normal, non-incognito window with an exact main monitor URL. Prefer the monitor registered by MONITOR_READY; otherwise discover an exact allowlisted root/index route, preferring a focused qualifying window. Revalidate before creating. With no qualifying monitor, skip; never fall back to an unrelated window, create/mutate windows, or reload/close user tabs. Popup-only monitor and closed/moved monitor scenarios must fail safely. Existing owned-tab capacity and release protections remain.
+
+UI-PERF-151: reuse unchanged main/widget DOM; invalidate on quota/data/credit/extra-service changes, settings/language, incident/feed state, minute countdown transitions and numeric-highlight expiry. Update acquisition ages separately. Generate only selected cards, while retaining all hidden-provider acquisition/history. Forecasts, sound decision thresholds, raw quota persistence and 60-second acquisition are unchanged. Detached draggable advice is above the status dock and disclosures within the app (not OS-level always-on-top).
+
+VOLUME-PREVIEW-151: changing the volume by direct input and committing it plays exactly one preview at the new level, including when notifications are OFF; it does not enable notification sounds. Dragging does not create repeated previews, unchanged/blur-after-change/programmatic sync are silent. Existing alert events/history are unaffected.
+
+Regular ChatGPT Chat quota remains unimplemented: the verified reader returns Work/Codex primary/secondary windows. No separately verified regular-chat percentage is present in the existing source. Do not fabricate it from message counts or Codex balances. Official Enterprise/Edu Admin usage-limit examples concern separate workspace budgets and do not establish a Plus ordinary-chat remaining-percentage source. Live signed-in verification remains required before claiming support.
+
+Validation (v1.51.0, 2026-10-18): 361 regression cases passed. Synthetic local browser QA verified 1280px and 390px layouts without horizontal overflow, six center rows, five-second weekly pulse, matching session-label colors, both horizontal reset countdowns, used/remaining inversion, initial expanded options and language switching. Keyboard-moved advice is attached to body at z-index2147483646 above dock90 and Home restores it. Fullscreen control and reflow exercised. Screenshot: /tmp/llms151-preview.png (synthetic data; not live account evidence). Preview viewport reset. Own-extension inline permission/native setup, actual OS/audio output and signed-in multi-window acquisition remain live acceptance limits.

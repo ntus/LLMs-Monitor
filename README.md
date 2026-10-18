@@ -201,3 +201,6 @@ Single own top-level setup.html groups required sign-in guidance, optional API/C
 Use the button after Advice to switch Remaining / Used display; stored history and alerts continue using remaining quota. Turning Sound from OFF to ON plays one preview, replacing the old Test button. Product → Setup now sit together in the header. Open “Stored only in this browser” for the local-storage explanation. Public updates carry publication/read dates and original links; displayed same-author replies are bounded, while unseen replies remain unverified. Enable optional ClaudeDevs reading separately in Setup → Tibo / public posts; keep the relevant public conversation rendered.
 
 アドバイス右のボタンで残量／使用量の表示を切替。保存履歴・通知は残量基準を維持。通知音をOFF→ONで確認音が鳴り、独立した試聴ボタンは廃止。ヘッダーは製品紹介→セットアップの順です。「ブラウザ内だけに保存」を開くと保存範囲の説明が出ます。公開情報は日時・出典付き、本人の表示済み補足だけを扱い未表示の返信は未確認。ClaudeDevsはセットアップで別途任意に有効化します。
+
+### v1.51.0 操作変更
+オプションは初期展開。拡張機能メイン画面内でAPI・Codex・公開投稿の接続設定を行えます。Web版の設定操作は同じタブを拡張機能メインへ切り替えます。自動取得タブはメインモニターのある通常ウィンドウ内に限定され、見つからなければ見送ります。音量操作を確定すると変更後の確認音が一度鳴ります。ドラッグしたTipはアプリ内の最前面です。通常のChatGPT Chat残量は取得元未確認のため未対応です。
