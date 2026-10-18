@@ -1,5 +1,5 @@
 (function(root){
- const A=root.GlanceApiCredits;let creditQueue=Promise.resolve(),claudeProbe=null,lastProbeAt=0,activeProbeId=null,probeSnapshot=null;const PROBE_KEY='llms-claude-api-probe-v1',PROBE_ALARM='llms-claude-api-probe-close';
+ const A=root.GlanceApiCredits;let creditQueue=Promise.resolve(),claudeProbe=null,lastProbeAt=0,activeProbeId=null,probeSnapshot=null,claudeHoldUntil=0;const PROBE_KEY='llms-claude-api-probe-v1',PROBE_ALARM='llms-claude-api-probe-close';
  function serialize(fn){const task=creditQueue.then(fn);creditQueue=task.catch(()=>{});return task}
  function permission(id){return {permissions:['scripting'],origins:[A.PROVIDERS[id].origin+'/*']}}
  async function permitted(id){return !!chrome.permissions&&await chrome.permissions.contains(permission(id))}
@@ -11,7 +11,7 @@
  }
  async function receive(message,sender){
   const id=message.service;if(!Object.hasOwn(A.PROVIDERS,id)||A.provider(sender.url)!==id||sender.frameId!==0||!Number.isInteger(sender.tab?.id)||!await permitted(id))return {ok:false};
-  return serialize(async()=>{const saved=await chrome.storage.local.get('apiCredits'),data=saved.apiCredits||{};if(data[id]?.enabled!==true)return {ok:false};data[id]=A.accept(data[id],message,Date.now());await chrome.storage.local.set({apiCredits:data});if(id==='claude'&&sender.tab.id===activeProbeId)probeSnapshot=data[id];return {ok:true}});
+  return serialize(async()=>{const saved=await chrome.storage.local.get('apiCredits'),data=saved.apiCredits||{};if(data[id]?.enabled!==true)return {ok:false};if(id==='claude'){if(sender.tab.id===activeProbeId){probeSnapshot={...A.accept(data[id],message,Date.now()),loading:message.loading===true};return {ok:true}}if(activeProbeId!==null||Date.now()<claudeHoldUntil)return {ok:false};if(message.loading===true)return {ok:false}}data[id]=A.accept(data[id],message,Date.now());await chrome.storage.local.set({apiCredits:data});return {ok:true}});
  }
  function sameBilling(url){return [A.PROVIDERS.claude.url,A.PROVIDERS.claude.url+'/'].includes(url)}
  function bounded(task,ms=5000){let timer;return Promise.race([task,new Promise((_,reject)=>{timer=setTimeout(()=>reject(Error('API reader timeout')),ms)})]).finally(()=>clearTimeout(timer));}
@@ -23,11 +23,13 @@
  function startClaudeProbe(){
   if(claudeProbe)return claudeProbe;if(!chrome.storage.session||Date.now()-lastProbeAt<60000)return Promise.resolve();
   const operation=(async()=>{await cleanupProbe();if((await chrome.storage.session.get(PROBE_KEY))[PROBE_KEY])return;const state=await chrome.storage.local.get('apiCredits');if(!state.apiCredits?.claude?.enabled||!await permitted('claude'))return;lastProbeAt=Date.now();let owned;
-   try{owned=await (root.GlanceQuietTabs?root.GlanceQuietTabs.create(A.PROVIDERS.claude.url):chrome.tabs.create({url:A.PROVIDERS.claude.url,active:false}));if(!Number.isInteger(owned?.id))return;activeProbeId=owned.id;probeSnapshot=null;const started=Date.now();await chrome.storage.session.set({[PROBE_KEY]:{id:owned.id,expiresAt:started+45000}});chrome.alarms.create(PROBE_ALARM,{when:started+45000});let injected=false,firstReady=0;
+   try{owned=await (root.GlanceQuietTabs?root.GlanceQuietTabs.create(A.PROVIDERS.claude.url):chrome.tabs.create({url:A.PROVIDERS.claude.url,active:false}));if(!Number.isInteger(owned?.id))return;activeProbeId=owned.id;probeSnapshot=null;const started=Date.now();await chrome.storage.session.set({[PROBE_KEY]:{id:owned.id,expiresAt:started+45000}});chrome.alarms.create(PROBE_ALARM,{when:started+45000});let injected=false,stableSince=0,signature='';
     while(Date.now()-started<35000){const current=await chrome.storage.local.get('apiCredits');if(!current.apiCredits?.claude?.enabled||!await permitted('claude'))break;const tab=await bounded(chrome.tabs.get(owned.id),700);if(tab.url&&!sameBilling(tab.url))break;
-     if(tab.status==='complete'){try{await bounded(chrome.tabs.sendMessage(owned.id,{type:'API_CREDIT_READ'}),1000)}catch{if(!injected){injected=true;await bounded(chrome.scripting.executeScript({target:{tabId:owned.id},files:['api-credits.js','api-credit-reader.js']}),1000)}}const row=probeSnapshot;if(row?.capturedAt>=started&&['ready','postpaid'].includes(row.status)){if(!firstReady)firstReady=Date.now();if(row.promotional?.status==='ready'||Date.now()-firstReady>=2500)break;}else firstReady=0;}
+     if(tab.status==='complete'){try{await bounded(chrome.tabs.sendMessage(owned.id,{type:'API_CREDIT_READ'}),1000)}catch{if(!injected){injected=true;await bounded(chrome.scripting.executeScript({target:{tabId:owned.id},files:['api-credits.js','api-credit-reader.js']}),1000)}}const row=probeSnapshot;if(row?.capturedAt>=started&&!row.loading&&row.promotional?.status==='ready'){const next=JSON.stringify([row.status,row.amount,row.currency,row.scope,row.promotional.amount,row.promotional.currency]);if(next!==signature){signature=next;stableSince=row.capturedAt}if(Date.now()-started>=5000&&row.capturedAt-stableSince>=2000)break;}else{signature='';stableSince=0;}}
      await new Promise(resolve=>setTimeout(resolve,250));
     }
+    // Publish once, after hydration/stability or the bounded wait, never each loading snapshot.
+    await serialize(async()=>{const row=probeSnapshot;if(!row||row.loading)return;const saved=await chrome.storage.local.get('apiCredits'),data=saved.apiCredits||{};if(!data.claude?.enabled)return;const {loading,...value}=row;data.claude=value;await chrome.storage.local.set({apiCredits:data});claudeHoldUntil=Date.now()+60000});
    }catch{}finally{if(Number.isInteger(owned?.id)){let handled=false;try{handled=await cleanupProbe(owned.id)}catch{}if(!handled)try{if(root.GlanceQuietTabs)await root.GlanceQuietTabs.release(owned.id);else{const tab=await chrome.tabs.get(owned.id);if(!tab.active&&sameBilling(tab.url))await chrome.tabs.remove(owned.id)}}catch{}if(activeProbeId===owned.id){activeProbeId=null;probeSnapshot=null}}}
   })();claudeProbe=operation;operation.finally(()=>{if(claudeProbe===operation)claudeProbe=null}).catch(()=>{});return operation;
  }

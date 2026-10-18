@@ -1,5 +1,5 @@
 (()=>{
- if(globalThis.llmsApiCreditReader==='1.53.0')return;globalThis.llmsApiCreditReader='1.53.0';
+ if(globalThis.llmsApiCreditReader==='1.58.0')return;globalThis.llmsApiCreditReader='1.58.0';
  const A=GlanceApiCredits;let scheduled=null,lastRead=0;
  const visible=node=>node.getClientRects().length>0;
  function scope(){
@@ -14,7 +14,7 @@
   if(!matches.length){const text=document.body.innerText.slice(0,24000);result=A.parse(text,id);if(/(?:^|\n)(?:Sign in|Log in|Continue with Google|ログイン|Googleで続行)(?:\n|$)/i.test(text))result={status:'login'};}
   if(id==='claude')result={...result,promotional:result.status==='login'?{status:'unavailable'}:A.promotional(document.body.innerText.slice(0,24000))};
   // Do not transmit page text, account names, API keys, credentials or payment details.
-  try{await chrome.runtime.sendMessage({type:'API_CREDIT_SNAPSHOT',service:id,...result,scope:scope()})}catch{}
+  try{await chrome.runtime.sendMessage({type:'API_CREDIT_SNAPSHOT',service:id,...result,scope:scope(),loading:document.readyState==='loading'||[...document.querySelectorAll('[aria-busy="true"],[role="progressbar"]')].some(visible)})}catch{}
  }
  chrome.runtime.onMessage.addListener((message,_,reply)=>{if(message?.type!=='API_CREDIT_READ')return false;lastRead=0;read().then(()=>reply({ready:true,version:'1.53.0'}),()=>reply({ready:false}));return true});
  const observer=new MutationObserver(()=>{clearTimeout(scheduled);scheduled=setTimeout(read,1200)});observer.observe(document.body,{subtree:true,childList:true,characterData:true});setTimeout(read,1500);setInterval(read,60000);
