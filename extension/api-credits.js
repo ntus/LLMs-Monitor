@@ -1,9 +1,9 @@
 (function(root){
  const PROVIDERS={
-  grok:{name:'Grok API',origin:'https://grok.com',url:'https://grok.com/dashboard',path:/^\/dashboard(?:\/(?:billing|usage))?\/?$/,labels:/^(?:Credits available|利用可能なクレジット)$/i},
   chatgpt:{name:'OpenAI API',origin:'https://platform.openai.com',url:'https://platform.openai.com/settings/organization/billing/overview',path:/^\/settings\/organization\/billing(?:\/|$)/,labels:/^(?:API credit balance|Credit balance|APIクレジット残高|クレジット残高)$/i},
   claude:{name:'Claude API',origin:'https://platform.claude.com',url:'https://platform.claude.com/settings/billing',path:/^\/settings\/billing(?:\/|$)/,labels:/^(?:Credit balance|Remaining credits|Available credits|クレジット残高|利用可能なクレジット)$/i},
-  gemini:{name:'Gemini API',origin:'https://aistudio.google.com',url:'https://aistudio.google.com/billing',path:/^\/(?:u\/\d+\/)?billing(?:\/|$)/,labels:/^(?:Available credits|Prepay credit balance|Prepaid credit balance|利用可能なクレジット|前払いクレジット残高)$/i}
+  gemini:{name:'Gemini API',origin:'https://aistudio.google.com',url:'https://aistudio.google.com/billing',path:/^\/(?:u\/\d+\/)?billing(?:\/|$)/,labels:/^(?:Available credits|Prepay credit balance|Prepaid credit balance|利用可能なクレジット|前払いクレジット残高)$/i},
+  grok:{name:'Grok API',origin:'https://grok.com',url:'https://grok.com/dashboard',path:/^\/dashboard(?:\/(?:billing|usage))?\/?$/,labels:/^(?:Credits available|利用可能なクレジット)$/i}
  };
  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  function provider(url){try{const u=new URL(url);return Object.keys(PROVIDERS).find(id=>PROVIDERS[id].origin===u.origin&&PROVIDERS[id].path.test(u.pathname))||null}catch{return null}}

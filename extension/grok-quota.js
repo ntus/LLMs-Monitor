@@ -31,10 +31,10 @@
    let panel=h;for(let depth=0;panel&&depth<6;depth++,panel=panel.parentElement){
     if(panel===doc.body||panel.querySelector('input,textarea,[contenteditable="true"]'))break;
     const text=panel.innerText||'';if(text.length>1800)break;
-    if(!/(?:\d+(?:\.\d+)?)\s*%\s*(?:used|remaining)/i.test(text))continue;
+    if(!/(?:\d+(?:\.\d+)?)\s*%\s*(?:used|remaining)/i.test(text))continue;if(/Account balance|Monthly additional usage|Credits available/i.test(text))break;if(/^Weekly included usage/i.test(label)&&!/(?:Current plan|現在のプラン)/i.test(text))continue;
     if(panels.has(panel))break;panels.add(panel);
     const times=[...panel.querySelectorAll('time[datetime]')].filter(n=>iso(n.getAttribute('datetime'))&&/reset|リセット/i.test(n.parentElement?.textContent||''));
-    cards.push({label:'Weekly included usage',text,resetISO:times.length===1?times[0].getAttribute('datetime'):null});
+    const meters=[...panel.querySelectorAll('[role="progressbar"][aria-valuenow]')].filter(n=>/weekly included usage/i.test(n.getAttribute('aria-label')||''));if(meters.length===1){const observed=extract([{label:'Weekly included usage',text}]).windows[0],used=Number(meters[0].getAttribute('aria-valuenow'));if(!observed||!Number.isFinite(used)||used<0||used>100||Math.abs(100-observed.remaining-used)>1)break;}cards.push({label:'Weekly included usage',text,resetISO:times.length===1?times[0].getAttribute('datetime'):null});
     if(/Current plan|現在のプラン/i.test(text)){const values=[...panel.querySelectorAll('h2,h3')].map(n=>n.textContent.trim());if(values.length===1)plan=values[0];}
     break;
    }
