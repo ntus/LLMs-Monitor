@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs モニター",
     "name_en": "LLMs Monitor",
-    "version": "1.49.0",
-    "package_filename": "LLMs-Monitor-v1.49.0.zip",
+    "version": "1.50.0",
+    "package_filename": "LLMs-Monitor-v1.50.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -19,7 +19,7 @@
       "gemini"
     ],
     "production_companion_origin": "https://llmsmonitor.ntus.info",
-    "web_version": "1.49.0",
+    "web_version": "1.50.0",
     "companion_origins": [
       "https://llmsmonitor.ntus.info",
       "https://llmsmonitor.ntusnog.chatgpt.site"
@@ -5957,6 +5957,27 @@
     "evidence": [
       "tests/gauge-layout.test.cjs",
       "extension/style-v1490.css"
+    ]
+  },
+  "dashboard_150": {
+    "id": "DASHBOARD-150",
+    "status": "implemented",
+    "supersedes": [
+      "WEEKLY-GAUGE-149 typography/color and inline resets",
+      "low-remaining color warnings"
+    ],
+    "requirements": [
+      "Ordered six-row ring center, same-hue pale outer weekly ring",
+      "Dates at left-aligned current/weekly bars",
+      "Warning blinks percent only, reduced-motion respects accessibility",
+      "Responsive fullscreen allows scrolling without overlap",
+      "Compact bottom status dock",
+      "Main inline setup/selection; permission grants retain own-extension boundary"
+    ],
+    "evidence": [
+      "extension/monitor-design.js",
+      "extension/style-v1500.css",
+      "tests/dashboard-redesign.test.cjs"
     ]
   }
 }

@@ -143,7 +143,7 @@ The server feed remains unconfigured; this optional browser reader does not depl
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.49.0
+対象製品版: 1.50.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -1706,3 +1706,10 @@ Validation v1.48: 351 tests passed. Synthetic browser checks show current 40% an
 WEEKLY-GAUGE-149 supersedes v1.48 ring order: weekly is outer radius51/stroke7, current session inner radius42/stroke3.5. Explicit 5-hour/current and weekly labels map to distinct colors shared by their text and rings. Show each percentage followed immediately by its own reset datetime/countdown on a translucent background; unknown deadlines remain unknown. Keep remaining/used mode, low-quota red and current-cycle forecast rules unchanged. Existing helper and standalone manuals remain byte-identical.
 
 Validation v1.49: 353 full regression tests pass, plus six targeted gauge/forecast tests after CSS refinement. Synthetic browser checks confirm outer weekly r51/stroke7 and inner current r42/stroke3.5; labeled 5-hour100% / weekly4% invert to 0% /96% in used mode. Each reset is grouped immediately under its quota, urgent icon stays inline, background alpha is .62. Japanese/English and 1280/390px layouts show no horizontal overflow or console errors. ZIP/source equality and unchanged helper/manual hashes verified. Live installed-extension update remains unverified.
+
+## v1.50.0 — dashboard redesign
+DASHBOARD-150 supersedes prior gauge typography, warning colors and fullscreen fixed-height layout. Ring center has six ordered rows: caption, current-session label, current %, parenthesized countdown, weekly %, parenthesized countdown. Outer weekly ring remains thick but becomes a pale same-hue tint of the inner session ring. Dates live only beside left-aligned horizontal quota bars, matching task overview hierarchy. Low remaining (<=15%) or qualified depletion forecast blinks percentage only; no warning hue change. Reduced-motion uses a static dotted emphasis. Data, history and sound decision contracts are untouched.
+Connection/feed messages, optional advice, incidents and collapsed diagnostics share a bottom dock; independently expanded incident/advice state and explicit drag controls persist. Fullscreen uses responsive document flow and scrolling instead of clipped fixed rows; at narrow/zoomed widths all selected cards remain reachable without overlap. This explicitly supersedes the earlier no-scroll narrow fullscreen layout.
+Main setup explains ZIP extraction, browser extensions page, Developer mode, Load unpacked, pairing and official sign-in. Service selection/floating controls and optional-provider explanations are inline. Only permission-sensitive grants/native installation continue through the unchanged exact own-extension setup boundary; no Web origin gains configure privileges. Existing standalone helper/manual packages are not regenerated.
+
+Validation v1.50: 355 regression tests passed. Synthetic browser checks confirm the six-row text order, independent 100%/4% quotas, no dates inside the circles, percent-only low-capacity animation, pale same-hue outer ring, and a unified bottom dock. Main setup expands inline; API details remain open across language changes and refreshes. Desktop 1280px and narrow/zoom-equivalent 576px/318px layouts have no horizontal overflow. Fullscreen control was exercised and its layout observed; after correcting viewport-based typography, a 240px circle uses 43.2px primary and 20.4px weekly type with content fitting the center. Browser connection became intermittent during final screenshot saving; no final image-capture success or installed-extension/real-account acceptance is claimed. ZIP CRC/source equality and 13 unchanged helper/manual hashes verified.

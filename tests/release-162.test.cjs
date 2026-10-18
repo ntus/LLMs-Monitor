@@ -4,13 +4,13 @@ const fs=require('node:fs');
 const path=require('node:path');
 const read=p=>fs.readFileSync(path.join(__dirname,'..',p),'utf8');
 
-test('the bottom status strip shares the footer and survives fullscreen',()=>{
- const html=read('extension/index.html'),css=read('extension/style-v162.css');
- assert(html.indexOf('<footer>')<html.indexOf('id="provider-status-main"'));
- assert(html.indexOf('id="provider-status-main"')<html.indexOf('</footer>'));
- assert(css.includes('position:fixed'));
- assert(css.includes('html:fullscreen footer{display:flex!important'));
- assert(css.includes('.provider-status-host .provider-status-popover'));
+test('bottom status is consolidated in a fixed dock with bounded independent incident disclosure',()=>{
+ const html=read('extension/index.html'),css=read('extension/style-v1500.css');
+ assert(html.indexOf('id="monitor-dock"')<html.indexOf('id="provider-status-main"'));
+ assert(html.indexOf('id="monitor-dock"')<html.indexOf('id="status-log"'));
+ assert(css.includes('#monitor-dock{position:fixed'));
+ assert(css.includes('.provider-status-popover{max-height:30dvh;overflow:auto}'));
+ assert(css.includes('#monitor-dock .provider-status-host'));
 });
 test('product footer links to GitHub and the historical range uses local seconds',()=>{
  const html=read('extension/index.html'),app=read('extension/app.js');
