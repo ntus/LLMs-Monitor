@@ -1,17 +1,17 @@
-# Store submission checklist — v1.59.0
+# Store submission checklist — v1.60.0
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 <a id="en"></a>
 
-`dist/LLMs-Monitor-v1.59.0.zip` is the Chrome Web Store and Microsoft Edge Add-ons submission package. Its manifest and complete runtime UI are localized as “LLMs モニター” in Japanese and “LLMs Monitor” in English.
+`dist/LLMs-Monitor-v1.60.0.zip` is the Chrome Web Store and Microsoft Edge Add-ons submission package. Its manifest and complete runtime UI are localized as “LLMs モニター” in Japanese and “LLMs Monitor” in English.
 
 Developer-mode-free installation requires the owner to complete both stores' account, review, and publication process. Building or hosting the ZIP does not publish an installable store extension.
 
 ## Required owner actions
 
 1. Register the owner developer accounts and enable two-step verification where required.
-2. Upload `LLMs-Monitor-v1.59.0.zip`, the 128px icon, screenshots, Japanese and English descriptions, and reviewer test instructions.
+2. Upload `LLMs-Monitor-v1.60.0.zip`, the 128px icon, screenshots, Japanese and English descriptions, and reviewer test instructions.
 3. Use the deployed privacy policy at `https://llmsmonitor.ntus.info/privacy.html` and verify that it is reachable without sign-in.
 4. Submit for manual review in each store. After approval, replace the website package-only guidance with the approved store URLs.
 
@@ -57,11 +57,11 @@ Task-state acceptance: update in place, save drafts before manually refreshing e
 
 <a id="ja"></a>
 
-# 日本語 — ストア提出チェックリスト v1.59.0
+# 日本語 — ストア提出チェックリスト v1.60.0
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
-提出物は `dist/LLMs-Monitor-v1.59.0.zip` です。拡張機能名と画面は日本語「LLMs モニター」、英語「LLMs MONITOR」に対応します。デベロッパーモード不要の導入には、所有者がChrome Web StoreとMicrosoft Edge Add-onsでアカウント、審査、公開を完了する必要があります。ZIPの作成やWeb配布だけではストア公開になりません。
+提出物は `dist/LLMs-Monitor-v1.60.0.zip` です。拡張機能名と画面は日本語「LLMs モニター」、英語「LLMs MONITOR」に対応します。デベロッパーモード不要の導入には、所有者がChrome Web StoreとMicrosoft Edge Add-onsでアカウント、審査、公開を完了する必要があります。ZIPの作成やWeb配布だけではストア公開になりません。
 
 ## 所有者が行う提出作業
 
@@ -105,9 +105,9 @@ v1.17.1: The AI tool directory uses static HTTPS links in the existing card layo
 
 API連携は初期状態で無効です。拡張機能画面で事業者を選択したときだけ、scriptingと該当の公式API請求ホストへの任意権限を要求します。請求画面の残高表示だけを取得し、APIキーや決済情報を保存しません。解除時に該当ホストの権限を削除します。
 
-Before v1.59.0 submission, manually confirm diagnostic export/clear and storage-limit fallback, language switching after repeated refresh, opening usage/API pages after closing them, and all three floating cards at a narrow width.
+Before v1.60.0 submission, manually confirm diagnostic export/clear and storage-limit fallback, language switching after repeated refresh, opening usage/API pages after closing them, and all three floating cards at a narrow width.
 
-v1.59.0提出前に、診断ログの書出し・消去・容量上限時の継続動作、繰返し更新後の言語維持、画面を閉じた後の使用量/API連携再表示、狭幅小窓の3社表示を実機確認する。
+v1.60.0提出前に、診断ログの書出し・消去・容量上限時の継続動作、繰返し更新後の言語維持、画面を閉じた後の使用量/API連携再表示、狭幅小窓の3社表示を実機確認する。
 
 タスク状態の受入確認: 上書き更新し、入力保存後に必要な公式会話タブを手動再読込。応答生成中→応答待機、閉じたタブ未確認、複数タブ不一致、自動OFF、消去／サンプル／読込の保留応答無効化、残量／履歴の独立性を確認。ブラウザ経路では閉じた会話の完了を推測しない。v1.30.0で任意nativeMessagingを追加し、専用画面のクリックと端末内ヘルパー導入後だけCodexメタ情報を取得。共有接続がなければ状態未確認。
 
@@ -131,7 +131,7 @@ Test OFF during blocked quota refresh and delayed audio resume, then repeat with
 残量取得待ち・遅延音声再開中・複数の本体／関連窓でOFFを確認し、予約済み音・警告の2音目が停止すること。OS通知は明示的に無音とし、試聴で設定を変更しない。メイン終了後の拡張監視は仕様。メイン終了＋worker休止後の登録、2分失効・一度限り・送信元／service／frame・queryへの名称非混入、Claude Codeの選択スレッド見出し・タイトル編集・旧defaultメモ保持・サービス別領域選択を確認。権限／host追加なし。Codexは端末内インストーラーで導入。全回帰・ZIP照合に加え、更新済み実Chrome/Edge・ヘルパーの受入は別途必要。
 
 
-## v1.59.0 acceptance addendum / v1.59.0追加受入
+## v1.60.0 acceptance addendum / v1.60.0追加受入
 
 EN: Confirm official Claude pacing warning text appears only in its provider card and floating widget, disappears after a later clean usage-page read, and survives API-only refresh. Verify at least three updates with no tone for same displayed integer quota or credit-only changes; verify tone on a displayed whole-percent change and separate downward threshold tones at 5% and 1%. Compare nested USD prepaid balance with the official page; malformed/unknown values must remain unavailable and never show object text or a 1970 expiry.
 

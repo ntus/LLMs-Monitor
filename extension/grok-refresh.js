@@ -12,6 +12,7 @@
    // Login/challenge redirects and user navigation pause, without creating another tab.
    if(tab&&tab.url!==URL){await save({...s,paused:true});return}
    if(tab?.active)return;
+   if(tab&&root.GlanceQuietTabs.isOwned&&!await root.GlanceQuietTabs.isOwned(s.id)){await save({...s,paused:true});return;}
    if(tab&&await root.GlanceQuietTabs.sameMonitorWindow(tab.windowId)!==true)return;
    if(tab&&!force&&Date.now()-(s.goodAt||s.createdAt||s.at)>180000){await save({...s,paused:true});return;}
    if(tab){await save({...s,paused:false,at:Date.now()});await chrome.tabs.reload(s.id);return;}

@@ -26,7 +26,15 @@
   if(hoursToEmpty>=until/3600000)return null;
   return {at:now+hoursToEmpty*3600000,burn,samples:rows.length,weekly};
  }
- function riskText(risk){return risk?(isEn()?'At this pace, likely to run out before reset (estimate from local history).':'このペースではリセット前に使い切る見込みです（端末内履歴からの推定）。'):'';}
+ // Visual-only weekly budget warning, available before local history has accumulated.
+ function quotaPaceRisk(service,window,now=Date.now()){
+  const measured=depletionRisk(service,window,now);if(measured)return measured;
+  const remaining=pct(window?.remaining),left=Number(window?.resetAt)-now,cycle=7*86400000;
+  if(service?.status!=='ready'||!service.capturedAt||now-service.capturedAt>125000||service.capturedAt>now+60000||window?.expired||remaining===null||!/(?:週間|今週|week)/i.test(window?.label||'')||!Number.isFinite(left)||left<=0||left>cycle-3600000)return null;
+  const budget=100*left/cycle;if(remaining>=budget-5)return null;
+  return {weekly:true,basis:'weekly-budget',estimatedReset:window.resetIsEstimate===true,budget};
+ }
+ function riskText(risk){if(risk?.basis==='weekly-budget')return isEn()?'Weekly balance is below an even seven-day budget (guideline'+(risk.estimatedReset?'; reset time estimated':'')+').':'週間残量が、リセットまでの日数を均等配分した目安を下回っています'+(risk.estimatedReset?'（リセット日時は想定）':'（目安）')+'。';return risk?(isEn()?'At this pace, likely to run out before reset (estimate from local history).':'このペースではリセット前に使い切る見込みです（端末内履歴からの推定）。'):'';}
  function weeklyWindow(service){return (service?.windows||[]).find(window=>/(?:週間|今週|week)/i.test(window.label))||(service?.windows||[])[1]||(service?.windows||[])[0];}
  function sessionEquivalent(service,now=Date.now()){
   const current=service?.windows?.[0],weekly=weeklyWindow(service);if(!current||!weekly||current===weekly||pct(weekly.remaining)===null)return null;
@@ -71,5 +79,5 @@
   const baseline=items.length?items:[{id:'waiting',service:'MONITOR',tone:'learning',title:isEn()?'Waiting for analysis data':'分析データを待っています',text:isEn()?'Connect each service to analyze usage pace and plan fit from change history.':'各サービスへ接続すると、残量の変化履歴から利用ペースとプラン適合度を判定します。',evidence:isEn()?'At least three changes are required':'判定には残量変化3件以上を使用します'}];
   return [...baseline,...sourcedUpdates(now)];
  }
- root.GlanceAdvice={depletionRisk,riskText,stats,usageAdvice,resetAdvice,sessionEquivalent,sourcedUpdates,build};if(typeof module!=='undefined')module.exports=root.GlanceAdvice;
+ root.GlanceAdvice={depletionRisk,quotaPaceRisk,riskText,stats,usageAdvice,resetAdvice,sessionEquivalent,sourcedUpdates,build};if(typeof module!=='undefined')module.exports=root.GlanceAdvice;
 })(globalThis);
