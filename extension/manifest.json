@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "default_locale": "ja",
   "name": "__MSG_extensionName__",
-  "version": "1.51.0",
+  "version": "1.52.0",
   "description": "__MSG_extensionDescription__",
   "permissions": [
     "storage",
@@ -56,6 +56,7 @@
         "intelligence.js",
         "changes.js",
         "api-credits.js",
+        "grok-quota.js",
         "additional-services.js",
         "shared.js",
         "advice.js",

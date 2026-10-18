@@ -143,7 +143,7 @@ The server feed remains unconfigured; this optional browser reader does not depl
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.51.0
+対象製品版: 1.52.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -1731,3 +1731,14 @@ Regular ChatGPT Chat quota remains unimplemented: the verified reader returns Wo
 Validation (v1.51.0, 2026-10-18): 361 regression cases passed. Synthetic local browser QA verified 1280px and 390px layouts without horizontal overflow, six center rows, five-second weekly pulse, matching session-label colors, both horizontal reset countdowns, used/remaining inversion, initial expanded options and language switching. Keyboard-moved advice is attached to body at z-index2147483646 above dock90 and Home restores it. Fullscreen control and reflow exercised. Screenshot: /tmp/llms151-preview.png (synthetic data; not live account evidence). Preview viewport reset. Own-extension inline permission/native setup, actual OS/audio output and signed-in multi-window acquisition remain live acceptance limits.
 
 Render-cache review: freshness boundary, forecast-warning state and entitlement-expiry booleans also invalidate the cache immediately on the next two-second poll, without waiting for a countdown minute. Regression harness verifies freshness and risk invalidation independently.
+
+## v1.52.0 — horizontal services, aligned history, direct options and Grok usage
+DASHBOARD-152 supersedes the three-visible-service limit. All selected catalog services retain readable card widths in one horizontally scrollable row. The grid has no count cap and can lay out ten or more cards; only seven service adapters are currently registered. Use shared measured grid rows to align corresponding quota, extras, history and footer sections. Tighten gauge margins to two pixels. Preserve all provider acquisition, raw quotas, history and sound decisions.
+Main Web options show complete API balance panels immediately, with existing connection state and billing links. Permission-changing actions still move the same tab to the exact own-extension main; no Web origin gains configure rights. Own main retains full inline controls. Product links open a new tab. Product guide and synthetic dashboard image are updated; never publish user account screenshots as promotional data.
+Explicit restart first navigates the same tab to the Web monitor. Reload the extension only after that exact Web route has fully committed; timeout or unexpected navigation cancels restart. This intentionally replaces the prior direct reload that could close extension pages. No automatic restart or window creation.
+GROK-152: optional exact-route dashboard reader extracts only bounded explicit weekly usage-card percentages, labelled used or remaining, plus a separately verified plan and ISO reset timestamp. Ambiguous/missing values remain unknown. Never turn credits or plan names into quota percentages. Existing signed-in usage pages only; no paid API, account scanning, chat reading, automatic navigation/reload or invented reset. Canonical Grok quota snapshots use existing state/history/sound mechanisms. Real signed-in dashboard layouts remain acceptance pending until observed. Source: https://docs.x.ai/x-subscription/usage-limits and https://docs.x.ai/x-subscription/manage (2026-10-18).
+Correct the additionalServices state response to read the actual additional-services storage key rather than the comma-expression-selected Claude public-post flag. Retain separate enable permissions and top-frame checks.
+
+Validation v1.52.0: 364 regression cases passed before final UI-only refinements. Four-card synthetic browser check at 1280px showed equal card widths389px, histories all y853px, gauge height280px and no document overflow; only the card region scrolls horizontally. 390px viewport retains340px card width without document overflow. Test image assets contain synthetic data, not user account data. Grok user confirmed weekly usage/reset are visible; authenticated DOM collection and restart against an installed extension remain live acceptance pending.
+
+Additional visual evidence: a QA-only ten-card fixture at390px retained340px widths for all10 cards, all history starts aligned at y1009px, scroller width3544px and no document overflow. It uses cloned synthetic cards strictly to verify layout capacity; it does not claim ten provider adapters. A browser automation keyboard-scroll request timed out, so drag/keyboard scrolling is not claimed verified. Temporary viewport override reset.

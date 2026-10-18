@@ -193,7 +193,7 @@ JP: ［Codexを接続］で **［この端末用の導入ZIPを保存］** を�
 
 Single own top-level setup.html groups required sign-in guidance, optional API/Codex/Tibo and up-to-three service selection. Additional Grok/DeepSeek/Perplexity/Genspark account readers are experimental, disabled by default, exact-route/top-frame validated and separately permissioned. Never read chats, auto-navigate/reload, use paid APIs or convert credit balances to quota percentages. Preserve native exact-ID installation and existing no-window acquisition safeguards. Task helper action opens personalized installation/check, not a generic ZIP. Existing helper and standalone manual files remain unchanged. Live additional-provider layouts and installed automatic Claude billing remain acceptance limits.
 
-日本語：セットアップ画面に任意設定を集約。追加4社は公式残高・契約画面の試験読取りで初期無効、実アカウントの形式は未検証。最大3サービスを選択。Codexは同画面からID入力不要のZIP保存・接続確認。ヘルパーと既存取説配布物は再生成しません。
+日本語：セットアップ画面に任意設定を集約。追加4社は公式残高・契約画面の試験読取りで初期無効、実アカウントの形式は未検証。表示するサービスを選択（v1.52.0以降は3つの上限なし）。Codexは同画面からID入力不要のZIP保存・接続確認。ヘルパーと既存取説配布物は再生成しません。
 
 
 ## v1.46 quick changes / 操作の変更
@@ -204,3 +204,6 @@ Use the button after Advice to switch Remaining / Used display; stored history a
 
 ### v1.51.0 操作変更
 オプションは初期展開。拡張機能メイン画面内でAPI・Codex・公開投稿の接続設定を行えます。Web版の設定操作は同じタブを拡張機能メインへ切り替えます。自動取得タブはメインモニターのある通常ウィンドウ内に限定され、見つからなければ見送ります。音量操作を確定すると変更後の確認音が一度鳴ります。ドラッグしたTipはアプリ内の最前面です。通常のChatGPT Chat残量は取得元未確認のため未対応です。
+
+### v1.52.0
+表示数3つの制限を解除し、カード幅を保つ横一列スクロールに対応。Grokは任意設定で公式Usageの明示された週間％を読み取り、履歴へ保存します。公式Usageをログイン済みで開く必要があります。実アカウント形式は確認中で、取得不能な値は推測しません。オプションのAPIパネルは初期表示から展開。拡張機能の再起動は同じタブをWebモニターへ切り替えた後に行います。

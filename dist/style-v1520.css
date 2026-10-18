@@ -59,3 +59,17 @@ body>header{height:auto;min-height:60px;padding:12px 3%;gap:12px}main,html:fulls
 #inline-options .api-setup{max-width:none;margin:0;padding:0}#inline-options .setup-section{scroll-margin-top:20px}#inline-options h1{font-size:20px}#inline-options .setup-nav{display:flex;flex-wrap:wrap;gap:8px}
 /* Main already explains installation and owns service selection; avoid duplicate setup groups. */
 #inline-options #setup-title,#inline-options #setup-intro,#inline-options #optional-title,#inline-options #setup-selection,#inline-options .api-setup>.setup-section:not([id]),#inline-options [data-section=services],#inline-options .setup-section>h1{display:none}
+
+/* Keep readable card widths and align like sections across an arbitrary card count. */
+.cards-scroll{overflow-x:auto;overscroll-behavior-x:contain;padding:0 0 14px;scrollbar-color:#597490 #182536;max-width:100%}
+.cards,html:fullscreen .cards{width:max-content;min-width:100%;grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:clamp(340px,calc((100vw - 112px)/3),480px);grid-template-rows:repeat(8,auto);align-items:stretch;gap:0 16px}
+.card,html:fullscreen .card{display:grid;grid-row:span 8;grid-template-rows:var(--aligned-card-rows,auto 284px auto auto auto auto auto auto);row-gap:0;padding:18px;align-content:start}
+.gauge.quota-overview,html:fullscreen .gauge.quota-overview{width:min(100%,280px);margin:2px auto!important}
+.quota-bar-block{margin-top:8px}.card>.card-note{margin:6px 0;font-size:11px}.card>.extras{margin-top:0!important;padding-top:10px}.card>.history{align-self:start;margin-top:12px}.card-bottom{margin-top:12px;align-self:end}.card-head{margin-bottom:0}
+.additional-card:not(.grok-quota-card),html:fullscreen .additional-card:not(.grok-quota-card){display:flex;grid-row:span 8}
+#inline-options #setup-api{padding:16px;border:1px solid var(--line);border-radius:12px;margin-top:12px}#inline-options #setup-api section{border:1px solid var(--line);border-radius:10px;padding:16px;margin:12px 0;background:#0e1722}#inline-options #setup-api section h2{font-size:16px}#inline-options .api-setup-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}#inline-options .api-setup-actions a{font-size:12px}
+@media(max-width:720px){.cards,html:fullscreen .cards{grid-template-columns:none;grid-auto-columns:340px;grid-template-rows:repeat(8,auto)}.card,html:fullscreen .card{padding:16px}}
+/* Embedded WebKit may lack subgrid: bounded measurement supplies shared row sizes. */
+.cards,html:fullscreen .cards{display:flex!important;align-items:stretch}
+.card,html:fullscreen .card{flex:none;width:clamp(340px,calc((100vw - 112px)/3),480px);grid-template-rows:var(--aligned-card-rows,auto 284px auto auto auto auto auto auto)!important}
+@media(max-width:720px){.card,html:fullscreen .card{width:340px}}
