@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs モニター",
     "name_en": "LLMs Monitor",
-    "version": "1.57.0",
-    "package_filename": "LLMs-Monitor-v1.57.0.zip",
+    "version": "1.58.0",
+    "package_filename": "LLMs-Monitor-v1.58.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -19,12 +19,13 @@
       "gemini"
     ],
     "production_companion_origin": "https://llmsmonitor.ntus.info",
-    "web_version": "1.57.0",
+    "web_version": "1.58.0",
     "companion_origins": [
       "https://llmsmonitor.ntus.info",
       "https://llmsmonitor.ntusnog.chatgpt.site"
     ],
-    "codex_helper_version": "1.30.2"
+    "codex_helper_version": "1.30.2",
+    "mac_updater_version": "1.0.0"
   },
   "normative_language": {
     "MUST": "必須。未達の場合はリリース不可。",
@@ -6078,5 +6079,11 @@
     "CODEX-157": "Native forbidden means registration/access denied, not missing helper. Installer filenames include target extension ID; native helper remains1.30.2.",
     "FLOAT-157": "Normal popup initial width190 matches PiP requested width; existing popup sizes unchanged.",
     "AUDIO-157": "Changed volume commits enable notification sound and preview once; unchanged/blur no replay; later explicit Off wins."
+  },
+  "dashboard_158": {
+    "UPDATER-158": "Explicitly user-launched unsigned Mac app; initial current-folder confirmation, persisted path, public fixed GitHub feed and SHA256, staged same-path swap with backup and rollback. Reject wrong product, symlinks/traversal/duplicates/oversized/changed-key/downgrade; required permission expansion requires confirmation; no Chrome profile, native registration or private state access.",
+    "RELOAD-158": "Only newer verified on-disk manifest matching a local updater marker can reload, after refresh and settings queues. First migration from pre158 requires manual reload. No new permissions or Web restart RPC.",
+    "API-TIME-158": "Existing balance note shows last DOM read time; promo tooltip explains minute cadence and provider lag. No extra polling, billing navigation, invented values or acquisition changes.",
+    "CLAUDE-HYDRATION-158": "CLAUDE-HYDRATION-158: Buffer owned billing snapshots until promotional balance is stable across observations for two seconds and the page has had at least five seconds; missing promo waits up to the existing 35-second bound. Do not publish loading snapshots. Publish one final observation and reject other billing tabs during acquisition and for 60 seconds afterward. A loading timeout retains the previous observation with its original timestamp; do not invent amounts or bypass billing scope validation. Signed-in provider hydration remains manual acceptance."
   }
 }

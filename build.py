@@ -1,5 +1,5 @@
 from pathlib import Path
-import json, shutil, zipfile, sys
+import json, shutil, zipfile, sys, hashlib, subprocess
 root = Path(__file__).resolve().parent
 manual_sources = {name: name for name in ['README.md', 'TASK_DETAILS.md', 'PRIVACY.md', 'STORE_SUBMISSION.md', 'SECURITY_REVIEW.md', 'SPECIFICATION.md', 'AGENTS.md', 'CHANGELOG.md']}
 manual_sources.update({'CODEX_HELPER.md': 'native/README.md', 'INTELLIGENCE_SERVER.md': 'server/README.md'})
@@ -80,10 +80,11 @@ if '--package' in sys.argv:
             if not (root / 'extension' / name).exists() or (root / name).read_bytes() != (root / 'extension' / name).read_bytes():
                 shutil.copy2(root / name, root / 'extension' / name)
     for legacy in (root / 'dist').glob('LLMs-*-v*.zip'):
-        if legacy != package and not legacy.name.startswith('LLMs-Monitor-Codex-Helper-'): legacy.unlink()
+        if legacy != package and not legacy.name.startswith(('LLMs-Monitor-Codex-Helper-', 'LLMs-Monitor-Mac-Updater-')): legacy.unlink()
     with zipfile.ZipFile(package, 'w', zipfile.ZIP_DEFLATED) as archive:
         for path in sorted((root / 'extension').rglob('*')):
             if path.is_file() and path.name != '.DS_Store': archive.write(path, path.relative_to(root / 'extension'))
+    (root / 'dist' / 'update.json').write_text(json.dumps({'schemaVersion':1,'version':version,'package':package.name,'sha256':hashlib.sha256(package.read_bytes()).hexdigest()}, indent=2)+'\n')
     print(f'LLMs Monitor v{version} package created; unchanged Codex helper preserved.')
 else:
     print(f'LLMs Monitor web assets built; store package v{version} preserved.')
@@ -100,3 +101,6 @@ if '--codex-helper' in sys.argv:
         for name in ['README.md', 'codex_host.py', 'install.py', 'Install.command']:
             archive.write(root / 'native' / name, name)
     print(f'Optional Codex helper v{helper_version} created.')
+
+if '--mac-updater' in sys.argv:
+    subprocess.run([sys.executable, str(root / 'tools/mac-updater/build.py')], check=True)

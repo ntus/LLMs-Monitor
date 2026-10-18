@@ -193,7 +193,7 @@ JP: ［Codexを接続］で **［この端末用の導入ZIPを保存］** を�
 
 Single own top-level setup.html groups required sign-in guidance, optional API/Codex/Tibo and up-to-three service selection. Additional Grok/DeepSeek/Perplexity/Genspark account readers are experimental, disabled by default, exact-route/top-frame validated and separately permissioned. Never read chats, auto-navigate/reload, use paid APIs or convert credit balances to quota percentages. Preserve native exact-ID installation and existing no-window acquisition safeguards. Task helper action opens personalized installation/check, not a generic ZIP. Existing helper and standalone manual files remain unchanged. Live additional-provider layouts and installed automatic Claude billing remain acceptance limits.
 
-日本語：セットアップ画面に任意設定を集約。追加4社は公式残高・契約画面の試験読取りで初期無効、実アカウントの形式は未検証。表示するサービスを選択（v1.57.0以降は3つの上限なし）。Codexは同画面からID入力不要のZIP保存・接続確認。ヘルパーと既存取説配布物は再生成しません。
+日本語：セットアップ画面に任意設定を集約。追加4社は公式残高・契約画面の試験読取りで初期無効、実アカウントの形式は未検証。表示するサービスを選択（v1.58.0以降は3つの上限なし）。Codexは同画面からID入力不要のZIP保存・接続確認。ヘルパーと既存取説配布物は再生成しません。
 
 
 ## v1.46 quick changes / 操作の変更
@@ -207,3 +207,7 @@ Use the button after Advice to switch Remaining / Used display; stored history a
 
 ### v1.52.0
 表示数3つの制限を解除し、カード幅を保つ横一列スクロールに対応。Grokは任意設定で公式Usageの明示された週間％を読み取り、履歴へ保存します。公式Usageをログイン済みで開く必要があります。実アカウント形式は確認中で、取得不能な値は推測しません。オプションのAPIパネルは初期表示から展開。拡張機能の再起動は同じタブをWebモニターへ切り替えた後に行います。
+
+Macの更新操作をまとめる場合は [更新ツールの説明](tools/mac-updater/README.md) を参照してください。Codexヘルパーとは別のアプリで、既存の拡張機能フォルダーを初回だけ登録します。
+
+Claude APIの取得は請求画面の読込みとプロモーションクレジットの安定を待ち、途中の未取得値や他タブの古い値で表示を上書きしません（最大35秒）。実アカウントでの確認は必要です。
