@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs モニター",
     "name_en": "LLMs Monitor",
-    "version": "1.53.0",
-    "package_filename": "LLMs-Monitor-v1.53.0.zip",
+    "version": "1.54.0",
+    "package_filename": "LLMs-Monitor-v1.54.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -19,7 +19,7 @@
       "gemini"
     ],
     "production_companion_origin": "https://llmsmonitor.ntus.info",
-    "web_version": "1.53.0",
+    "web_version": "1.54.0",
     "companion_origins": [
       "https://llmsmonitor.ntus.info",
       "https://llmsmonitor.ntusnog.chatgpt.site"
@@ -6040,6 +6040,18 @@
     "limitations": [
       "CAPTCHA requires human completion; no automated challenge bypass",
       "No exact Grok reset time is inferred from a date-only display"
+    ]
+  },
+  "dashboard_154": {
+    "requirements": [
+      "Grok API balance panel follows OpenAI, Claude, Gemini",
+      "Grok weekly reads reject mixed monthly balance cards; one selected official source tab; changed readings stabilize before publishing; old readers rejected",
+      "Service selection/order separate from floating controls; preserve selection across restart and stale GET",
+      "Main toolbar exposes task windows for supported ChatGPT, Claude and Gemini plus explicit always-on-top and normal popup actions"
+    ],
+    "limitations": [
+      "Grok/DeepSeek task extraction is not implemented; no invented task screen adapters",
+      "Updated installed Chrome reader needs live acceptance; no automated CAPTCHA handling"
     ]
   }
 }

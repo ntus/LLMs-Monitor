@@ -79,3 +79,5 @@ main,html:fullscreen main{max-width:none!important;width:100%;min-width:0}
 .cards-scroll{width:100%;min-width:0;direction:ltr}
 .cards,html:fullscreen .cards{width:max-content;min-width:100%;justify-content:flex-start!important}
 .card,html:fullscreen .card{width:var(--fit-card-width,340px)!important;min-width:340px;max-width:none}
+
+.task-launch-menu{position:relative;font-size:12px}.task-launch-menu>summary{cursor:pointer;list-style:none;border:1px solid var(--line);border-radius:8px;padding:8px 12px;background:var(--surface);white-space:nowrap}.task-launch-menu>nav{position:absolute;z-index:50;top:calc(100% + 8px);left:0;min-width:210px;display:grid;gap:8px;padding:12px;background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 30px #0006}.task-launch-menu a{display:block;padding:8px;color:inherit;text-decoration:none}.task-launch-menu a:hover{background:#7f9cd32b}#display-settings{margin:14px 0;border:1px solid var(--line);border-radius:12px}#display-settings>h2{font-size:18px}#display-settings .service-config-head strong{display:none}
