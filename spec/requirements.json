@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs モニター",
     "name_en": "LLMs Monitor",
-    "version": "1.54.0",
-    "package_filename": "LLMs-Monitor-v1.54.0.zip",
+    "version": "1.55.0",
+    "package_filename": "LLMs-Monitor-v1.55.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -19,7 +19,7 @@
       "gemini"
     ],
     "production_companion_origin": "https://llmsmonitor.ntus.info",
-    "web_version": "1.54.0",
+    "web_version": "1.55.0",
     "companion_origins": [
       "https://llmsmonitor.ntus.info",
       "https://llmsmonitor.ntusnog.chatgpt.site"
@@ -6052,6 +6052,18 @@
     "limitations": [
       "Grok/DeepSeek task extraction is not implemented; no invented task screen adapters",
       "Updated installed Chrome reader needs live acceptance; no automated CAPTCHA handling"
+    ]
+  },
+  "dashboard_155": {
+    "requirements": [
+      "Supported task links sit by card acquisition badges; unsupported services explicitly disabled",
+      "Codex setup distinguishes confirmed helper missing/red installer required, connected/no ZIP required, and permission/API/desktop/unknown conditions",
+      "Grok date-only reset uses user-requested device-local midnight estimate only for displayed countdown, labelled estimated; canonical resets/history/audio remain unchanged"
+    ],
+    "limitations": [
+      "Day-only reset is an assumption, not provider-confirmed time or timezone",
+      "Other-plan weekly-only gauge placement remains a known prior audit issue, outside this focused change",
+      "No new task adapters for Grok or DeepSeek"
     ]
   }
 }
