@@ -1,0 +1,4 @@
+/* Keep selected providers readable; scroll the window when there are many. */
+.floating-body .widget,.pip-body .widget{overflow-y:auto!important;overflow-x:hidden!important;scrollbar-width:thin}
+.floating-body .widget-row,.pip-body .widget-row{flex:1 0 150px;min-height:150px;max-width:100%;overflow-wrap:anywhere}
+.widget .additional-card .widget-service{display:flex;align-items:center;gap:7px}.widget .additional-card h2{font-size:12px;margin:0}.widget .additional-card p{font-size:10px;line-height:1.45;margin:6px 0}.widget .additional-balances{font-size:12px}.widget .additional-card small{font-size:9px}

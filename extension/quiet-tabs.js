@@ -33,5 +33,6 @@
   try{const tab=await chrome.tabs.get(id);if(!tab.active&&(samePage(tab.url,owned.url)||!tab.url&&samePage(tab.pendingUrl,owned.url)))await chrome.tabs.remove(id)}catch{}
   await save({tabs:(state.tabs||[]).filter(t=>t.id!==id)});return true;
  });}
- root.GlanceQuietTabs={create,release,setMonitor};if(typeof module!=='undefined')module.exports=root.GlanceQuietTabs;
+ async function sameMonitorWindow(windowId){try{return Number.isInteger(windowId)&&await monitorWindow()===windowId}catch{return false}}
+ root.GlanceQuietTabs={create,release,setMonitor,sameMonitorWindow};if(typeof module!=='undefined')module.exports=root.GlanceQuietTabs;
 })(globalThis);
