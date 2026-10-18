@@ -1,9 +1,9 @@
 const {test}=require('node:test'),a=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const src=fs.readFileSync('extension/app.js','utf8');
-test('committed volume previews new level once, without enabling notification sounds or replay on blur',async()=>{
- const slider={value:'18'},label={},sounds=[],saved=[];const c=vm.createContext({$:s=>s==='#sound-volume'?slider:label,settings:{volume:18},volumeEditing:false,notifier:{setVolume:v=>sounds.push(['volume',v]),test:async()=>sounds.push(['preview']),enable:()=>{throw Error('must not enable')}},saveSettings:()=>saved.push(true),toast:()=>{}});
+test('committed volume previews new level once, enabling notification sounds without replay on blur',async()=>{
+ const slider={value:'18'},label={},sounds=[],saved=[];const c=vm.createContext({$:s=>s==='#sound-volume'?slider:label,settings:{volume:18},volumeEditing:false,soundRevision:0,soundDesired:false,pendingSound:null,rememberSound(){},paintSound(){},commitSound:async()=>{},notifier:{setVolume:v=>sounds.push(['volume',v]),test:async()=>sounds.push(['preview']),enable:async()=>sounds.push(['enabled'])},saveSettings:()=>saved.push(true),toast:()=>{}});
  vm.runInContext(src.slice(src.indexOf("$('#sound-volume').oninput="),src.indexOf("try{theme=localStorage")),c);
- slider.value='30';slider.oninput();slider.value='35';slider.oninput();a.equal(sounds.filter(x=>x[0]==='preview').length,0);await slider.onchange();slider.onblur();a.equal(sounds.filter(x=>x[0]==='preview').length,1);a.deepEqual(sounds.at(-2),['volume',.35]);a.equal(saved.length,1);
+ slider.value='30';slider.oninput();slider.value='35';slider.oninput();a.equal(sounds.filter(x=>x[0]==='preview').length,0);await slider.onchange();slider.onblur();a.equal(sounds.filter(x=>x[0]==='preview').length,1);a.equal(c.soundDesired,true);a(sounds.some(x=>x[0]==='volume'&&x[1]===.35));a.equal(saved.length,1);
  await slider.onchange();a.equal(sounds.filter(x=>x[0]==='preview').length,1);
  c.settings.volume=25;slider.value='18';slider.oninput();await slider.onchange();a.equal(sounds.filter(x=>x[0]==='preview').length,2);
 });
