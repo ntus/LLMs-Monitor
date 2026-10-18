@@ -6,7 +6,7 @@
   perplexity:{name:'Perplexity',home:'https://www.perplexity.ai/',url:'https://www.perplexity.ai/account/details',origin:'https://www.perplexity.ai',path:/^\/account\/details\/?$/,mark:'⌕',color:'#54c8c2',labels:['Pro searches remaining','Research queries remaining','Remaining credits','残り検索回数','残りクレジット']},
   genspark:{name:'Genspark',home:'https://www.genspark.ai/',url:'https://www.genspark.ai/credit-usage',origin:'https://www.genspark.ai',path:/^\/credit-usage\/?$/,mark:'✧',color:'#b58cff',labels:['Credits balance','Remaining credits','Available credits','Credit balance','残りクレジット','クレジット残高']}
  };
- function route(value){try{const u=new URL(value);if(u.username||u.password||u.search||u.hash)return null;return Object.keys(PROVIDERS).find(id=>u.origin===PROVIDERS[id].origin&&PROVIDERS[id].path.test(u.pathname))||null}catch{return null}}
+ function route(value){try{const u=new URL(value);if(u.username||u.password||u.hash)return null;if(u.search&&!(u.origin==='https://grok.com'&&/^\?expected_account_hash=[a-f0-9]{24}$/.test(u.search)))return null;return Object.keys(PROVIDERS).find(id=>u.origin===PROVIDERS[id].origin&&PROVIDERS[id].path.test(u.pathname))||null}catch{return null}}
  function extract(text,id){const p=PROVIDERS[id];if(!Object.hasOwn(PROVIDERS,id))return [];const lines=String(text).slice(0,24000).split('\n').map(s=>s.trim()).filter(Boolean),rows=[];
   for(const label of p.labels){const matches=lines.flatMap((s,i)=>s.toLowerCase()===label.toLowerCase()?[i]:[]);if(matches.length!==1)continue;const value=lines[matches[0]+1]||'';
    // Bare counts or explicit currency only, never spending, grant totals or percentages.

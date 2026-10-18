@@ -33,7 +33,7 @@
  }
  async function refresh(only){
   const saved=await chrome.storage.local.get('apiCredits'),ids=only?[only]:Object.keys(A.PROVIDERS);
-  await Promise.allSettled(ids.map(async id=>{if(!saved.apiCredits?.[id]?.enabled)return;if(!await permitted(id)){await configure(id,false);return}await register(id);const tabs=await chrome.tabs.query({url:A.PROVIDERS[id].origin+'/*'});if(id==='claude')startClaudeProbe().catch(()=>{});for(const tab of tabs){if(!A.provider(tab.url)||!Number.isInteger(tab.id))continue;try{const reply=await bounded(chrome.tabs.sendMessage(tab.id,{type:'API_CREDIT_READ'}));if(reply?.ready)continue}catch{}await bounded(chrome.scripting.executeScript({target:{tabId:tab.id},files:['api-credits.js','api-credit-reader.js']}))}}));
+  await Promise.allSettled(ids.map(async id=>{if(!saved.apiCredits?.[id]?.enabled)return;if(!await permitted(id)){await configure(id,false);return}await register(id);const tabs=await chrome.tabs.query({url:A.PROVIDERS[id].origin+'/*'});if(id==='claude')startClaudeProbe().catch(()=>{});for(const tab of tabs){if(!A.provider(tab.url)||!Number.isInteger(tab.id))continue;try{const reply=await bounded(chrome.tabs.sendMessage(tab.id,{type:'API_CREDIT_READ'}));if(reply?.ready&&(id!=='grok'||reply.version==='1.53.0'))continue}catch{}await bounded(chrome.scripting.executeScript({target:{tabId:tab.id},files:['api-credits.js','api-credit-reader.js']}))}}));
  }
  root.GlanceApiCreditBackground={configure,receive,refresh,permission,cleanupProbe,startClaudeProbe,PROBE_ALARM};
 })(globalThis);

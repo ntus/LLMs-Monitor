@@ -1,5 +1,6 @@
 (function(root){
  const PROVIDERS={
+  grok:{name:'Grok API',origin:'https://grok.com',url:'https://grok.com/dashboard',path:/^\/dashboard(?:\/(?:billing|usage))?\/?$/,labels:/^(?:Credits available|利用可能なクレジット)$/i},
   chatgpt:{name:'OpenAI API',origin:'https://platform.openai.com',url:'https://platform.openai.com/settings/organization/billing/overview',path:/^\/settings\/organization\/billing(?:\/|$)/,labels:/^(?:API credit balance|Credit balance|APIクレジット残高|クレジット残高)$/i},
   claude:{name:'Claude API',origin:'https://platform.claude.com',url:'https://platform.claude.com/settings/billing',path:/^\/settings\/billing(?:\/|$)/,labels:/^(?:Credit balance|Remaining credits|Available credits|クレジット残高|利用可能なクレジット)$/i},
   gemini:{name:'Gemini API',origin:'https://aistudio.google.com',url:'https://aistudio.google.com/billing',path:/^\/(?:u\/\d+\/)?billing(?:\/|$)/,labels:/^(?:Available credits|Prepay credit balance|Prepaid credit balance|利用可能なクレジット|前払いクレジット残高)$/i}
@@ -12,10 +13,10 @@
  }
  function parse(text,id){
   if(!Object.hasOwn(PROVIDERS,id))return {status:'unavailable'};
-  const lines=String(text).split(/\n/).map(x=>x.trim()).filter(Boolean),balances=[];
+  const lines=String(text).split(/\n/).map(x=>x.trim()).filter(Boolean),balances=[];if(id==='grok'){const values=lines.map(s=>s.match(/^Credits available\s*[:：]?\s*([$€¥£]\s*[\d,.]+)$/i)).filter(Boolean).map(m=>money(m[1])).filter(Boolean);if(values.length===1)return {status:'ready',...values[0]};if(values.length>1)return {status:'unavailable'};}
   for(let i=0;i<lines.length;i++)if(PROVIDERS[id].labels.test(lines[i])){
    // Accept a single explicitly labelled amount, never a budget, spend or auto-reload threshold.
-   for(let j=i+1;j<Math.min(i+4,lines.length);j++){const found=money(lines[j]);if(found){balances.push(found);break}if(/(?:auto.?reload|buy|purchase|spent|spend|limit|budget|invoice|自動|購入|請求額)/i.test(lines[j]))break;}
+   for(let j=i+1;j<Math.min(i+4,lines.length);j++){const found=money(lines[j]);if(found){balances.push(found);break}if(/(?:auto.?reload|auto.?top.?up|buy|purchase|spent|spend|limit|budget|invoice|自動|購入|請求額)/i.test(lines[j]))break;}
   }
   if(balances.length===1)return {status:'ready',...balances[0]};
   if(balances.length>1)return {status:'unavailable'};

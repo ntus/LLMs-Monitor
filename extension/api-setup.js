@@ -11,7 +11,7 @@ select('#api-providers').addEventListener('click',async event=>{
   // Request must be the first asynchronous operation in the user click, preserving user activation.
   if(!on&&!await chrome.permissions.request({permissions:['scripting'],origins}))return;
   button.disabled=true;const result=await chrome.runtime.sendMessage({type:'API_CREDITS_CONFIGURE',service:id,enabled:!on});if(result.error)throw Error(result.error);
-  if(on)await chrome.permissions.remove({origins});
+  if(on&&!(id==='grok'&&(await chrome.runtime.sendMessage({type:'GET'})).additionalServices?.grok?.enabled))await chrome.permissions.remove({origins});
   A.set((await chrome.runtime.sendMessage({type:'GET'})).apiCredits);await paint();select('#api-result').textContent=text(on?'連携を解除しました':id==='claude'?'連携を有効化しました。ログイン済みなら自動取得します。未取得の場合は公式請求画面でログインを確認してください。':'連携を有効化しました。公式請求画面を開いて残高を取得してください',on?'Disconnected':id==='claude'?'Connected. Automatic reading starts when signed in. If unavailable, check sign-in on official billing.':'Connected. Open the official billing page to read the balance');
  }catch{button.disabled=false;select('#api-result').textContent=text('連携できませんでした。権限と拡張機能を確認してください','Connection failed. Check permissions and the extension')}
 });

@@ -1,5 +1,5 @@
 (()=>{
- if(globalThis.llmsApiCreditReader)return;globalThis.llmsApiCreditReader=true;
+ if(globalThis.llmsApiCreditReader==='1.53.0')return;globalThis.llmsApiCreditReader='1.53.0';
  const A=GlanceApiCredits;let scheduled=null,lastRead=0;
  const visible=node=>node.getClientRects().length>0;
  function scope(){
@@ -16,6 +16,6 @@
   // Do not transmit page text, account names, API keys, credentials or payment details.
   try{await chrome.runtime.sendMessage({type:'API_CREDIT_SNAPSHOT',service:id,...result,scope:scope()})}catch{}
  }
- chrome.runtime.onMessage.addListener((message,_,reply)=>{if(message?.type!=='API_CREDIT_READ')return false;lastRead=0;read().then(()=>reply({ready:true}),()=>reply({ready:false}));return true});
+ chrome.runtime.onMessage.addListener((message,_,reply)=>{if(message?.type!=='API_CREDIT_READ')return false;lastRead=0;read().then(()=>reply({ready:true,version:'1.53.0'}),()=>reply({ready:false}));return true});
  const observer=new MutationObserver(()=>{clearTimeout(scheduled);scheduled=setTimeout(read,1200)});observer.observe(document.body,{subtree:true,childList:true,characterData:true});setTimeout(read,1500);setInterval(read,60000);
 })();
