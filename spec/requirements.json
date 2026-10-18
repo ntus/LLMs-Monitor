@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs モニター",
     "name_en": "LLMs Monitor",
-    "version": "1.51.0",
-    "package_filename": "LLMs-Monitor-v1.51.0.zip",
+    "version": "1.52.0",
+    "package_filename": "LLMs-Monitor-v1.52.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -19,7 +19,7 @@
       "gemini"
     ],
     "production_companion_origin": "https://llmsmonitor.ntus.info",
-    "web_version": "1.51.0",
+    "web_version": "1.52.0",
     "companion_origins": [
       "https://llmsmonitor.ntus.info",
       "https://llmsmonitor.ntusnog.chatgpt.site"
@@ -5998,6 +5998,31 @@
     "limits": [
       "Regular ChatGPT Chat quota source unverified; no invented percentage",
       "Installed browser permission/native/audio and real multi-window checks remain user acceptance"
+    ]
+  },
+  "dashboard_152": {
+    "id": "DASHBOARD-152",
+    "status": "implemented-live-grok-acceptance-pending",
+    "requirements": [
+      "Expanded API connection panels on first settings view",
+      "Preserve restart tab by committing Web main before extension reload",
+      "Aligned history rows; tight gauge margins",
+      "Product links open a new tab; updated bilingual guide and synthetic screen image",
+      "No three-service selection limit; stable card width with horizontal scrolling, arbitrary row length",
+      "Grok bounded explicit weekly usage -> canonical state/history/notifications; existing signed-in dashboard only",
+      "Fix additionalServices storage-key projection"
+    ],
+    "evidence": [
+      "tests/monitor-152.test.cjs",
+      "tests/additional-services.test.cjs",
+      "extension/restart.js",
+      "extension/grok-quota.js",
+      "assets/promotional/monitor-v152-preview.png"
+    ],
+    "limits": [
+      "Seven registered services; ten-card layout capability does not mean ten implemented readers",
+      "Grok real account DOM and localized reset formats need installed-browser acceptance",
+      "No paid API or automatic Grok page navigation; user keeps official Usage open"
     ]
   }
 }

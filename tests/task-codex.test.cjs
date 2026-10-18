@@ -56,12 +56,12 @@ test('granted permission with an absent native API reports recovery without laun
  x.chrome.runtime.connectNative=saved;const pending=x.api.handle({type:'CODEX_CHECK'},internal(),false);await new Promise(setImmediate);assert.equal(x.ports.length,1);x.ports[0].reply(reply());assert.equal((await pending).status,'ready');
 });
 test('setup distinguishes missing API and restarts only on an explicit button click without altering storage',async()=>{
- const elements=Object.fromEntries(['description','step-one','step-two','technical-label','extension-id','download','install-help','step-three','enable','disable','check','guide','limits','result','restart','restart-help'].map(id=>[id,{textContent:'',hidden:true}]));let reloads=0,status='native-api-unavailable';
- const chrome={runtime:{id:'a'.repeat(32),reload(){reloads++},sendMessage:async m=>m.type==='CODEX_CONFIG_READ'?{enabled:true,permission:true,apiAvailable:false}:{status}},permissions:{request:async()=>true,remove:async()=>{}}};
+ const elements=Object.fromEntries(['description','step-one','step-two','technical-label','extension-id','download','install-help','step-three','enable','disable','check','guide','limits','result','restart','restart-help'].map(id=>[id,{textContent:'',hidden:true}]));let reloads=0,restartRequests=0,status='native-api-unavailable';
+ const chrome={runtime:{id:'a'.repeat(32),reload(){reloads++},sendMessage:async m=>m.type==='EXTENSION_RESTART'?(restartRequests++,{ok:true}):m.type==='CODEX_CONFIG_READ'?{enabled:true,permission:true,apiAvailable:false}:{status}},permissions:{request:async()=>true,remove:async()=>{}}};
  const c=vm.createContext({chrome,navigator:{language:'ja'},document:{documentElement:{},getElementById:id=>elements[id]}});vm.runInContext(fs.readFileSync('extension/codex-setup.js','utf8'),c);await new Promise(setImmediate);
  assert.equal(reloads,0);assert.equal(elements.restart.hidden,false);assert.match(elements.result.textContent,/接続API/);assert(!elements.result.textContent.includes('ヘルパー導入'));
  await elements.check.onclick();assert.equal(elements.restart.hidden,false);assert.equal(elements.check.disabled,false);assert.equal(reloads,0);
- status='unavailable';await elements.check.onclick();assert.equal(elements.restart.hidden,true);elements.restart.onclick();assert.equal(reloads,1);
+ status='unavailable';await elements.check.onclick();assert.equal(elements.restart.hidden,true);await elements.restart.onclick();assert.equal(reloads,0);assert.equal(restartRequests,1);
  const html=fs.readFileSync('extension/codex-setup.html','utf8');assert.match(html,/id="restart" type="button" hidden/);assert.match(html,/src="helper-package\.js"/);assert.match(html,/id="download" type="button"/);
 });
 
