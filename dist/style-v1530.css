@@ -73,3 +73,9 @@ body>header{height:auto;min-height:60px;padding:12px 3%;gap:12px}main,html:fulls
 .cards,html:fullscreen .cards{display:flex!important;align-items:stretch}
 .card,html:fullscreen .card{flex:none;width:clamp(340px,calc((100vw - 112px)/3),480px);grid-template-rows:var(--aligned-card-rows,auto 284px auto auto auto auto auto auto)!important}
 @media(max-width:720px){.card,html:fullscreen .card{width:340px}}
+
+/* Fit all selected cards when each can retain a readable width; overflow starts at the left. */
+main,html:fullscreen main{max-width:none!important;width:100%;min-width:0}
+.cards-scroll{width:100%;min-width:0;direction:ltr}
+.cards,html:fullscreen .cards{width:max-content;min-width:100%;justify-content:flex-start!important}
+.card,html:fullscreen .card{width:var(--fit-card-width,340px)!important;min-width:340px;max-width:none}

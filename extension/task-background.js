@@ -4,6 +4,14 @@
  function bounded(task,ms=2500){let timer;return Promise.race([task,new Promise((_,reject)=>{timer=setTimeout(()=>reject(Error('task timeout')),ms)})]).finally(()=>clearTimeout(timer));}
  async function request(id,service){try{return await bounded(chrome.tabs.sendMessage(id,{type:'TASK_LIST_READ',service}))}catch{return null}}
  async function acquire(service){
+  if(service==='gemini'){
+   // Never create Gemini task tabs: challenge redirects caused one new retained tab each minute.
+   const tabs=await chrome.tabs.query({url:'https://gemini.google.com/*'});
+   const homes=tabs.filter(t=>Number.isInteger(t.id)&&/^https:\/\/gemini\.google\.com\/(?:u\/\d+\/)?app\/?$/.test(t.url||''));
+   if(homes.length!==1)return {status:'unavailable'};
+   const result=await request(homes[0].id,service);return result?.status==='ready'?result:{status:'unavailable'};
+  }
+
   if(service==='claude'){
    const results=await Promise.all([home(service,T.HOMES[service]),home(service,'https://claude.ai/code')]);
    const ready=results.filter(r=>r?.status==='ready'&&r.snapshot?.service===service);

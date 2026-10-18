@@ -6,8 +6,8 @@
   "product": {
     "name_ja": "LLMs モニター",
     "name_en": "LLMs Monitor",
-    "version": "1.52.0",
-    "package_filename": "LLMs-Monitor-v1.52.0.zip",
+    "version": "1.53.0",
+    "package_filename": "LLMs-Monitor-v1.53.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -19,7 +19,7 @@
       "gemini"
     ],
     "production_companion_origin": "https://llmsmonitor.ntus.info",
-    "web_version": "1.52.0",
+    "web_version": "1.53.0",
     "companion_origins": [
       "https://llmsmonitor.ntus.info",
       "https://llmsmonitor.ntusnog.chatgpt.site"
@@ -6023,6 +6023,23 @@
       "Seven registered services; ten-card layout capability does not mean ten implemented readers",
       "Grok real account DOM and localized reset formats need installed-browser acceptance",
       "No paid API or automatic Grok page navigation; user keeps official Usage open"
+    ]
+  },
+  "dashboard_153": {
+    "requirements": [
+      "Fit selected cards in available main width at readable >=340 CSS pixels; otherwise left-origin horizontal scrolling",
+      "Grok Current plan / Weekly included usage card: explicit used percent inverted to remaining; date-only reset stays without invented time",
+      "Optional Grok API balance connection reads Credits available separately; disconnect does not revoke enabled weekly reader",
+      "Gemini tasks read one existing home only; no automatic new Gemini task tabs",
+      "Google challenge pauses automatic quota network retries until explicit retry or verified rendered usage; retain history and unknown quotas"
+    ],
+    "evidence": [
+      "tests/monitor-153.test.cjs",
+      "tests/google-backoff.test.cjs"
+    ],
+    "limitations": [
+      "CAPTCHA requires human completion; no automated challenge bypass",
+      "No exact Grok reset time is inferred from a date-only display"
     ]
   }
 }

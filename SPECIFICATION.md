@@ -143,7 +143,7 @@ The server feed remains unconfigured; this optional browser reader does not depl
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.52.0
+対象製品版: 1.53.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -1742,3 +1742,10 @@ Correct the additionalServices state response to read the actual additional-serv
 Validation v1.52.0: 364 regression cases passed before final UI-only refinements. Four-card synthetic browser check at 1280px showed equal card widths389px, histories all y853px, gauge height280px and no document overflow; only the card region scrolls horizontally. 390px viewport retains340px card width without document overflow. Test image assets contain synthetic data, not user account data. Grok user confirmed weekly usage/reset are visible; authenticated DOM collection and restart against an installed extension remain live acceptance pending.
 
 Additional visual evidence: a QA-only ten-card fixture at390px retained340px widths for all10 cards, all history starts aligned at y1009px, scroller width3544px and no document overflow. It uses cloned synthetic cards strictly to verify layout capacity; it does not claim ten provider adapters. A browser automation keyboard-scroll request timed out, so drag/keyboard scrolling is not claimed verified. Temporary viewport override reset.
+
+## v1.53.0 — verified Grok dashboard and Google access recovery
+GROK-153: read the bounded Current plan / Weekly included usage card observed on the signed-in official dashboard (including non-heading labels); percentage and Credits available are independent. API balances offer a separate Grok opt-in; shared host permission remains until both optional features are disconnected. Date-only reset labels are retained without fabricating a reset clock.
+GOOGLE-153: Gemini task acquisition reads exactly one already-open official app home, never creates a new tab. Google challenge detection pauses automatic quota network retries until an explicit retry or a verified rendered quota. Existing usage-only recovery remains read-only; no CAPTCHA solving. Current Gemini task auto-fetch was temporarily paused via user-visible Web control during diagnosis.
+LAYOUT-153: main uses available viewport width, dividing it by selected card count with 16px gaps and a minimum readable width of 340px. Fit without scrolling where possible; otherwise scroll from the first card. Retain aligned history and quota/notification semantics.
+
+Validation 1.53: first full regression run passed 368 tests; final post-review run passed 369 tests. Browser preview at 1280 CSS pixels verified four 340px cards, equal history starts, and separate Grok API balance display. Direct viewport automation timed out; a 1700px browser iframe screenshot verified four fully visible cards with aligned history. The actual alignment routine is also tested at 1700px/4 and 10 cards. Signed-in Grok dashboard labels were observed; new extension reader round-trip on that account remains unverified. Gemini remains Google-challenge blocked and requires manual verification.
