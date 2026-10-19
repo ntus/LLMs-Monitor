@@ -287,3 +287,7 @@ RELOAD-158: only a newer local updater marker plus matching on-disk manifest may
 INSTALL-FOLDER-159: Fixed-folder initial-install ZIP changes packaging only. Existing updater target validation, same-path replacement, rollback, permission checks and no-profile-access restrictions remain. No automatic migration or native registration changes.
 
 TABS-160: recovery requires matching opener monitor, current extension mute attribution, normal window, inactive exact route. User activation/navigation relinquishes marker. No management permission or URL-only ownership. Legacy duplicates and multiple installed extensions require user review. PACE-160 estimated-date fallback is visual only; no history/audio change.
+
+CLAUDE-SLOW-161: no new permission or foreground navigation. Resource retention is scoped to one app-owned exact billing tab; restore auto-discard when user adopts it. A 180-second inactivity watchdog and explicit disable release only verified owned tabs. No all-tab billing sweep, no private page text or payment details persisted. Reference: https://developer.chrome.com/docs/extensions/reference/api/tabs#property-UpdateProperties-autoDiscardable
+
+Acquisition diagnostics contain only enumerated stages, timing and status. They do not change balance capture times or retain account names, URLs, DOM text or amounts in logs. Recovery reloads are restricted to an inactive verified owned tab and throttled; no auto-focus/unfreeze by activation.

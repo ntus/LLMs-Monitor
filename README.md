@@ -217,3 +217,5 @@ Claude APIの取得は請求画面の読込みとプロモーションクレジ�
 The initial-install ZIP contains a stable LLMs-Monitor folder. Keep it in a permanent location, load that folder once, then use the Mac updater in place. Existing versioned installation paths stay supported. Moving an existing installation can change its ID and require permission/native registration again; settings/history migration is not automatic. Store submissions and the updater feed retain the versioned flat ZIP.
 
 v1.60.0: 週間残量が残り日数の均等配分より少ない場合は、履歴不足でも％だけを5秒周期でゆっくり点滅させます（目安）。Grokの日付からの想定も表示の注意判定にだけ使用。設定・メイン画面は既存タブを再利用し、取得用タブも更新後に厳密に識別できるものだけ再利用します。旧版などのタブは自動で一括削除しません。同じフォルダー・IDならGrok許可は毎回不要ですが、新しいIDへの移行では再許可が必要です。
+
+v1.61.0: Claude API請求画面の低速読込みに対応。取得用の裏タブを1つ維持し、読取り依頼を重ねず最大90秒待機します。未完了の残高表示を次の周期でリロードしません。手動で開いた画面の有効な残高も優先し、ログイン移動・手動で閉じた場合は自動再作成を停止して明示的な再試行を待ちます。

@@ -1,3 +1,9 @@
+# 1.61.0 — 2026-10-19
+
+- Claude billing retries short transport failures instead of aborting, waits up to 90 seconds for hydration, and keeps only one pending DOM read per attempt.
+- Retain one owned billing tab, preserve unfinished client-side hydration across cycles, use a 180-second inactivity watchdog, and allow a fresh visible manual observation to take priority. Closing/login redirects pause creation until explicit retry/recovery.
+- Only the owned Claude billing tab suppresses automatic discard; restore its resource policy on user adoption. Upgrade old readers. Scope, permissions, quotas/history/audio and helper/manual packages remain unchanged. Live heavy-browser behavior remains manual acceptance.
+
 # 1.60.0 — 2026-10-19
 
 - Add a visual weekly time-budget guideline before sufficient local history exists, including Grok estimated date-only reset. Keep percentage-only five-second pulse and original quota/history/audio semantics.
