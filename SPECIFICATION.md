@@ -143,7 +143,7 @@ The server feed remains unconfigured; this optional browser reader does not depl
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.61.0
+対象製品版: 1.62.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -1801,3 +1801,8 @@ BILLING-160: Visible determinate progress bars must not mark billing permanently
 GROK-OPTIN-160: Same extension ID/path keeps its stored optional Grok opt-in. Re-enabling is idempotent and must not erase observed values or other choices. Refresh the setup display when focused or settings change, showing exact extension ID/version to distinguish old setup tabs. A new installation ID still requires the user to grant optional permissions; never migrate or grant access silently.
 
 CLAUDE-SLOW-161: Retry transient tab transport errors within a 90-second hydration attempt, polling every 1.5 seconds with at most one pending DOM read; a per-call timeout must not abort the entire acquisition or multiply outstanding reads. Retain one strictly owned inactive Claude billing tab across cycles, do not restart unfinished client-side hydration merely because HTML is complete, and reload completed observations at most once a minute. Use a 180-second inactivity watchdog and release on disconnect; pause on closed/redirected tabs until explicit retry or an active verified billing observation. A visible manually opened valid billing page may publish immediately, without an unfinished owned read overwriting it. Suppress auto-discard only for the newly owned Claude billing tab, restore its original/default policy on adoption, never alter other tabs or focus/create windows. Old billing reader versions are upgraded and rejected. Preserve scope/auth, amount validity, quota/history/audio and no-sensitive-data boundaries. Real high-load background hydration remains live acceptance pending. During slow rendering, store only bounded acquisition status/stage/duration (no account/page content), without refreshing balance timestamps. A frozen/discarded owned page may be reloaded at most once per minute to resume work, never focused. The HTML-complete flag is not evidence that billing hydration has finished.
+
+
+CLAUDE-NAV-162: An initial empty/about:blank document with an exact approved billing pendingUrl is navigation in progress, not a login redirect. Wait within the existing 90-second bound without reading the blank document or creating another tab. A foreign or login committed URL is never authorized by pendingUrl. Explicit user retry bypasses only the automatic attempt cooldown; in-flight coalescing, account/permission validation and all tab ownership constraints remain. Keep reader protocol 1.61.0 because its payload is unchanged. Signed-in unattended acquisition remains unverified until the installed package is confirmed.
+
+Validation v1.62.0: the blank-pending-navigation and immediate-explicit-retry regressions failed against v1.61.0 and pass after this change. All 417 regression tests pass, including approved-pending/foreign-committed URL and recovered-tab cases. ZIP CRC/source equality and unchanged standalone helper/manual hashes verified. The actual installed Chrome version and signed-in unattended promotional acquisition remain unconfirmed; an old in-app-browser connection is not evidence for the user’s regular Chrome installation.

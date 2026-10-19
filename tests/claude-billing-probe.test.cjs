@@ -40,3 +40,40 @@ test('completed HTML with slow client-side billing hydration is not reloaded on 
 test('a frozen owned billing page is recovered without activation or repeated reload storms',async()=>{const quiet={},x=setup(false,{GlanceQuietTabs:quiet});let frozen=true,reloads=0;quiet.create=async url=>x.chrome.tabs.create({url,active:false});quiet.isOwned=async()=>true;quiet.release=async()=>true;x.chrome.tabs.get=async()=>({id:77,url:A.PROVIDERS.claude.url,active:false,status:'complete',frozen});x.chrome.tabs.reload=async()=>{reloads++;frozen=false};await x.B.startClaudeProbe();assert.equal(reloads,1);assert.equal(x.saved.apiCredits.claude.promotional.amount,12);assert.equal(x.created[0].active,false);});
 
 test('an invalid visible promotional amount cannot interrupt a valid owned acquisition',async()=>{const x=setup(),send=x.chrome.tabs.sendMessage;let sent=false;x.chrome.tabs.sendMessage=async id=>{if(!sent){sent=true;const result=await x.B.receive({readerVersion:'1.61.0',service:'claude',status:'ready',amount:0,currency:'USD',promotional:{status:'ready',amount:'invalid',currency:'USD'}},{url:A.PROVIDERS.claude.url,frameId:0,tab:{id:55,active:true}});assert.equal(result.ok,false)}return send(id)};await x.B.startClaudeProbe();assert.equal(x.saved.apiCredits.claude.promotional.amount,12);});
+
+
+test('a blank tab pending the exact billing navigation waits instead of permanently pausing',async()=>{
+ const x=setup(),get=x.chrome.tabs.get;let calls=0;
+ x.chrome.tabs.get=async id=>++calls<4?{id:77,active:false,url:'about:blank',pendingUrl:A.PROVIDERS.claude.url,status:'loading'}:get(id);
+ await x.B.startClaudeProbe();
+ assert.equal(x.saved.apiCredits.claude.promotional?.amount,12);
+ assert.equal(x.session['llms-claude-api-pause-v1'],undefined);
+});
+
+test('explicit retry clears a recent pause instead of being dropped by the automatic cooldown',async()=>{
+ const x=setup();let redirect=true;
+ x.chrome.tabs.get=async()=>({id:77,active:false,url:redirect?'https://platform.claude.com/login':A.PROVIDERS.claude.url,status:'complete'});
+ await x.B.startClaudeProbe();redirect=false;
+ await x.B.startClaudeProbe(true);
+ assert.equal(x.saved.apiCredits.claude.promotional?.amount,12);
+});
+
+
+test('a pending approved URL does not authorize an actual login or foreign document',async()=>{
+ for(const url of ['https://platform.claude.com/login','https://example.invalid/']){
+  const x=setup();let reads=0;
+  x.chrome.tabs.get=async()=>({id:77,active:false,url,pendingUrl:A.PROVIDERS.claude.url,status:'loading'});
+  x.chrome.tabs.sendMessage=async()=>{reads++;return {ready:true,version:'1.61.0'}};
+  await x.B.startClaudeProbe();
+  assert.equal(reads,0);assert.equal(x.session['llms-claude-api-pause-v1'],true);
+ }
+});
+
+test('recovered owned tabs may still be blank with an exact billing navigation pending',async()=>{
+ const quiet={},x=setup(false,{GlanceQuietTabs:quiet}),get=x.chrome.tabs.get;let calls=0;
+ quiet.create=async()=>({id:77,reused:true});quiet.isOwned=async()=>true;quiet.release=async()=>true;
+ x.chrome.tabs.get=async id=>++calls<4?{id:77,active:false,url:'about:blank',pendingUrl:A.PROVIDERS.claude.url,status:'loading'}:get(id);
+ await x.B.startClaudeProbe();
+ assert.equal(x.saved.apiCredits.claude.promotional?.amount,12);
+ assert.equal(x.session['llms-claude-api-pause-v1'],undefined);
+});

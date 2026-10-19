@@ -16,6 +16,8 @@
   return serialize(async()=>{const saved=await chrome.storage.local.get('apiCredits'),data=saved.apiCredits||{};if(data[id]?.enabled!==true)return {ok:false};if(id==='claude'){const candidate=A.accept(data[id],message,Date.now());if(sender.tab.active===true&&message.loading!==true&&candidate.promotional?.status==='ready'){data[id]=candidate;await chrome.storage.local.set({apiCredits:data});await chrome.storage.session?.remove(PAUSE_KEY);manualOverrideAt=Date.now();claudeHoldUntil=Date.now()+60000;return {ok:true}}if(sender.tab.id===activeProbeId){probeSnapshot={...candidate,loading:message.loading===true};return {ok:true}}if(activeProbeId!==null||Date.now()<claudeHoldUntil)return {ok:false};if(message.loading===true)return {ok:false}}data[id]=A.accept(data[id],message,Date.now());await chrome.storage.local.set({apiCredits:data});return {ok:true}});
  }
  function sameBilling(url){return [A.PROVIDERS.claude.url,A.PROVIDERS.claude.url+'/'].includes(url)}
+ // Chrome may expose the initial blank document while the approved navigation is pending.
+ const billingPending=tab=>(!tab.url||tab.url==='about:blank')&&sameBilling(tab.pendingUrl);
  function bounded(task,ms=5000){let timer;return Promise.race([task,new Promise((_,reject)=>{timer=setTimeout(()=>reject(Error('API reader timeout')),ms)})]).finally(()=>clearTimeout(timer));}
  async function cleanupProbe(expectedId){
   const record=(await chrome.storage.session?.get(PROBE_KEY))?.[PROBE_KEY];if(!record||expectedId!==undefined&&record.id!==expectedId||expectedId===undefined&&record.expiresAt>Date.now())return;
@@ -23,12 +25,12 @@
   try{if(root.GlanceQuietTabs)await root.GlanceQuietTabs.release(record.id);else{const tab=await chrome.tabs.get(record.id);if(!tab.active&&sameBilling(tab.url))await chrome.tabs.remove(record.id)}}catch{}return true;
  }
  function startClaudeProbe(force=false){
-  if(claudeProbe)return claudeProbe;if(!chrome.storage.session||Date.now()-lastProbeAt<60000)return Promise.resolve();
+  if(claudeProbe)return claudeProbe;if(!chrome.storage.session||!force&&Date.now()-lastProbeAt<60000)return Promise.resolve();
   const operation=(async()=>{if(force)await chrome.storage.session.remove(PAUSE_KEY);else if((await chrome.storage.session.get(PAUSE_KEY))[PAUSE_KEY])return;await cleanupProbe();const previous=(await chrome.storage.session.get(PROBE_KEY))[PROBE_KEY];const state=await chrome.storage.local.get('apiCredits');if(!state.apiCredits?.claude?.enabled||!await permitted('claude'))return;lastProbeAt=Date.now();let owned,retain=false,recoveryAt=Number(previous?.recoveryAt)||0;
    try{
     owned=await (root.GlanceQuietTabs?root.GlanceQuietTabs.create(A.PROVIDERS.claude.url):chrome.tabs.create({url:A.PROVIDERS.claude.url,active:false}));if(!Number.isInteger(owned?.id))return;
     activeProbeId=owned.id;probeSnapshot=null;
-    if(owned.reused){let live;try{live=await bounded(chrome.tabs.get(owned.id))}catch{}if(live&&(live.active||!sameBilling(live.url)))return;
+    if(owned.reused){let live;try{live=await bounded(chrome.tabs.get(owned.id))}catch{}if(live&&(live.active||!sameBilling(live.url)&&!billingPending(live)))return;
      // Never restart a slow navigation that is still loading from the previous attempt.
      if(live?.status==='complete'&&!live.frozen&&!live.discarded&&Date.now()-recoveryAt>=60000&&(!previous||previous.id!==owned.id||previous.ready===true)&&(!root.GlanceQuietTabs?.isOwned||await root.GlanceQuietTabs.isOwned(owned.id))){recoveryAt=Date.now();await bounded(chrome.tabs.reload(owned.id)).catch(()=>{})};
     }
@@ -43,6 +45,7 @@
      const current=await chrome.storage.local.get('apiCredits');if(!current.apiCredits?.claude?.enabled||!await permitted('claude')){retain=false;break}
      if(manualOverrideAt>=started)break;
      let tab;try{tab=await bounded(chrome.tabs.get(owned.id))}catch(error){lastStage='browser-busy';if(/No tab with id|Invalid tab ID|^Closed$/i.test(error.message||'')){await chrome.storage.session.set({[PAUSE_KEY]:true});retain=false;break}await new Promise(resolve=>setTimeout(resolve,1500));continue}
+     if(!tab.active&&billingPending(tab)){lastStage='page-loading';await new Promise(resolve=>setTimeout(resolve,1500));continue}
      if(tab.active||tab.url&&!sameBilling(tab.url)){lastStage='confirmation-required';if(tab.url&&!sameBilling(tab.url))await chrome.storage.session.set({[PAUSE_KEY]:true});retain=false;break}
      if(tab.frozen||tab.discarded){
       lastStage='page-paused';

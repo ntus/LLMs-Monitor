@@ -7,7 +7,7 @@
     "title": "From first connection<br>to your next task.",
     "intro": "A practical guide to everyday use. Read in order, or jump to the feature you need.",
     "toc": "On this page",
-    "revision": "Guide updated 19 October 2026 · Web 1.61.0 / extension 1.61.0 · helper 1.30.2",
+    "revision": "Guide updated 19 October 2026 · Web 1.62.0 / extension 1.62.0 · helper 1.30.2",
     "chapters": [
       {
         "id": "setup",
@@ -28,7 +28,7 @@
           },
           {
             "type": "link",
-            "text": "Download main extension v1.61.0 ↓",
+            "text": "Download main extension v1.62.0 ↓",
             "url": "LLMs-Monitor.zip"
           },
           {
@@ -329,7 +329,7 @@
     "title": "導入から、<br>作業の続きまで。",
     "intro": "毎日の使い方を、このページで一通り。順に読むことも、必要な項目だけ確認することもできます。",
     "toc": "使い方の目次",
-    "revision": "2026年10月19日更新 · Web 1.61.0／拡張機能1.61.0 · ヘルパー1.30.2",
+    "revision": "2026年10月19日更新 · Web 1.62.0／拡張機能1.62.0 · ヘルパー1.30.2",
     "chapters": [
       {
         "id": "setup",
@@ -350,7 +350,7 @@
           },
           {
             "type": "link",
-            "text": "本体拡張機能 v1.61.0 をダウンロード ↓",
+            "text": "本体拡張機能 v1.62.0 をダウンロード ↓",
             "url": "LLMs-Monitor.zip"
           },
           {

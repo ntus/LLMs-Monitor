@@ -1,3 +1,9 @@
+# 1.62.0 — 2026-10-19
+
+- Wait for the initial approved Claude billing navigation instead of treating its blank document as a login redirect.
+- Explicit Refresh now retries a paused billing attempt immediately; automatic cooldown and concurrent-read coalescing remain.
+- No reader payload, permissions, quota/history/audio or helper changes. Live signed-in unattended reading still requires installed-version verification.
+
 # 1.61.0 — 2026-10-19
 
 - Claude billing retries short transport failures instead of aborting, waits up to 90 seconds for hydration, and keeps only one pending DOM read per attempt.
