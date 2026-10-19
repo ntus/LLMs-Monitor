@@ -222,3 +222,7 @@ v1.61.0: Claude API請求画面の低速読込みに対応。取得用の裏タ�
 
 
 v1.62.0: Claude請求画面への移動途中の空白ページをログイン移動と誤認して停止する条件を修正。「今すぐ更新」による再試行は、自動取得用の1分待機で無視しません。同時取得の集約・権限・取得用タブの制限は維持します。実アカウントでの無操作取得は、導入版の確認を含めて引き続き受入確認が必要です。
+
+
+v1.63.0: Claude API残高は画面の描画待ちをやめ、ログイン済みConsoleの残高データを直接取得します。残高画面の表示・前面切替は不要です。APIキー入力・Cookie取り出し・有料推論リクエストは行いません。複数のAPI組織や複数の未失効残高を勝手に選択・合算しません。新経路は実アカウントでの確認が必要です。
+Schema reference (undocumented provider endpoints): https://github.com/steipete/CodexBar/blob/main/Sources/CodexBarCore/Resources/Plugins/claudeplatform.ts . Authentication is implemented with the browser session and existing optional host permission; upstream cookie-import mechanisms are not used.
