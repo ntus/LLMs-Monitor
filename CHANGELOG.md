@@ -1,3 +1,10 @@
+# 1.63.0 — 2026-10-20
+
+- Claude API credits now use read-only Console session data instead of waiting for background page rendering. No billing tab is opened or activated.
+- Keep purchased/promotional balances separate, reject ambiguous organizations/grants and validate currency/minor units. No cookie extraction, API keys or payment/inference calls.
+- One coalesced request, bounded timeout and rate-limit backoff. Transient errors retain original timestamps; auth/account ambiguity clears current amounts.
+- Installed signed-in acquisition remains unverified; this is not a claim of live acceptance.
+
 # 1.62.0 — 2026-10-19
 
 - Wait for the initial approved Claude billing navigation instead of treating its blank document as a login redirect.

@@ -1,11 +1,12 @@
 (function(root){
- const A=root.GlanceApiCredits;let creditQueue=Promise.resolve(),claudeProbe=null,lastProbeAt=0,activeProbeId=null,probeSnapshot=null,claudeHoldUntil=0,manualOverrideAt=0;const PROBE_KEY='llms-claude-api-probe-v1',PROBE_ALARM='llms-claude-api-probe-close',PAUSE_KEY='llms-claude-api-pause-v1';
+ const A=root.GlanceApiCredits;let creditQueue=Promise.resolve(),claudeProbe=null,lastProbeAt=0,activeProbeId=null,probeSnapshot=null,claudeHoldUntil=0,manualOverrideAt=0,claudeDirect=null,directRetryAt=0,directGeneration=0;const PROBE_KEY='llms-claude-api-probe-v1',PROBE_ALARM='llms-claude-api-probe-close',PAUSE_KEY='llms-claude-api-pause-v1';
  function serialize(fn){const task=creditQueue.then(fn);creditQueue=task.catch(()=>{});return task}
  function permission(id){return {permissions:['scripting'],origins:[A.PROVIDERS[id].origin+'/*']}}
  async function permitted(id){return !!chrome.permissions&&await chrome.permissions.contains(permission(id))}
  async function register(id){const scriptId='llms-api-'+id,found=await chrome.scripting.getRegisteredContentScripts({ids:[scriptId]});if(!found.length)await chrome.scripting.registerContentScripts([{id:scriptId,matches:[A.PROVIDERS[id].origin+'/*'],js:['api-credits.js','api-credit-reader.js'],runAt:'document_idle',persistAcrossSessions:true}])}
  async function configure(id,enabled){
   if(!Object.hasOwn(A.PROVIDERS,id))throw Error('Unknown API provider');if(enabled&&!await permitted(id))throw Error('API permission required');
+  if(id==='claude'){directGeneration++;directRetryAt=0}
   await serialize(async()=>{const saved=await chrome.storage.local.get('apiCredits'),data=saved.apiCredits||{};data[id]={enabled:!!enabled,status:'unavailable',capturedAt:0};await chrome.storage.local.set({apiCredits:data})});
   if(id==='claude')await chrome.storage.session?.remove(PAUSE_KEY);
   if(!enabled&&id==='claude'){const record=(await chrome.storage.session?.get(PROBE_KEY))?.[PROBE_KEY];if(record)await cleanupProbe(record.id)}
@@ -75,9 +76,29 @@
    }
   })();claudeProbe=operation;operation.finally(()=>{if(claudeProbe===operation)claudeProbe=null}).catch(()=>{});return operation;
  }
+ function refreshClaudeDirect(force=false){
+  if(claudeDirect)return claudeDirect;if(!force&&Date.now()<directRetryAt)return Promise.resolve();
+  const generation=directGeneration;
+  const task=(async()=>{
+   const saved=await chrome.storage.local.get('apiCredits');if(!saved.apiCredits?.claude?.enabled||!await permitted('claude'))return;
+   directRetryAt=Date.now()+60000;let value,errorCode,errorScope;
+   // Retire an old owned DOM probe; never close a user-adopted page.
+   const record=(await chrome.storage.session?.get(PROBE_KEY))?.[PROBE_KEY];if(record)await cleanupProbe(record.id);
+   try{value=await root.GlanceClaudeBilling.read()}catch(error){errorScope=/^[a-f0-9]{8}$/.test(error.scope||'')?error.scope:'';errorCode=['login','rate-limited','ambiguous','no-api-organization','format','timeout','http','transport'].includes(error.code)?error.code:'transport';if(errorCode==='rate-limited')directRetryAt=Date.now()+300000}
+   await serialize(async()=>{
+    const state=await chrome.storage.local.get('apiCredits'),data=state.apiCredits||{};
+    if(generation!==directGeneration||!data.claude?.enabled||!await permitted('claude'))return;
+    const at=Date.now(),acquisition={status:value?'ready':'waiting',stage:value?'console-api':'console-'+errorCode,at};
+    if(value){data.claude={...A.accept(data.claude,{service:'claude',...value},at),acquisition};claudeHoldUntil=at+60000;await chrome.storage.session?.remove(PAUSE_KEY)}
+    else if(['login','ambiguous','no-api-organization'].includes(errorCode)||errorScope&&errorScope!==data.claude.scope)data.claude={...A.accept(data.claude,{service:'claude',status:errorCode==='login'?'login':'unavailable',scope:errorScope},at),acquisition};
+    else data.claude={...data.claude,acquisition};
+    await chrome.storage.local.set({apiCredits:data});
+   });
+  })();claudeDirect=task;task.finally(()=>{if(claudeDirect===task)claudeDirect=null}).catch(()=>{});return task;
+ }
  async function refresh(only,force=false){
   const saved=await chrome.storage.local.get('apiCredits'),ids=only?[only]:Object.keys(A.PROVIDERS);
-  await Promise.allSettled(ids.map(async id=>{if(!saved.apiCredits?.[id]?.enabled)return;if(!await permitted(id)){await configure(id,false);return}await register(id);const tabs=await chrome.tabs.query({url:A.PROVIDERS[id].origin+'/*'});if(id==='claude'){const active=tabs.find(tab=>tab.active&&sameBilling(tab.url));if(!active){startClaudeProbe(force).catch(()=>{});return}try{const reply=await bounded(chrome.tabs.sendMessage(active.id,{type:'API_CREDIT_READ'}));if(reply?.ready&&reply.version==='1.61.0')return}catch{}await bounded(chrome.scripting.executeScript({target:{tabId:active.id},files:['api-credits.js','api-credit-reader.js']}));return}for(const tab of tabs){if(!A.provider(tab.url)||!Number.isInteger(tab.id))continue;try{const reply=await bounded(chrome.tabs.sendMessage(tab.id,{type:'API_CREDIT_READ'}));if(reply?.ready&&reply.version==='1.61.0')continue}catch{}await bounded(chrome.scripting.executeScript({target:{tabId:tab.id},files:['api-credits.js','api-credit-reader.js']}))}}));
+  await Promise.allSettled(ids.map(async id=>{if(!saved.apiCredits?.[id]?.enabled)return;if(!await permitted(id)){await configure(id,false);return}if(id==='claude'&&root.GlanceClaudeBilling){refreshClaudeDirect(force).catch(()=>{});return}await register(id);const tabs=await chrome.tabs.query({url:A.PROVIDERS[id].origin+'/*'});if(id==='claude'){const active=tabs.find(tab=>tab.active&&sameBilling(tab.url));if(!active){startClaudeProbe(force).catch(()=>{});return}try{const reply=await bounded(chrome.tabs.sendMessage(active.id,{type:'API_CREDIT_READ'}));if(reply?.ready&&reply.version==='1.61.0')return}catch{}await bounded(chrome.scripting.executeScript({target:{tabId:active.id},files:['api-credits.js','api-credit-reader.js']}));return}for(const tab of tabs){if(!A.provider(tab.url)||!Number.isInteger(tab.id))continue;try{const reply=await bounded(chrome.tabs.sendMessage(tab.id,{type:'API_CREDIT_READ'}));if(reply?.ready&&reply.version==='1.61.0')continue}catch{}await bounded(chrome.scripting.executeScript({target:{tabId:tab.id},files:['api-credits.js','api-credit-reader.js']}))}}));
  }
- root.GlanceApiCreditBackground={configure,receive,refresh,permission,cleanupProbe,startClaudeProbe,PROBE_ALARM};
+ root.GlanceApiCreditBackground={configure,receive,refresh,permission,cleanupProbe,startClaudeProbe,refreshClaudeDirect,PROBE_ALARM};
 })(globalThis);
