@@ -24,23 +24,23 @@
   const live=[];for(const owned of state.tabs||[])try{await chrome.tabs.get(owned.id);live.push(owned)}catch{}
   // An extension reload clears session storage. Recover only tabs marked as muted by this exact extension and opened from this monitor.
   const reusable=(await chrome.tabs.query({url:url==='https://claude.ai/settings/usage'?[url,'https://claude.ai/new*']:url==='https://platform.claude.com/settings/billing'?[url,url+'/']:url})).find(tab=>!tab.active&&tab.windowId===windowId&&tab.openerTabId===monitor.id&&marked(tab)&&samePage(tab.url,url));
-  if(reusable){if(!live.some(t=>t.id===reusable.id))await save({tabs:[...live,{id:reusable.id,url}]});return {...reusable,reused:true};}
+  if(reusable){if(!live.some(t=>t.id===reusable.id))await save({tabs:[...live,{id:reusable.id,url,...(url==='https://platform.claude.com/settings/billing'&&reusable.autoDiscardable===false?{restoreDiscardable:true}:{})}]});return {...reusable,reused:true};}
   if(live.length>=12)throw Error('Quiet acquisition capacity reached');
   const tab=await chrome.tabs.create({url,windowId,openerTabId:monitor.id,active:false});
   if(!Number.isInteger(tab?.id))throw Error('Acquisition tab unavailable');
-  try{await save({tabs:[...live,{id:tab.id,url}]})}catch(error){try{const current=await chrome.tabs.get(tab.id);if(!current.active&&samePage(current.url||current.pendingUrl,url))await chrome.tabs.remove(tab.id)}catch{}throw error;}
-  try{await chrome.tabs.update(tab.id,{muted:true})}catch{}
+  try{await save({tabs:[...live,{id:tab.id,url,...(url==='https://platform.claude.com/settings/billing'&&tab.autoDiscardable!==false?{restoreDiscardable:true}:{})}]})}catch(error){try{const current=await chrome.tabs.get(tab.id);if(!current.active&&samePage(current.url||current.pendingUrl,url))await chrome.tabs.remove(tab.id)}catch{}throw error;}
+  try{await chrome.tabs.update(tab.id,{muted:true,...(url==='https://platform.claude.com/settings/billing'?{autoDiscardable:false}:{})})}catch{}
   return tab;
  });}
  function release(id){return serial(async()=>{
   const state=await read(),owned=(state.tabs||[]).find(t=>t.id===id);if(!owned)return false;
   // Keep user-activated/navigated tabs; never delete a whole window or its blank tab.
-  try{const tab=await chrome.tabs.get(id);if(!tab.active&&(samePage(tab.url,owned.url)||!tab.url&&samePage(tab.pendingUrl,owned.url)))await chrome.tabs.remove(id);else if(marked(tab))await chrome.tabs.update(id,{muted:false})}catch{}
+  try{const tab=await chrome.tabs.get(id);if(!tab.active&&(samePage(tab.url,owned.url)||!tab.url&&samePage(tab.pendingUrl,owned.url)))await chrome.tabs.remove(id);else if(marked(tab))await chrome.tabs.update(id,{muted:false,...(owned.restoreDiscardable?{autoDiscardable:true}:{})})}catch{}
   await save({tabs:(state.tabs||[]).filter(t=>t.id!==id)});return true;
  });}
  async function sameMonitorWindow(windowId){try{return Number.isInteger(windowId)&&await monitorWindow()===windowId}catch{return false}}
  // A user-activated or navigated acquisition tab becomes user-owned. Clear our mute marker so a later reload cannot recover it.
- async function relinquish(id){try{const tab=await chrome.tabs.get(id);if(!marked(tab))return;await chrome.tabs.update(id,{muted:false});await serial(async()=>{const state=await read();await save({tabs:(state.tabs||[]).filter(t=>t.id!==id)})})}catch{}}
+ async function relinquish(id){try{const tab=await chrome.tabs.get(id);if(!marked(tab))return;const owned=(await read()).tabs?.find(t=>t.id===id);await chrome.tabs.update(id,{muted:false,...(owned?.restoreDiscardable?{autoDiscardable:true}:{})});await serial(async()=>{const state=await read();await save({tabs:(state.tabs||[]).filter(t=>t.id!==id)})})}catch{}}
  chrome.tabs.onActivated?.addListener(({tabId})=>relinquish(tabId));
  chrome.tabs.onUpdated?.addListener((id,change)=>{if(change.url)read().then(state=>{const owned=(state.tabs||[]).find(t=>t.id===id);if(!owned||!samePage(change.url,owned.url))relinquish(id)}).catch(()=>{})});
  async function isOwned(id){try{const state=await read(),owned=(state.tabs||[]).find(t=>t.id===id),tab=await chrome.tabs.get(id);return !!owned&&!tab.active&&marked(tab)&&samePage(tab.url,owned.url)}catch{return false}}

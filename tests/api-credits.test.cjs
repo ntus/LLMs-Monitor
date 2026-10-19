@@ -79,3 +79,5 @@ test('Claude promotional credits are separate from paid balance and never inferr
  const missing=A.accept(row,{service:'claude',status:'unavailable'},Date.now());assert.equal(missing.promotional.amount,null);
  A.set({claude:missing});assert(!A.view('claude').includes('200.00'));
 });
+
+test('slow acquisition metadata never refreshes a stale billing value and explains retry in the existing note',()=>{const old=Date.now()-180000;A.set({claude:{enabled:true,status:'ready',amount:0,currency:'USD',capturedAt:old,promotional:{status:'ready',amount:12,currency:'USD',capturedAt:old},acquisition:{status:'waiting',stage:'browser-busy',at:Date.now(),durationMs:90000}}});const html=A.view('claude');assert.match(html,/同じ取得ページで自動再試行/);assert.match(html,/api-credit-stale/);assert.match(html,/90秒/);});
