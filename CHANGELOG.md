@@ -1,5 +1,7 @@
 # 1.63.0 — 2026-10-20
 
+Documentation refresh, 2026-10-21: current bilingual user/helper/task/updater/privacy instructions and all standalone Markdown manuals rebuilt. App version remains 1.63.0; app assets, extension/helper/updater ZIPs and update feed are unchanged. User reports of current stability are recorded separately from exhaustive installed-browser acceptance.
+
 - Claude API credits now use read-only Console session data instead of waiting for background page rendering. No billing tab is opened or activated.
 - Keep purchased/promotional balances separate, reject ambiguous organizations/grants and validate currency/minor units. No cookie extraction, API keys or payment/inference calls.
 - One coalesced request, bounded timeout and rate-limit backoff. Transient errors retain original timestamps; auth/account ambiguity clears current amounts.

@@ -9,3 +9,11 @@ test('manual-only build succeeds without any app/manifest inputs and preserves a
 test('manual-only build rejects empty/unknown/traversal/mixed scope before writing even a valid selected guide',()=>fixture(dir=>{
  for(const args of [['--manuals-only'],['--manuals-only','CODEX_HELPER.md','../native/README.md'],['--manuals-only','CODEX_HELPER.md','--package'],['--manuals-only','CODEX_HELPER.md','--codex-helper'],['--package','--manuals-only','CODEX_HELPER.md']]){const r=run(dir,args);assert.notEqual(r.status,0);assert.equal(fs.existsSync(path.join(dir,'dist/docs/CODEX_HELPER.md')),false)}
 }));
+
+
+test('Mac updater manual alias builds from its canonical source without an app manifest',()=>fixture(dir=>{
+ fs.mkdirSync(path.join(dir,'tools/mac-updater'),{recursive:true});fs.writeFileSync(path.join(dir,'tools/mac-updater/README.md'),'Synthetic updater guide');
+ const r=run(dir,['--manuals-only','MAC_UPDATER.md']);assert.equal(r.status,0,r.stderr);
+ assert.match(fs.readFileSync(path.join(dir,'dist/docs/MAC_UPDATER.md'),'utf8'),/main\/tools\/mac-updater\/README\.md\n\nSynthetic updater guide$/);
+ assert.equal(fs.readFileSync(path.join(dir,'dist/LLMs-Monitor-v1.33.0.zip'),'utf8'),'preserve LLMs-Monitor-v1.33.0.zip');
+}));

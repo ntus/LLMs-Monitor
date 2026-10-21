@@ -1,12 +1,12 @@
 Canonical guide / 正本: https://github.com/ntus/LLMs-Monitor/blob/main/SECURITY_REVIEW.md
 
-# Security review — v1.32.0
+# Security review — v1.63.0
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 <a id="en"></a>
 
-This review includes current v1.32.0 checks and historical evidence; it is not a guarantee that no vulnerabilities exist. A release owner should also test the packaged extension in current Chrome and Edge with real accounts and submit it to store review.
+This review includes the v1.63.0 Console adapter and historical release evidence; superseded version-specific controls below are historical, not current operating instructions. It is not a guarantee that no vulnerabilities exist. A release owner should also test the packaged extension in current Chrome and Edge with real accounts and submit it to store review.
 
 
 ## v1.32 release audit — 2026-10-12
@@ -87,6 +87,14 @@ The optional independent task window checks already-open provider conversation t
 
 TASK-CODE-001 reads exact accessibility labels from rendered Claude Code sidebar session links via a fresh inactive Code home, alongside the normal sidebar. Individual conversation tabs need not be open. Input-needed and idle are list observations; unread replies and merged pull requests never imply completion. One-minute acquisition remains bounded and closes both owned tabs; partial success is accepted. List evidence expires after 90 seconds, open-tab evidence after 15 seconds; conflicting evidence stays unknown. No quota/history/audio, permission, message-body or credential changes. Official list labels were inspected on 2026-10-11; installed-package end-to-end behavior is still unverified.
 
+
+## v1.36 — Free Tibo public-page reading
+
+In the monitor, choose **Tibo connections**, allow optional `https://x.com/*` access, then keep a signed-in Tibo profile/post open in Chrome. Only rendered public posts by `@thsottiaux` are inspected once per minute; there is no automatic reload, hidden crawl, paid API, credential extraction or DM/input reading. Undisplayed new posts are not discovered. Missing page/access restrictions show unavailable, preserving prior public alerts; first read is silent and later post IDs notify once. No private usage or notes are sent to X.
+
+ChatGPT main and all shared subviews show **Tibo 𝕏 Reset? (YYYYMMDD HH:MM)** only when an announced future deadline can be parsed. Currently explicit “by EOD PST time” is converted from the posting day's fixed UTC−08:00 end (23:59) to the device timezone. It is an approximate deadline, not an exact execution time. Tooltip shows the announcement/timezone; click opens the exact source post. The mark disappears at the deadline. Short announcements without a deadline still enter the feed, but do not receive a dated mark. Personal quota recovery remains unverified until official usage changes.
+
+The server feed remains unconfigured; this optional browser reader does not deploy or use it. Installed-package permission/notification acceptance is pending.
 <a id="ja"></a>
 
 ## 現行v1.31.0精査
@@ -198,3 +206,96 @@ Verification: all 278 CJS/MJS regressions pass, including the existing Python ho
 Explicit star clicks persist only existing validated note routes and bounded titles; no automatic acquisition/body persistence. Optional note fields retain existing key/schema; unstar is nondestructive. Provider/workspace scope and revision validation protect reorder and editing. Foreign drops are ignored; drag payload is a constant marker without title/URL. Export/import remains explicit; no cloud synchronization. Main monitor/native/extension ZIPs remain unchanged. Local DOM verification uses synthetic tasks only.
 
 Verification: all 281 CJS/MJS tests pass including Python host regressions. Synthetic local browser UI confirms star registration, unstar/re-add, keyboard order and persistence after reload; 240px viewport has no horizontal overflow. Drag handlers and revision conflict/JSON round-trip are covered by automated tests; physical pointer drag in installed Chrome/Edge remains a manual acceptance check. Favorite controls apply to existing validated conversation/thread/Codex note URLs; project-only pin links remain links, without widening note route permissions. Production notes were not modified.
+
+## v1.36 — 無料のTibo公開ページ読取り
+
+メインの［Tibo連携］から任意の `https://x.com/*` アクセスを許可し、Chromeでログイン済みのTiboプロフィールまたは投稿を開いてください。1分ごとに、画面に表示済みの `@thsottiaux` 本人の公開投稿だけを確認します。自動リロード・裏の巡回・有料API・認証取得・DM／入力欄読取りは行いません。未表示の新着は検知できず、ページなし・アクセス制限は取得不能になります。初回は無音、以後の新しい投稿IDを一度だけ通知します。利用残量・メモをXへ送りません。
+
+予定期限を読み取れる場合だけ、ChatGPTのメインと共通サブ画面に **Tibo 𝕏 Reset? (YYYYMMDD HH:MM)** を表示します。現在は明示的な「by EOD PST time」を、投稿日のPST（固定UTC−08:00）の当日末23:59という目安に解釈し、端末の現地時間へ換算します。正確な実施時刻ではありません。ツールチップで内容・タイムゾーンを確認でき、クリックで当該投稿へ移動、期限後は非表示です。日時のない短文告知は速報に表示しますが日時付きマークを出しません。個人の残量回復は公式使用量の変化で別途確認します。
+
+サーバー配信は引き続き未設定です。この任意ブラウザ経路はサーバー配置・有料API利用をしません。更新済み拡張機能の権限・通知の実機確認は未完了です。
+
+## v1.38.0 — 2026-10-13
+
+Claude billing probe uses an owned inactive official billing tab only after existing opt-in permission; it is independent of the quota queue, coalesced, bounded and cleaned up. User-activated/navigated tabs are retained. API balances remain separate from quotas/history. Codex setup prepares an entirely local ZIP with a validated exact extension ID, executable macOS entrypoint and no network upload; native authorization remains exact. Existing enabled connections are checked on opening setup. Tibo public readers run bounded per-tab reads independently, report bounded counts/API availability, and support explicit diagnostics without quota-queue blocking. Advice must not obscure the feed/status content.
+
+本体・拡張機能v1.38.0／ヘルパーv1.30.2をビルドし、取説は正本だけ更新。既存dist/docsを再生成しない。実端末のClaude自動取得と初回専用ZIP導入は利用者確認が必要。Tibo告知の取得は利用者が動作確認し、アドバイスON時の重なりを報告。予定期限は実際の個別残量回復時刻ではない。
+
+Verification for v1.38: 297 regression tests passed before the additional one-click sequence check. Synthetic local layout shows expanded Tibo feed and status above Advice ON. All 10 standalone manual checksums are unchanged. Generic/personalized ZIP integrity and exact-origin installer tests pass; no real user native installation was changed.
+
+## v1.39.0 — Tibo / expanded status layout (2026-10-13)
+
+Measure the complete fixed status dock with ResizeObserver; expanded content flows inside the dock and is bounded/scrollable. Reserve measured height for main content and place the advice ribbon above it independently of ON/OFF. ChatGPT reset entitlement includes a separate Tibo public profile link below the row; a verified future reset announcement uses a warning, dated label, tooltip and exact post link. After expiry restore the plain profile link. Available count stays inside its official usage link. Preserve quotas/history/audio, optional permissions and native helper. Build app/extension only, retain helper/manual bytes.
+
+Verification v1.39: 300 regression tests passed. Local synthetic expanded-status screens with Advice OFF and ON retain readable Tibo feed. ZIP integrity verified; helper ZIPs and 10 standalone manuals unchanged. Live installed-browser upgrade remains user acceptance.
+
+## 2026-10-16 emergency correction — automatic window proliferation
+
+Supersedes the v1.42 minimized-host requirement: acquisition must never call windows.create/update/remove or create about:blank. Use an explicit existing non-incognito normal window ID and active:false; with no normal window, skip acquisition. Keep serialized session ownership and the 12-tab cap. Close only inactive owned tabs still on their acquisition route (or the exact allowed Claude usage redirect). Never close existing windows or user-adopted/navigated tabs. Older minimized-host records must not trigger window replacement. This intentionally allows temporary inactive acquisition tabs in an existing normal window to prevent automatic window creation.
+
+Release validation: 313 full regression tests pass, including 60 repeated/concurrent acquisition attempts with zero window mutations, popup-only skip, old record migration and adopted-tab protection. App/extension v1.43.0 built with unchanged manuals/helper ZIPs. Hosted v1.42 source was reconciled without dropping its changes. Installed-browser upgrade and a sustained real-user no-popup check remain user acceptance gates.
+
+## v1.44.0 — compact information and acquisition (2026-10-16)
+
+Main provider warning and Tibo feed move into the existing fixed-height connection row, rotating every five seconds plus manual next; plain-text tooltip/source and Tibo setup remain available. Remove main-card notice/footer feed only; retain floating warning and independent official incidents. Claude optional billing acquisition starts before quotas finish, coalesces, waits up to 35 seconds with 45-second ownership cleanup, and never creates a window. Gemini plan discovery is bounded to three seconds after valid quota rows, validates utilization as an explicit number within 0..1, and accepts account-qualified official usage routes. On API failure read up to three existing official usage tabs only; no new Gemini page/window. User confirms the official Gemini usage page also lacks values: no individual quota recovery is claimed. Unavailable task count is unknown, not zero. No new permissions, paid API, helper or standalone manual regeneration.
+
+Gemini field evidence 2026-10-16: user reported Google /sorry reCAPTCHA at official usage URL, then confirmed values returned after their own manual verification. Do not automate or bypass CAPTCHA. Detect explicit Google /sorry, 429 and bounded unusual-traffic text; abort account exploration on the first challenge. Persist a 15-minute retry-after for challenge or five minutes for other acquisition failure. Explicit trusted Refresh permits one retry; successful fetch clears cooldown. Never store challenge page text, IP, challenge tokens or network identifiers.
+
+Validation v1.44: 321 regression tests passed, including a delayed Claude balance after the former nine-second cutoff, invalid Gemini utilization, CAPTCHA early abort and persisted cooldown/manual retry. Synthetic browser confirmed a single 34px connection row with warnings/Tibo and validated source link. Actual signed-in Claude balance refresh still needs installed-extension acceptance. Gemini challenge recovery was confirmed by the user manually, not by an automated CAPTCHA action.
+
+
+## v1.45.0 — Setup / 追加連携
+
+Single own top-level setup.html groups required sign-in guidance, optional API/Codex/Tibo and up-to-three service selection. Additional Grok/DeepSeek/Perplexity/Genspark account readers are experimental, disabled by default, exact-route/top-frame validated and separately permissioned. Never read chats, auto-navigate/reload, use paid APIs or convert credit balances to quota percentages. Preserve native exact-ID installation and existing no-window acquisition safeguards. Task helper action opens personalized installation/check, not a generic ZIP. Existing helper and standalone manual files remain unchanged. Live additional-provider layouts and installed automatic Claude billing remain acceptance limits.
+
+日本語：セットアップ画面に任意設定を集約。追加4社は公式残高・契約画面の試験読取りで初期無効、実アカウントの形式は未検証。最大3サービスを選択。Codexは同画面からID入力不要のZIP保存・接続確認。ヘルパーと既存取説配布物は再生成しません。
+
+Additional v1.45 regression hardening: Claude completion now requires a validated snapshot from the exact owned probe tab; a concurrent response from an existing billing tab cannot satisfy it. Cleanup drops quiet-tab ownership even when the user adopts/navigates the tab, without deleting that content. Additional-service readers check enabled/permission/route before reading DOM, through a boolean-only independent RPC; revoked/disabled readers do not inspect page text. No response is put behind the global acquisition queue.
+
+Validation v1.45: 334 regression tests passed. Synthetic browser verification confirms three-card mixed core/additional rendering, existing 29% red gauge, Japanese/English controls, three-service selection rejection and successful replacement, unique setup IDs, hidden recovery controls and no horizontal overflow at normal and 390px widths. ZIP CRC/source equality and helper/standalone-manual hashes verified. No real installed-extension replacement or additional-provider account login was performed; those remain live acceptance limits.
+
+
+## v1.46.0 — display mode, sound-on preview and dated author sources (2026-10-17)
+
+USAGE-DISPLAY-001: usageDisplay defaults to remaining; an explicit button immediately after Advice switches to used. Only rendered quota windows, previous percentages and history rows are complemented (100 minus the rounded displayed remainder). Unknown/expired values remain unknown. Credits, reset entitlements, persisted data/history, forecasts and worker sound thresholds remain canonical remaining values. Display changes use a separate numeric tracker; switching modes does not create alerts or history. Persist and synchronize the mode across main, floating, PiP, in-page panels and the isolated task overview. Preserve pending user mode over stale GET responses.
+
+SOUND-ON-PREVIEW-001: remove the separate Test button. A direct OFF-to-ON click plays one preview after enable; OFF, startup and background synchronization do not preview. Revision and notifier cancellation prevent a late preview after OFF. Existing numerical-change and incident audio remain independent.
+
+POST-DETAILS-001: show publication time and direct source link, separate observed/read time from announced reset deadline, and always offer the Tibo profile link. Public metadata includes up to three dated, bounded same-author replies only when the verified parent and reply occur in the same rendered public conversation; unrelated author/conversation, quoted content and malformed links are rejected. Replies not seen are explicitly unverified; no full-thread guarantee. The Tibo seven-day reset/date rules remain; explicit Codex/ChatGPT usage-improvement posts can be usage information without inventing a reset. ClaudeDevs reading is independently disabled by default and must be explicitly enabled in own top-level setup with the existing optional X/scripting permission. It uses the same rendered-only boundary and a 45-day news window, with no automatic page opening, reload, paid API, credentials, DMs or inputs. First observation of each newly enabled author is silent; later matching posts notify once. Existing generic public-feed and static Claude/Google/OpenAI news carry dates/source links; static material never claims that author replies have been checked.
+
+HEADER-PRIVACY-001: header order is Product, Setup, browser-local disclosure. The disclosure supports native keyboard/click details and hover title explaining browser/profile/site storage, no automatic operator upload/cross-device sync, removal risk and explicit note export. No sharing/audience changes.
+
+日本語：残量／使用量ボタンをアドバイスの右に置き、表示だけ反転。履歴保存・通知判定は残量基準で保持。試聴ボタンを廃止し通知音OFF→ONで一度だけ確認音。投稿日時・確認日時・予定期限を区別し、本人の表示済み補足に日時とリンクを追加。Tiboプロフィールリンクは常設。ClaudeDevsは独立した任意設定、表示済み投稿と同一著者の返信だけを読み取り、未表示の返信は未確認。セットアップは製品紹介の右へ移動し、ブラウザ内保存の説明をクリック／キーボード／hoverで提供。配布済み取説・ヘルパーの再生成なし。
+
+Validation v1.46: 344 regression tests passed. Synthetic browser verification confirms 8% remaining → 92% used, weekly 25% → 75%, unchanged $20 credit, reload persistence, Japanese/English control placement, Product/Setup header order and keyboard/click storage disclosure. Public rendered Tibo conversation 2111244596131111253 (2026-10-16T23:55:11Z) and own replies 2111244957851984181 / 2111245052513259606 were inspected; this usage-efficiency announcement is not treated as a reset. Unseen replies and live installed-extension replacement remain unverified.
+
+Validation v1.47: all 347 regression tests pass. Synthetic browser checks confirm same-row local disclosure/language controls at narrow width with no horizontal overflow, a bold single-line weekly reset at fitted 14.5px, pointer movement from bottom to upper viewport, arrow-key movement and Home reset, abbreviated waiting state, no pending session note and no console errors. Existing helper and standalone guide bytes are unchanged. Installed-extension upgrade and real-account collection were not performed.
+
+Validation v1.48: 351 tests passed. Synthetic browser checks show current 40% and weekly 25%, both amber with sufficient depletion history; used mode shows 60% and 75% without altering risk decisions. Weekly bars measure 8px versus primary 4px. Unknown weekly values remain —. Japanese/English and desktop/390px layouts have no horizontal overflow or console errors. Includes idle-time and reset-cycle forecast regression tests. Existing helper/manual hashes preserved; real installed-extension acceptance remains unverified.
+
+Validation v1.49: 353 full regression tests pass, plus six targeted gauge/forecast tests after CSS refinement. Synthetic browser checks confirm outer weekly r51/stroke7 and inner current r42/stroke3.5; labeled 5-hour100% / weekly4% invert to 0% /96% in used mode. Each reset is grouped immediately under its quota, urgent icon stays inline, background alpha is .62. Japanese/English and 1280/390px layouts show no horizontal overflow or console errors. ZIP/source equality and unchanged helper/manual hashes verified. Live installed-extension update remains unverified.
+
+## v1.50.0 — dashboard redesign
+DASHBOARD-150 supersedes prior gauge typography, warning colors and fullscreen fixed-height layout. Ring center has six ordered rows: caption, current-session label, current %, parenthesized countdown, weekly %, parenthesized countdown. Outer weekly ring remains thick but becomes a pale same-hue tint of the inner session ring. Dates live only beside left-aligned horizontal quota bars, matching task overview hierarchy. Low remaining (<=15%) or qualified depletion forecast blinks percentage only; no warning hue change. Reduced-motion uses a static dotted emphasis. Data, history and sound decision contracts are untouched.
+Connection/feed messages, optional advice, incidents and collapsed diagnostics share a bottom dock; independently expanded incident/advice state and explicit drag controls persist. Fullscreen uses responsive document flow and scrolling instead of clipped fixed rows; at narrow/zoomed widths all selected cards remain reachable without overlap. This explicitly supersedes the earlier no-scroll narrow fullscreen layout.
+Main setup explains ZIP extraction, browser extensions page, Developer mode, Load unpacked, pairing and official sign-in. Service selection/floating controls and optional-provider explanations are inline. Only permission-sensitive grants/native installation continue through the unchanged exact own-extension setup boundary; no Web origin gains configure privileges. Existing standalone helper/manual packages are not regenerated.
+
+Validation v1.50: 355 regression tests passed. Synthetic browser checks confirm the six-row text order, independent 100%/4% quotas, no dates inside the circles, percent-only low-capacity animation, pale same-hue outer ring, and a unified bottom dock. Main setup expands inline; API details remain open across language changes and refreshes. Desktop 1280px and narrow/zoom-equivalent 576px/318px layouts have no horizontal overflow. Fullscreen control was exercised and its layout observed; after correcting viewport-based typography, a 240px circle uses 43.2px primary and 20.4px weekly type with content fitting the center. Browser connection became intermittent during final screenshot saving; no final image-capture success or installed-extension/real-account acceptance is claimed. ZIP CRC/source equality and 13 unchanged helper/manual hashes verified.
+
+## v1.58.0 — user-launched Mac updater
+UPDATER-158: keep updater separate from the metadata-only Codex host. User chooses and confirms the currently loaded extension folder once; never inspect Chrome profiles or change native host registrations. Use only fixed public GitHub HTTPS feed/package paths, validated versions, bounded downloads and SHA256. SHA256 is corruption detection, not an independent signature. Stage and validate before same-path replacement, preserve backup, roll back a failed swap; explicit restore retains displaced version. Reject traversal, symlinks, duplicates, oversized/wrong-product packages, changed key and downgrade. Required permission expansion needs confirmation. Keep single-process locking. Tool is unsigned/not notarized, macOS11+/Python3.9+; actual Gatekeeper/browser round-trip remains manual verification.
+RELOAD-158: only a newer local updater marker plus matching on-disk manifest may trigger reload after quota refresh and settings queues complete. No new permissions or Web restart routes. First update from v1.57 or earlier requires one manual reload. Keep existing explicit restart guard unchanged.
+
+INSTALL-FOLDER-159: Fixed-folder initial-install ZIP changes packaging only. Existing updater target validation, same-path replacement, rollback, permission checks and no-profile-access restrictions remain. No automatic migration or native registration changes.
+
+TABS-160: recovery requires matching opener monitor, current extension mute attribution, normal window, inactive exact route. User activation/navigation relinquishes marker. No management permission or URL-only ownership. Legacy duplicates and multiple installed extensions require user review. PACE-160 estimated-date fallback is visual only; no history/audio change.
+
+CLAUDE-SLOW-161: no new permission or foreground navigation. Resource retention is scoped to one app-owned exact billing tab; restore auto-discard when user adopts it. A 180-second inactivity watchdog and explicit disable release only verified owned tabs. No all-tab billing sweep, no private page text or payment details persisted. Reference: https://developer.chrome.com/docs/extensions/reference/api/tabs#property-UpdateProperties-autoDiscardable
+
+Acquisition diagnostics contain only enumerated stages, timing and status. They do not change balance capture times or retain account names, URLs, DOM text or amounts in logs. Recovery reloads are restricted to an inactive verified owned tab and throttled; no auto-focus/unfreeze by activation.
+
+
+CLAUDE-NAV-162: An initial empty/about:blank document with an exact approved billing pendingUrl is navigation in progress, not a login redirect. Wait within the existing 90-second bound without reading the blank document or creating another tab. A foreign or login committed URL is never authorized by pendingUrl. Explicit user retry bypasses only the automatic attempt cooldown; in-flight coalescing, account/permission validation and all tab ownership constraints remain. Keep reader protocol 1.61.0 because its payload is unchanged. Signed-in unattended acquisition remains unverified until the installed package is confirmed.
+
+
+CLAUDE-DIRECT-163: Claude API credit refresh uses read-only Console session GETs to platform.claude.com/api/organizations and exactly one API-capable organization’s prepaid/credits endpoint, without rendering, creating, activating or reloading tabs. This supersedes automatic Claude billing DOM probes in v158-v162. Use existing optional host access and credentials:include; never extract cookies, import browser credentials, accept API keys or call inference/payment APIs. Multiple API organizations fail closed without probing them. Validate response origin/content-type/body bounds, UUID, currency, minor-unit exponent and grant values; purchased and promotional lanes remain separate, and multiple unexpired grants in a lane stay unavailable rather than being summed or inferred from total. Store only sanitized amounts, opaque scope and bounded stage metadata. One in-flight request coalesces with automatic one-minute cadence, 20-second total timeout and five-minute rate-limit backoff; explicit retry is allowed. Disable/revoke invalidates publication. Auth/ambiguous account clears current values; transient failures preserve original capture times, while a changed identified scope cannot reuse old values. No manual foregrounding is required. Console endpoints are undocumented, referenced from upstream CodexBar source; authenticated installed-browser acquisition remains live acceptance pending.

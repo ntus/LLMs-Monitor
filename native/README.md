@@ -2,7 +2,7 @@
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja) · [macOS](#macos-ja)
 
-Guide revised **2026-10-13** for Web / extension **v1.38.0**, helper **v1.30.2**. Prefer the personalized installer described in the v1.38 section below; older ID-entry steps describe the generic installer.
+Guide revised **2026-10-21** for Web / extension **v1.63.0**, helper **v1.30.2**. Prefer the personalized ZIP in Setup → Codex; its extension ID is already configured. Generic downloads still require ID entry. The helper binary/installer ZIP has not changed for this documentation update.
 
 <a id="en"></a>
 
@@ -15,7 +15,7 @@ The optional helper displays this computer’s Codex tasks and local pins in **C
 | Operating system | Current helper support | Installation |
 | --- | --- | --- |
 | macOS | Installer implemented for Google Chrome / Microsoft Edge | Detailed steps below; Python 3.9+ and a discoverable Codex binary |
-| Linux | Installer implemented for standard Google Chrome / Microsoft Edge paths; live Linux acceptance not completed | Extract ZIP; run `python3 install.py`; paste extension ID; enable permission |
+| Linux | Installer implemented for standard Google Chrome / Microsoft Edge paths; live Linux acceptance not completed | Extract personalized ZIP; run `python3 install.py`; generic ZIP only: enter ID; enable permission |
 | Windows | Installer not implemented | Do not run this installer or load its folder as an extension; WSL installation does not register a Windows browser host |
 
 These are **LLMs Monitor helper** limits, not claims about the operating systems supported by Codex itself. Safari / Firefox / Chromium and sandboxed Linux browser packages are not covered by this installer.
@@ -24,25 +24,26 @@ These are **LLMs Monitor helper** limits, not claims about the operating systems
 
 ## macOS: install and connect
 
-1. Open LLMs Monitor in the Chrome or Edge profile that has the main extension installed and paired. Open **ChatGPT → Task details → Codex — Desktop → Connect Codex**. Keep this dedicated extension page open. Copy its **extension ID**: 32 letters a–p, not a ChatGPT account name or Site URL.
-2. Check prerequisites in Terminal (Applications → Utilities → Terminal): `python3 --version`. Use **Python 3.9 or later**. If it is missing or older, install a supported Python release from [Python for macOS](https://www.python.org/downloads/macos/), following the [official Python macOS guide](https://docs.python.org/3/using/mac.html), then open a new Terminal window. Python installation can ask for administrator permission; **the helper itself does not need it**. No pip dependencies are required.
-3. Use Codex on this Mac with the local tasks you want to display. The helper looks for `codex` in the browser host’s PATH, then specific bundled binaries inside `/Applications/ChatGPT.app` or `/Applications/Codex.app`. If a separate CLI is used, `codex --version` is a useful Terminal check; its absence does not by itself rule out a recognized app-bundled binary. For missing Codex, follow [official Codex CLI installation](https://learn.chatgpt.com/docs/codex/cli). Terminal PATH success alone does not prove that Chrome / Edge can discover the CLI.
-4. In **LLMs Monitor → ChatGPT → Task details → Codex — Desktop**, use the new download link for [Codex helper v1.30.1](https://llmsmonitor.ntus.info/LLMs-Monitor-Codex-Helper-v1.30.1.zip), and double-click the ZIP in Finder to extract it. Use the extracted folder, not the ZIP or a preview of its contents.
-5. Double-click **Install.command**. A Terminal window asks `LLMs Monitor extension ID / 拡張機能ID:`. Paste the ID from step 1 and press Return. Success contains **Installed.** and **導入完了。**. Press Return again to close. The success message confirms host registration, not yet a working browser connection.
-6. If double-click does not execute, use the Terminal method below. Do not remove quarantine attributes or disable macOS security protections.
-7. Return to **Connect Codex**, click **Enable connection**, and allow the optional native-messaging permission. **Connection enabled** confirms the setting and permission only. Click **Check connection** for the actual result: `N tasks · P/Q pins · runtime connected` or `metadata only`.
-8. Return to the ChatGPT task window, turn **Auto ON** and click **Refresh list**. The local Codex list appears in its own **Codex — Desktop** section, separate from browser chats. If the check requests a cooldown, wait about one minute before trying again.
+1. Open LLMs Monitor in the Chrome/Edge profile with the main extension installed and paired. Open **Setup → Codex**, or **ChatGPT → Task details → Codex — Desktop → Connect Codex**. Keep this connection page available.
+2. Check `python3 --version` in Terminal. Python **3.9 or later** is required; no pip dependencies or helper administrator permission are needed. If necessary, use [Python for macOS](https://www.python.org/downloads/macos/) and its [official installation guide](https://docs.python.org/3/using/mac.html).
+3. Use Codex on this Mac. The helper looks for the CLI in the browser host’s PATH and recognized app bundles under `/Applications/ChatGPT.app` or `/Applications/Codex.app`. Terminal PATH success alone does not prove the GUI browser can discover it. No desktop app/shared server is automatically restarted.
+4. Choose **Save installer ZIP for this extension**, then extract it in Finder. It contains the current extension ID. The [generic helper v1.30.2](https://llmsmonitor.ntus.info/LLMs-Monitor-Codex-Helper-v1.30.2.zip) is an alternative but asks for the ID. Do not load either helper folder as a Chrome extension.
+5. Run **Install.command** in the extracted folder. With the personalized ZIP no ID entry is needed. For the generic ZIP only, copy the 32-letter a–p ID from the connection page and paste it at the prompt. `Installed.` / `導入完了。` confirms host registration, not yet the browser connection. If double-click is blocked, use the Terminal method; do not remove quarantine attributes or disable protection.
+6. Return to the connection page, select **Connect (enable and check)** and allow the optional native-messaging permission. **Check connection** reports actual counts/status. Enabled permission alone is not a successful connection.
+7. In the ChatGPT task window, use **Auto ON → Refresh list**. A metadata-only result can show a list with Unknown runtime. If a cooldown is shown, wait about one minute rather than repeatedly reinstalling.
+
+A successful helper v1.30.2 connection with the same extension ID needs no new ZIP installation. Missing-host and wrong-registration warnings are different from denied permission or an unavailable API. If the extension ID changes, create a new personalized ZIP for that ID. Main extension updates in the same folder preserve the ID; the separate Mac updater does not install or re-register this helper.
 
 ### Terminal method (same installer)
 
 For the usual Downloads folder name:
 
 ```sh
-cd "$HOME/Downloads/LLMs-Monitor-Codex-Helper-v1.30.1"
+cd "$HOME/Downloads/LLMs-Monitor-Codex-Helper-v1.30.2"
 python3 ./install.py
 ```
 
-If the extracted folder has another name or location, type `cd ` with a trailing space, drag that folder from Finder into Terminal, then press Return. Run `python3 ./install.py`; paste the extension ID at the prompt. Alternatively, type `python3 `, drag the extracted `install.py` file into Terminal and press Return. Do not use `sudo`, and do not substitute the main extension folder.
+If the extracted folder has another name or location, type `cd ` with a trailing space, drag that folder from Finder into Terminal, then press Return. Run `python3 ./install.py`; only a generic ZIP asks for the extension ID. For a personalized ZIP, use its actual extracted folder name instead of the generic example below. Alternatively, type `python3 `, drag the extracted `install.py` file into Terminal and press Return. Do not use `sudo`, and do not substitute the main extension folder.
 
 ### Check a failure without displaying chat content
 
@@ -82,7 +83,7 @@ No network listener or login-startup service is installed. The installer fixes t
 
 ## Linux / Windows
 
-Linux: extract the same ZIP; in its extracted directory run `python3 install.py`, paste the extension ID, then use **Enable connection → Check connection → Refresh list**. Python 3.9+ and discoverable Codex are needed. Helper location: `~/.local/share/llms-monitor/codex/`; host manifests: `~/.config/google-chrome/NativeMessagingHosts/info.ntus.llmsmonitor.codex.json` and `~/.config/microsoft-edge/NativeMessagingHosts/info.ntus.llmsmonitor.codex.json`. Nonstandard / sandboxed browser distributions are not live verified.
+Linux: extract the personalized ZIP; in its extracted directory run `python3 install.py` (only a generic ZIP asks for the extension ID), then use **Enable connection → Check connection → Refresh list**. Python 3.9+ and discoverable Codex are needed. Helper location: `~/.local/share/llms-monitor/codex/`; host manifests: `~/.config/google-chrome/NativeMessagingHosts/info.ntus.llmsmonitor.codex.json` and `~/.config/microsoft-edge/NativeMessagingHosts/info.ntus.llmsmonitor.codex.json`. Nonstandard / sandboxed browser distributions are not live verified.
 
 Windows: this installer rejects Windows. There is no Windows installer, registry registration or Windows executable in the current helper. Browser-only LLMs Monitor features remain available; no Windows helper procedure is claimed yet.
 
@@ -96,6 +97,8 @@ Installer paths and ID validation are checked by code / isolated tests. Completi
 
 ## 日本語
 
+2026年10月21日改訂。本体v1.63.0／ヘルパーv1.30.2。今回変更するのは取説だけで、導入ZIP・ヘルパー実行ファイルは再発行しません。
+
 このヘルパーは、同じ端末のCodexタスク・ピン留めを **［ChatGPT］→［タスク詳細］→［Codex — デスクトップ］** に表示する任意の連携です。ブラウザ版ChatGPTの会話一覧とは別経路で、通常のブラウザ会話を取得するだけなら不要です。
 
 **ヘルパーZIPはChrome拡張機能ではありません。** 中身は `README.md`、`Install.command`、`install.py`、`codex_host.py` で、拡張機能用 `manifest.json` はありません。Chrome／Edgeの［パッケージ化されていない拡張機能を読み込む］には、別の本体拡張ZIPを展開したフォルダーを指定します。
@@ -103,7 +106,7 @@ Installer paths and ID validation are checked by code / isolated tests. Completi
 | OS | 現行ヘルパーの対応状況 | 導入方法 |
 | --- | --- | --- |
 | macOS | Google Chrome／Microsoft Edge用インストーラーあり | 下記の手順。Python 3.9以上と検出可能なCodexが必要 |
-| Linux | 標準のGoogle Chrome／Microsoft Edgeの配置に対応。Linux実機受入は未完了 | ZIP展開後に `python3 install.py`、ID入力、権限を有効化 |
+| Linux | 標準のGoogle Chrome／Microsoft Edgeの配置に対応。Linux実機受入は未完了 | 専用ZIP展開後に `python3 install.py`、権限を有効化。汎用ZIPだけID入力 |
 | Windows | インストーラー未対応 | このインストーラーは使えません。WSLへの導入でもWindowsブラウザーへの登録にはなりません |
 
 この表は **LLMs Monitorヘルパー** の対応状況です。Codex本体の対応OSとは別です。Safari／Firefox／ChromiumやLinuxのサンドボックス型ブラウザー配布は、このインストーラーの対応範囲に含めていません。
@@ -112,11 +115,11 @@ Installer paths and ID validation are checked by code / isolated tests. Completi
 
 ## macOS：インストールから表示まで
 
-### 1．連携画面を開き、拡張機能IDをコピー
+### 1．セットアップからCodexの連携画面を開く
 
 本体拡張機能が導入・接続されているChromeまたはEdgeのプロファイルで、LLMs Monitorを開きます。
 
-**［ChatGPT］→［タスク詳細］→［Codex — デスクトップ］→［Codexを接続］** の順に進み、専用の連携画面を開いたままにします。ここに表示される **拡張機能ID（a〜pの英小文字32文字）** をコピーしてください。ChatGPTのアカウント名やサイトURLではありません。
+**［セットアップ］→［Codex］**、または **［ChatGPT］→［タスク詳細］→［Codex — デスクトップ］→［Codexを接続］** を開きます。専用ZIPには現在のIDが設定されるため、コピー不要です。汎用ZIPを使う場合だけ、表示中の拡張機能ID（a〜pの英小文字32文字）を控えます。ChatGPTのアカウント名やサイトURLではありません。
 
 ### 2．Pythonを確認
 
@@ -136,38 +139,32 @@ python3 --version
 
 ### 4．ヘルパーをダウンロードし、ZIPを展開
 
-［Codexを接続］画面のリンク、または [Codexヘルパー v1.30.1](https://llmsmonitor.ntus.info/LLMs-Monitor-Codex-Helper-v1.30.1.zip) からダウンロードします。
+**［この端末用の導入ZIPを保存］** を押し、現在の拡張機能IDを設定した専用ZIPを取得します。代替の [汎用ヘルパー v1.30.2](https://llmsmonitor.ntus.info/LLMs-Monitor-Codex-Helper-v1.30.2.zip) だけがID手入力を求めます。
 
 Finderの［ダウンロード］でZIPをダブルクリックして展開し、**展開後のフォルダー** を開きます。ZIPのプレビュー画面から実行せず、Chromeの拡張機能読込にも指定しません。
 
-### 5．インストーラーを実行し、IDを入力
+### 5．展開したインストーラーを実行
 
-展開した中の **`Install.command` をダブルクリック** します。ターミナルが開き、次の入力を求められます。
+展開先の **`Install.command` をダブルクリック** します。専用ZIPではID入力不要です。汎用ZIPだけが `LLMs Monitor extension ID / 拡張機能ID:` と尋ねるので、手順1のIDを入力します。**`Installed.`／`導入完了。`** は端末内登録の成功で、ブラウザー接続は次の手順で確認します。
 
-```text
-LLMs Monitor extension ID / 拡張機能ID:
-```
-
-手順1でコピーしたIDを貼り付け、Returnを押します。**`Installed.`／`導入完了。`** と表示されれば登録完了です。もう一度Returnでウィンドウを閉じられます。この表示はヘルパーの登録成功で、ブラウザーからの接続成功は次の手順で確認します。
-
-ダブルクリックで実行できない場合は、次のターミナル方式を使ってください。隔離属性の削除やmacOSの保護機能の無効化は行いません。
+ダブルクリックで実行できない場合は、下記のターミナル方式を使います。隔離属性の削除やmacOSの保護機能の無効化は行いません。
 
 ### ターミナルから実行する方法
 
 展開先が通常の［ダウンロード］なら、次を順に実行します。
 
 ```sh
-cd "$HOME/Downloads/LLMs-Monitor-Codex-Helper-v1.30.1"
+cd "$HOME/Downloads/LLMs-Monitor-Codex-Helper-v1.30.2"
 python3 ./install.py
 ```
 
 フォルダー名・場所が違う場合は、ターミナルに `cd `（末尾に半角スペース）まで入力し、Finderから展開後のフォルダーをドラッグしてReturnを押します。その後 `python3 ./install.py` を実行してください。別の方法として `python3 ` と入力し、展開後の `install.py` をドラッグしてReturnを押しても実行できます。
 
-表示された質問に拡張機能IDを貼り付けます。**`sudo` は使いません。** 本体拡張機能のフォルダーではなく、ヘルパーのフォルダーを指定してください。
+専用ZIPは実際の展開フォルダー名を使い、IDは尋ねられません。上記の汎用ZIPの場合だけ、表示された質問にIDを貼り付けます。**`sudo` は使いません。** 本体拡張機能のフォルダーではなく、ヘルパーのフォルダーを指定してください。
 
 ### 6．接続を有効にし、実際に確認
 
-［Codexを接続］画面へ戻り、**［接続を有効にする］** を押し、ネイティブ連携用の任意権限を許可します。
+［Codexを接続］画面へ戻り、**［接続する（有効化・確認）］** を押し、ネイティブ連携用の任意権限を許可します。
 
 「接続は有効です」は設定と権限の状態を表すだけです。続いて **［接続を確認］** を押し、次のような取得結果が出ることを確認します。
 
@@ -223,7 +220,7 @@ ChatGPTのタスク詳細で **［自動取得 ON］→［一覧を更新］** �
 
 ## Linux／Windowsについて
 
-Linux：同じZIPを展開し、そのフォルダーで `python3 install.py` を実行してIDを入力します。その後は［接続を有効にする］→［接続を確認］→［一覧を更新］。Python 3.9以上と検出可能なCodexが必要です。ヘルパーは `~/.local/share/llms-monitor/codex/`、設定は `~/.config/google-chrome/NativeMessagingHosts/info.ntus.llmsmonitor.codex.json` と `~/.config/microsoft-edge/NativeMessagingHosts/info.ntus.llmsmonitor.codex.json`。標準配置以外・サンドボックス型ブラウザー配布では実機確認していません。
+Linux：同じZIPを展開し、そのフォルダーで `python3 install.py` を実行します。専用ZIPはID入力不要で、汎用ZIPだけがIDを尋ねます。その後は［接続を有効にする］→［接続を確認］→［一覧を更新］。Python 3.9以上と検出可能なCodexが必要です。ヘルパーは `~/.local/share/llms-monitor/codex/`、設定は `~/.config/google-chrome/NativeMessagingHosts/info.ntus.llmsmonitor.codex.json` と `~/.config/microsoft-edge/NativeMessagingHosts/info.ntus.llmsmonitor.codex.json`。標準配置以外・サンドボックス型ブラウザー配布では実機確認していません。
 
 Windows：現行インストーラーはWindowsを受け付けません。Windows用実行ファイル・インストーラー・レジストリ登録処理は未実装です。ブラウザーだけで利用するモニター機能とは別の制約で、Windows向けヘルパー導入手順はまだ提供しません。
 
@@ -234,27 +231,3 @@ Windows：現行インストーラーはWindowsを受け付けません。Window
 メタ情報を読むための独立したstdio App Serverを起動する場合はありますが、デスクトップアプリや共有サーバーを自動起動／再起動しません。稼働状態には既存共有サーバーの観測が必要で、有効期間は90秒です。
 
 配置・ID判定はコード／隔離テストと照合済みですが、更新後のmacOS Chrome／Edge・Linux実機での導入受入は別途必要です。この取説更新では利用者の端末へインストールしていません。[タスク・作業メモ取説](https://github.com/ntus/LLMs-Monitor/blob/main/TASK_DETAILS.md#ja)・[Chrome公式のネイティブ連携説明](https://developer.chrome.com/docs/extensions/develop/concepts/native-messaging)も参照してください。
-
-## Updating from helper 1.30.0 / v1.30.0からの更新
-
-EN: Download the v1.30.1 ZIP linked above or in LLMs Monitor’s ChatGPT task window, extract it and run its installer with the ID from the same browser’s **Connect Codex** page. The unchanged extension v1.33.0 setup still offers helper v1.30.0; use the new task-window/guide link for this update. Save drafts before closing applications. No main extension reinstall is needed. Shared connection attempts are limited to four seconds so the independent metadata path can still read the list within the total 21-second acquisition budget. Ready metadata may still have Unknown runtime. Installation is one-time, not required each refresh.
-
-JP: 上記リンクまたは **LLMs Monitor → ChatGPTカードの［タスク詳細］→［Codex — デスクトップ］** の新しいリンクからv1.30.1 ZIPを取得・展開し、同じブラウザーの［Codexを接続］画面にあるIDでインストーラーを実行します。変更していない拡張機能v1.33.0の接続設定画面は旧v1.30.0を案内するため、今回は新しいタスク画面／取説のリンクを使ってください。拡張機能の入れ直しは不要。共有接続の待機は最大4秒で切り上げ、取得全体21秒の中で代替一覧を読む時間を確保します。一覧を取得しても稼働状態は未確認の場合があります。導入は初回・更新時だけで、毎回の更新操作にインストールは不要です。
-
-## Granted permission but unavailable API / 権限許可済みなのに接続APIが利用できない
-
-EN: In extension 1.34.0, open **Connect Codex**. If it reports that the native API is unavailable despite granted permission, use **Restart extension**. This explicit action briefly stops all monitor updates and may close setup pages; saved settings/history/work notes remain, but pending session-memory note registrations are cleared. Reopen **Connect Codex** from the task window and click **Check connection**. If unresolved, save drafts, fully quit Chrome / Edge and reopen it. Recovery has not yet passed installed-browser acceptance; a terminal helper check alone does not prove browser connectivity. Do not reinstall the helper solely because the API is missing.
-
-JP: 拡張v1.34.0の［Codexを接続］で、権限許可済みなのにAPIが利用できないと表示されたら、［拡張機能を再起動］を押します。明示操作で全モニター更新が一時停止し、設定画面は閉じることがあります。保存済み設定・履歴・作業メモは保持しますが、未完了のsessionメモリー内メモ登録は失効します。タスク窓の［Codexを接続］から開き直し、［接続を確認］を押してください。直らない場合は入力を保存し、Chrome／Edgeを完全終了して再度開きます。復旧成功は実機で未確認で、ターミナルの成功だけではブラウザー接続成功としません。API未提供だけを理由にヘルパーを再導入する必要はありません。v1.34.0の接続画面は既存ヘルパー1.30.1へのリンクを案内します。
-
-### v1.35.0: connection succeeds but the task window stays unavailable
-
-EN: Update the main extension to 1.35.0 in the same browser profile (keep its ID). Reload the task window and use Refresh list. Successful check results are now shared with task windows during the 55-second acquisition cooldown, in memory only, preserving the original observation timestamp. Helper 1.30.1 does not need reinstallation when the ID is unchanged. Live browser acceptance is still required.
-
-JP: 接続確認で件数が出てもタスク窓が取得失敗のままなら、同じプロファイルで本体拡張を1.35.0へ更新し、タスク窓を再読み込みして［一覧を更新］します。取得制限55秒の間も、成功した一覧をメモリー内だけで他のタスク窓へ渡します。観測時刻は更新しません。IDが同じならヘルパー1.30.1の再導入は不要です。実機確認は引き続き必要です。
-
-## v1.38 / helper v1.30.2 — simplified connection (2026-10-13)
-
-EN: In Connect Codex, select **Save installer ZIP for this extension**. Extract it, run Install.command on macOS (or `python3 ./install.py` in that folder on macOS/Linux), then select **Connect (enable and check)** and allow the optional native permission. This ZIP includes this extension’s exact ID; no copy or ID input is required. If macOS blocks double-click, use the Python command in the extracted folder. The generic download still asks for an ID. Existing configured connections are checked automatically when setup opens; no installer is needed each refresh. Update an unpacked extension by overwriting the same folder and reloading it to retain its ID. A different installation ID requires a new personalized installer. Windows/iOS/Android remain future targets, not supported by this native helper.
-
-JP: ［Codexを接続］で **［この端末用の導入ZIPを保存］** を押し、展開します。macOSは Install.command、ダブルクリックが拒否された場合やLinuxは展開フォルダーで `python3 ./install.py` を実行。その後 **［接続する（有効化・確認）］** を押して任意権限を許可します。このZIPには現在の拡張機能IDが自動設定され、コピー・入力は不要です。汎用ZIPでは従来どおりID入力が必要です。既存の接続は設定画面を開くと確認され、毎回のインストールは不要。拡張機能更新は同じ展開フォルダーへ上書きして再読み込みしIDを維持します。別のIDで導入した場合だけ専用ZIPを作り直してください。Windows／iOS／Androidのヘルパー対応は今後の要件です。

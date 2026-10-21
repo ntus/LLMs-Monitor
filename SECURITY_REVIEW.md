@@ -1,10 +1,10 @@
-# Security review — v1.32.0
+# Security review — v1.63.0
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 <a id="en"></a>
 
-This review includes current v1.32.0 checks and historical evidence; it is not a guarantee that no vulnerabilities exist. A release owner should also test the packaged extension in current Chrome and Edge with real accounts and submit it to store review.
+This review includes the v1.63.0 Console adapter and historical release evidence; superseded version-specific controls below are historical, not current operating instructions. It is not a guarantee that no vulnerabilities exist. A release owner should also test the packaged extension in current Chrome and Edge with real accounts and submit it to store review.
 
 
 ## v1.32 release audit — 2026-10-12

@@ -1,4 +1,33 @@
+# LLMs Monitor Mac updater v1.0.1
+
+[🌍 EN](#en) · [🇯🇵 JP](#ja)
+
+<a id="en"></a>
+
+Guide revised 21 October 2026 for app/extension v1.63.0. The updater binary remains v1.0.1. macOS 11+ and Python 3.9+ are required. This user-launched tool updates unpacked extensions only; it is separate from the optional Codex helper and does not update a browser-store installation.
+
+[Download Mac updater v1.0.1](https://github.com/ntus/LLMs-Monitor/raw/refs/heads/main/dist/LLMs-Monitor-Mac-Updater-v1.0.1.zip).
+
+1. Extract the updater ZIP and place **LLMs Monitor 更新.app** and **LLMs Monitor 前の版に戻す.app** somewhere permanent, such as Applications.
+2. Open the update app. On first use only, select the folder **currently loaded by Chrome/Edge**, not a new destination. Check the extension details for its loaded path; the updater never inspects browser profiles.
+3. It retrieves the fixed public GitHub update feed/package, validates version and SHA-256, stages a backup and replaces the same directory. Keeping the path preserves its ID; settings/history stay in browser extension storage. SHA-256 detects corruption; it is not an independent signature. TLS validation remains enabled.
+4. The first update from v1.57 or earlier needs one manual extension reload. Update-aware versions reload during a later approximately one-minute cycle; a closed browser reads the files at its next start. Reload the monitor page after an update. Updates can briefly interrupt its connection.
+
+First installation uses **LLMs-Monitor.zip**, containing a fixed **LLMs-Monitor** directory. Put it in a permanent place and load that directory once. Existing installations, including version-named directories, should keep their currently loaded path. Do not rename/move it, repeatedly extract updates as “LLMs-Monitor 2”, or uninstall to update. Explicit migration to another path may change the ID and require pairing, optional permissions and Codex registration again; settings/history are not automatically migrated. The updater never migrates a folder or changes native-host registration.
+
+Permission expansion asks for confirmation. Changed extension keys, malformed/wrong-product archives and downgrade packages are rejected. Only the fixed [public update feed](https://raw.githubusercontent.com/ntus/LLMs-Monitor/main/dist/update.json) and sibling extension ZIPs are used; no GitHub sign-in or API key is needed.
+
+Use the restore app to return to the retained backup, then reload the extension manually. The displaced version is retained as well; backups are not automatically deleted. The chosen target is stored at `~/Library/Application Support/LLMs Monitor/Updater/settings.json`; do not edit it casually.
+
+This distribution is unsigned/not notarized. If macOS blocks the first launch, verify the source and use its normal per-app **System Settings → Privacy & Security → Open Anyway** review flow. Do not disable protections. See [Apple’s guidance](https://support.apple.com/en-us/102445). Gatekeeper/browser acceptance still depends on the actual environment.
+
+---
+
+<a id="ja"></a>
+
 # LLMs Monitor Mac 更新ツール v1.0.1
+
+[Mac更新ツール v1.0.1 を保存](https://github.com/ntus/LLMs-Monitor/raw/refs/heads/main/dist/LLMs-Monitor-Mac-Updater-v1.0.1.zip)。
 
 macOS 11以降、Python 3.9以降向けです。Codexヘルパーとは別の、手動で起動する更新アプリです。ストア版の更新には使いません。
 
@@ -22,3 +51,5 @@ macOS 11以降、Python 3.9以降向けです。Codexヘルパーとは別の、
 バージョン付きフォルダーから固定名へ移す場合は、読込元と拡張機能IDが変わる可能性があります。新しい拡張機能としての読込み、任意権限の再許可、必要ならCodex専用ZIPでの再登録が必要です。旧版の設定・履歴が自動移行するとは限りません。更新アプリは勝手にフォルダーを移動しません。
 
 macOSが初回起動を止めた場合は「完了」→システム設定→プライバシーとセキュリティ→対象アプリの「このまま開く」で個別に許可します。Apple公式: https://support.apple.com/ja-jp/102445
+
+取説改訂：2026年10月21日。本体v1.63.0に対応し、更新ツール本体v1.0.1は再発行していません。更新後はモニター画面も再読み込みしてください。
