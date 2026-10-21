@@ -1,5 +1,45 @@
 Canonical guide / 正本: https://github.com/ntus/LLMs-Monitor/blob/main/CHANGELOG.md
 
+# 1.63.0 — 2026-10-20
+
+Documentation refresh, 2026-10-21: current bilingual user/helper/task/updater/privacy instructions and all standalone Markdown manuals rebuilt. App version remains 1.63.0; app assets, extension/helper/updater ZIPs and update feed are unchanged. User reports of current stability are recorded separately from exhaustive installed-browser acceptance.
+
+- Claude API credits now use read-only Console session data instead of waiting for background page rendering. No billing tab is opened or activated.
+- Keep purchased/promotional balances separate, reject ambiguous organizations/grants and validate currency/minor units. No cookie extraction, API keys or payment/inference calls.
+- One coalesced request, bounded timeout and rate-limit backoff. Transient errors retain original timestamps; auth/account ambiguity clears current amounts.
+- Installed signed-in acquisition remains unverified; this is not a claim of live acceptance.
+
+# 1.62.0 — 2026-10-19
+
+- Wait for the initial approved Claude billing navigation instead of treating its blank document as a login redirect.
+- Explicit Refresh now retries a paused billing attempt immediately; automatic cooldown and concurrent-read coalescing remain.
+- No reader payload, permissions, quota/history/audio or helper changes. Live signed-in unattended reading still requires installed-version verification.
+
+# 1.61.0 — 2026-10-19
+
+- Claude billing retries short transport failures instead of aborting, waits up to 90 seconds for hydration, and keeps only one pending DOM read per attempt.
+- Retain one owned billing tab, preserve unfinished client-side hydration across cycles, use a 180-second inactivity watchdog, and allow a fresh visible manual observation to take priority. Closing/login redirects pause creation until explicit retry/recovery.
+- Only the owned Claude billing tab suppresses automatic discard; restore its resource policy on user adoption. Upgrade old readers. Scope, permissions, quotas/history/audio and helper/manual packages remain unchanged. Live heavy-browser behavior remains manual acceptance.
+
+# 1.60.0 — 2026-10-19
+
+- Add a visual weekly time-budget guideline before sufficient local history exists, including Grok estimated date-only reset. Keep percentage-only five-second pulse and original quota/history/audio semantics.
+- Reuse own setup/main pages on explicit opens; recover strictly identified automatic acquisition tabs after extension reload and relinquish user-adopted tabs. Legacy unmarked/other-extension tabs are not bulk-closed.
+- Do not treat billing progress meters as permanent loading; upgrade open billing readers. Keep Grok enabling idempotent and refresh setup state with extension identity.
+- Live signed-in unattended billing, multiple extension installations and browser reload need final user acceptance. Codex helper/manual packages unchanged.
+
+# 1.59.0 — 2026-10-19
+
+- Initial-install ZIP contains a fixed LLMs-Monitor directory; setup/product download links use it. Store and updater packages remain flat/versioned.
+- Keep registered paths unchanged on later updates; document one-time fixed-path installation and existing-installation migration limits. Mac updater v1.0.1 clarifies the setup and macOS first-open steps; no installed extension is moved automatically.
+- Codex helper and standalone manual artifacts remain unchanged.
+
+# Web 1.35.2 — 2026-10-12
+
+- Add a bilingual nine-chapter user guide to the lower half of the product page, with contents links, ordered setup/use steps, status tables and troubleshooting.
+- Explain favorites/work notes and macOS Codex setup alongside quota monitoring; preserve actual platform, pin coverage and Tibo delivery limits.
+- Product Web build only; monitor/task logic, extension/helper ZIPs and existing bundled manuals unchanged.
+
 # Web 1.35.1 — 2026-10-12
 
 - Rename saved notes to Favorites; add explicit ★/☆ membership to task/pin/Codex rows.
@@ -410,3 +450,139 @@ Fix the v1.32 offscreen startup regression by using runtime-only audio messages 
 
 EN: Fix a stalled shared Codex socket exhausting the entire metadata deadline. Bound shared initialization/pin/list reads to four seconds, then retain time for independent metadata. Fallback states remain Unknown. Current Web task-window helper download and related guides updated; extension ZIP1.33.0, old helper and unrelated manuals preserved. Future native targets include macOS, Windows, iOS and Android; no native applications or cloud sync are shipped by this repair.
 JP: 共有socket待機で代替一覧も失敗する不具合を修正。共有処理を4秒で区切り、全体21秒の残りでメタ一覧を取得。稼働状態は未確認。Web／ヘルパー／関連取説だけ更新、拡張ZIP1.33.0・旧ヘルパー・未変更取説を維持。将来アプリのmacOS／Windows／iOS／Androidを必須対象として記録、今回実装はしない。
+
+## 1.36.0 — 2026-10-13
+
+Optional, free Tibo public-page reader; short reset announcements; future-deadline-only dated Reset? marks in ChatGPT main and shared subviews. No auto reload or paid API. 本体＋拡張機能のみビルド、関連取説は正本更新のみ。
+
+## 1.37.0 — 2026-10-13
+
+Fix rejected s/t public share links and show bounded Tibo acquisition reasons. No tracking values retained, no additional permissions or manual/helper rebuild. 共有リンクと未表示理由の案内を修正。
+
+v1.37 also isolates per-tab failures and repairs a previously missing deadline on the same post without duplicate alerts.
+
+## v1.38.0 — 2026-10-13
+
+Claude billing probe uses an owned inactive official billing tab only after existing opt-in permission; it is independent of the quota queue, coalesced, bounded and cleaned up. User-activated/navigated tabs are retained. API balances remain separate from quotas/history. Codex setup prepares an entirely local ZIP with a validated exact extension ID, executable macOS entrypoint and no network upload; native authorization remains exact. Existing enabled connections are checked on opening setup. Tibo public readers run bounded per-tab reads independently, report bounded counts/API availability, and support explicit diagnostics without quota-queue blocking. Advice must not obscure the feed/status content.
+
+本体・拡張機能v1.38.0／ヘルパーv1.30.2をビルドし、取説は正本だけ更新。既存dist/docsを再生成しない。実端末のClaude自動取得と初回専用ZIP導入は利用者確認が必要。Tibo告知の取得は利用者が動作確認し、アドバイスON時の重なりを報告。予定期限は実際の個別残量回復時刻ではない。
+
+## v1.39.0 — Tibo / expanded status layout (2026-10-13)
+
+Measure the complete fixed status dock with ResizeObserver; expanded content flows inside the dock and is bounded/scrollable. Reserve measured height for main content and place the advice ribbon above it independently of ON/OFF. ChatGPT reset entitlement includes a separate Tibo public profile link below the row; a verified future reset announcement uses a warning, dated label, tooltip and exact post link. After expiry restore the plain profile link. Available count stays inside its official usage link. Preserve quotas/history/audio, optional permissions and native helper. Build app/extension only, retain helper/manual bytes.
+
+## v1.43.0 — 2026-10-16 emergency window correction
+
+Automatic acquisition never creates/focuses/minimizes/removes a browser window or creates about:blank. It uses an explicit existing normal window and inactive, owned, muted tabs. No normal window means acquisition is skipped; prior data stays. Preserve user-adopted/navigated tabs and old window contents. This supersedes the unreleased v1.42 minimized-host design.
+
+Also retains pending v1.40–v1.42 work: bounded provider notices, display-aligned history and alert thresholds, safe Claude credit parsing, relative Tibo announcement timing and gauge readability. App/extension only; existing helper/manual artifacts unchanged.
+
+## v1.44.0 — compact information and acquisition (2026-10-16)
+
+Main provider warning and Tibo feed move into the existing fixed-height connection row, rotating every five seconds plus manual next; plain-text tooltip/source and Tibo setup remain available. Remove main-card notice/footer feed only; retain floating warning and independent official incidents. Claude optional billing acquisition starts before quotas finish, coalesces, waits up to 35 seconds with 45-second ownership cleanup, and never creates a window. Gemini plan discovery is bounded to three seconds after valid quota rows, validates utilization as an explicit number within 0..1, and accepts account-qualified official usage routes. On API failure read up to three existing official usage tabs only; no new Gemini page/window. User confirms the official Gemini usage page also lacks values: no individual quota recovery is claimed. Unavailable task count is unknown, not zero. No new permissions, paid API, helper or standalone manual regeneration.
+
+Gemini field evidence 2026-10-16: user reported Google /sorry reCAPTCHA at official usage URL, then confirmed values returned after their own manual verification. Do not automate or bypass CAPTCHA. Detect explicit Google /sorry, 429 and bounded unusual-traffic text; abort account exploration on the first challenge. Persist a 15-minute retry-after for challenge or five minutes for other acquisition failure. Explicit trusted Refresh permits one retry; successful fetch clears cooldown. Never store challenge page text, IP, challenge tokens or network identifiers.
+
+
+## v1.45.0 — Setup / 追加連携
+
+Single own top-level setup.html groups required sign-in guidance, optional API/Codex/Tibo and up-to-three service selection. Additional Grok/DeepSeek/Perplexity/Genspark account readers are experimental, disabled by default, exact-route/top-frame validated and separately permissioned. Never read chats, auto-navigate/reload, use paid APIs or convert credit balances to quota percentages. Preserve native exact-ID installation and existing no-window acquisition safeguards. Task helper action opens personalized installation/check, not a generic ZIP. Existing helper and standalone manual files remain unchanged. Live additional-provider layouts and installed automatic Claude billing remain acceptance limits.
+
+日本語：セットアップ画面に任意設定を集約。追加4社は公式残高・契約画面の試験読取りで初期無効、実アカウントの形式は未検証。最大3サービスを選択。Codexは同画面からID入力不要のZIP保存・接続確認。ヘルパーと既存取説配布物は再生成しません。
+
+
+## v1.46.0 — display mode, sound-on preview and dated author sources (2026-10-17)
+
+USAGE-DISPLAY-001: usageDisplay defaults to remaining; an explicit button immediately after Advice switches to used. Only rendered quota windows, previous percentages and history rows are complemented (100 minus the rounded displayed remainder). Unknown/expired values remain unknown. Credits, reset entitlements, persisted data/history, forecasts and worker sound thresholds remain canonical remaining values. Display changes use a separate numeric tracker; switching modes does not create alerts or history. Persist and synchronize the mode across main, floating, PiP, in-page panels and the isolated task overview. Preserve pending user mode over stale GET responses.
+
+SOUND-ON-PREVIEW-001: remove the separate Test button. A direct OFF-to-ON click plays one preview after enable; OFF, startup and background synchronization do not preview. Revision and notifier cancellation prevent a late preview after OFF. Existing numerical-change and incident audio remain independent.
+
+POST-DETAILS-001: show publication time and direct source link, separate observed/read time from announced reset deadline, and always offer the Tibo profile link. Public metadata includes up to three dated, bounded same-author replies only when the verified parent and reply occur in the same rendered public conversation; unrelated author/conversation, quoted content and malformed links are rejected. Replies not seen are explicitly unverified; no full-thread guarantee. The Tibo seven-day reset/date rules remain; explicit Codex/ChatGPT usage-improvement posts can be usage information without inventing a reset. ClaudeDevs reading is independently disabled by default and must be explicitly enabled in own top-level setup with the existing optional X/scripting permission. It uses the same rendered-only boundary and a 45-day news window, with no automatic page opening, reload, paid API, credentials, DMs or inputs. First observation of each newly enabled author is silent; later matching posts notify once. Existing generic public-feed and static Claude/Google/OpenAI news carry dates/source links; static material never claims that author replies have been checked.
+
+HEADER-PRIVACY-001: header order is Product, Setup, browser-local disclosure. The disclosure supports native keyboard/click details and hover title explaining browser/profile/site storage, no automatic operator upload/cross-device sync, removal risk and explicit note export. No sharing/audience changes.
+
+日本語：残量／使用量ボタンをアドバイスの右に置き、表示だけ反転。履歴保存・通知判定は残量基準で保持。試聴ボタンを廃止し通知音OFF→ONで一度だけ確認音。投稿日時・確認日時・予定期限を区別し、本人の表示済み補足に日時とリンクを追加。Tiboプロフィールリンクは常設。ClaudeDevsは独立した任意設定、表示済み投稿と同一著者の返信だけを読み取り、未表示の返信は未確認。セットアップは製品紹介の右へ移動し、ブラウザ内保存の説明をクリック／キーボード／hoverで提供。配布済み取説・ヘルパーの再生成なし。
+
+## v1.47.0 — compact controls and movable advice
+
+COMPACT-UI-147: Header language control follows browser-local disclosure. Tibo and ClaudeDevs labels link to profiles; message bodies and source actions link to the exact validated article. Main weekly reset renders verified local date/time plus countdown in one bold line, fitting available width without changing stored reset metadata. Suppress the session-estimate pending note; retain actual supported estimates. Display the legacy first-message state as メッセージ待ち / Waiting for message without changing acquisition values. Advice supports pointer drag (excluding links/buttons), pointer cancellation and keyboard arrows/Home; clamp after movement and viewport/size changes, never open windows or persist private content. Gauge caption moves down five pixels in both display modes. Existing helper/manual packages are preserved.
+
+## v1.48.0 — weekly overview
+WEEKLY-GAUGE-148: Outer ring remains current session, inner ring and labeled percentage show weekly quota. Both follow remaining/used mode; unknown stays unknown. Weekly horizontal bars are twice primary thickness. Independent amber forecast warnings require ready/fresh quota, future known reset, three current-cycle observations, at least 15 minutes for session / six hours for weekly and positive consumption. Reset increases split history; prior cycles, stale data and absent deadlines cannot generate forecasts. These are estimates, not provider facts; canonical quota/history/audio are unchanged. Keep previous low-quota red indicator. Existing helper/manual packages stay unchanged.
+
+## v1.49.0 — ring hierarchy and reset grouping
+WEEKLY-GAUGE-149 supersedes v1.48 ring order: weekly is outer radius51/stroke7, current session inner radius42/stroke3.5. Explicit 5-hour/current and weekly labels map to distinct colors shared by their text and rings. Show each percentage followed immediately by its own reset datetime/countdown on a translucent background; unknown deadlines remain unknown. Keep remaining/used mode, low-quota red and current-cycle forecast rules unchanged. Existing helper and standalone manuals remain byte-identical.
+
+## v1.50.0 — dashboard redesign
+DASHBOARD-150 supersedes prior gauge typography, warning colors and fullscreen fixed-height layout. Ring center has six ordered rows: caption, current-session label, current %, parenthesized countdown, weekly %, parenthesized countdown. Outer weekly ring remains thick but becomes a pale same-hue tint of the inner session ring. Dates live only beside left-aligned horizontal quota bars, matching task overview hierarchy. Low remaining (<=15%) or qualified depletion forecast blinks percentage only; no warning hue change. Reduced-motion uses a static dotted emphasis. Data, history and sound decision contracts are untouched.
+Connection/feed messages, optional advice, incidents and collapsed diagnostics share a bottom dock; independently expanded incident/advice state and explicit drag controls persist. Fullscreen uses responsive document flow and scrolling instead of clipped fixed rows; at narrow/zoomed widths all selected cards remain reachable without overlap. This explicitly supersedes the earlier no-scroll narrow fullscreen layout.
+Main setup explains ZIP extraction, browser extensions page, Developer mode, Load unpacked, pairing and official sign-in. Service selection/floating controls and optional-provider explanations are inline. Only permission-sensitive grants/native installation continue through the unchanged exact own-extension setup boundary; no Web origin gains configure privileges. Existing standalone helper/manual packages are not regenerated.
+
+## v1.51.0 — readable quotas, inline setup, monitor-window acquisition and render reuse
+
+DASHBOARD-151 supersedes v1.50 color/timing: outer weekly ring and weekly number use provider hue mixed with 28% black; current label shares current percentage color, caption is bold. Both horizontal reset lines include local date/time and parenthesized remaining time. Percentage-only low-quota pulse is five seconds, versus ordinary one-second value-change pulse; nested change animation is suppressed while warning pulse applies. Reduced motion stays static. Options are initially expanded by explicit user choice.
+
+Own top-level extension index mounts the existing setup controls directly, without frames. Exact own index is added to the permission/native setup allowlist; external origins and subframes still cannot configure optional readers. From the Web monitor an explicit settings button replaces that same tab with the extension monitor rather than opening another tab. Personalized native installer remains unchanged. This supersedes v1.50 separate own setup requirement without granting Web configure privileges.
+
+QUIET-MONITOR-151: automatic temporary quota/billing/task tabs are inactive/muted and restricted to a normal, non-incognito window with an exact main monitor URL. Prefer the monitor registered by MONITOR_READY; otherwise discover an exact allowlisted root/index route, preferring a focused qualifying window. Revalidate before creating. With no qualifying monitor, skip; never fall back to an unrelated window, create/mutate windows, or reload/close user tabs. Popup-only monitor and closed/moved monitor scenarios must fail safely. Existing owned-tab capacity and release protections remain.
+
+UI-PERF-151: reuse unchanged main/widget DOM; invalidate on quota/data/credit/extra-service changes, settings/language, incident/feed state, minute countdown transitions and numeric-highlight expiry. Update acquisition ages separately. Generate only selected cards, while retaining all hidden-provider acquisition/history. Forecasts, sound decision thresholds, raw quota persistence and 60-second acquisition are unchanged. Detached draggable advice is above the status dock and disclosures within the app (not OS-level always-on-top).
+
+VOLUME-PREVIEW-151: changing the volume by direct input and committing it plays exactly one preview at the new level, including when notifications are OFF; it does not enable notification sounds. Dragging does not create repeated previews, unchanged/blur-after-change/programmatic sync are silent. Existing alert events/history are unaffected.
+
+Regular ChatGPT Chat quota remains unimplemented: the verified reader returns Work/Codex primary/secondary windows. No separately verified regular-chat percentage is present in the existing source. Do not fabricate it from message counts or Codex balances. Official Enterprise/Edu Admin usage-limit examples concern separate workspace budgets and do not establish a Plus ordinary-chat remaining-percentage source. Live signed-in verification remains required before claiming support.
+
+## v1.52.0 — horizontal services, aligned history, direct options and Grok usage
+DASHBOARD-152 supersedes the three-visible-service limit. All selected catalog services retain readable card widths in one horizontally scrollable row. The grid has no count cap and can lay out ten or more cards; only seven service adapters are currently registered. Use shared measured grid rows to align corresponding quota, extras, history and footer sections. Tighten gauge margins to two pixels. Preserve all provider acquisition, raw quotas, history and sound decisions.
+Main Web options show complete API balance panels immediately, with existing connection state and billing links. Permission-changing actions still move the same tab to the exact own-extension main; no Web origin gains configure rights. Own main retains full inline controls. Product links open a new tab. Product guide and synthetic dashboard image are updated; never publish user account screenshots as promotional data.
+Explicit restart first navigates the same tab to the Web monitor. Reload the extension only after that exact Web route has fully committed; timeout or unexpected navigation cancels restart. This intentionally replaces the prior direct reload that could close extension pages. No automatic restart or window creation.
+GROK-152: optional exact-route dashboard reader extracts only bounded explicit weekly usage-card percentages, labelled used or remaining, plus a separately verified plan and ISO reset timestamp. Ambiguous/missing values remain unknown. Never turn credits or plan names into quota percentages. Existing signed-in usage pages only; no paid API, account scanning, chat reading, automatic navigation/reload or invented reset. Canonical Grok quota snapshots use existing state/history/sound mechanisms. Real signed-in dashboard layouts remain acceptance pending until observed. Source: https://docs.x.ai/x-subscription/usage-limits and https://docs.x.ai/x-subscription/manage (2026-10-18).
+Correct the additionalServices state response to read the actual additional-services storage key rather than the comma-expression-selected Claude public-post flag. Retain separate enable permissions and top-frame checks.
+
+## v1.53.0 — verified Grok dashboard and Google access recovery
+GROK-153: read the bounded Current plan / Weekly included usage card observed on the signed-in official dashboard (including non-heading labels); percentage and Credits available are independent. API balances offer a separate Grok opt-in; shared host permission remains until both optional features are disconnected. Date-only reset labels are retained without fabricating a reset clock.
+GOOGLE-153: Gemini task acquisition reads exactly one already-open official app home, never creates a new tab. Google challenge detection pauses automatic quota network retries until an explicit retry or a verified rendered quota. Existing usage-only recovery remains read-only; no CAPTCHA solving. Current Gemini task auto-fetch was temporarily paused via user-visible Web control during diagnosis.
+LAYOUT-153: main uses available viewport width, dividing it by selected card count with 16px gaps and a minimum readable width of 340px. Fit without scrolling where possible; otherwise scroll from the first card. Retain aligned history and quota/notification semantics.
+
+Validation 1.53: first full regression run passed 368 tests; final post-review run passed 369 tests. Browser preview at 1280 CSS pixels verified four 340px cards, equal history starts, and separate Grok API balance display. Direct viewport automation timed out; a 1700px browser iframe screenshot verified four fully visible cards with aligned history. The actual alignment routine is also tested at 1700px/4 and 10 cards. Signed-in Grok dashboard labels were observed; new extension reader round-trip on that account remains unverified. Gemini remains Google-challenge blocked and requires manual verification.
+
+## v1.54.0 — stable Grok sources and discoverable windows
+GROK-154: API panel enumeration is OpenAI, Claude, Gemini, Grok. Restrict weekly collection to the bounded plan card and reject mixed monthly-credit ancestors. Select one official Grok source tab (active, recent, stable ID tie-break); reject snapshots from other tabs and older reader versions. A changed rendered quota must remain identical for a second observation after at least 1.5 seconds before publication. Preserve unknown/reset semantics, history and notification rules.
+NAV-154: service selection/order has its own section outside floating display. Main toolbar exposes explicit task-window links for the three supported task adapters and existing always-on-top / normal popup actions. Never launch automatically or claim task adapters for other services. Selection remains persisted in existing settings keys and pending local choices survive stale GET replies.
+
+Validation 1.54: 373 tests passed. Browser QA verified a DeepSeek display selection survives reload, the main task menu exposes ChatGPT/Claude/Gemini links, and Grok API is last in the options panels. ZIP integrity/source equality and unchanged helper/manual hashes passed. Real installed Grok multi-tab acceptance remains pending; prior history is preserved.
+
+## v1.55.0 — card task links, helper requirement and estimated Grok countdown
+NAV-155: supported ChatGPT/Claude/Gemini cards expose task links beside acquisition badges, using the existing explicit popup path. Unsupported services show a disabled explanatory task control. Main toolbar launchers remain.
+CODEX-INSTALL-155: report installer required in red only when native host is absent or rejects the current extension registration. Ready means no additional ZIP installation; Codex-not-found means helper responded but desktop is missing. Disabled/API/unknown failures must not assert missing installation. Never enable permissions automatically.
+GROK-DATE-155: user explicitly requests treating a date-only “Resets Oct 25” as device-local 00:00. Derive this only in the rendered window clone, anchored to its capture year (December-to-January rollover allowed); mark datetime/countdown estimated, validate calendar dates, and do not mutate or expire stored quota, change history, forecasts or sounds based on that estimate.
+
+Validation v1.55.0: all 377 regression tests passed. App/extension package built with --skip-manuals; helper/manual hashes unchanged; ZIP CRC and runtime source parity verified. Synthetic browser preview confirms card-local task controls and labelled Grok estimated countdown. Actual installed-extension/native-host and signed-in account round-trips remain manual acceptance checks.
+
+## v1.56.0 — setup navigation and selected floating services
+SETUP-156: Web permission setup opens a separate normal tab and never replaces the requesting monitor. Own-extension inline controls remain. Preserve sender, origin, route and top-frame validation; never grant permissions through Web RPC.
+GROK-156: label weekly plan reading separately from API balances; preserve both independent opt-ins and shared-host lifetime.
+FLOAT-156: selected additional services render in normal/PiP windows using existing settings; readable minimum rows scroll vertically when needed. No automatic window launches or user-size changes.
+HELPER-156: native helper remains v1.30.2. Connection success means no reinstall; a changed extension ID needs its personalized registration. No helper/manual regeneration.
+
+GROK-AUTO-156: User explicitly requests automatic acquisition without opening Usage manually. When Grok quota opt-in is enabled, reuse one owned inactive dashboard tab in the monitor normal window, at most one reload/minute; never reload user-owned/active/navigated tabs. Persist tab identity in session storage and coalesce concurrent work. Closing the tab, login redirects or repeated missing quota pauses acquisition until explicit retry or verified recovery; no window creation or CAPTCHA automation. Disable releases only owned unactivated tabs. Existing non-Grok acquisition restrictions remain.
+
+Validation v1.56.0: 382 regression tests passed, including one-owned-tab reuse, concurrency/throttle, close/redirect/failure pauses, permission and active-tab checks. Browser fixture at 300x720 confirmed seven saved-order service rows at min-height150px with vertical overflow in normal and PiP layouts. These are synthetic data; real installed-extension/sign-in round-trip and native OS always-on-top activation remain manual acceptance checks. Helper/manual hashes preserved. ZIP CRC and changed runtime source parity verified.
+
+## v1.57.0 — persistent choices, registration status and popup/audio controls
+SELECTION-157: scoped settings writes must preserve unrelated selected providers; timestamped Web backup can restore choices to a newly paired default extension, without granting optional reader permissions. Preserve newer explicit deselection and existing settings keys.
+CODEX-157: distinguish native access forbidden from missing host. Same helper version does not prove current extension ID registration. Personalized ZIP filename includes its target ID; no native installation or allowlist is changed automatically.
+FLOAT-157: newly created normal popup requests width190, matching PiP. Preserve existing window dimensions and explicit-only launch. Browser chrome may affect visible content width.
+AUDIO-157: changed slider commit turns sound On and previews new volume once; unchanged values/blur do not replay, and a later explicit Off cancels pending preview/enabling. This supersedes v1.51 volume-does-not-enable requirement.
+
+Validation v1.57.0: all 386 regression tests passed. Real background handlers tested for partial volume/language writes, retained Grok selection and explicit deselection timestamp. Slider tests cover enable-on-change, no blur replay and later-Off cancellation. Missing native host and forbidden registration remain separate statuses; personalized download filenames include target extension ID. Synthetic browser preview verified the registration warning. Native installation was inspected read-only, never modified. Actual OS popup content width, audible output and authenticated native connection remain manual checks. Helper/manual hashes and ZIP CRC/runtime source parity verified.
+
+## v1.58.0 — user-launched Mac updater
+UPDATER-158: keep updater separate from the metadata-only Codex host. User chooses and confirms the currently loaded extension folder once; never inspect Chrome profiles or change native host registrations. Use only fixed public GitHub HTTPS feed/package paths, validated versions, bounded downloads and SHA256. SHA256 is corruption detection, not an independent signature. Stage and validate before same-path replacement, preserve backup, roll back a failed swap; explicit restore retains displaced version. Reject traversal, symlinks, duplicates, oversized/wrong-product packages, changed key and downgrade. Required permission expansion needs confirmation. Keep single-process locking. Tool is unsigned/not notarized, macOS11+/Python3.9+; actual Gatekeeper/browser round-trip remains manual verification.
+RELOAD-158: only a newer local updater marker plus matching on-disk manifest may trigger reload after quota refresh and settings queues complete. No new permissions or Web restart routes. First update from v1.57 or earlier requires one manual reload. Keep existing explicit restart guard unchanged.
+
+Validation v1.58.0: all389 Node regression tests passed, including an8-case Python updater suite. Actual release ZIP was applied and restored in a temporary fixture; application launcher syntax, executable ZIP permissions, feed hash, backup preservation and unchanged helper/manual hashes checked. Browser preview confirms the Mac updater download section. No installed extension, browser profile or native-host registration was changed. The unsigned app launch/Gatekeeper prompts, real Chrome/Edge reload and live one-click update remain user-environment checks.
+
+API-TIME-158: Promotional/API balances remain rendered billing-page observations, not realtime push. Show the last read time in the existing note and explain the approximate one-minute cadence/provider delay in the promotional value tooltip. Do not label DOM capture as provider posting time or change account/quota/credit acceptance rules.
+
+Final validation v1.58.0: 390 regression cases passed after adding the billing observation-time display. Python updater8-case tests rerun after final validation hardening. Required permissions and existing acquisition paths unchanged.

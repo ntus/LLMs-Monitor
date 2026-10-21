@@ -3,6 +3,7 @@ import json, shutil, zipfile, sys, hashlib, subprocess
 root = Path(__file__).resolve().parent
 manual_sources = {name: name for name in ['README.md', 'TASK_DETAILS.md', 'PRIVACY.md', 'STORE_SUBMISSION.md', 'SECURITY_REVIEW.md', 'SPECIFICATION.md', 'AGENTS.md', 'CHANGELOG.md']}
 manual_sources.update({'CODEX_HELPER.md': 'native/README.md', 'INTELLIGENCE_SERVER.md': 'server/README.md'})
+manual_sources['MAC_UPDATER.md'] = 'tools/mac-updater/README.md'
 
 def build_manuals(names):
     if not names or any(name not in manual_sources for name in names):

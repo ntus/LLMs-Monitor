@@ -9,9 +9,9 @@ Canonical guide / 正本: https://github.com/ntus/LLMs-Monitor/blob/main/PRIVACY
 Registration uses a maximum 20-entry, two-minute, single-use title/link buffer in `chrome.storage.session`, not disk storage. It survives service-worker sleep; browser restart or extension reload/update clears it. Expired entries cannot be read and are cleaned by the next read/registration or expiry alarm. Content-script access to this session area is not enabled. An optional per-provider, user-chosen workspace preference uses `llms-task-note-workspaces-v1` in site-local storage; it is a label, not an automatically detected account. Existing saved-note keys and identities remain unchanged. Only explicit Save persists note titles/links/checklists.
 
 
-Last updated: 2026-10-11
+Last updated: 2026-10-21
 
-## Current task overview and saved notes (v1.32.0)
+## Task overview and saved notes
 
 The independent task window receives only its selected provider’s already-saved plan, bounded usage windows and public incident summary through an origin/route/service/top-frame validated read-only RPC. No account identifier, history, settings, credits, authentication or other-provider data is returned by this overview. It does not acquire fresh quotas, change storage/history or trigger audio. Signed-out windows are hidden; expired values are unavailable, stale values marked previous. Automatic task titles/states remain in memory. Only explicitly saved work notes/checklists and selected validated title/link persist under the separate local notes key; export/copy needs a click. Notes differ by site origin/browser and chosen workspace label; no automatic cloud sharing.
 
@@ -32,7 +32,7 @@ The optional intelligence feed requests only a normalized cache at the companion
 
 Users can remove all stored data by uninstalling the extension or clearing its extension storage.
 
-API credit connections are optional and disabled by default. A user click in the extension requests access to the selected official API billing host (OpenAI Platform, Claude Platform or Google AI Studio) and optional scripting. On billing routes only, the local reader extracts explicitly labelled currency balances. It stores amount, currency, acquisition status, an account-scope fingerprint and observation time under a separate local key. It does not read input fields, API keys, passwords or payment details, and does not send page text or account names. Keep the billing page open; the reader checks displayed values about once a minute. Disconnect removes the host permission. API balances remain separate from subscription limits and existing history.
+API credit connections are optional and disabled by default. A user click in the extension requests access to the selected official API billing host (OpenAI Platform, Claude Platform, Google AI Studio or Grok) and optional scripting. On billing routes only, the local reader extracts explicitly labelled currency balances. It stores amount, currency, acquisition status, an account-scope fingerprint and observation time under a separate local key. It does not read input fields, API keys, passwords or payment details, and does not send page text or account names. OpenAI/Gemini/Grok readers may require a supported signed-in page to remain open. Claude v1.63.0 instead uses read-only Console session requests to identify exactly one API-capable organization and read its prepaid credit data, without creating, rendering or activating a billing tab. It never extracts cookies, imports browser credentials, accepts API keys or calls inference/payment APIs. Only sanitized purchased/promotional amounts, currency, opaque scope, observation time and bounded status metadata are stored; raw responses, organization names and grant labels are not persisted. Multiple organizations or multiple unexpired grants in a lane stay unavailable rather than being selected or summed. These undocumented endpoints may change. Disconnect removes the host permission. API balances remain separate from subscription limits and existing history.
 
 Contact: NT MicroSystems,Inc.
 
@@ -52,6 +52,14 @@ When a user opens Task details, automatic acquisition reads only visible sidebar
 
 The optional independent task window checks already-open provider conversation tabs approximately every five seconds while visible and Auto ON. It reads only editable-composer presence and scoped button accessibility/test attributes and visibility, not messages, draft values, credentials or account data. States remain in memory and expire after 15 seconds. No tabs are navigated, no new permissions are requested, and no titles or states are stored or uploaded. Tests reject route/account mismatches, stale or conflicting observations and unauthorized RPC senders. Actual installed-extension generation checks remain required after the update; mock fixtures are not account-level proof.
 
+
+## v1.36 — Free Tibo public-page reading
+
+In the monitor, choose **Tibo connections**, allow optional `https://x.com/*` access, then keep a signed-in Tibo profile/post open in Chrome. Only rendered public posts by `@thsottiaux` are inspected once per minute; there is no automatic reload, hidden crawl, paid API, credential extraction or DM/input reading. Undisplayed new posts are not discovered. Missing page/access restrictions show unavailable, preserving prior public alerts; first read is silent and later post IDs notify once. No private usage or notes are sent to X.
+
+ChatGPT main and all shared subviews show **Tibo 𝕏 Reset? (YYYYMMDD HH:MM)** only when an announced future deadline can be parsed. Currently explicit “by EOD PST time” is converted from the posting day's fixed UTC−08:00 end (23:59) to the device timezone. It is an approximate deadline, not an exact execution time. Tooltip shows the announcement/timezone; click opens the exact source post. The mark disappears at the deadline. Short announcements without a deadline still enter the feed, but do not receive a dated mark. Personal quota recovery remains unverified until official usage changes.
+
+The server feed remains unconfigured; this optional browser reader does not deploy or use it. Installed-package permission/notification acceptance is pending.
 <a id="ja"></a>
 
 メモ登録は最大20件・2分で失効する一度限りのタイトル／リンクを `chrome.storage.session`（ディスクではなくブラウザのメモリー内）で受け渡します。処理休止後も維持し、ブラウザ再起動・拡張再読込／更新で破棄します。失効した情報は取得不可で、次の読取／登録または失効アラームで消去します。コンテンツスクリプトへの保存領域アクセスは有効化しません。手動で選んだサービス別作業領域名をサイト内 `llms-task-note-workspaces-v1` へ保存します。アカウント名の自動取得ではありません。旧メモキー／識別子は維持し、メモは［保存］した場合だけ永続保存します。
@@ -61,9 +69,9 @@ The optional independent task window checks already-open provider conversation t
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
-最終更新: 2026-10-11
+最終更新: 2026-10-21
 
-## 現行タスク概要と作業メモ（v1.32.0）
+## タスク概要と作業メモ
 
 独立タスク窓へ、選択事業者の保存済みプラン・利用枠・公開障害要約だけを、origin／タスク経路／service／トップフレームを検証した読取専用RPCで返します。この概要はアカウントID・履歴・設定・クレジット・認証・他社情報を返さず、残量再取得・保存・履歴変更・音声を行いません。ログアウトでは枠を隠し、期限切れは未取得、古い値は前回値とします。自動一覧／状態はメモリー内のみ。明示保存する作業メモ・チェックリスト・選択したタイトル／検証済みリンクだけを別の端末内キーへ保存し、書出し／コピーはクリック時だけ。サイトURL／ブラウザー・指定作業領域ごとで、自動クラウド共有はありません。
 
@@ -82,7 +90,7 @@ ChatGPTの使用量取得では、公式ページがログイン中のアカウ�
 
 保存データは拡張機能のアンインストール、または拡張機能ストレージの消去で削除できます。
 
-APIクレジット連携は任意で初期状態は無効です。拡張機能内のボタンを押したときだけ、選択した公式API請求ホスト（OpenAI Platform／Claude Platform／Google AI Studio）とscriptingの任意権限を要求します。請求パスで明示された通貨残高を読み取り、金額・通貨・取得状態・請求範囲の指紋・観測時刻のみを別のローカルキーへ保存します。入力欄、APIキー、パスワード、決済情報は読み取らず、ページ全文やアカウント名を送信しません。請求画面を開いておくと約1分ごとに表示値を確認します。解除時にホスト権限を削除します。API残高を月額プラン枠や既存履歴へ混入させません。
+APIクレジット連携は任意で初期状態は無効です。拡張機能内のボタンを押したときだけ、選択した公式API請求ホスト（OpenAI Platform／Claude Platform／Google AI Studio／Grok）とscriptingの任意権限を要求します。請求パスで明示された通貨残高を読み取り、金額・通貨・取得状態・請求範囲の指紋・観測時刻のみを別のローカルキーへ保存します。入力欄、APIキー、パスワード、決済情報は読み取らず、ページ全文やアカウント名を送信しません。OpenAI／Gemini／Grokは、対応するログイン済み画面を開いておく必要がある場合があります。Claude v1.63.0はログイン済みConsoleへ読取専用要求を送り、API用組織を1つに特定して前払い残高データを取得します。請求タブの作成・描画・前面表示は不要です。Cookie取り出し・ブラウザー認証の取込み・APIキー入力・推論／支払API呼出しは行いません。購入／プロモーション金額・通貨・請求範囲の指紋・観測時刻・上限付き状態メタ情報だけを保存し、生応答・組織名・付与名は保存しません。複数組織・同一区分の複数未失効残高は勝手に選択・合算せず未取得にします。非公開の取得経路は公式側の変更を受ける可能性があります。解除時にホスト権限を削除します。API残高を月額プラン枠や既存履歴へ混入させません。
 
 お問い合わせ: NT MicroSystems,Inc.
 
@@ -110,3 +118,25 @@ JP: 自動取得した一覧は従来どおりメモリ内のみ。利用者が�
 Disabled by default. A direct extension-page click grants optional nativeMessaging; a separately installed per-user helper allows only your chosen extension ID. It reads local Codex titles, IDs, pins and evidenced states through read-only App Server metadata. Standard API preview fields and turn/event contents are discarded, never used as titles, displayed, stored or uploaded. Only the desktop local pin-ID field is used from the compatibility state file; other settings/auth fields are not forwarded. Runtime cannot be inferred from an independent metadata process. Lists remain in the independent task window; explicit work-note saving retains the existing browser/site-local behavior. No task execution, exposed local network port, administrator access or cloud sync. Disable in the setup page; remove only the helper and its specific native-host manifests to uninstall.
 
 初期は無効。専用画面のクリックで任意nativeMessagingを許可し、別途導入した端末内ヘルパーを指定拡張IDだけに許可する。Codexのタイトル・ID・ローカルピン・根拠のある状態を読取専用APIで取得。API標準previewとturn／イベント内容は使用・表示・保存・アップロードせず除外する。互換設定ファイルではピンID欄だけ使用し、その他設定／認証情報は転送しない。独立した取得プロセスから稼働を推測しない。一覧はタスク小窓内のメモリのみ、明示保存メモは従来のブラウザ・サイト内保存。実行・ポート公開・管理者権限・クラウド同期なし。停止と削除は[導入説明](native/README.md)を参照。
+
+## v1.36 — 無料のTibo公開ページ読取り
+
+メインの［Tibo連携］から任意の `https://x.com/*` アクセスを許可し、Chromeでログイン済みのTiboプロフィールまたは投稿を開いてください。1分ごとに、画面に表示済みの `@thsottiaux` 本人の公開投稿だけを確認します。自動リロード・裏の巡回・有料API・認証取得・DM／入力欄読取りは行いません。未表示の新着は検知できず、ページなし・アクセス制限は取得不能になります。初回は無音、以後の新しい投稿IDを一度だけ通知します。利用残量・メモをXへ送りません。
+
+予定期限を読み取れる場合だけ、ChatGPTのメインと共通サブ画面に **Tibo 𝕏 Reset? (YYYYMMDD HH:MM)** を表示します。現在は明示的な「by EOD PST time」を、投稿日のPST（固定UTC−08:00）の当日末23:59という目安に解釈し、端末の現地時間へ換算します。正確な実施時刻ではありません。ツールチップで内容・タイムゾーンを確認でき、クリックで当該投稿へ移動、期限後は非表示です。日時のない短文告知は速報に表示しますが日時付きマークを出しません。個人の残量回復は公式使用量の変化で別途確認します。
+
+サーバー配信は引き続き未設定です。この任意ブラウザ経路はサーバー配置・有料API利用をしません。更新済み拡張機能の権限・通知の実機確認は未完了です。
+
+
+## Optional additional services / 任意の追加連携 (v1.45)
+
+Grok (grok.com/dashboard), DeepSeek (platform.deepseek.com usage/top_up), Perplexity (www.perplexity.ai/account/details), and Genspark (www.genspark.ai/credit-usage) have separately granted optional host access. Only explicit labelled balance/count rows from those account pages are retained in llms-additional-services-v1. They are not chat percentages, never sent to the operator, and expire from current display after 125 seconds. No chat bodies, credentials, paid API calls, automatic page opening or reloading. Disabling clears the provider's values; revoking permission prevents reading. Live page-layout coverage is experimental.
+
+追加4社は各社別の任意アクセスです。指定した公式残高・契約ページの明示された残高／回数だけを別保存し、本文・認証情報を読まず運営へ送信しません。自動巡回・リロード・有料APIなし。解除で対象値を消去。実画面の形式は試験対応です。
+
+
+## v1.46 public author replies / 公開投稿の補足返信
+
+ClaudeDevs public-post reading is a separate disabled-by-default setting; the existing Tibo grant alone does not enable it. Both readers inspect only already-rendered public author posts on exact author/profile/status routes after optional X/scripting permission. Up to three bounded same-author replies with publication time and direct links may accompany a public announcement. The monitor does not navigate/reload to retrieve missing replies and does not inspect DMs, inputs or credentials. Public-author baseline metadata is local and independent of private quota/history.
+
+ClaudeDevsの読取りは独立した初期無効の設定です。既存のTibo許可だけでは有効化しません。正規の公開投稿・同一著者の補足返信（最大3件）だけを日時・リンク付きで扱い、自動巡回・リロード・DM・入力欄・認証情報の読取りはしません。

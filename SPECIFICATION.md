@@ -4,9 +4,11 @@
 
 <a id="en"></a>
 
-Document revision: 1.0 · Product version: **1.33.0** · Web UI: **1.33.0** · Web companion: `https://llmsmonitor.ntus.info/` (previous Site origin retained for compatibility)
+Document revision: 1.0 · Product version: **1.63.0** · Web UI: **1.63.0** · Web companion: `https://llmsmonitor.ntus.info/` (previous Site origin retained for compatibility)
 
 This English section defines the implementation contract for the beta. The [Japanese section](#ja) contains the full historical and field-level acceptance criteria. Implementers must read both sections and every ID in [`spec/requirements.json`](spec/requirements.json); neither translation overrides the other.
+
+Current operating instructions are in [README.md](README.md). The base sections and versioned entries below retain historical contracts; newer explicitly superseding acceptance entries define current behavior. Documentation refresh 21 October 2026 preserves all runtime packages.
 
 ## 1. Product behavior
 
@@ -1811,3 +1813,6 @@ Validation v1.62.0: the blank-pending-navigation and immediate-explicit-retry re
 CLAUDE-DIRECT-163: Claude API credit refresh uses read-only Console session GETs to platform.claude.com/api/organizations and exactly one API-capable organization’s prepaid/credits endpoint, without rendering, creating, activating or reloading tabs. This supersedes automatic Claude billing DOM probes in v158-v162. Use existing optional host access and credentials:include; never extract cookies, import browser credentials, accept API keys or call inference/payment APIs. Multiple API organizations fail closed without probing them. Validate response origin/content-type/body bounds, UUID, currency, minor-unit exponent and grant values; purchased and promotional lanes remain separate, and multiple unexpired grants in a lane stay unavailable rather than being summed or inferred from total. Store only sanitized amounts, opaque scope and bounded stage metadata. One in-flight request coalesces with automatic one-minute cadence, 20-second total timeout and five-minute rate-limit backoff; explicit retry is allowed. Disable/revoke invalidates publication. Auth/ambiguous account clears current values; transient failures preserve original capture times, while a changed identified scope cannot reuse old values. No manual foregrounding is required. Console endpoints are undocumented, referenced from upstream CodexBar source; authenticated installed-browser acquisition remains live acceptance pending.
 
 Validation v1.63.0: all 429 tests pass. New Console tests cover credentialed read-only requests with no tab/script-registry access, one API organization only, separate purchased/promotional lanes, malformed units/currency/expiry, body bounds, denied/ambiguous accounts, coalescing, revoked access, stale timestamps and changed-scope failures. Package CRC/source parity and unchanged standalone helper/manual hashes verified. Source schema reference: https://github.com/steipete/CodexBar/blob/main/Sources/CodexBarCore/Resources/Plugins/claudeplatform.ts (reviewed 2026-10-20). Upstream browser-cookie import is not used. Actual authenticated installed Chrome/Edge Console responses remain unverified; successful synthetic tests do not establish live acceptance.
+
+
+DOCS-163: The user authorized rebuilding all standalone manuals on 2026-10-21 after reporting v1.63.0 stable. Build only the hosted Markdown copies (including MAC_UPDATER.md) and update their canonical sources/current instructions. Keep all app/runtime assets, manifest, extension/helper/updater ZIPs and update feed byte-identical, with no app version bump. Current user guides must distinguish personalized vs generic helper installation, fixed-folder updates, Claude rendering-independent acquisition, other readers’ limits and user-reported vs exhaustive acceptance. Do not turn historical release instructions into current procedures.

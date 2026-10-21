@@ -7,9 +7,9 @@
 Registration uses a maximum 20-entry, two-minute, single-use title/link buffer in `chrome.storage.session`, not disk storage. It survives service-worker sleep; browser restart or extension reload/update clears it. Expired entries cannot be read and are cleaned by the next read/registration or expiry alarm. Content-script access to this session area is not enabled. An optional per-provider, user-chosen workspace preference uses `llms-task-note-workspaces-v1` in site-local storage; it is a label, not an automatically detected account. Existing saved-note keys and identities remain unchanged. Only explicit Save persists note titles/links/checklists.
 
 
-Last updated: 2026-10-11
+Last updated: 2026-10-21
 
-## Current task overview and saved notes (v1.32.0)
+## Task overview and saved notes
 
 The independent task window receives only its selected provider’s already-saved plan, bounded usage windows and public incident summary through an origin/route/service/top-frame validated read-only RPC. No account identifier, history, settings, credits, authentication or other-provider data is returned by this overview. It does not acquire fresh quotas, change storage/history or trigger audio. Signed-out windows are hidden; expired values are unavailable, stale values marked previous. Automatic task titles/states remain in memory. Only explicitly saved work notes/checklists and selected validated title/link persist under the separate local notes key; export/copy needs a click. Notes differ by site origin/browser and chosen workspace label; no automatic cloud sharing.
 
@@ -30,7 +30,7 @@ The optional intelligence feed requests only a normalized cache at the companion
 
 Users can remove all stored data by uninstalling the extension or clearing its extension storage.
 
-API credit connections are optional and disabled by default. A user click in the extension requests access to the selected official API billing host (OpenAI Platform, Claude Platform or Google AI Studio) and optional scripting. On billing routes only, the local reader extracts explicitly labelled currency balances. It stores amount, currency, acquisition status, an account-scope fingerprint and observation time under a separate local key. It does not read input fields, API keys, passwords or payment details, and does not send page text or account names. Keep the billing page open; the reader checks displayed values about once a minute. Disconnect removes the host permission. API balances remain separate from subscription limits and existing history.
+API credit connections are optional and disabled by default. A user click in the extension requests access to the selected official API billing host (OpenAI Platform, Claude Platform, Google AI Studio or Grok) and optional scripting. On billing routes only, the local reader extracts explicitly labelled currency balances. It stores amount, currency, acquisition status, an account-scope fingerprint and observation time under a separate local key. It does not read input fields, API keys, passwords or payment details, and does not send page text or account names. OpenAI/Gemini/Grok readers may require a supported signed-in page to remain open. Claude v1.63.0 instead uses read-only Console session requests to identify exactly one API-capable organization and read its prepaid credit data, without creating, rendering or activating a billing tab. It never extracts cookies, imports browser credentials, accepts API keys or calls inference/payment APIs. Only sanitized purchased/promotional amounts, currency, opaque scope, observation time and bounded status metadata are stored; raw responses, organization names and grant labels are not persisted. Multiple organizations or multiple unexpired grants in a lane stay unavailable rather than being selected or summed. These undocumented endpoints may change. Disconnect removes the host permission. API balances remain separate from subscription limits and existing history.
 
 Contact: NT MicroSystems,Inc.
 
@@ -67,9 +67,9 @@ The server feed remains unconfigured; this optional browser reader does not depl
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
-最終更新: 2026-10-11
+最終更新: 2026-10-21
 
-## 現行タスク概要と作業メモ（v1.32.0）
+## タスク概要と作業メモ
 
 独立タスク窓へ、選択事業者の保存済みプラン・利用枠・公開障害要約だけを、origin／タスク経路／service／トップフレームを検証した読取専用RPCで返します。この概要はアカウントID・履歴・設定・クレジット・認証・他社情報を返さず、残量再取得・保存・履歴変更・音声を行いません。ログアウトでは枠を隠し、期限切れは未取得、古い値は前回値とします。自動一覧／状態はメモリー内のみ。明示保存する作業メモ・チェックリスト・選択したタイトル／検証済みリンクだけを別の端末内キーへ保存し、書出し／コピーはクリック時だけ。サイトURL／ブラウザー・指定作業領域ごとで、自動クラウド共有はありません。
 
@@ -88,7 +88,7 @@ ChatGPTの使用量取得では、公式ページがログイン中のアカウ�
 
 保存データは拡張機能のアンインストール、または拡張機能ストレージの消去で削除できます。
 
-APIクレジット連携は任意で初期状態は無効です。拡張機能内のボタンを押したときだけ、選択した公式API請求ホスト（OpenAI Platform／Claude Platform／Google AI Studio）とscriptingの任意権限を要求します。請求パスで明示された通貨残高を読み取り、金額・通貨・取得状態・請求範囲の指紋・観測時刻のみを別のローカルキーへ保存します。入力欄、APIキー、パスワード、決済情報は読み取らず、ページ全文やアカウント名を送信しません。請求画面を開いておくと約1分ごとに表示値を確認します。解除時にホスト権限を削除します。API残高を月額プラン枠や既存履歴へ混入させません。
+APIクレジット連携は任意で初期状態は無効です。拡張機能内のボタンを押したときだけ、選択した公式API請求ホスト（OpenAI Platform／Claude Platform／Google AI Studio／Grok）とscriptingの任意権限を要求します。請求パスで明示された通貨残高を読み取り、金額・通貨・取得状態・請求範囲の指紋・観測時刻のみを別のローカルキーへ保存します。入力欄、APIキー、パスワード、決済情報は読み取らず、ページ全文やアカウント名を送信しません。OpenAI／Gemini／Grokは、対応するログイン済み画面を開いておく必要がある場合があります。Claude v1.63.0はログイン済みConsoleへ読取専用要求を送り、API用組織を1つに特定して前払い残高データを取得します。請求タブの作成・描画・前面表示は不要です。Cookie取り出し・ブラウザー認証の取込み・APIキー入力・推論／支払API呼出しは行いません。購入／プロモーション金額・通貨・請求範囲の指紋・観測時刻・上限付き状態メタ情報だけを保存し、生応答・組織名・付与名は保存しません。複数組織・同一区分の複数未失効残高は勝手に選択・合算せず未取得にします。非公開の取得経路は公式側の変更を受ける可能性があります。解除時にホスト権限を削除します。API残高を月額プラン枠や既存履歴へ混入させません。
 
 お問い合わせ: NT MicroSystems,Inc.
 

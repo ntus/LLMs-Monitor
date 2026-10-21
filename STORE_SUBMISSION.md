@@ -46,7 +46,7 @@ Task details reads only rendered official sidebar titles and conversation links,
 6. Confirm that startup does not open a popup, the popup button opens one freely resizable normal popup, and “Always on top” opens Document Picture-in-Picture after a user click.
 7. Verify GET and settings on both the custom domain and previous Site URL after entering the same valid 32-character extension ID. Reject unrelated origins; preserve history during an in-place update.
 
-8. Use API connections to enable one billing provider; approve the optional host access, keep its signed-in billing page open, and verify the balance in both main and floating cards. Test missing/zero/postpaid and revoke access. Claude/Gemini live balance parsing is not yet verified.
+8. Use API connections to enable one billing provider; approve the optional host access, verify the balance in both main and floating cards. Test missing/zero/postpaid and revoke access. For Claude v1.63.0, verify updates with the billing page closed and no foreground navigation; test denied/ambiguous organizations, distinct purchased/promotional lanes and original timestamps after failure. User-reported stability is recorded separately from exhaustive acceptance. Other providers may require an open page; Gemini live balance parsing remains unverified.
 
 Before uploading, run `node --test tests/*.test.cjs tests/*.test.mjs`, `python3 build.py --package --codex-helper`, inspect the ZIP contents, and perform the manual acceptance checklist in `SPECIFICATION.md`.
 

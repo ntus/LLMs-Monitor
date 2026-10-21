@@ -1,8 +1,11 @@
-# Task details and work notes — v1.32.0
+# Task details and work notes — v1.63.0
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 <a id="en"></a>
+
+Guide revised 21 October 2026. Main toolbar → Task windows, or the Task button beside a supported card’s acquisition badge, opens ChatGPT/Claude/Gemini. Grok and other additional-service task lists remain unsupported. Favorites can be toggled with ★/☆ and reordered by drag or keyboard within the selected provider/workspace. Existing notes are retained. Fullscreen/narrow display does not change acquisition semantics.
+
 
 ## v1.32 — Registration, titles and workspace
 
@@ -22,7 +25,7 @@ Below the title, compact bars show **selected-provider saved usage** and its off
 
 ## Lists, pins and states
 
-Pair extension v1.32.0 in the main monitor on the same origin. Task lists start on opening and about once a minute while visible and Auto ON. Fresh inactive official homes provide sidebar/project/group names and explicit pins. The adapter expands/scrolls only its owned tabs and closes them in `finally`; existing user chats/drafts are not reloaded. Requests coalesce per service, with a 55-second cooldown, 20-second acquisition budget and 2.5-second reader bounds. Missing/loading/failed lists retain the previous list; an empty response is not proof of an empty account.
+Pair the current extension v1.63.0 in the main monitor on the same origin. Task lists start on opening and about once a minute while visible and Auto ON. Fresh inactive official homes provide sidebar/project/group names and explicit pins. The adapter expands/scrolls only its owned tabs and closes them in `finally`; existing user chats/drafts are not reloaded. Requests coalesce per service, with a 55-second cooldown, 20-second acquisition budget and 2.5-second reader bounds. Missing/loading/failed lists retain the previous list; an empty response is not proof of an empty account.
 
 ChatGPT normal and project conversations, Claude normal/Code/Cowork sessions, Gemini current-account conversations are grouped by verified labels. Unresolved membership is described as unconfirmed rather than “unassigned”; internal IDs are not display headings. Pins precede other items. Projects, chats and artifacts retain their type; a pinned project does not make every child chat pinned. Coverage is **rendered-list/partial**, with observed/accepted/rejected/limited/end-of-scan counts. Browser providers do not guarantee all account pins. ChatGPT browser pins can differ from the desktop app; Codex uses a separate opt-in local adapter.
 
@@ -40,9 +43,13 @@ Registration is independent and explicit: supported conversation route/top frame
 
 ## Optional Codex
 
-macOS quick path: **Connect Codex → extract helper ZIP → Install.command (or `python3 install.py`) → paste the extension ID → Enable connection → Check connection → Refresh list**. Python 3.9+ is required. The helper is not an extension; do not use Load unpacked for it. Linux has a command installer; Windows installation is not implemented. The current installation guide is revised 2026-10-12; Web v1.33.1 and helper v1.30.1 fix the shared-connection timeout; extension v1.33.0 is unchanged.
+Current macOS path: **Setup → Codex → Save installer ZIP for this extension → extract → Install.command (or `python3 ./install.py`) → Connect (enable and check) → Check connection → task window Refresh list**. The personalized ZIP includes the current extension ID, so no ID entry is required; the generic download still asks for it. Python 3.9+ is required. The helper is not an extension and is not loaded with Load unpacked. Linux has a command installer; Windows helper installation is not implemented.
 
-[macOS helper installation](https://github.com/ntus/LLMs-Monitor/blob/main/native/README.md#macos-en) is initially disabled and requires an extension-page permission click plus separate per-user helper installation. The helper runtime is v1.30.1. Local read-only App Server metadata provides IDs/titles/pins/update times; previews, turns, events and authentication fields are discarded. Only fixed metadata methods are permitted. Desktop local pin IDs use an explicitly labelled compatibility adapter; the local audit is not a remote-host/account guarantee. Maximum 500 tasks. Independent metadata cannot observe runtime; an already-existing shared server can provide evidence valid for 90 seconds. Idle never implies completed. No task execution, automatic server start/restart, network port or cloud upload. Pause/Clear/import invalidates the separate Codex path too.
+[macOS helper installation](https://github.com/ntus/LLMs-Monitor/blob/main/native/README.md#macos-en) is initially disabled and requires an extension-page permission click plus separate per-user helper installation. The helper runtime remains v1.30.2. A successful connection with the same extension ID needs no reinstallation. Local read-only App Server metadata provides IDs/titles/pins/update times; previews, turns, events and authentication fields are discarded. Only fixed metadata methods are permitted. Desktop local pin IDs use an explicitly labelled compatibility adapter; the local audit is not a remote-host/account guarantee. Maximum 500 tasks. Independent metadata cannot observe runtime; an already-existing shared server can provide evidence valid for 90 seconds. Idle never implies completed. No task execution, automatic server start/restart, network port or cloud upload. Pause/Clear/import invalidates the separate Codex path too.
+
+## Favorites and display order
+
+Saved notes are now **Favorites**. Use ☆ on a browser task, official-pin row or Codex task to add its title/link; ★ removes the favorite without deleting the work note. Existing saved notes become favorites automatically. Use Edit to write notes. Removed favorites remain under **Other work notes**, including items no longer in the acquired list. Drag the ⋮⋮ handle to reorder, or focus it and use Up/Down keys. Order is saved per service/workspace and retained in JSON export/import. This local list does not change official pins. Refresh older task windows after the update.
 
 ## Implementation and acceptance
 
@@ -55,6 +62,8 @@ Run CJS **and MJS** tests and full build, inspect ZIP/permission diff, verify 24
 ---
 
 <a id="ja"></a>
+
+2026年10月21日改訂。上部［タスク別画面］、または対応カードの取得状態付近にある［タスク］から、ChatGPT／Claude／Geminiの別窓を開きます。Grok等のタスク一覧は未対応です。★／☆でお気に入りを切替え、サービス・作業領域ごとにドラッグ／キーボードで並び替えできます。既存メモを保持し、狭幅・全画面でも取得の意味は変わりません。
 
 ## v1.32 — メモ登録・タイトル・作業領域
 
@@ -78,7 +87,7 @@ Claude Codeは選択中のスレッドの見出し属性を使い、プロジェ
 
 ## 一覧・ピン・状態
 
-同じURLで拡張v1.32.0を接続。表示中かつ自動ONなら起動時と約1分ごとに、新しい非アクティブ公式ホームのサイドバー／名前／ピンを取得します。展開・スクロールは自分で作ったタブだけで行い必ず終了。利用中の会話・入力タブを再読込しません。事業者ごとの重複要求を統合し、最短55秒・取得20秒・返信2.5秒の制限。未取得・失敗・描画途中では前回一覧を保持し、空応答を全件0と断定しません。
+同じURLで現行拡張v1.63.0を接続。表示中かつ自動ONなら起動時と約1分ごとに、新しい非アクティブ公式ホームのサイドバー／名前／ピンを取得します。展開・スクロールは自分で作ったタブだけで行い必ず終了。利用中の会話・入力タブを再読込しません。事業者ごとの重複要求を統合し、最短55秒・取得20秒・返信2.5秒の制限。未取得・失敗・描画途中では前回一覧を保持し、空応答を全件0と断定しません。
 
 確認済みプロジェクト／グループ名でまとめ、不明な所属は未確認とし、内部IDを見出しに出しません。ピンは優先表示しますが、プロジェクトのピンと子会話のピンは別です。取得数・未対応・上限・走査終了を表示し、**ブラウザー各社の全アカウント全件は保証しません**。ChatGPTブラウザーとデスクトップ／Codexのピンは別経路です。
 
@@ -99,22 +108,14 @@ Claude Codeは選択中のスレッドの見出し属性を使い、プロジェ
 
 ## 任意のCodex連携と保護範囲
 
-macOSは **［Codexを接続］→ヘルパーZIP展開→Install.command（または `python3 install.py`）→拡張機能ID入力→［接続を有効にする］→［接続を確認］→［一覧を更新］**。Python 3.9以上が必要で、ヘルパーをChromeの拡張機能読込へ指定しません。Linuxはコマンド導入、Windowsは未対応。2026-10-12改訂の導入取説を参照してください。共有接続の待機不具合をWeb v1.33.1／ヘルパーv1.30.1で修正し、拡張機能ZIPは維持します。
+macOSは **［セットアップ］→［Codex］→［この端末用の導入ZIPを保存］→展開→Install.command（または `python3 ./install.py`）→［接続する（有効化・確認）］→［接続を確認］→タスク窓の［一覧を更新］**。専用ZIPは現在の拡張機能IDを含み、手入力不要です。汎用ZIPのみID入力が必要。Python 3.9以上が必要で、ヘルパーをChromeの拡張機能読込へ指定しません。Linuxはコマンド導入、Windowsヘルパーは未対応です。
 
-[macOSの詳しい導入手順](https://github.com/ntus/LLMs-Monitor/blob/main/native/README.md#macos-ja)に従い、専用画面のクリックと別ヘルパー導入で有効化。初期無効。ヘルパー1.30.1はタイトル・ID・ローカルピン・更新日時・根拠のある状態だけを返し、preview／turn／認証を渡しません。端末内ピン形式は互換読取で、他ホスト・全アカウント保証ではありません。最大500件。独立メタ情報から稼働は推測せず、既存共有サーバーの観測のみ90秒有効。待機を完了とせず、サーバー起動／再起動・ポート公開・実行は行いません。停止／消去／読込でCodex保留応答も無効化します。
+[macOSの詳しい導入手順](https://github.com/ntus/LLMs-Monitor/blob/main/native/README.md#macos-ja)に従い、専用画面のクリックと別ヘルパー導入で有効化。初期無効。ヘルパーはv1.30.2を維持し、同じIDで接続成功なら再導入不要です。タイトル・ID・ローカルピン・更新日時・根拠のある状態だけを返し、preview／turn／認証を渡しません。端末内ピン形式は互換読取で、他ホスト・全アカウント保証ではありません。最大500件。独立メタ情報から稼働は推測せず、既存共有サーバーの観測のみ90秒有効。待機を完了とせず、サーバー起動／再起動・ポート公開・実行は行いません。停止／消去／読込でCodex保留応答も無効化します。
 
 Web・拡張の専用モジュールへ分離し、主画面には起動導線だけ。許可HTTPS origin・タスク経路・サービス・トップフレームを検証し、残量概要は重複service指定も拒否。必須／任意権限はv1.30から変更なし。JSONは512KiB・500項目・12階層、重複／循環／不正親子を拒否。リンクは厳密な公式会話URLまたは検証済みCodexリンクのみ、描画はtextContent、接続禁止CSPで本文や秘密を画面・ログ・配布物へ混入させません。自動一覧はメモリー内、手動保存メモだけを明示された別保存とします。
 
 CJS＋MJSテスト、フルビルド、ZIP・権限差分、240〜420px・日英・両テーマ、0／未取得／期限切れ／前回値、対象サービス障害、既存メモ、停止・保留応答を確認。メイン残量・履歴・音声の既存ソースを維持します。実Chrome/Edgeでの権限・本物の応答状態・ヘルパー・全件は別の手動受入確認で、模擬画面の成功を本番全件成功とは扱いません。
 
-### 2026-10-12 helper connection fix / ヘルパー接続修正
+## お気に入りと表示順
 
-Use [helper v1.30.1](https://llmsmonitor.ntus.info/LLMs-Monitor-Codex-Helper-v1.30.1.zip), reinstall once with the current browser extension ID, then Check connection. **Refresh list / ［一覧を更新］** is in **LLMs Monitor → ChatGPT card → Task details**, not the official ChatGPT site. The unchanged extension setup links to old helper 1.30.0; the independent task window and updated guide link to 1.30.1. Metadata-only states remain Unknown; installation is not required each refresh.
-
-v1.30.1を一度導入し直して［接続を確認］。その後、**LLMs MonitorのChatGPTカード → ［タスク詳細］ → ［一覧を更新］**。公式ChatGPTにはこの更新ボタンはありません。ヘルパー更新リンクは新しいタスク画面／取説から使います。
-
-## Favorites and display order / お気に入りと表示順
-
-EN: Saved notes are now **Favorites**. Use ☆ on a browser task, official-pin row or Codex task to add its title/link; ★ removes the favorite without deleting the work note. Existing saved notes become favorites automatically. Use Edit to write notes. Removed favorites remain under **Other work notes**, including items no longer in the acquired list. Drag the ⋮⋮ handle to reorder, or focus it and use Up/Down keys. Order is saved per service/workspace and retained in JSON export/import. This local list does not change official pins. Refresh older task windows after the update.
-
-JP: 「保存済みメモ」は **［お気に入り］** になりました。通常タスク・ピン留め欄・Codexタスクの **☆** でタイトルとリンクを登録し、**★** で解除します。解除してもメモ本文は削除しません。既存メモはお気に入りとして引き継ぎます。右端の［編集］で作業メモを記入できます。解除した項目は、最新一覧から消えていても **［その他の作業メモ］** から編集・再登録できます。**⋮⋮** をドラッグして順番を変えるか、ハンドルにフォーカスして上下キーで移動します。順番はサービス・作業領域ごとに保存され、JSON書出し／読込みにも含まれます。公式ピン留めは変更しません。更新前から開いているタスク窓は再読み込みしてください。
+「保存済みメモ」は **［お気に入り］** になりました。通常タスク・ピン留め欄・Codexタスクの **☆** でタイトルとリンクを登録し、**★** で解除します。解除してもメモ本文は削除しません。既存メモはお気に入りとして引き継ぎます。右端の［編集］で作業メモを記入できます。解除した項目は、最新一覧から消えていても **［その他の作業メモ］** から編集・再登録できます。**⋮⋮** をドラッグして順番を変えるか、ハンドルにフォーカスして上下キーで移動します。順番はサービス・作業領域ごとに保存され、JSON書出し／読込みにも含まれます。公式ピン留めは変更しません。更新前から開いているタスク窓は再読み込みしてください。
