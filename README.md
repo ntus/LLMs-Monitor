@@ -4,7 +4,7 @@
 
 <a id="en"></a>
 
-Current guide: **21 October 2026 · app/extension v1.63.0 · Codex helper v1.30.2 · Mac updater v1.0.1**.
+Current guide: **23 October 2026 · app/extension v1.64.0 · Codex helper v1.30.2 · Mac updater v1.0.1**.
 
 Monitor AI capacity, reset times, official incidents and local work notes in one browser. Usage updates approximately once a minute; provider reporting, browser sleep and network delays can postpone them.
 
@@ -37,7 +37,8 @@ Setup requests each optional official host only through your click in an extensi
 | Data | Current acquisition and limits |
 | --- | --- |
 | Claude API purchased/promotional credit | v1.63.0 reads Console session data directly about once a minute. **No billing tab needs to be opened, kept visible or brought forward.** No API key input, cookie extraction or paid inference call. One API-capable organization must be identifiable; multiple organizations or multiple unexpired grants in a lane remain unavailable rather than being chosen or summed. Undocumented provider endpoints can change. |
-| OpenAI, Gemini and Grok API balances | Read explicit values on supported, signed-in official billing/account pages. These adapters may require the page to remain open. They are separate from plan quotas; unsupported/ambiguous values stay unavailable. |
+| OpenAI API balance | v1.64.0 reuses one inactive official billing tab in the monitor’s normal window. No manual opening or foreground switching; signed balances such as `-$1.02` are preserved. Closing/adopting the tab pauses acquisition until Refresh now. Actual signed-in background rendering remains unverified. |
+| Gemini and Grok API balances | Read explicit values on supported, signed-in official billing/account pages. These adapters may require the page to remain open. They are separate from plan quotas; unsupported/ambiguous values stay unavailable. |
 | Grok weekly quota | Separate optional connection from Grok API balance. Reuses one owned inactive dashboard tab in the monitor’s normal browser window. Closing it, redirects or repeated missing quota can pause automatic reading. Explicit retry is available; user-owned tabs are never reloaded/closed automatically. |
 | DeepSeek, Perplexity and Genspark | Experimental official-account-page readers, disabled until granted. They do not establish complete plan/quota coverage. No paid API or chat-body reading. |
 
@@ -82,7 +83,7 @@ The hosted Markdown copies are in `dist/docs/`; no PDF manual is generated. Docu
 
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
-現行取説：**2026年10月21日 · 本体／拡張 v1.63.0 · Codexヘルパー v1.30.2 · Mac更新ツール v1.0.1**。
+現行取説：**2026年10月23日 · 本体／拡張 v1.64.0 · Codexヘルパー v1.30.2 · Mac更新ツール v1.0.1**。
 
 AIの利用残量、リセット予定、公式障害、作業メモをブラウザーでまとめて確認します。更新はおおむね1分ごとです。公式側の集計・ブラウザーの休止・通信状況で遅れる場合があります。
 
@@ -115,7 +116,8 @@ v1.57以前からの初回更新だけ、拡張機能画面で手動の再読み
 | 対象 | 現在の取得方法・制約 |
 | --- | --- |
 | Claude API購入残高・プロモーションクレジット | v1.63.0からConsoleの残高データを直接取得。**残高画面を開く・表示し続ける・前面にする操作は不要**です。APIキー入力・Cookie取り出し・有料推論呼出しはありません。API用組織が1つに特定できない場合や、同じ区分に複数の未失効残高がある場合は、勝手に選択・合算せず未取得にします。非公開の取得経路は公式側の変更を受ける可能性があります。 |
-| OpenAI／Gemini／GrokのAPI残高 | 対応する公式請求・アカウント画面の表示値を読み取ります。画面を開いておく必要がある場合があります。月額プランの枠とは別で、未対応・曖昧な値は未取得です。 |
+| OpenAI API残高 | v1.64.0からモニターと同じ通常窓の裏タブを1つ再利用。手動起動・前面切替は不要で、`-$1.02`等の負残高も表示します。手動で閉じる／操作した場合は停止し、［今すぐ更新］で再試行します。実アカウントで裏タブのまま描画が完了するかは未検証です。 |
+| Gemini／GrokのAPI残高 | 対応する公式請求・アカウント画面の表示値を読み取ります。画面を開いておく必要がある場合があります。月額プランの枠とは別で、未対応・曖昧な値は未取得です。 |
 | Grok週間枠 | Grok API残高とは別の任意連携です。モニターがある通常ブラウザー窓内の取得用裏タブを1つ再利用します。手動で閉じる・ログインへ移動する・繰り返し未取得の場合は停止し、明示的に再試行できます。利用者自身のタブを自動で再読み込み・削除しません。 |
 | DeepSeek／Perplexity／Genspark | 公式アカウント画面の試験読取りで、許可前は無効です。全プランの利用枠対応は保証せず、有料API・会話本文は読みません。 |
 

@@ -4,7 +4,7 @@
 
 <a id="en"></a>
 
-Document revision: 1.0 · Product version: **1.63.0** · Web UI: **1.63.0** · Web companion: `https://llmsmonitor.ntus.info/` (previous Site origin retained for compatibility)
+Document revision: 1.0 · Product version: **1.64.0** · Web UI: **1.64.0** · Web companion: `https://llmsmonitor.ntus.info/` (previous Site origin retained for compatibility)
 
 This English section defines the implementation contract for the beta. The [Japanese section](#ja) contains the full historical and field-level acceptance criteria. Implementers must read both sections and every ID in [`spec/requirements.json`](spec/requirements.json); neither translation overrides the other.
 
@@ -145,7 +145,7 @@ The server feed remains unconfigured; this optional browser reader does not depl
 [🌍 EN](#en) · [🇯🇵 JP](#ja)
 
 文書版: 1.0  
-対象製品版: 1.63.0
+対象製品版: 1.64.0
 日本語名: **LLMs モニター**
 英語名: **LLMs Monitor**
 対象リポジトリ: `ai-usage-panel`  
@@ -1816,3 +1816,16 @@ Validation v1.63.0: all 429 tests pass. New Console tests cover credentialed rea
 
 
 DOCS-163: The user authorized rebuilding all standalone manuals on 2026-10-21 after reporting v1.63.0 stable. Build only the hosted Markdown copies (including MAC_UPDATER.md) and update their canonical sources/current instructions. Keep all app/runtime assets, manifest, extension/helper/updater ZIPs and update feed byte-identical, with no app version bump. Current user guides must distinguish personalized vs generic helper installation, fixed-folder updates, Claude rendering-independent acquisition, other readers’ limits and user-reported vs exhaustive acceptance. Do not turn historical release instructions into current procedures.
+
+
+## v1.64.0 — Signed API balances and unattended OpenAI billing
+
+API-SIGNED-164: The shared currency parser accepts the official `-$1.02` form (and Unicode minus), preserving signed numeric storage/rendering. It does not turn missing amounts into zero, accept budgets/spend, relax ambiguity or alter Claude direct grant validation. Grok’s inline labelled balance uses the same bounded parser.
+
+OPENAI-BILLING-164: Existing optional OpenAI host/scripting access enables one marked inactive official billing tab in the monitor normal window. It is reused, never focused, and only completed owned reads are reloaded at most once per minute. A 90-second attempt waits for two seconds of stable amount/currency/scope after at least five seconds; a hung DOM read remains singular across attempts. Unfinished hydration is not restarted. Closing, redirects or adoption pause automatic recreation until explicit Refresh; moving the tab relinquishes ownership without closing it. A 180-second inactivity watchdog and disable cleanup affect only owned inactive tabs. Missing monitor or permission skips acquisition.
+
+Snapshots retain the existing 1.61 envelope, adding `balanceReaderVersion=1.64.0` for the new OpenAI parser; old OpenAI messages are rejected and injected readers upgraded. Independent validated billing queue and account boundaries remain. A timeout retains the previous observation time, login clears current balance, and sibling pages cannot overwrite a current owned read. Acquisition notes distinguish waiting/ready/paused without claiming a direct OpenAI balance API. Quotas/history/audio and native helper/updater are unchanged.
+
+日本語：公式の `-$1.02` 形式を負値のまま読取り・表示する。OpenAI APIは許可済みの公式請求画面を同じ通常窓の裏タブ1つで再利用し、前面切替・新規ウィンドウ・有料APIは使わない。90秒以内の安定確認、読込中再ロード防止、閉じた／操作したタブの保護、失敗時の取得日時保持を行う。これはDOM方式で、Claudeの直接取得とは異なる。実際のログイン済みChrome／Edgeで、裏タブのまま表示が完了するかは未検証。既存の利用枠・履歴・音・ヘルパーを保持し、本体／拡張のみビルド、取説配布コピーは再生成しない。
+
+Validation v1.64.0 (2026-10-23): 445 CJS/MJS tests passed. Flat ZIP CRC, 149-entry source equality, stable-folder installer and update-feed SHA256 verified. All permission/origin/CSP fields are unchanged. Twenty-one hosted/bundled manuals and helper/updater archives retain SHA256. Tests cover delayed negative balances, unchanged timestamps, pending navigation, one hung read across attempts, source/version/scope guards, close/adoption/move protection, watchdog and permission/disable races. Authenticated installed Chrome/Edge background rendering remains unverified; no user installation or billing operation was performed.

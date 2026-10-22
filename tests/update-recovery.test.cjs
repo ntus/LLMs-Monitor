@@ -4,13 +4,13 @@ const fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
 const S=require('../extension/state.js');
 const root=path.resolve(__dirname,'..');
 function harness(){
- const stored={data:{},history:{},settings:{sound:false},apiCredits:{chatgpt:{enabled:true}},historyVersion:0};
+ const stored={data:{},history:{},settings:{sound:false},apiCredits:{gemini:{enabled:true}},historyVersion:0};
  let internal,external;
  const event=()=>({addListener(){}}),local={get:async keys=>Object.fromEntries((Array.isArray(keys)?keys:[keys]).map(k=>[k,structuredClone(stored[k])])),set:async x=>Object.assign(stored,structuredClone(x))};
  const chrome={storage:{local},runtime:{getURL:x=>'chrome-extension://'+'a'.repeat(32)+'/'+x,getManifest:()=>({version:'1.25.0'}),onMessage:{addListener:f=>internal=f},onMessageExternal:{addListener:f=>external=f},onInstalled:event(),onStartup:event()},alarms:{onAlarm:event()},action:{onClicked:event()},windows:{onRemoved:event()},tabs:{onRemoved:event()},notifications:{onClicked:event()},i18n:{getUILanguage:()=> 'en'},permissions:{contains:async()=>true,onRemoved:event()},scripting:{getRegisteredContentScripts:async()=>[{}],executeScript:async()=>{}}};
  const send=(f,url,msg)=>new Promise(resolve=>f(msg,{url,frameId:0,tab:{id:1}},resolve));
- chrome.tabs.query=async()=>[{id:1,url:'https://platform.openai.com/settings/organization/billing/overview'}];
- chrome.tabs.sendMessage=async(_,msg)=>{assert.equal(msg.type,'API_CREDIT_READ');const reply=await send(internal,'https://platform.openai.com/settings/organization/billing/overview',{type:'API_CREDIT_SNAPSHOT',service:'chatgpt',status:'ready',amount:8.77,currency:'USD'});assert.equal(reply.ok,true);return {ready:true}};
+ chrome.tabs.query=async()=>[{id:1,url:'https://aistudio.google.com/billing'}];
+ chrome.tabs.sendMessage=async(_,msg)=>{assert.equal(msg.type,'API_CREDIT_READ');const reply=await send(internal,'https://aistudio.google.com/billing',{type:'API_CREDIT_SNAPSHOT',service:'gemini',status:'ready',amount:8.77,currency:'USD'});assert.equal(reply.ok,true);return {ready:true}};
  const context=vm.createContext({chrome,URL,setTimeout,clearTimeout,AbortController,console,fetch:()=>{},performance,structuredClone});
  context.importScripts=(...files)=>files.forEach(file=>vm.runInContext(fs.readFileSync(path.join(root,'extension',file),'utf8'),context,{filename:file}));
  vm.runInContext(fs.readFileSync(path.join(root,'extension/background.js'),'utf8'),context);
@@ -21,7 +21,7 @@ async function within(p,ms=1000){let timer;return Promise.race([p,new Promise((_
 test('credit reader reply nested inside REFRESH cannot deadlock the global command queue',async()=>{
  const b=harness();assert.equal((await within(b.send({type:'REFRESH'}))).ok,true);
  assert.equal(b.stored.data.chatgpt.windows[0].remaining,78);assert.equal(b.stored.data.claude.windows[0].remaining,93);
- assert.equal((await within(b.send({type:'REFRESH'}))).ok,true);assert.equal(b.stored.apiCredits.chatgpt.status,'ready');
+ assert.equal((await within(b.send({type:'REFRESH'}))).ok,true);assert.equal(b.stored.apiCredits.gemini.status,'ready');
 });
 test('GET masks expired cached quotas without modifying history, storage or the real zero baseline',async()=>{
  const b=harness(),past=Date.now()-60000;b.stored.data={chatgpt:{capturedAt:past-1000,status:'loading',refreshing:true,refreshStartedAt:past,windows:[{label:'Work / Codex · 5時間',remaining:0,resetAt:past}]},claude:{capturedAt:past,status:'ready',windows:[{label:'現在のセッション',remaining:82,resetAt:past}]}};

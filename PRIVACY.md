@@ -138,3 +138,8 @@ Grok (grok.com/dashboard), DeepSeek (platform.deepseek.com usage/top_up), Perple
 ClaudeDevs public-post reading is a separate disabled-by-default setting; the existing Tibo grant alone does not enable it. Both readers inspect only already-rendered public author posts on exact author/profile/status routes after optional X/scripting permission. Up to three bounded same-author replies with publication time and direct links may accompany a public announcement. The monitor does not navigate/reload to retrieve missing replies and does not inspect DMs, inputs or credentials. Public-author baseline metadata is local and independent of private quota/history.
 
 ClaudeDevsの読取りは独立した初期無効の設定です。既存のTibo許可だけでは有効化しません。正規の公開投稿・同一著者の補足返信（最大3件）だけを日時・リンク付きで扱い、自動巡回・リロード・DM・入力欄・認証情報の読取りはしません。
+
+
+OpenAI API v1.64.0: after optional host access, one owned inactive official billing tab is reused in the monitor normal window, without foreground switching. Temporary tab identity/timing is kept in browser session storage; only sanitized balances, scope fingerprints and acquisition stages enter local API state. No API keys, payment fields or page text are stored.
+
+OpenAI API v1.64.0：任意アクセス許可後、モニターと同じ通常窓の公式請求裏タブ1つを再利用し、前面切替はしません。一時タブIDと時刻はブラウザーのセッション領域、検証済み残高・請求範囲の指紋・取得状態は既存のAPI状態へ保存します。APIキー・決済情報・ページ本文は保存しません。

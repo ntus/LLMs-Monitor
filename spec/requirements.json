@@ -1,13 +1,13 @@
 {
   "schema_version": "1.0.0",
   "ledger_id": "llms-token-usage-monitor-requirements",
-  "last_updated": "2026-10-21",
+  "last_updated": "2026-10-23",
   "authoritative": true,
   "product": {
     "name_ja": "LLMs モニター",
     "name_en": "LLMs Monitor",
-    "version": "1.63.0",
-    "package_filename": "LLMs-Monitor-v1.63.0.zip",
+    "version": "1.64.0",
+    "package_filename": "LLMs-Monitor-v1.64.0.zip",
     "manifest_version": 3,
     "supported_browsers": [
       "Google Chrome desktop",
@@ -19,7 +19,7 @@
       "gemini"
     ],
     "production_companion_origin": "https://llmsmonitor.ntus.info",
-    "web_version": "1.63.0",
+    "web_version": "1.64.0",
     "companion_origins": [
       "https://llmsmonitor.ntus.info",
       "https://llmsmonitor.ntusnog.chatgpt.site"
@@ -5911,6 +5911,58 @@
         {
           "type": "automated",
           "path": "tests/tibo-reader.test.cjs"
+        }
+      ]
+    },
+    {
+      "id": "API-SIGNED-164",
+      "category": "api_balance",
+      "introduced_in": "1.64.0",
+      "status": "implemented",
+      "priority": "MUST",
+      "normative_requirement": "Preserve official signed API balances, including a minus before a currency symbol, without changing quota percentages or promotional grant validation.",
+      "acceptance_criteria": [
+        "Read -$1.02, Unicode minus and existing currency-code/sign formats. Reject malformed multiple signs, budget/spend context and out-of-bound amounts.",
+        "Shared storage and Japanese/English main/floating rendering preserve negative numbers for all supported API balance providers."
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/api-credits.js",
+          "symbol": "API-SIGNED-164"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/api-credits.test.cjs"
+        }
+      ]
+    },
+    {
+      "id": "OPENAI-BILLING-164",
+      "category": "api_balance",
+      "introduced_in": "1.64.0",
+      "status": "documented_limitation",
+      "priority": "MUST",
+      "normative_requirement": "After explicit OpenAI API opt-in, refresh a single owned inactive billing tab in the monitor normal window without manual page opening or foreground switching.",
+      "acceptance_criteria": [
+        "Use existing scripting/host grant and strict billing sender checks. No new windows, credentials, paid API or billing actions.",
+        "Coalesce attempts; 90-second hydration budget with one pending read across attempts; require stable balance observations for two seconds and five-second minimum navigation age.",
+        "Reuse one marked owned tab across updates and reload completed reads at most once per minute; never reload an unfinished hydration or adopted/user tab.",
+        "Pause after close/redirect/adoption; explicit Refresh retries. No monitor skips. Inactivity watchdog releases only unchanged owned tabs; moved tabs are relinquished.",
+        "Timeout preserves prior observation time; login clears current balance. Reject old parser messages and stale sibling sources during acquisition and for a minute afterward.",
+        "Installed authenticated Chrome/Edge background rendering remains live acceptance pending; this is DOM acquisition, not a verified direct balance endpoint."
+      ],
+      "implementation_evidence": [
+        {
+          "path": "extension/openai-billing-probe.js",
+          "symbol": "OPENAI-BILLING-164"
+        }
+      ],
+      "test_evidence": [
+        {
+          "type": "automated",
+          "path": "tests/openai-billing-probe.test.cjs"
         }
       ]
     }

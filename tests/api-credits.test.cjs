@@ -4,6 +4,20 @@ const fs=require('node:fs');
 const vm=require('node:vm');
 const A=require('../extension/api-credits.js');
 
+test('official negative balances preserve the sign across currencies, storage and shared displays',()=>{
+ for(const text of ['-$1.02','−$1.02','$-1.02','USD -1.02','-1.02 USD','- $ 1.02'])assert.deepEqual(A.money(text),{amount:-1.02,currency:'USD'},text);
+ for(const [symbol,currency] of [['€','EUR'],['¥','JPY'],['£','GBP']])assert.deepEqual(A.money('-'+symbol+'1,234.56'),{amount:-1234.56,currency});
+ for(const text of ['--$1.02','-$-1.02','$1.02 / $200','-$1.02 remaining','$NaN','$1e2','$1,23','-$1000000001'])assert.equal(A.money(text),null,text);
+ for(const id of Object.keys(A.PROVIDERS)){
+  const label={chatgpt:'API credit balance',claude:'Credit balance',gemini:'Available credits',grok:'Credits available'}[id];
+  const parsed=A.parse(label+'\n-$1.02',id);assert.equal(parsed.amount,-1.02,id);
+  const row=A.accept({enabled:true},parsed,Date.now());assert.equal(row.amount,-1.02);
+  A.set({[id]:row});for(const lang of ['en','ja']){require('../extension/locale.js').setLanguage(lang);assert.match(A.view(id),/-\$1\.02/)}
+ }
+ assert.equal(A.parse('Credits available: -$1.02','grok').amount,-1.02);
+ assert.equal(A.parse('Monthly budget\n-$1.02','chatgpt').status,'unavailable');
+});
+
 test('API balance readers distinguish official balance, zero, missing, postpaid and ambiguous accounts',()=>{
  assert.deepEqual(A.parse('Pay as you go\nAPI credit balance\n$8.80\nAuto-reload is OFF','chatgpt'),{status:'ready',amount:8.8,currency:'USD'});
  assert.deepEqual(A.parse('Credit balance\n$0.00','claude'),{status:'ready',amount:0,currency:'USD'});
