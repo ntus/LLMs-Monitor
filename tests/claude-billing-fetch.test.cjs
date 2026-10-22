@@ -55,7 +55,7 @@ test('denied/disabled connections never request Console; late result after disco
 test('session rejection or ambiguous organizations clear current values rather than reusing another account',async()=>{
  for(const code of ['login','ambiguous','no-api-organization']){const x=setup(async()=>{throw Object.assign(Error('synthetic'),{code})});await x.B.refreshClaudeDirect();assert.equal(x.saved.apiCredits.claude.amount,null);assert.equal(x.saved.apiCredits.claude.promotional.amount,null);assert.equal(x.saved.apiCredits.claude.status,code==='login'?'login':'unavailable');}
 });
-test('production worker loads the rendering-independent Console adapter',()=>assert.match(fs.readFileSync('extension/background.js','utf8'),/'claude-billing-fetch.js','api-credit-background.js'/));
+test('production worker loads billing adapters before their coordinator',()=>assert.match(fs.readFileSync('extension/background.js','utf8'),/'claude-billing-fetch.js','openai-billing-probe.js','api-credit-background.js'/));
 
 
 test('a changed billing organization cannot retain the old account balance after a failed request',async()=>{

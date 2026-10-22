@@ -584,3 +584,9 @@ Validation v1.58.0: all389 Node regression tests passed, including an8-case Pyth
 API-TIME-158: Promotional/API balances remain rendered billing-page observations, not realtime push. Show the last read time in the existing note and explain the approximate one-minute cadence/provider delay in the promotional value tooltip. Do not label DOM capture as provider posting time or change account/quota/credit acceptance rules.
 
 Final validation v1.58.0: 390 regression cases passed after adding the billing observation-time display. Python updater8-case tests rerun after final validation hardening. Required permissions and existing acquisition paths unchanged.
+
+## v1.64.0 (2026-10-23)
+
+- Read signed API balances such as `-$1.02` without losing the minus.
+- OpenAI API billing reuses one inactive acquisition tab in the monitor window; stable delayed rendering, pause/adoption protection and no foreground/window switching. Live authenticated background rendering still needs acceptance.
+- 本体・拡張のみ更新。取説配布コピー・Codexヘルパー・Mac更新ツールは保持。

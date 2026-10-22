@@ -44,5 +44,5 @@
  chrome.tabs.onActivated?.addListener(({tabId})=>relinquish(tabId));
  chrome.tabs.onUpdated?.addListener((id,change)=>{if(change.url)read().then(state=>{const owned=(state.tabs||[]).find(t=>t.id===id);if(!owned||!samePage(change.url,owned.url))relinquish(id)}).catch(()=>{})});
  async function isOwned(id){try{const state=await read(),owned=(state.tabs||[]).find(t=>t.id===id),tab=await chrome.tabs.get(id);return !!owned&&!tab.active&&marked(tab)&&samePage(tab.url,owned.url)}catch{return false}}
- root.GlanceQuietTabs={create,release,setMonitor,sameMonitorWindow,isOwned};if(typeof module!=='undefined')module.exports=root.GlanceQuietTabs;
+ root.GlanceQuietTabs={create,release,relinquish,setMonitor,sameMonitorWindow,isOwned};if(typeof module!=='undefined')module.exports=root.GlanceQuietTabs;
 })(globalThis);
