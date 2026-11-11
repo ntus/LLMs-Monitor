@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "revision": 2,
+  "rules": [
+    {
+      "id": "openai-expiry-0",
+      "provider": "chatgpt",
+      "route": "billing-overview",
+      "structure": "api-credit-balance",
+      "plans": [
+        "any"
+      ],
+      "languages": [
+        "ja"
+      ],
+      "parser": "openai-next-expiry-ja-v1"
+    },
+    {
+      "id": "openai-expiry-1",
+      "provider": "chatgpt",
+      "route": "billing-overview",
+      "structure": "api-credit-balance",
+      "plans": [
+        "any"
+      ],
+      "languages": [
+        "en"
+      ],
+      "parser": "openai-next-expiry-en-v1"
+    },
+    {
+      "id": "claude-reset-2",
+      "provider": "claude",
+      "route": "usage",
+      "structure": "model-reset-entitlement",
+      "plans": [
+        "any"
+      ],
+      "languages": [
+        "ja"
+      ],
+      "parser": "claude-fable-reset-ja-v1"
+    },
+    {
+      "id": "claude-reset-3",
+      "provider": "claude",
+      "route": "usage",
+      "structure": "model-reset-entitlement",
+      "plans": [
+        "any"
+      ],
+      "languages": [
+        "en"
+      ],
+      "parser": "claude-fable-reset-en-v1"
+    }
+  ]
+}

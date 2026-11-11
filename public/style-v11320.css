@@ -1,0 +1,265 @@
+/* Status expands in its dock; reserve its measured height independently of advice. */
+:root{--status-dock-height:38px}
+.provider-status-host .provider-status-popover{position:static;max-height:45dvh;overflow:auto;box-sizing:border-box;margin:7px 0 0}
+main,html:fullscreen main{padding-bottom:calc(var(--status-dock-height) + 24px)}
+body:has(#advisor:not([hidden])) main,html:fullscreen body:has(#advisor:not([hidden])) main{padding-bottom:calc(var(--status-dock-height) + 84px)}
+.advisor,html:fullscreen .advisor{bottom:calc(var(--status-dock-height) + 8px)}
+.entitlement-tibo{margin-top:5px;font-size:10px;line-height:1.6}
+
+/* Readable main gauge hierarchy; changed-number spans must retain numeral size. */
+.service-home{color:inherit;text-decoration:none}.service-home:hover{text-decoration:underline;text-underline-offset:3px}
+.gauge-value{display:flex;flex-direction:column;align-items:center;transform:translateY(-24%);line-height:1.05}
+.gauge-value .gauge-caption{font-size:clamp(11px,1.05vw,16px);font-weight:750;line-height:1.3;margin:0 0 5px;letter-spacing:0;color:var(--muted)}
+.gauge-number{font:inherit;white-space:nowrap}.gauge-number small{font-size:.36em;letter-spacing:0}.gauge-number .changed-number{display:inline;font:inherit;letter-spacing:inherit;margin:0}
+.gauge-number.quota-low,.gauge-number.quota-low .changed-number{color:#ff8899!important}:root[data-theme="standard"] .gauge-number.quota-low,:root[data-theme="standard"] .gauge-number.quota-low .changed-number{color:#bd344c!important}
+.gauge-reset{left:16%;right:16%;max-width:68%;bottom:17%;font-size:clamp(11px,.95vw,15px);line-height:1.35}.gauge-reset strong{display:block;font-size:inherit;line-height:1.35;margin-top:3px}
+html:fullscreen .gauge-reset{font-size:clamp(10px,1.05vw,16px)}
+@media(max-width:700px) and (orientation:portrait){html:fullscreen .gauge-value .gauge-caption{font-size:8px}html:fullscreen .gauge-reset{font-size:8px;bottom:7%}}
+
+#intelligence-main[hidden]{display:none!important}
+#connection.connected{height:34px;min-height:34px;max-height:34px;box-sizing:border-box;margin-bottom:8px;display:flex;align-items:center;flex-wrap:nowrap;gap:7px}
+#connection .notice-copy{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#connection .connection-tibo,#connection .connection-next,#connection .connection-source{flex:none;font-size:10px;padding:3px 6px;white-space:nowrap;color:var(--accent);border:1px solid var(--line);border-radius:5px;background:transparent;text-decoration:none}
+#connection.connection-alert{border-color:#bc9555;color:#f1d29a}
+html:fullscreen #connection{display:flex!important;margin:0;height:28px;min-height:28px;max-height:28px}
+html:fullscreen main{grid-template-rows:auto auto minmax(0,1fr) auto}
+@media(max-width:620px){#connection.connected strong{max-width:78px;overflow:hidden;text-overflow:ellipsis}#connection .badge{display:none}#connection .connection-tibo{font-size:9px;padding:3px}}
+
+.additional-card .additional-balances{padding:24px 0;min-height:100px}.additional-card p,.additional-card small{line-height:1.6}.additional-card .extra-line{gap:10px;flex-wrap:wrap}.additional-card a{color:var(--color)}.setup-options{padding:16px;grid-column:1/-1}#setup>h2,#setup>p{grid-column:1/-1}.widget .additional-card{min-height:0}.widget .additional-card h2{font-size:15px}.widget .additional-card .additional-balances{min-height:0;padding:12px 0}
+
+.header-web-links{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:12px;margin-left:auto;max-width:100%}.header-product-link{display:inline-flex;align-items:center;min-height:30px;padding:0 11px;border:1px solid var(--line);border-radius:8px;color:inherit;background:color-mix(in srgb,var(--surface),transparent 20%);font-size:11px;font-weight:650;text-decoration:none}.header-product-link:hover{border-color:var(--accent)}.local-info{position:relative}.local-info summary{cursor:help;list-style:none}.local-info summary::-webkit-details-marker{display:none}.local-popover{position:absolute;top:calc(100% + 12px);right:0;width:min(350px,85vw);padding:16px;border:1px solid #43566f;border-radius:10px;background:#152132;color:#e1eaf7;box-shadow:0 10px 35px #0006;line-height:1.7;font-size:13px;text-align:left;z-index:100;white-space:normal}header:has(.local-info[open]){position:relative;z-index:20}html[data-theme=standard] .local-popover{background:#fff;color:#253750;border-color:#b7c7d9}#usage-display-toggle[aria-pressed=true]{border-color:#97b9ff;background:#97b9ff20}#connection strong a{color:inherit;text-decoration:underline;text-underline-offset:2px}.public-source-options{border-top:1px solid #35475f;margin-top:18px;padding-top:12px}@media(max-width:620px){body>header{flex-wrap:wrap;gap:10px}.header-web-links{gap:8px}.header-product-link{padding:0 8px;font-size:10px}.local-info .local{font-size:10px}}
+
+/* Compact controls and weekly reset hierarchy. */
+.header-web-links #language-toggle{flex:none;min-height:30px;padding:4px 8px;font-size:11px}.gauge-value .gauge-caption{position:relative;top:5px;margin-bottom:0}.weekly-reset{font-size:16px;font-weight:750;white-space:nowrap;line-height:1.5;min-width:0}.weekly-reset strong,.weekly-reset .time-urgent{display:inline;font:inherit;white-space:nowrap}.connection-body-link{color:inherit;text-decoration:underline;text-underline-offset:3px}.advisor{cursor:grab;touch-action:none}.advisor a,.advisor button{cursor:pointer;touch-action:manipulation}.advisor[data-dragged]{right:auto!important;bottom:auto!important;margin:0!important;max-width:calc(100vw - 16px);animation:none!important}.advisor[data-dragging]{cursor:grabbing;user-select:none}.advisor:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.advisor[data-dragged]{grid-template-columns:auto minmax(80px,.7fr) minmax(100px,2fr) auto;box-sizing:border-box}.advisor[data-dragged]>small,.advisor[data-dragged] .advisor-dots{display:none}
+
+.header-local-controls{display:inline-flex;align-items:center;gap:8px;flex-wrap:nowrap}.header-local-controls .local-info{flex:none}.post-body-link{display:block;color:inherit;text-decoration:underline;text-underline-offset:3px}
+
+
+/* A single responsive layout replaces the earlier fixed-height fullscreen rules. */
+body>header{height:auto;min-height:60px;padding:12px 3%;gap:12px}main,html:fullscreen main{display:block;width:100%;max-width:1600px;height:auto!important;min-height:0;padding:24px clamp(12px,3vw,40px) calc(var(--status-dock-height) + 24px)!important;overflow:visible}.page-title,html:fullscreen .page-title{display:flex;align-items:center;flex-wrap:wrap;gap:12px;height:auto;min-height:0;margin-bottom:18px}.page-intro{flex:1 1 240px}.top-actions{display:flex;flex-wrap:wrap;gap:7px;justify-content:flex-end}.top-actions button{height:auto;min-height:32px;padding:6px 10px}.cards,html:fullscreen .cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:none;height:auto!important;gap:16px;align-items:start}.card,html:fullscreen .card{display:flex;flex-direction:column;height:auto!important;min-height:0;max-height:none;padding:clamp(14px,1.5vw,24px);overflow:visible;container-type:inline-size}.card-head,html:fullscreen .card-head{flex:none}.card-bottom{margin-top:16px}.card-note{min-height:0}.history,html:fullscreen .history{display:block!important;flex:none;min-height:0;max-height:none;overflow:visible}.history-log,html:fullscreen .history-log{height:74px;min-height:55px;max-height:160px;resize:vertical}.history-group{margin-top:10px}.history-label{margin-bottom:5px}.extras,html:fullscreen .extras{display:block!important}.card-bottom,html:fullscreen .card-bottom{display:flex!important}.gauge.quota-overview,html:fullscreen .gauge.quota-overview{position:relative;display:block;flex:none;width:min(100%,300px);height:auto;aspect-ratio:1;min-height:0;margin:18px auto;grid-column:auto;grid-row:auto;--weekly-color:color-mix(in srgb,var(--session-color),black 28%)}.quota-overview svg{inset:0;transform:rotate(-90deg)}.quota-overview circle{fill:none}.quota-overview .session-ring-track{stroke:#2d3949;stroke-width:3.5}.quota-overview .session-ring-fill{stroke:var(--session-color);stroke-width:3.5;stroke-linecap:round}.quota-overview .weekly-ring-track{stroke:#2d3949;stroke-width:7}.quota-overview .weekly-ring-fill{stroke:var(--weekly-color);stroke-width:7;stroke-linecap:round}.quota-center{position:absolute;inset:19% 18%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-align:center;line-height:1.2}.quota-caption{font-size:clamp(10px,3.3cqi,13px);color:var(--muted);font-weight:750}.quota-session-label{font-size:clamp(10px,3.4cqi,14px);font-weight:650;color:var(--session-color);margin-top:3px}.quota-current-number{font-size:clamp(30px,14cqi,58px);line-height:1.05;font-weight:750;letter-spacing:-1px;color:var(--session-color)}.quota-weekly-number{font-size:clamp(17px,7.7cqi,30px);font-weight:750;color:var(--weekly-color);margin-top:5px}.quota-countdown{font-size:clamp(8px,2.9cqi,12px);font-variant-numeric:tabular-nums;color:var(--muted);white-space:nowrap}.quota-percent{display:inline;white-space:nowrap}.quota-percent .changed-number{display:inline;font:inherit!important;color:inherit!important;letter-spacing:inherit;margin:0!important}.quota-attention{animation:quota-attention 5s ease-in-out infinite!important}@keyframes quota-attention{0%,100%{opacity:1}50%{opacity:.32}}@media(prefers-reduced-motion:reduce){.quota-attention{animation:none!important;text-decoration:underline dotted;text-underline-offset:4px}}
+.quota-bar-block{margin-top:13px}.quota-bar-block .metric-row{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:0 0 6px;text-align:left;font-size:12px}.quota-bar-block .track{margin:0;height:4px!important;background:#2d3949}.quota-bar-block .weekly-quota-track{height:8px!important}.quota-bar-block .track i{background:var(--color)}.quota-bar-block .weekly-quota-track i{background:color-mix(in srgb,var(--color),black 28%)}.quota-reset-line{font-size:12px;color:var(--muted);line-height:1.4;margin:5px 0 0;text-align:left;font-weight:450}.session-equivalent{display:none!important}.quota-forecast-risk{outline:none!important}.quota-forecast-risk i{background:var(--color)}.widget .quota-attention{color:inherit}.quota-overview [class*=deadline-]{animation:none!important}.quota-overview .quota-percent{background:none;border:0;box-shadow:none}
+/* One bottom area; diagnostics stays collapsed until requested. */
+#monitor-dock{position:fixed;z-index:90;left:12px;right:12px;bottom:8px;max-height:45dvh;overflow:auto;border:1px solid #3b4d64;border-radius:12px;background:rgb(11 18 29 / .96);box-shadow:0 8px 30px #0005;padding:6px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:5px;backdrop-filter:blur(16px)}#monitor-dock #connection{grid-column:1;position:static!important;height:30px!important;min-height:30px!important;max-height:none!important;margin:0!important;padding:4px 7px;font-size:10px;border:0;background:transparent}#monitor-dock #connection:not(.connected){height:auto!important;flex-wrap:wrap}#monitor-dock #connection strong{font-size:11px}#monitor-dock #connection .notice-icon{font-size:13px}#monitor-dock .dock-diagnostics{grid-column:2;grid-row:1;font-size:10px;align-self:center}#monitor-dock .dock-diagnostics>summary{cursor:pointer;padding:5px;white-space:nowrap;color:var(--muted)}#monitor-dock .dock-diagnostics[open]{grid-column:1/-1;grid-row:auto}#monitor-dock #status-log{position:static;width:auto;margin:5px 0 0;height:auto;min-height:26px}#dock-advice-slot{grid-column:1/-1;min-width:0}#dock-advice-slot:empty{display:none}#dock-advice-slot .advisor:not([data-dragged]){position:relative!important;inset:auto!important;width:100%!important;max-width:100%;height:auto!important;min-height:34px;padding:6px 32px 6px 8px;margin:0;display:grid;grid-template-columns:auto minmax(100px,.8fr) minmax(150px,2fr) auto;gap:10px;border-radius:7px;box-shadow:none;background:transparent;backdrop-filter:none}#dock-advice-slot .advisor:not([data-dragged])>small{display:none}#dock-advice-slot .advisor>strong{font-size:11px}#dock-advice-slot .advisor>p{font-size:10px}#monitor-dock .provider-status-host{grid-column:1/-1;position:static!important;inset:auto!important;width:auto!important;margin:0!important;padding:0!important;min-height:0}#monitor-dock .provider-status-host>details{margin:0}#monitor-dock .provider-status-popover{max-height:30dvh;overflow:auto}#monitor-dock .advisor[data-dragged]{position:fixed!important}#toast{bottom:calc(var(--status-dock-height) + 16px)!important;max-width:min(500px,90vw)}
+/* Clear setup on the main page. */
+#setup{display:block;scroll-margin-top:20px}.setup>div,.setup>ol{margin-top:18px}.setup ol{padding:18px 18px 18px 40px}.setup li{margin:14px 0;line-height:1.6}.setup li p{font-size:13px;color:var(--muted);margin:6px 0;overflow-wrap:anywhere}.setup-options{margin-top:20px;border:1px solid var(--line);border-radius:10px;padding:16px}.setup-options>summary{font-weight:700;cursor:pointer}.setup-options>.workspace{margin-top:18px;grid-template-columns:minmax(0,1fr)}.setup-options .preview{display:none}.setup-options .controls{padding:18px}.inline-option{border:1px solid var(--line);border-radius:8px;padding:12px;margin-top:10px}.inline-option>summary{cursor:pointer;font-weight:650}.inline-option p,.inline-option small{display:block;font-size:12px;line-height:1.6;color:var(--muted)}.option-provider{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;padding:8px 0}.option-provider a{margin-left:auto;color:var(--accent)}.setup .control-grid,.setup .floating-buttons{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+:root[data-theme=standard] #monitor-dock{background:rgb(246 249 253 / .97);color:#22334b;border-color:#becbdc}:root[data-theme=standard] .quota-overview .session-ring-track,:root[data-theme=standard] .quota-overview .weekly-ring-track{stroke:#dbe3ed}:root[data-theme=standard] .quota-current-number,:root[data-theme=standard] .quota-weekly-number{color:#243c54}
+@media(max-width:1000px){.cards,html:fullscreen .cards{gap:10px}.card,html:fullscreen .card{padding:12px}.quota-center{gap:2px}.quota-overview .quota-countdown{font-size:9px}}
+@media(max-width:720px){.cards,html:fullscreen .cards{grid-template-columns:1fr}.card,html:fullscreen .card{padding:18px}.gauge.quota-overview,html:fullscreen .gauge.quota-overview{width:min(100%,300px);margin:10px auto}.top-actions{justify-content:flex-start}.quota-current-number{font-size:clamp(36px,14cqi,58px)}.quota-weekly-number{font-size:clamp(22px,7.7cqi,30px)}#dock-advice-slot .advisor:not([data-dragged]){grid-template-columns:auto minmax(0,1fr);gap:5px}#dock-advice-slot .advisor>p,#dock-advice-slot .advisor-dots{display:none}.dock-diagnostics>summary{max-width:64px;overflow:hidden;text-overflow:ellipsis}#connection .connection-source{display:none}#monitor-dock{left:6px;right:6px;bottom:5px}.quota-countdown{font-size:11px}.page-title .sub{font-size:12px}}
+
+.advisor[data-dragged]{position:fixed!important}html:fullscreen main{max-width:none}html:fullscreen .gauge.quota-overview{width:min(100%,clamp(240px,30vh,400px))}html:fullscreen .quota-current-number{font-size:clamp(36px,7.5vw,78px)}html:fullscreen .quota-weekly-number{font-size:clamp(22px,3.5vw,38px)}html:fullscreen .quota-countdown{font-size:clamp(10px,1.2vw,14px)}@media(max-width:720px){html:fullscreen .gauge.quota-overview{width:min(100%,300px)}html:fullscreen .quota-current-number{font-size:58px}html:fullscreen .quota-weekly-number{font-size:30px}}
+/* Typography scales with the circle itself, including fullscreen and zoom reflow. */
+.gauge.quota-overview,html:fullscreen .gauge.quota-overview{container-type:inline-size}.quota-current-number,html:fullscreen .quota-current-number{font-size:clamp(30px,18cqi,62px)}.quota-weekly-number,html:fullscreen .quota-weekly-number{font-size:clamp(17px,8.5cqi,30px)}.quota-countdown,html:fullscreen .quota-countdown{font-size:clamp(8px,3.8cqi,13px)}.quota-session-label{font-size:clamp(9px,4cqi,14px)}.quota-caption{font-size:clamp(9px,3.8cqi,13px)}
+/* Old fullscreen minimum heights must not reverse the intended 4px / 8px hierarchy. */
+.quota-bar-block .primary-track,html:fullscreen .quota-bar-block .primary-track{height:4px!important;min-height:4px!important}.quota-bar-block .weekly-quota-track,html:fullscreen .quota-bar-block .weekly-quota-track{height:8px!important;min-height:8px!important}
+
+/* Detached advice must remain above the dock, disclosures and setup. */
+.advisor[data-dragged]{z-index:2147483646!important}.quota-attention .changed-number{animation:none!important}
+:root[data-theme=standard] .quota-session-label,:root[data-theme=standard] .quota-current-number{color:color-mix(in srgb,var(--session-color),black 40%)}:root[data-theme=standard] .quota-weekly-number{color:var(--weekly-color)}
+#inline-options .api-setup{max-width:none;margin:0;padding:0}#inline-options .setup-section{scroll-margin-top:20px}#inline-options h1{font-size:20px}#inline-options .setup-nav{display:flex;flex-wrap:wrap;gap:8px}
+/* Main already explains installation and owns service selection; avoid duplicate setup groups. */
+#inline-options #setup-title,#inline-options #setup-intro,#inline-options #optional-title,#inline-options #setup-selection,#inline-options .api-setup>.setup-section:not([id]),#inline-options [data-section=services],#inline-options .setup-section>h1{display:none}
+
+/* Keep readable card widths and align like sections across an arbitrary card count. */
+.cards-scroll{overflow-x:auto;overscroll-behavior-x:contain;padding:0 0 14px;scrollbar-color:#597490 #182536;max-width:100%}
+.cards,html:fullscreen .cards{width:max-content;min-width:100%;grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:clamp(340px,calc((100vw - 112px)/3),480px);grid-template-rows:repeat(8,auto);align-items:stretch;gap:0 16px}
+.card,html:fullscreen .card{display:grid;grid-row:span 8;grid-template-rows:var(--aligned-card-rows,auto 284px auto auto auto auto auto auto);row-gap:0;padding:18px;align-content:start}
+.gauge.quota-overview,html:fullscreen .gauge.quota-overview{width:min(100%,280px);margin:2px auto!important}
+.quota-bar-block{margin-top:8px}.card>.card-note{margin:6px 0;font-size:11px}.card>.extras{margin-top:0!important;padding-top:10px}.card>.history{align-self:start;margin-top:12px}.card-bottom{margin-top:12px;align-self:end}.card-head{margin-bottom:0}
+.additional-card:not(.grok-quota-card),html:fullscreen .additional-card:not(.grok-quota-card){display:flex;grid-row:span 8}
+#inline-options #setup-api{padding:16px;border:1px solid var(--line);border-radius:12px;margin-top:12px}#inline-options #setup-api section{border:1px solid var(--line);border-radius:10px;padding:16px;margin:12px 0;background:#0e1722}#inline-options #setup-api section h2{font-size:16px}#inline-options .api-setup-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}#inline-options .api-setup-actions a{font-size:12px}
+@media(max-width:720px){.cards,html:fullscreen .cards{grid-template-columns:none;grid-auto-columns:340px;grid-template-rows:repeat(8,auto)}.card,html:fullscreen .card{padding:16px}}
+/* Embedded WebKit may lack subgrid: bounded measurement supplies shared row sizes. */
+.cards,html:fullscreen .cards{display:flex!important;align-items:stretch}
+.card,html:fullscreen .card{flex:none;width:clamp(340px,calc((100vw - 112px)/3),480px);grid-template-rows:var(--aligned-card-rows,auto 284px auto auto auto auto auto auto)!important}
+@media(max-width:720px){.card,html:fullscreen .card{width:340px}}
+
+/* Fit all selected cards when each can retain a readable width; overflow starts at the left. */
+main,html:fullscreen main{max-width:none!important;width:100%;min-width:0}
+.cards-scroll{width:100%;min-width:0;direction:ltr}
+.cards,html:fullscreen .cards{width:max-content;min-width:100%;justify-content:flex-start!important}
+.card,html:fullscreen .card{width:var(--fit-card-width,340px)!important;min-width:340px;max-width:none}
+
+.task-launch-menu{position:relative;font-size:12px}.task-launch-menu>summary{cursor:pointer;list-style:none;border:1px solid var(--line);border-radius:8px;padding:8px 12px;background:var(--surface);white-space:nowrap}.task-launch-menu>nav{position:absolute;z-index:50;top:calc(100% + 8px);left:0;min-width:210px;display:grid;gap:8px;padding:12px;background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 30px #0006}.task-launch-menu a{display:block;padding:8px;color:inherit;text-decoration:none}.task-launch-menu a:hover{background:#7f9cd32b}#display-settings{margin:14px 0;border:1px solid var(--line);border-radius:12px}#display-settings>h2{font-size:18px}#display-settings .service-config-head strong{display:none}
+
+.card-task-button{display:inline-flex;align-items:center;flex:none;white-space:nowrap;padding:5px 7px;border:1px solid var(--line);border-radius:7px;background:#91b3ff13;color:inherit;font-size:10px;font-weight:650;text-decoration:none}.card-task-button:disabled{opacity:.55;cursor:default}.card-head .card-task-button{margin-left:3px}#codex-installer-status,#installer-status{padding:12px;border:1px solid var(--line,#35465e);border-radius:9px;line-height:1.6}
+
+#mac-updater{scroll-margin-top:80px}#mac-updater p{line-height:1.7}
+
+/* Muse keeps count units readable without inventing a percentage. */
+.muse-usage-card .quota-current-number{overflow-wrap:anywhere;max-width:100%}
+.muse-usage-card .quota-reset-line{white-space:normal}
+.muse-metric:not([data-muse-unit="percent"]){font-size:clamp(15px,1.4vw,22px);overflow-wrap:anywhere;white-space:normal}
+
+/* Provider incidents stay inside their own LLM column; acquisition status remains separate. */
+/* Main health uses the existing plan line. Native top-layer popovers never change card rows. */
+.card-head>.service-title{flex:1;min-width:0}.card-head>.service-mark,.card-head>.badge{flex:none}.card-head>.badge{white-space:nowrap;font-size:10px;padding:3px 6px}
+.service-subline{display:flex;align-items:center;gap:5px;min-width:0;margin-top:4px;line-height:16px}
+.service-subline>.plan{flex:1;min-width:0;margin:0}
+.service-health{flex:none;display:inline-flex;align-items:center;font-size:10px;line-height:16px;color:var(--muted)}
+.service-health-button{font:inherit;line-height:16px;min-height:0;padding:0 3px;border:0;border-radius:4px;background:transparent;color:inherit;white-space:nowrap;text-decoration:underline;text-underline-offset:2px}
+.service-health-button:hover{background:color-mix(in srgb,var(--accent),transparent 88%)}
+.service-health.ok{color:#70cbb3}.service-health.issue{color:#ffa9b2}.service-health.recovered{color:#8dd9b5}.service-health.unsupported{opacity:.75}
+.service-health-popup{position:fixed;inset:0;margin:auto;width:min(440px,calc(100vw - 32px));max-height:min(480px,calc(100dvh - 32px));overflow:auto;padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--text,#eef2fa);box-shadow:0 16px 64px #0008;font-size:13px;line-height:1.6}
+.service-health-popup::backdrop{background:#0003}
+.service-health-popup-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.service-health-popup-head>button{padding:0 8px;font-size:20px;line-height:28px;color:inherit;background:transparent}
+.service-health-detail{display:grid;gap:10px;padding-top:10px;min-width:0}.service-health-detail p{margin:0;overflow-wrap:anywhere}.service-health-detail a{width:fit-content;color:var(--accent)}.service-health-detail small{font-size:11px;color:var(--muted)}
+:root[data-theme="standard"] .service-health.ok,:root[data-theme="standard"] .service-health.recovered{color:#267357}:root[data-theme="standard"] .service-health.issue{color:#b42f46}
+
+/* Only the affected fresh <=5% quota graphics alternate; cards keep their normal border. */
+#connection [data-extension-download]{color:inherit;text-decoration:underline;text-underline-offset:2px;cursor:pointer}#setup-download{scroll-margin-top:80px}
+.quota-overview .session-ring-fill{--quota-ring-base:var(--session-color)}.quota-overview .weekly-ring-fill{--quota-ring-base:var(--weekly-color,var(--session-color))}.quota-overview .session-ring-track,.quota-overview .weekly-ring-track{--quota-ring-base:#2d3949}
+:root[data-theme=standard] .quota-overview .session-ring-track,:root[data-theme=standard] .quota-overview .weekly-ring-track{--quota-ring-base:#dbe3ed}
+.quota-ring-low{animation:quota-low-ring 5s ease-in-out infinite!important}.quota-bar-low{animation:quota-low-track 5s ease-in-out infinite!important}.quota-bar-low>i{animation:quota-low-fill 5s ease-in-out infinite!important}
+@keyframes quota-low-ring{0%,100%{stroke:var(--quota-ring-base)}50%{stroke:#ff0000}}
+@keyframes quota-low-track{0%,100%{background-color:var(--quota-track-base,#2b3446)}50%{background-color:#ff0000}}
+@keyframes quota-low-fill{0%,100%{background-color:var(--quota-bar-fill,var(--color))}50%{background-color:#ff0000}}
+:root[data-theme=standard] .quota-bar-low{--quota-track-base:#dbe3ed}
+@media(prefers-reduced-motion:reduce){.quota-ring-low,.quota-bar-low,.quota-bar-low>i{animation:none!important}.quota-ring-low{stroke:#ff0000!important}.quota-bar-low{outline:1px solid #ff0000}}
+
+/* Percent numerals share the ring/bar fade, including changed-number children. */
+.quota-value-low{animation:quota-low-value 5s ease-in-out infinite!important;opacity:1!important}.quota-value-low .changed-number{animation:none!important;color:inherit!important}
+@keyframes quota-low-value{0%,100%{color:var(--quota-value-base,var(--color))}50%{color:#ff0000}}
+@media(prefers-reduced-motion:reduce){.quota-value-low{animation:none!important;color:#ff0000!important}}
+
+/* Grok starts its extras with API credit: the outer extras separator is sufficient. */
+.grok-quota-card>.extras>.api-credit-row:first-child{border-top:0;margin-top:0;padding-top:0}
+
+/* One compact action row, preserving the separate acquisition timestamp. */
+.card>.card-bottom{display:flex!important;flex-direction:column;align-items:stretch;gap:6px;min-width:0}
+.card-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;width:100%;min-width:0}
+.card-actions>a,.card-actions>button{display:flex;align-items:center;justify-content:center;box-sizing:border-box;min-width:0;margin:0!important;padding:6px 3px!important;border:1px solid var(--line);border-radius:7px;background:#91b3ff13;color:inherit;font-size:clamp(9px,3.4cqi,12px)!important;font-weight:550;text-decoration:none;white-space:nowrap}
+.card-actions>:disabled{opacity:.45;cursor:default}
+.card-actions>:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.card-head{align-items:flex-start}.card-head>.service-mark{align-self:flex-start;margin-top:0}.card-head>.service-title>h2{line-height:20px}.card-head>.badge{align-self:flex-start}
+.card-bottom>.age{font-size:11px;font-weight:400;line-height:1.4;color:var(--muted)}
+
+.service-home:hover{text-decoration:none}
+.widget .widget-service a.service-home{color:inherit;text-decoration:none}
+.widget .widget-service{align-items:flex-start;min-width:0}.widget .widget-service>a{flex:1;min-width:0}
+.widget .widget-reset,.widget .widget-reset.weekly-reset{white-space:normal!important;overflow-wrap:anywhere}
+.widget .widget-row>p{font-size:10px;line-height:1.5;margin:6px 0}.widget .widget-row>small{font-size:9px;overflow-wrap:anywhere}
+
+/* v1.75 display controls, adaptive fullscreen and positive reset countdown. */
+#advisor[hidden],#dock-advice-slot .advisor[hidden],.advisor[data-dragged][hidden]{display:none!important}
+.brand{align-items:center}.brandmark{display:inline-grid;place-items:center;line-height:1;width:1em;height:1em;flex:none;transform:translateY(-.035em)}.brand>span:last-child{display:inline-flex;align-items:center;gap:12px;line-height:1.2}.brand b{line-height:1.2}.brand small{line-height:1.2;margin:0}
+.quota-countdown.reset-soon,.quota-reset-line.reset-soon,.time-urgent.reset-soon,.widget-reset.reset-soon{color:#27c785!important;background:none!important;animation:reset-soon 5s ease-in-out infinite!important}
+@keyframes reset-soon{0%,100%{opacity:1}50%{opacity:.4}}
+.widget-reset .time-urgent:not(.reset-soon),.weekly-reset .time-urgent:not(.reset-soon){color:#27c785!important;background:none!important;border:0!important}
+@media(prefers-reduced-motion:reduce){.reset-soon{animation:none!important}}
+html:fullscreen .cards{display:grid!important;width:100%;min-width:0;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));grid-template-rows:none;grid-auto-flow:row;gap:12px;align-items:stretch}
+html:fullscreen .card{display:flex;flex-direction:column;grid-row:auto;width:auto!important;min-width:0;grid-template-rows:none!important;padding:clamp(10px,1vw,20px)}
+html:fullscreen .cards-scroll{overflow-x:clip;overflow-y:visible}html:fullscreen .gauge.quota-overview{width:min(100%,clamp(150px,26vh,270px));margin:10px auto!important}
+html:fullscreen .history-log{height:clamp(40px,8vh,90px);min-height:36px}html:fullscreen .quota-countdown{white-space:normal}html:fullscreen .card-bottom{margin-top:auto;padding-top:12px}
+@media(max-height:650px){html:fullscreen body>header{min-height:42px;padding-block:7px}html:fullscreen .page-title{margin-bottom:10px}html:fullscreen .gauge.quota-overview{width:min(100%,170px)}html:fullscreen .history-log{height:40px}}
+html:fullscreen .card-bottom{align-self:stretch;width:100%;box-sizing:border-box}
+
+/* v1.77: explain expiration warnings without adding a permanent card row. */
+.expiry-help{display:inline;white-space:normal}.expiry-help-trigger{all:unset;display:inline-flex;align-items:center;justify-content:center;min-width:24px;min-height:24px;cursor:help;vertical-align:middle;color:inherit}.expiry-help-trigger:focus-visible{outline:2px solid currentColor;outline-offset:2px;border-radius:4px}.expiry-help-trigger .expiry-warning{margin-right:0}
+.expiry-help-content[popover]{position:fixed;inset:0;margin:auto;width:min(420px,calc(100vw - 32px));height:fit-content;max-height:calc(100dvh - 32px);overflow:auto;box-sizing:border-box;border:1px solid #526681;border-radius:10px;background:#142030;color:#e5edf9;box-shadow:0 14px 50px #0007;padding:18px;font:12px/1.7 system-ui,sans-serif;text-align:left;white-space:normal;overflow-wrap:anywhere;animation:none}.expiry-help-content strong{display:block;color:inherit;font-size:13px;margin-bottom:7px}.expiry-help-content::backdrop{background:#0004}:root[data-theme="standard"] .expiry-help-content{background:#fff;color:#25354a;border-color:#93a5bd}
+/* Weekly-first history: every column uses the same label and text-box height. */
+#cards>.card>.history{display:block!important;align-self:start;min-height:0}
+#cards>.card>.history>.history-group{display:block;margin-top:10px;min-width:0}
+#cards>.card>.history .history-label{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:14px;line-height:14px;margin-bottom:5px;white-space:nowrap}
+#cards>.card>.history .history-label>span{flex:none}
+#cards>.card>.history .history-log{display:block;box-sizing:border-box;width:100%;height:74px;min-height:55px;max-height:160px;margin:0;resize:vertical}
+html:fullscreen #cards>.card>.history .history-log{height:clamp(40px,8vh,90px);min-height:36px}
+@media(max-height:650px){html:fullscreen #cards>.card>.history .history-log{height:40px}}
+/* A single Grok/Muse history keeps the useful tall log and shares the row bottom. */
+#cards>:is(.grok-quota-card,.muse-usage-card)>.history{display:flex!important;flex-direction:column;align-self:stretch;min-height:0}
+#cards>:is(.grok-quota-card,.muse-usage-card)>.history>.extras-title{flex:none}
+#cards>:is(.grok-quota-card,.muse-usage-card)>.history>.history-group:only-of-type{display:flex;flex-direction:column;flex:1;min-height:0}
+#cards>:is(.grok-quota-card,.muse-usage-card)>.history>.history-group:only-of-type>.history-label{flex:none}
+#cards>:is(.grok-quota-card,.muse-usage-card)>.history>.history-group:only-of-type>.history-log{flex:1;height:auto;min-height:55px;max-height:none;resize:vertical}
+html:fullscreen #cards>:is(.grok-quota-card,.muse-usage-card)>.history{flex:1}
+
+
+
+html:fullscreen #cards>.card>.history{margin-top:auto}html:fullscreen #cards>.card>.card-bottom{margin-top:0}
+
+/* One-line public updates and billing notes: animate only actual overflow. */
+.inline-scroll{display:block;min-width:0;max-width:100%;overflow:hidden;white-space:nowrap;text-overflow:clip}
+.inline-scroll-text{display:inline-block;white-space:nowrap;vertical-align:top}
+.inline-scroll.is-overflowing>.inline-scroll-text{animation:inline-scroll-slide var(--inline-scroll-duration,12s) linear infinite}
+.inline-scroll:hover>.inline-scroll-text,.inline-scroll:focus>.inline-scroll-text,#connection:hover .inline-scroll-text,#connection:focus-within .inline-scroll-text{animation-play-state:paused}
+@keyframes inline-scroll-slide{0%,10%{transform:translateX(0)}90%,100%{transform:translateX(var(--inline-scroll-shift,0px))}}
+.api-credit-row>.api-credit-note{white-space:nowrap;cursor:help}.api-credit-note:focus-visible{outline:1px solid var(--accent);outline-offset:2px}
+#connection .connection-help{flex:none;border:0;background:transparent;color:inherit;cursor:help;padding:0;min-width:24px;min-height:24px;font-size:14px}
+#connection .connection-help:focus-visible{outline:2px solid currentColor;border-radius:4px}
+.connection-help-panel[popover]{position:fixed;inset:0;margin:auto;box-sizing:border-box;width:min(520px,calc(100vw - 32px));height:fit-content;max-height:calc(100dvh - 32px);overflow:auto;border:1px solid #526681;border-radius:10px;background:#142030;color:#e5edf9;box-shadow:0 14px 50px #0007;padding:18px;font:13px/1.7 system-ui,sans-serif;white-space:normal;overflow-wrap:anywhere}
+.connection-help-panel h2{font-size:14px;margin:0 0 10px}.connection-help-panel p{margin:8px 0}.connection-help-panel a{color:#abc7ff}.connection-help-panel button{float:right;cursor:pointer}.connection-help-panel::backdrop{background:#0004}
+:root[data-theme=standard] .connection-help-panel{background:#fff;color:#25354a;border-color:#93a5bd}:root[data-theme=standard] .connection-help-panel a{color:#164fa8}
+@media(prefers-reduced-motion:reduce){.inline-scroll.is-overflowing>.inline-scroll-text{animation:none}}
+
+/* Grid children must shrink within the fixed card instead of sizing an implicit min-content column. */
+.card,html:fullscreen .card{grid-template-columns:minmax(0,1fr)}
+.card>*,html:fullscreen .card>*{min-width:0;max-width:100%;box-sizing:border-box}
+.card .extras,.card .extra-row,.card .api-credit-row,.card .history-group{min-width:0;max-width:100%}
+.extra-line{min-width:0}.extra-line>span:first-child{min-width:0;overflow-wrap:anywhere}.extra-line>b{flex:none;white-space:nowrap}
+.quota-current-number,.quota-weekly-number{min-width:0;max-width:100%;text-align:center;font-variant-numeric:tabular-nums;white-space:nowrap}
+.widget .api-credit-note{min-width:0;max-width:100%}
+
+/* Compact status stack and link reuse; no extra card row. */
+.card-head>.card-status-stack{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex:none;max-width:50%}.card-status-stack>.badge{font-size:10px;white-space:nowrap}.card-status-stack .service-health{justify-content:flex-end;font-size:10px}.card-head .service-subline:empty{display:none}.card-age-line{display:flex;justify-content:space-between;align-items:center;gap:8px;min-width:0;width:100%}.card-age-line .entitlement-tibo{margin:0;font-size:10px;flex:none}.cloud-credit-help{padding:0 3px;border:0;background:transparent;color:inherit;font:inherit;cursor:help}.fast-help-popup{position:fixed;inset:auto;margin:0;padding:10px 12px;border:1px solid #55667d;border-radius:8px;background:#101b2b;color:#eef3ff;box-shadow:0 8px 32px #0007;font:12px/1.6 system-ui;max-height:50dvh;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;pointer-events:none;z-index:2147483647}.fast-help-popup::backdrop{display:none}.feed-drag-handle{touch-action:none;cursor:grab;flex:none;padding:0 4px;font-size:16px;line-height:20px;background:transparent;color:inherit;border:0}#connection[data-dragged]{position:fixed!important;inset:auto;right:auto!important;bottom:auto!important;z-index:110;display:flex;height:32px!important;min-height:32px;max-width:calc(100vw - 16px);padding:4px;border:1px solid #55667d;border-radius:8px;background:var(--surface,#0d1725);box-shadow:0 8px 30px #0006}#connection[data-dragged] .notice-copy{min-width:0;flex:1}#connection[data-dragged] .connection-source{display:none}
+
+.team-status-panel{width:min(850px,calc(100vw - 32px));max-height:85dvh;overflow:auto;border:1px solid var(--line);border-radius:12px;padding:20px;background:var(--surface,#101b2b);color:var(--text,#eef3ff);font:13px/1.6 system-ui}.team-status-panel::backdrop{background:#0008}.team-status-panel h2{margin:0 0 10px}.team-status-panel table{width:100%;border-collapse:collapse;margin:12px 0}.team-status-panel td{padding:8px 5px;border-bottom:1px solid var(--line);overflow-wrap:anywhere}.team-status-panel a{color:var(--accent)}.team-status-panel input{max-width:100%;display:block;margin:12px 0}.team-status-panel button{margin:8px 8px 0 0}.team-status-note{color:var(--muted)}@media(max-width:600px){.team-status-panel tr{display:grid;grid-template-columns:1fr 1fr}.team-status-panel td{font-size:11px}}
+.card-age-line .entitlement-tibo{min-width:0;max-width:65%}.card-age-line .entitlement-tibo a{display:block;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* Pending: enlarge captions, period names, percentages and reset countdowns. */
+.quota-overview .quota-caption{font-size:clamp(14px,4.5cqi,18px)}
+.quota-overview .quota-session-label{font-size:clamp(14px,4.6cqi,18px)}
+.quota-overview .quota-current-number{font-size:clamp(48px,17cqi,72px)}
+.quota-overview .quota-weekly-number{font-size:clamp(28px,9.5cqi,40px)}
+.quota-overview .quota-countdown{font-size:clamp(12px,4cqi,15px)}
+.quota-overview.single-gauge .quota-current-number,.grok-overview .quota-current-number,.muse-usage-card .quota-current-number{font-size:clamp(60px,20cqi,78px)}
+@media(max-width:720px){.quota-overview .quota-current-number{font-size:clamp(38px,16cqi,62px)}.quota-overview.single-gauge .quota-current-number,.grok-overview .quota-current-number,.muse-usage-card .quota-current-number{font-size:clamp(48px,18cqi,72px)}}
+
+.history-archive-trigger{border:0;background:none;color:var(--muted);font:inherit;text-decoration:underline;cursor:pointer;padding:0 0 0 4px}.history-extra .history-label{font-size:10px}.history-archive-panel .history-group{margin-top:8px}
+
+#setup{scroll-margin-top:20px}#setup:focus{outline:none}
+/* Display-only Copilot follows the same compact, non-link-colored heading. */
+.copilot-card .card-head h2{font-size:14px;line-height:1.3;margin:0;min-width:0}
+.copilot-card a.service-home{color:inherit;text-decoration:none}
+.copilot-card p{font-size:11px}.copilot-card small{font-size:10px}
+.prepaid-balance-line{gap:8px;font-size:10px}.prepaid-balance-line b{white-space:nowrap}
+
+/* Credit amounts retain native monetary units; unknown totals never become percentages. */
+.api-balance-bar{height:5px;margin:5px 0 2px}.api-balance-bar i{display:block;height:100%;background:var(--color,var(--accent));max-width:100%}.api-balance-bar.is-unknown{background:repeating-linear-gradient(90deg,var(--line) 0 4px,transparent 4px 7px)}.api-balance-scale{display:block;color:var(--muted);font-size:9px}.api-balance-bar.is-negative{border-left:2px solid #f00}
+.cloud-credit-alert,.credit-balance-alert{color:#d97474;animation:cloud-credit-pulse 6s ease-in-out infinite}.cloud-credit-alert .expiry-warning,.credit-balance-alert .expiry-warning{animation:none}.cloud-credit-row .extra-detail,.credit-balance-row .extra-detail{color:var(--muted)}@keyframes cloud-credit-pulse{0%,100%{opacity:1}50%{opacity:.82}}@media(prefers-reduced-motion:reduce){.cloud-credit-alert,.credit-balance-alert{animation:none}}
+.connection-dialog{color:inherit;background:var(--surface,#111b28);border:1px solid var(--line);border-radius:14px;max-width:min(560px,calc(100vw - 32px));padding:22px}.connection-dialog::backdrop{background:#0008}.connection-dialog p{font-size:13px;line-height:1.6}.connection-gauge .quota-center{gap:14px}.connection-dialog button,.connection-gauge button,.quota-center>[data-connect-service]{font:inherit;padding:8px 12px;border:1px solid var(--line);border-radius:7px;background:var(--surface-2,#1a2738);color:inherit;cursor:pointer}
+
+/* Compact independent card flow: no empty session slot or cross-column row sizing. */
+#cards>.card,html:fullscreen #cards>.card{display:flex;flex-direction:column;grid-row:auto;grid-template-rows:none!important;align-self:start}
+#cards>.card>.grok-session-absent{display:none!important}
+#cards>.card>.card-note{min-height:0;margin-block:10px}
+#cards>.card>.extras{margin-top:10px;padding-top:10px;min-height:0}
+#cards>.card>.history,html:fullscreen #cards>.card>.history{margin-top:14px;flex:none;align-self:stretch}
+#cards>.card>.card-bottom{margin-top:12px}
+.api-credit-row .api-balance-scale{display:block;white-space:nowrap;overflow:hidden;max-width:100%;min-width:0}
+
+#cards>:is(.grok-quota-card,.muse-usage-card)>.history>.history-group:only-of-type>.history-log{height:164px;flex:none;min-height:55px;max-height:320px}
+
+.muse-reset-dialog{width:min(560px,calc(100vw - 32px));box-sizing:border-box}.muse-reset-dialog>form{display:flex;flex-direction:column;gap:12px;margin:0;min-width:0}.muse-reset-dialog h2{font-size:20px;margin:0;overflow-wrap:anywhere}.muse-reset-dialog p{margin:0;max-width:100%}.muse-reset-dialog textarea{display:block;box-sizing:border-box;min-width:0;width:100%;min-height:130px;resize:vertical;background:var(--surface-2,#1a2738);color:inherit;border:1px solid var(--line);border-radius:8px;padding:10px;font:14px/1.6 system-ui}.muse-reset-dialog .api-setup-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px}
+
+:root[data-theme="standard"] .cloud-credit-alert,:root[data-theme="standard"] .credit-balance-alert{color:#b44747}
+
+/* Connection recovery stays readable at narrow widths; links with meters need no underline. */
+.connection-dialog{width:min(560px,calc(100vw - 32px));box-sizing:border-box}
+.connection-dialog>form{display:flex;flex-direction:column;gap:12px;min-width:0;margin:0}
+.connection-dialog h2{margin:0;font-size:20px;overflow-wrap:anywhere}
+.connection-dialog p{margin:0}
+.connection-dialog .api-setup-actions{display:flex;flex-direction:column;align-items:stretch;gap:10px}
+.connection-dialog .api-setup-actions>a{display:block;padding:10px 12px;border:1px solid var(--line);border-radius:7px}
+.connection-dialog output{font-size:13px;line-height:1.6}
+.api-credit-row>.extra-line>a,.extra-row.has-balance-bar .extra-action{text-decoration:none}
+
+.connection-dialog button[aria-busy="true"]{opacity:.7;cursor:progress}.connection-dialog output{display:block;min-height:2.8em}.connection-dialog [data-connection-refresh]{border-color:var(--color,#7da6d6)}
+
+/* Retrieval age shares the existing history heading; never adds a footer row. */
+.history-age-heading{display:flex;align-items:center;justify-content:space-between;gap:6px;min-width:0;white-space:nowrap}.history-age-heading>.age{font:inherit;font-size:10px;color:var(--muted);flex:none}.age.age-stale,.widget-age.age-stale,.history-age-heading>.age.age-stale{color:#ff5252!important}.card-bottom>.entitlement-tibo{align-self:flex-end;margin:0;font-size:10px}
+
+.header-web-links>button.header-product-link{font:inherit;font-size:11px;cursor:pointer;white-space:nowrap}
+
+.header-web-links{flex-wrap:wrap}

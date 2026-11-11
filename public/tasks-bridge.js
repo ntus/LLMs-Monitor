@@ -1,0 +1,17 @@
+/* Dedicated metadata RPC, read-only scoped overview; no refresh, audio, private history or provider credentials. */
+(function(root){
+ const ORIGINS=new Set(['https://llmsmonitor.ntus.org','https://llmsmonitor.ntus.info','https://llmsmonitor.ntusnog.chatgpt.site']);
+ const inFlight=new Set();
+ function request(service,type,timeout,extra={}){
+  if(service==='muse'&&type!=='TASK_NOTE_READ')return Promise.resolve({status:'unsupported'});
+  if(!ORIGINS.has(location.origin)||!['chatgpt','claude','gemini','muse'].includes(service))return Promise.resolve({status:'unavailable'});
+  let id='';try{id=localStorage.getItem('glance-extension-id')||''}catch{}
+  if(type==='TASK_NOTE_READ'){const q=new URLSearchParams(location.search);if(/^[a-p]{32}$/.test(q.get('extension')||''))id=q.get('extension');}
+  if(!/^[a-p]{32}$/.test(id)||!root.chrome?.runtime?.sendMessage)return Promise.resolve({status:'not-connected'});
+  if(inFlight.has(type))return Promise.resolve({status:'cooldown'});inFlight.add(type);
+  return new Promise(resolve=>{let finished=false;const finish=result=>{if(finished)return;finished=true;clearTimeout(timer);inFlight.delete(type);resolve(result)},timer=setTimeout(()=>finish({status:'unavailable'}),timeout);
+   try{chrome.runtime.sendMessage(id,{type,service,...extra},result=>{const failed=chrome.runtime.lastError;finish(failed?{status:'unavailable'}:result?.error&&/未対応|unsupported/i.test(result.error)?{status:'unsupported'}:result?.error?{status:'unavailable'}:result||{status:'unavailable'})})}catch{finish({status:'unavailable'})}
+  });
+ }
+ root.LLMTaskBridge={monitor:service=>request(service,'TASKS_MONITOR',5000),read:service=>request(service,'TASKS_READ',26000),states:service=>request(service,'TASKS_STATE',5000),codex:()=>request('chatgpt','TASKS_CODEX_READ',26000),codexSetup:()=>request('chatgpt','TASKS_CODEX_SETUP',5000),note:(service,token)=>request(service,'TASK_NOTE_READ',5000,{token})};
+})(globalThis);

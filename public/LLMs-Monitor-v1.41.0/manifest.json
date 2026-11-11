@@ -1,0 +1,86 @@
+{
+  "manifest_version": 3,
+  "default_locale": "ja",
+  "name": "__MSG_extensionName__",
+  "version": "1.41.0",
+  "description": "__MSG_extensionDescription__",
+  "permissions": [
+    "storage",
+    "alarms",
+    "offscreen",
+    "notifications"
+  ],
+  "host_permissions": [
+    "https://chatgpt.com/*",
+    "https://claude.ai/*",
+    "https://gemini.google.com/*",
+    "https://one.google.com/*",
+    "https://status.openai.com/*",
+    "https://status.claude.com/*",
+    "https://www.google.com/appsstatus/dashboard/*",
+    "https://llmsmonitor.ntusnog.chatgpt.site/*",
+    "https://llmsmonitor.ntus.info/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_title": "__MSG_actionTitle__",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://chatgpt.com/*",
+        "https://claude.ai/*",
+        "https://gemini.google.com/*"
+      ],
+      "js": [
+        "task-list.js",
+        "task-status.js",
+        "task-reader.js",
+        "task-note-metadata.js",
+        "task-note-button.js",
+        "locale.js",
+        "preferences.js",
+        "provider-status.js",
+        "intelligence.js",
+        "changes.js",
+        "api-credits.js",
+        "shared.js",
+        "advice.js",
+        "parser.js",
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "externally_connectable": {
+    "matches": [
+      "https://llmsmonitor.ntus.info/*",
+      "https://llmsmonitor.ntusnog.chatgpt.site/*"
+    ]
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'none'"
+  },
+  "optional_permissions": [
+    "scripting",
+    "nativeMessaging"
+  ],
+  "optional_host_permissions": [
+    "https://platform.openai.com/*",
+    "https://platform.claude.com/*",
+    "https://aistudio.google.com/*",
+    "https://x.com/*"
+  ]
+}

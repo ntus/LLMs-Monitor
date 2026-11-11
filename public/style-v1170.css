@@ -1,0 +1,7 @@
+/* v1.17.0: the official reset wording lives on its own compact line. */
+.entitlement-line{grid-template-columns:minmax(0,1fr) auto;gap:8px}
+.entitlement-official{display:block;max-width:100%;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:clamp(9px,.85vw,12px);letter-spacing:-.03em;color:var(--muted,#aebbd0)}
+.widget .entitlement-official{font-size:9px}
+
+.tool-directory{margin:24px auto 0;max-width:1600px;padding:18px 20px;border:1px solid var(--line,#ffffff26);border-radius:14px;background:var(--card,#111827)}
+.tool-directory-list{list-style:none;display:grid;gap:0;margin:12px 0 0;padding:0}.tool-directory-list li{display:grid;grid-template-columns:2ch 22px minmax(150px,210px) minmax(0,1fr);align-items:center;gap:8px;min-height:33px;border-top:1px solid #ffffff18;font-size:12px}.tool-directory-list li:first-child{border-top:0}.tool-rank{color:var(--muted,#aebbd0);font-size:10px}.tool-icon{display:grid;place-items:center;width:21px;height:21px;border-radius:6px;background:#8ba8ff1c;color:#a9bfff;font-size:13px}.tool-directory-list a{font-weight:700;color:#abc6ff;text-decoration:none}.tool-directory-list a:hover{text-decoration:underline}.tool-description{color:var(--muted,#aebbd0);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}@media(max-width:600px){.tool-directory{padding:14px}.tool-directory-list li{grid-template-columns:2ch 22px minmax(110px,150px) minmax(0,1fr);gap:5px;font-size:10px}}

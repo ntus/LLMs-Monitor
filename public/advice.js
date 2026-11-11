@@ -1,0 +1,109 @@
+(function(root){
+ const names={chatgpt:'ChatGPT',claude:'Claude',gemini:'Gemini'};
+ const usageLinks={chatgpt:'https://chatgpt.com/settings/usage?tab=overview',claude:'https://claude.ai/settings/usage',gemini:'https://gemini.google.com/usage'};
+ const resetGuide='https://help.openai.com/en/articles/11369540-using-codex-with-your-chatgpt-plan';
+ const isEn=()=>root.GlanceLocale?.language?.()==='en';
+ const pct=value=>typeof value==='number'&&Number.isFinite(value)?Math.max(0,Math.min(100,value)):null;
+ const hours=(time,now)=>Number.isFinite(Number(time))?Math.max(0,(Number(time)-now)/3600000):null;
+ const compactHours=value=>isEn()?(value===null?'Time unavailable':value<1?`${Math.max(1,Math.ceil(value*60))} min left`:value<48?`${Math.ceil(value)} hours left`:`${Math.ceil(value/24)} days left`):(value===null?'時刻未取得':value<1?`あと${Math.max(1,Math.ceil(value*60))}分`:value<48?`あと${Math.ceil(value)}時間`:`あと${Math.ceil(value/24)}日`);
+ function rowsFor(service,window){const history=service?.history||{},direct=history[window?.label];if(Array.isArray(direct))return direct;const old=window?.label==='週間 (Work / Codex)'?history['Work / Codex · 週間']:window?.label==='Work / Codex · 週間'?history['週間 (Work / Codex)']:null;return Array.isArray(old)?old:[];}
+ function stats(service,window,now=Date.now()){
+  const remaining=pct(window?.remaining),reset=Number(window?.resetAt),weekly=/(?:週間|今週|week)/i.test(window?.label||''),cycleStart=weekly&&reset>now?reset-7*86400000:-Infinity;
+  let rows=rowsFor(service,window).filter(row=>Number.isFinite(Number(row?.capturedAt))&&Number(row.capturedAt)<=now&&Number(row.capturedAt)>=cycleStart&&pct(row?.remaining)!==null).sort((a,b)=>a.capturedAt-b.capturedAt).slice(-10000);
+  // Replenishment starts a new baseline; previous plans/cycles cannot predict this allowance.
+  let start=0;for(let i=1;i<rows.length;i++)if(rows[i].remaining>rows[i-1].remaining)start=i;rows=rows.slice(start);
+  if(rows.length&&remaining!==null&&remaining>rows.at(-1).remaining)rows=[];
+  const spanHours=rows.length>1?(rows.at(-1).capturedAt-rows[0].capturedAt)/3600000:0;
+  let consumed=0;for(let i=1;i<rows.length;i++)consumed+=Math.max(0,Number(rows[i-1].remaining)-Number(rows[i].remaining));
+  const burn=spanHours>=.25?consumed/spanHours:null,left=hours(window?.resetAt,now),projected=remaining!==null&&burn!==null&&left!==null?Math.max(0,remaining-burn*left):null;
+  return {samples:rows.length,spanHours,consumed,burn,hoursLeft:left,remaining,projected};
+ }
+ function depletionRisk(service,window,now=Date.now()){
+  const remaining=pct(window?.remaining),until=Number(window?.resetAt)-now,weekly=/(?:週間|今週|week)/i.test(window?.label||'');
+  if(service?.status!=='ready'||!service.capturedAt||now-service.capturedAt>125000||service.capturedAt>now+60000||window?.expired||remaining===null||!window.resetAt||until<=0||!Number.isFinite(until))return null;
+  const horizon=(weekly?7*24:5)*3600000;let rows=rowsFor(service,window).filter(r=>Number.isFinite(r?.capturedAt)&&r.capturedAt>=now-horizon&&r.capturedAt<=now&&pct(r.remaining)!==null).sort((a,b)=>a.capturedAt-b.capturedAt);
+  // A rise marks a new/reset cycle. Never borrow consumption from its predecessor.
+  let start=0;for(let i=1;i<rows.length;i++)if(rows[i].remaining>rows[i-1].remaining)start=i;rows=rows.slice(start);
+  if(rows.length<3||Math.round(rows.at(-1).remaining)!==Math.round(remaining))return null;
+  if(service.capturedAt>rows.at(-1).capturedAt)rows.push({capturedAt:service.capturedAt,remaining});
+  const span=(rows.at(-1).capturedAt-rows[0].capturedAt)/3600000,consumed=rows[0].remaining-rows.at(-1).remaining;
+  if(span<(weekly?6:.25)||consumed<=0)return null;const burn=consumed/span,hoursToEmpty=remaining/burn;
+  if(hoursToEmpty>=until/3600000)return null;
+  return {at:now+hoursToEmpty*3600000,burn,samples:rows.length,weekly};
+ }
+ // Visual-only weekly budget warning, available before local history has accumulated.
+ function quotaPaceRisk(service,window,now=Date.now()){
+  const measured=depletionRisk(service,window,now);if(measured)return measured;
+  const remaining=pct(window?.remaining),left=Number(window?.resetAt)-now,cycle=7*86400000;
+  if(service?.status!=='ready'||!service.capturedAt||now-service.capturedAt>125000||service.capturedAt>now+60000||window?.expired||remaining===null||!/(?:週間|今週|week)/i.test(window?.label||'')||!Number.isFinite(left)||left<=0||left>cycle-3600000)return null;
+  const budget=100*left/cycle;if(remaining>=budget-5)return null;
+  return {weekly:true,basis:'weekly-budget',estimatedReset:window.resetIsEstimate===true,budget};
+ }
+ function riskText(risk){if(risk?.basis==='weekly-budget')return isEn()?'Weekly balance is below an even seven-day budget (guideline'+(risk.estimatedReset?'; reset time estimated':'')+').':'週間残量が、リセットまでの日数を均等配分した目安を下回っています'+(risk.estimatedReset?'（リセット日時は想定）':'（目安）')+'。';return risk?(isEn()?'At this pace, likely to run out before reset (estimate from local history).':'このペースではリセット前に使い切る見込みです（端末内履歴からの推定）。'):'';}
+ function weeklyWindow(service){return (service?.windows||[]).find(window=>/(?:週間|今週|week)/i.test(window.label))||(service?.windows||[])[1]||(service?.windows||[])[0];}
+ function sessionEquivalent(service,now=Date.now()){
+  const current=service?.windows?.[0],weekly=weeklyWindow(service);if(!current||!weekly||current===weekly||pct(weekly.remaining)===null)return null;
+  const weeklyRows=rowsFor(service,weekly),byTime=new Map(weeklyRows.filter(row=>row.capturedAt>=now-7*86400000).map(row=>[Number(row.capturedAt),row]));
+  const pairs=rowsFor(service,current).filter(row=>byTime.has(Number(row.capturedAt))).map(row=>({at:Number(row.capturedAt),session:pct(row.remaining),week:pct(byTime.get(Number(row.capturedAt)).remaining)})).filter(row=>row.session!==null&&row.week!==null).sort((a,b)=>a.at-b.at);
+  let sessionUsed=0,weekUsed=0,samples=0;for(let i=1;i<pairs.length;i++){const before=pairs[i-1],after=pairs[i],a=before.session-after.session,b=before.week-after.week;if(after.at-before.at>6*3600000||a<=0||b<=0)continue;sessionUsed+=a;weekUsed+=b;samples++;}
+  if(samples<1||sessionUsed<10||weekUsed<1)return null;const cost=100*weekUsed/sessionUsed;if(cost<1||cost>100)return null;
+  return {count:Math.min(99,pct(weekly.remaining)/cost),segmentPercent:cost,samples};
+ }
+ function evidence(stat){const observed=stat.spanHours<1?`${Math.round(stat.spanHours*60)}${isEn()?' min':'分'}`:`${stat.spanHours.toFixed(stat.spanHours<10?1:0)}${isEn()?' hours':'時間'}`,forecast=stat.projected===null?(isEn()?'Forecast pending':'予測待ち'):(isEn()?`About ${Math.round(stat.projected)}% at reset`:`リセット時 約${Math.round(stat.projected)}%`);return isEn()?`${stat.samples} changes across ${observed} / Current ${Math.round(stat.remaining)}% / ${forecast}`:`変化履歴 ${stat.samples}件・${observed}を分析 / 現在 ${Math.round(stat.remaining)}% / ${forecast}`;}
+ function usageAdvice(id,service,now){
+  if(id==='claude'&&claudeCreditStatus(service))return {id:'claude-usage',service:'Claude',tone:'neutral',title:isEn()?'Weekly limit and extra usage':'週間枠と追加使用',text:claudeCreditStatus(service),evidence:isEn()?'Extra usage setting confirmed; actual consumption mode unverified.':'追加使用の有効設定を確認。現在の消費先は未確認。'};
+  const window=weeklyWindow(service);if(!window||pct(window.remaining)===null)return null;const stat=stats(service,window,now),name=names[id]||id,plan=service.plan&&service.plan!=='未取得'?service.plan:(isEn()?'Current plan':'現行プラン'),enough=stat.samples>=3&&stat.spanHours>=6;
+  if(enough&&stat.consumed>=10&&stat.remaining<=20&&(stat.remaining<=15||(stat.projected!==null&&stat.projected<=5&&stat.hoursLeft!==null&&stat.hoursLeft>3)))return {id:`${id}-usage`,service:name,tone:'alert',title:isEn()?'Compare a higher plan':'上位プランを比較',text:isEn()?`${plan} may run out before reset at the observed pace in this cycle. Compare plans only if interruptions recur.`:`${plan}の今周期の観測ペースでは、リセット前に枠を使い切る可能性があります。停止が繰り返す場合にプランを比較してください。`,evidence:evidence(stat)};
+  if(enough&&stat.spanHours>=24&&stat.remaining>=65&&((stat.hoursLeft!==null&&stat.hoursLeft<=24)||(stat.projected!==null&&stat.projected>=55)))return {id:`${id}-usage`,service:name,tone:'consider',title:isEn()?'A lower plan may fit':'下位プランも比較候補',text:isEn()?'A large share is likely to remain. If this continues over several reset cycles, compare the cost of a lower plan.':'現在のペースでは利用枠が多く残る見込みです。同じ傾向が数回のリセット周期で続く場合は、下位プランとの費用差を比較できます。',evidence:evidence(stat)};
+  if(enough&&stat.projected!==null&&stat.projected>=10&&stat.projected<=40)return {id:`${id}-usage`,service:name,tone:'good',title:isEn()?'Plan usage looks balanced':'現行プランを有効活用',text:isEn()?`${plan} is being used while leaving room for unexpected work. You can keep the current pattern.`:`${plan}の枠を使いながら、突発的な作業に備える余裕も残せるペースです。現在の使い方を維持できます。`,evidence:evidence(stat)};
+  if(enough&&stat.projected!==null)return {id:`${id}-usage`,service:name,tone:'neutral',title:isEn()?'Adjust your usage pace':'利用ペースを調整',text:stat.projected>40?(isEn()?'Substantial capacity should remain at reset. Move high-priority long tasks before reset to use more of the plan.':'リセット時に余裕が残る見込みです。優先度の高い長時間作業をリセット前へ寄せると、プラン内の枠を活用できます。'):(isEn()?'Usage is dropping quickly. Do important work first and move lighter work after reset to reduce interruptions.':'残量低下が速めです。重要な作業を先に行い、軽い作業はリセット後へ回すと停止を避けやすくなります。'),evidence:evidence(stat)};
+  const need=Math.max(0,3-stat.samples);return {id:`${id}-usage`,service:name,tone:'learning',title:isEn()?'Learning your usage pattern':'利用傾向を学習中',text:need?(isEn()?`About ${need} more changes are needed to estimate consumption speed and plan fit.`:`あと${need}回ほど残量が変化すると、消費速度とプラン適合度を判定できます。`):(stat.hoursLeft===null?(isEn()?'A reset time is needed to forecast remaining usage.':'リセット時刻を取得すると残量予測を表示できます。'):(isEn()?'More observations in the current allowance cycle are needed.':'現在の利用枠・回復後の観測時間が不足しています。')),evidence:isEn()?`Current ${Math.round(stat.remaining)}% / ${compactHours(stat.hoursLeft)}`:`現在 ${Math.round(stat.remaining)}% / ${compactHours(stat.hoursLeft)}`};
+ }
+ function resetAdvice(service,now){
+  const extra=(service?.extras||[]).find(item=>item.label==='利用上限のリセット'),count=Number(String(extra?.value||'').match(/\d+/)?.[0]);if(!extra||!Number.isFinite(count)||count<1)return null;
+  const primary=(service.windows||[])[0],weekly=weeklyWindow(service),primaryRemaining=pct(primary?.remaining),weeklyRemaining=pct(weekly?.remaining),lowest=Math.min(...[primaryRemaining,weeklyRemaining].filter(value=>value!==null)),expiryHours=hours(extra.expiresAt,now),primaryHours=hours(primary?.resetAt,now),weeklyHours=hours(weekly?.resetAt,now),expiry=extra.expiresAt?new Date(extra.expiresAt).toLocaleString(isEn()?'en-US':'ja-JP',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}):(isEn()?'Expiration unavailable':'期限未取得'),urgent=expiryHours!==null&&expiryHours<=168,evidenceText=isEn()?`${count} available / Expires ${expiry}${urgent?' / Within one week':''}`:`利用可能 ${count} / 有効期限 ${expiry}${urgent?' / 期限まで1週間以内':''}`;
+  if(expiryHours!==null&&expiryHours<=24)return {id:'chatgpt-reset',service:'ChatGPT',tone:'alert',title:isEn()?'Reset expires within 24 hours':'リセット権は24時間以内に失効',text:isEn()?'If you have substantial work planned, use the reset before expiry while a limit is low. It is not used automatically.':'大きな作業予定があり利用枠が少ない場合、失効前の行使を検討してください。自動では行使しません。',evidence:evidenceText};
+  if(lowest<=30){
+   if(weeklyRemaining>30&&primaryHours!==null&&primaryHours<=1&&(expiryHours===null||expiryHours>primaryHours+1))return {id:'chatgpt-reset',service:'ChatGPT',tone:'neutral',title:isEn()?'Wait for the five-hour reset':'5時間枠の自然リセットを待つ',text:isEn()?'The five-hour limit resets within an hour and weekly capacity remains. Save the entitlement for a longer interruption.':'5時間枠は1時間以内に自然回復し、週間枠は残っています。リセット権は長い中断に備えて温存できます。',evidence:evidenceText};
+   if(weeklyRemaining<=30&&weeklyHours!==null&&weeklyHours<=2&&(expiryHours===null||expiryHours>weeklyHours+1))return {id:'chatgpt-reset',service:'ChatGPT',tone:'neutral',title:isEn()?'Weekly reset is near':'週間枠の自然リセットが間近',text:isEn()?'The weekly limit resets within two hours. If work can wait, keep the entitlement for the next cycle.':'週間枠は2時間以内に自然回復します。作業を待てるなら次周期のために権利を残せます。',evidence:evidenceText};
+   return {id:'chatgpt-reset',service:'ChatGPT',tone:'action',title:isEn()?'Consider using a reset':'リセット権の行使候補',text:isEn()?`A limit is down to ${Math.round(lowest)}%. Before a substantial task, consider using the reset while the entitlement is valid.`:`利用枠が${Math.round(lowest)}%まで低下しています。大きな作業の直前に、有効期限内で行使するのが候補です。`,evidence:evidenceText};
+  }
+  if(urgent)return {id:'chatgpt-reset',service:'ChatGPT',tone:'alert',title:isEn()?'Reset entitlement expires soon':'リセット権の期限を優先',text:isEn()?'Plan major work before expiry, then use the reset when a weekly or five-hour limit becomes restrictive.':'失効前に大きな作業を予定し、週間枠または5時間枠が足りなくなった時点での行使を検討してください。',evidence:evidenceText};
+  return {id:'chatgpt-reset',service:'ChatGPT',tone:'neutral',title:isEn()?'Keep the reset in reserve':'リセット権は温存',text:isEn()?'Capacity is currently sufficient. Save the reset for a major task or a restrictive weekly limit.':'現在は残量に余裕があります。大きな作業の直前、または週間枠が厳しい時のために温存できます。',evidence:evidenceText};
+ }
+ function claudeCreditStatus(service){
+  const weekly=weeklyWindow(service),extra=(service?.extras||[]).find(e=>e.dataSource==='claude-usage-extra_usage'&&e.usageCreditsEnabled===true);
+  if(service?.status!=='ready'||weekly?.expired||weekly?.resetAt&&weekly.resetAt<=Date.now()||pct(weekly?.remaining)!==0||!extra)return '';
+  return isEn()?'Weekly allowance exhausted · Extra usage enabled. Monthly cap headroom is separate from prepaid balance.':'週間枠の上限に到達 · 追加使用が有効です。月間上限までの残り枠と購入済み残高は別です。';
+ }
+ function sourcedUpdates(now,data={}){
+  const en=isEn(),news=[
+   {id:'news-claude-wrap',service:'Claude · NEWS',tone:'neutral',published:'2026-09-25',title:en?'Claude Code can wrap up at the 5-hour limit':'Claude Codeに5時間上限時の穏やかな停止',text:en?'It now tries to finish at a natural stopping point, using a small allowance from the weekly limit. Availability depends on plan.':'5時間枠の途中で区切りのよい停止点を探します。仕上げ分は週間枠から使い、適用回数はプランで異なります。',evidence:'2026-09-25 · ClaudeDevs',url:'https://x.com/ClaudeDevs/status/2103561342057943314',source:'ClaudeDevs'},
+   {id:'news-openai-sol-luna',service:'ChatGPT · NEWS',tone:'neutral',published:'2026-09-22',title:en?'GPT-6 Sol and Luna released':'GPT-6 Sol / Luna が公開',text:en?'OpenAI released Sol and Luna for API use. Check official release notes for availability in your product.':'OpenAIがSolとLunaをAPI向けに公開。利用中の製品での提供状況は公式案内を確認してください。',evidence:'2026-09-22 · OpenAI',url:'https://developers.openai.com/api/docs/changelog',source:'OpenAI API changelog'},
+   {id:'news-gemini-live',service:'Gemini · NEWS',tone:'neutral',published:'2026-09-15',title:en?'Gemini 3.8 Live announced':'Gemini 3.8 Liveを発表',text:en?'Google introduced Live and Live Extended Thinking for voice interactions; availability varies by product.':'Googleが音声対話向けのLiveとLive Extended Thinkingを発表。利用可能な製品は公式記事を参照してください。',evidence:'2026-09-15 · Google',url:'https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-8-live-gemini-3-8-live-extended-thinking/',source:'Google Blog'}
+  ];
+  const tips=[{id:'tip-claude-auto-resume',service:'Claude · TIP',tone:'good',title:en?'Resume after the limit resets':'上限リセット後の自動再開',text:en?'Claude Code 2.1.234+ can resume automatically after a claude.ai limit resets. Disable “Continue automatically at usage limit” in /config to resume manually.':'Claude Code 2.1.234以降は上限リセット時に自動再開できます。手動再開にする場合は /config の「Continue automatically at usage limit」をOFFにします。',evidence:en?'Claude Code changelog · v2.1.234':'Claude Code更新履歴 · v2.1.234',url:'https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md#21234',source:'Anthropic CHANGELOG'}];
+  if(claudeCreditStatus(data.claude))tips.splice(0,1,{id:'tip-claude-extra-usage',service:'Claude · TIP',tone:'neutral',title:en?'Extra usage after the weekly limit':'週間枠上限後の追加使用',text:claudeCreditStatus(data.claude),evidence:en?'Enabled is not proof of current credit consumption.':'有効設定だけでは現在の消費先を確定できません。',url:'https://support.claude.com/en/articles/12429409-manage-usage-credits-for-paid-claude-plans',source:'Claude Help Center'});
+  const recent=news.filter(item=>Math.abs(now-new Date(item.published+'T00:00:00Z').getTime())<=45*86400000);return [...tips,...(recent.length?recent:[{id:'news-official',service:'NEWS',tone:'neutral',title:en?'Check the latest official updates':'最新の公式更新を確認',text:en?'Open the official release notes for new product changes. Headlines here are updated with each app release.':'製品の新着情報は公式リリースノートで確認できます。この欄の見出しはアプリの更新時に見直します。',evidence:en?'OpenAI official updates':'OpenAI公式更新情報',url:'https://developers.openai.com/api/docs/changelog',source:'OpenAI'}])];
+ }
+ function build(data={},now=Date.now()){
+  const items=[];for(const id of ['chatgpt','claude','gemini']){const service=data[id];if(!service||service.status!=='ready')continue;const usage=usageAdvice(id,service,now);if(usage)items.push({...usage,url:usageLinks[id],source:isEn()?'Official usage page + local history':'公式利用量画面＋端末内履歴'});if(id==='chatgpt'){const reset=resetAdvice(service,now);if(reset){const sourced={...reset,url:resetGuide,source:'OpenAI Help Center'};if(reset.tone==='alert')items.unshift(sourced);else items.push(sourced)}}}
+  const baseline=items.length?items:[{id:'waiting',service:'MONITOR',tone:'learning',title:isEn()?'Waiting for analysis data':'分析データを待っています',text:isEn()?'Connect each service to analyze usage pace and plan fit from change history.':'各サービスへ接続すると、残量の変化履歴から利用ペースとプラン適合度を判定します。',evidence:isEn()?'At least three changes are required':'判定には残量変化3件以上を使用します'}];
+  return [...baseline,...sourcedUpdates(now,data)];
+ }
+ // Local plan-fit suggestions: never infer prices, transferable quota or a guaranteed optimum.
+ function planFits(data={},now=Date.now()){
+  return Object.entries(data).filter(([,s])=>weeklyWindow(s)).map(([id,s])=>{
+   const window=weeklyWindow(s),stat=stats(s,window,now),fresh=s.status==='ready'&&Number.isFinite(s.capturedAt)&&s.capturedAt<=now&&now-s.capturedAt<125000;
+   let fit='learning';
+   if(fresh&&stat.samples>=3&&stat.spanHours>=24&&stat.hoursLeft!==null&&stat.hoursLeft>0){
+    if(stat.consumed>=10&&stat.projected!==null&&stat.projected<=5&&stat.hoursLeft>3)fit='capacity';
+    else if(stat.hoursLeft<=24&&stat.remaining>=65)fit='smaller';
+    else fit='keep';
+   }
+   const titles={learning:isEn()?'More observations needed':'判定に必要な履歴を収集中',capacity:isEn()?'Compare more capacity if interruptions recur':'中断が繰り返す場合は上位プランを比較',smaller:isEn()?'A smaller plan may be worth comparing':'下位プランを比較する余地あり',keep:isEn()?'Keep the current plan for now':'当面は現行プランの継続を推奨'};
+   return {id,plan:s.plan||'',fit,title:titles[fit],evidence:stat.remaining===null?(isEn()?'Balance unavailable':'残量未取得'):evidence(stat),fresh};
+  });
+ }
+ root.GlanceAdvice={planFits,claudeCreditStatus,depletionRisk,quotaPaceRisk,riskText,stats,usageAdvice,resetAdvice,sessionEquivalent,sourcedUpdates,build};if(typeof module!=='undefined')module.exports=root.GlanceAdvice;
+})(globalThis);

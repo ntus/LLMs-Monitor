@@ -1,0 +1,2 @@
+/* v1.5.3: fit the localized floating title on one line without a version badge. */
+.floating-body .widget-title,.pip-body .widget-title{display:block;overflow:hidden;font-size:clamp(7px,4.7vw,9px);font-weight:750;letter-spacing:-.035em;text-overflow:clip;white-space:nowrap}

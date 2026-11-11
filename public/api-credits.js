@@ -1,0 +1,96 @@
+(function(root){
+ const PROVIDERS={
+  chatgpt:{name:'OpenAI API',origin:'https://platform.openai.com',url:'https://platform.openai.com/settings/organization/billing/overview',path:/^\/settings\/organization\/billing(?:\/|$)/,labels:/^(?:API credit balance|Credit balance|APIクレジット残高|クレジット残高)$/i},
+  claude:{name:'Claude API',origin:'https://platform.claude.com',url:'https://platform.claude.com/settings/billing',path:/^\/settings\/billing(?:\/|$)/,labels:/^(?:Credit balance|Remaining credits|Available credits|クレジット残高|利用可能なクレジット)$/i},
+  gemini:{name:'Gemini API',origin:'https://aistudio.google.com',url:'https://aistudio.google.com/billing',path:/^\/(?:u\/\d+\/)?billing(?:\/|$)/,labels:/^(?:Available credits|Prepay credit balance|Prepaid credit balance|Credit balance|利用可能なクレジット|前払いクレジット残高|クレジット残高)$/i},
+  grok:{name:'Grok API',origin:'https://grok.com',url:'https://grok.com/dashboard',path:/^\/dashboard(?:\/(?:billing|usage))?\/?$/,labels:/^(?:Credits available|利用可能なクレジット)$/i}
+ };
+ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ function provider(url){try{const u=new URL(url);return Object.keys(PROVIDERS).find(id=>PROVIDERS[id].origin===u.origin&&PROVIDERS[id].path.test(u.pathname))||null}catch{return null}}
+ function money(text){
+  // Intl and the official OpenAI page put the negative sign before the currency symbol.
+  const value=String(text).trim().replace(/[\u00a0\u202f]/g,' ').replace(/\u2212/g,'-').replace(/\uFFE5/g,'¥').replace(/^-\s*([$€¥£])\s*(?=\d)/,'$1-'),m=value.match(/^(?:(USD|EUR|JPY|GBP|[$€¥£])\s*(-?(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d{1,6})?)|(-?(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d{1,6})?)\s*(USD|EUR|JPY|GBP))$/i);
+  if(!m)return null;const currency=({'$':'USD','€':'EUR','¥':'JPY','£':'GBP'})[m[1]||m[4]]||(m[1]||m[4]).toUpperCase(),amount=Number((m[2]||m[3]).replaceAll(',',''));return Number.isFinite(amount)&&Math.abs(amount)<=1e9?{amount,currency}:null;
+ }
+ function parse(text,id){
+  if(!Object.hasOwn(PROVIDERS,id))return {status:'unavailable'};
+  const lines=String(text).split(/\n/).map(x=>x.trim()).filter(Boolean),balances=[];if(id==='grok'){const values=lines.map(s=>s.match(/^Credits available\s*[:：]?\s*(.+)$/i)).filter(Boolean).map(m=>money(m[1])).filter(Boolean);if(values.length===1)return {status:'ready',...values[0]};if(values.length>1)return {status:'unavailable'};}
+  for(let i=0;i<lines.length;i++){if(id==='gemini'){const inline=lines[i].match(/^(?:Credit balance|Available credits|Prepay credit balance|Prepaid credit balance|クレジット残高|利用可能なクレジット|前払いクレジット残高)\s*[:：]?\s*((?:[$€¥£￥]|USD|EUR|JPY|GBP).+)$/i);if(inline){const value=money(inline[1]);if(value)balances.push(value);continue}}if(PROVIDERS[id].labels.test(lines[i])){
+   // Accept a single explicitly labelled amount, never a budget, spend or auto-reload threshold.
+   for(let j=i+1;j<Math.min(i+4,lines.length);j++){const found=money(lines[j]);if(found){balances.push(found);break}if(/(?:auto.?reload|auto.?top.?up|buy|purchase|spent|spend|limit|budget|invoice|自動|購入|請求額)/i.test(lines[j]))break;}
+  }
+  }
+  if(balances.length===1)return {status:'ready',...balances[0]};
+  if(balances.length>1)return {status:'unavailable'};
+  if(/^(?:Postpay|Postpaid|Invoice billing|後払い|請求書払い)$/im.test(String(text)))return {status:'postpaid'};
+  return {status:'unavailable'};
+ }
+ function parseExpiry(text){
+  const values=String(text||'').split(/\n/).map(s=>s.trim()).map(s=>s.match(/^(?:Expires(?: at| on)?|Expiry|Expiration|有効期限|期限)\s*[:：]?\s*(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2}(?:\.\d{1,3})?)?(?:Z|[+-]\d{2}:\d{2}))$/i)?.[1]).filter(Boolean);
+  if(values.length!==1)return null;const n=Date.parse(values[0]);if(!Number.isSafeInteger(n)||n<=0)return null;const date=values[0].slice(0,10),day=new Date(date+'T00:00:00Z');if(!Number.isFinite(day.getTime())||day.toISOString().slice(0,10)!==date)return null;return n;
+ }
+ function calendarDate(year,month,day){const y=Number(year),m=Number(month),d=Number(day),t=new Date(Date.UTC(y,m-1,d));return y>=2000&&y<=2200&&t.getUTCFullYear()===y&&t.getUTCMonth()===m-1&&t.getUTCDate()===d?`${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`:null;}
+ function nextExpiry(value,balance){if(!value||typeof value!=='object'||Array.isArray(value)||Object.keys(value).some(k=>!['date','amount','currency'].includes(k))||typeof value.date!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(value.date)||calendarDate(...value.date.split('-'))!==value.date||typeof value.amount!=='number'||!Number.isFinite(value.amount)||value.amount<=0||value.amount>1e9||value.currency!==balance.currency||balance.status!=='ready'||value.amount>balance.amount+0.005)return null;return {date:value.date,amount:value.amount,currency:value.currency};}
+ function parseNextExpiry(text,id,balance){
+  if(id!=='chatgpt'||typeof text!=='string'||text.length>3200)return null;
+  const found=[],months=['january','february','march','april','may','june','july','august','september','october','november','december'];
+  for(const line of text.normalize('NFKC').split('\n').map(s=>s.trim()).filter(Boolean)){
+   let m=line.match(/^次回は(\d{4})年(\d{1,2})月(\d{1,2})日に\s*([$€¥£]\s*[\d,.]+)が失効します[。.]?(?:\s*付与されたクレジットを表示)?$/),date,amount;
+   if(m&&(!root.GlanceReaderRules||root.GlanceReaderRules.allows('openai-next-expiry-ja-v1','ja'))){date=calendarDate(m[1],m[2],m[3]);amount=money(m[4]);}
+   else{m=line.match(/^(?:Next expiration:|Next,)\s*([$€¥£]\s*[\d,.]+)\s+(?:on|expires on)\s+([A-Za-z]+)\s+(\d{1,2}),\s*(\d{4})[.]?$/i);if(m&&(!root.GlanceReaderRules||root.GlanceReaderRules.allows('openai-next-expiry-en-v1','en'))){date=calendarDate(m[4],months.indexOf(m[2].toLowerCase())+1,m[3]);amount=money(m[1]);}}
+   if(date&&amount){const valid=nextExpiry({date,...amount},balance);if(valid)found.push(valid);}
+  }
+  return found.length===1?found[0]:null;
+ }
+ function promotional(text){
+  const lines=String(text).split(/\n/).map(x=>x.trim()).filter(Boolean),values=[];
+  // Only the explicit available promotional balance summary, never grant totals or table dates.
+  for(const line of lines){
+   const m=line.match(/^(?:プロモーションクレジット\s+([$€¥£]\s*[\d,.]+)\s*をご利用いただけます|(?:You have\s+)?([$€¥£]\s*[\d,.]+)\s+(?:in\s+)?promotional credits(?:\s+available)?[.]?|Promotional credits\s+available[:：]?\s*([$€¥£]\s*[\d,.]+))$/i);
+   if(m){const value=money(m[1]||m[2]||m[3]);if(value&&value.amount>=0)values.push(value)}
+  }
+  return values.length===1?{status:'ready',...values[0]}:{status:'unavailable'};
+ }
+ function promoGrants(input,now){
+  if(!Array.isArray(input)||input.length<2||input.length>100)return undefined;
+  const rows=input.map(g=>sanitize({status:g?.status,amount:g?.amount,currency:g?.currency,total:g?.total,expiresAt:g?.expiresAt},now));
+  return rows.every(g=>g.status==='ready'&&g.amount>=0&&g.total>0&&g.currency===rows[0].currency)?rows:undefined;
+ }
+ function sanitize(input={},now=Date.now()){
+  if(input.grants!==undefined&&!promoGrants(input.grants,now))return sanitize({status:'unavailable'},now);
+  const status=['ready','login','unavailable','postpaid'].includes(input.status)?input.status:'unavailable',valid=typeof input.amount==='number'&&Number.isFinite(input.amount)&&Math.abs(input.amount)<=1e9&&['USD','EUR','JPY','GBP'].includes(input.currency);
+  return {status:status==='ready'&&!valid?'unavailable':status,amount:status==='ready'&&valid?input.amount:null,currency:status==='ready'&&valid?input.currency:null,scope:/^[a-f0-9]{8}$/.test(input.scope||'')?input.scope:'',capturedAt:now,...(input.service==='chatgpt'&&nextExpiry(input.nextExpiry,{status:status==='ready'&&valid?'ready':'unavailable',amount:input.amount,currency:input.currency})?{nextExpiry:nextExpiry(input.nextExpiry,input)}:{}),...(status==='ready'&&valid&&input.grants?{grants:promoGrants(input.grants,now)}:{}),...(status==='ready'&&valid&&typeof input.total==='number'&&Number.isFinite(input.total)&&input.total>0&&input.total<=1e9&&input.amount<=input.total?{total:input.total}:{}),...(status==='ready'&&valid&&typeof input.expiresAt==='number'&&Number.isSafeInteger(input.expiresAt)&&input.expiresAt>0&&input.expiresAt<=8640000000000000?{expiresAt:input.expiresAt}:{}),...(input.service==='claude'?{promotional:sanitize({status:input.promotional?.status,amount:input.promotional?.amount,currency:input.promotional?.currency,total:input.promotional?.total,expiresAt:input.promotional?.expiresAt,grants:input.promotional?.grants},now)}:{})};
+ }
+ function accept(old={},incoming={},now=Date.now()){
+  const next={...sanitize(incoming,now),enabled:old.enabled===true};
+  // An unavailable reader never turns into zero. Previous values are retained only within a known billing scope.
+  if(next.status!=='ready'&&next.status!=='login'&&next.scope&&next.scope===old.scope){const last=old.status==='ready'?old:old.previous;if(last?.status==='ready')next.previous={status:'ready',amount:last.amount,currency:last.currency,capturedAt:last.capturedAt};}
+  return next;
+ }
+ function format(row,language){return new Intl.NumberFormat(language==='ja'?'ja-JP':'en-US',{style:'currency',currency:row.currency,minimumFractionDigits:2,maximumFractionDigits:2}).format(row.amount)}
+ function balanceBar(row,enabled=true,ja=true,showScale=true){
+  const valid=enabled&&Number.isSafeInteger(row?.capturedAt)&&row.capturedAt>0&&row.capturedAt<=Date.now()+5000&&row?.status==='ready'&&typeof row.amount==='number'&&Number.isFinite(row.amount)&&Math.abs(row.amount)<=1e9&&['USD','EUR','JPY','GBP'].includes(row.currency),total=valid&&typeof row.total==='number'&&Number.isFinite(row.total)&&row.total>0&&row.total<=1e9&&row.amount<=row.total?row.total:null;
+  if(!valid)return `<div class="track extra-track api-balance-bar is-unknown" title="${ja?'残高未取得・割合不明':'Balance unavailable; ratio unknown'}" aria-label="${ja?'残高未取得':'Balance unavailable'}"></div>`;
+  const absolute=Math.abs(row.amount),power=10**Math.floor(Math.log10(absolute||1)),axis=total||[1,2,5,10].map(n=>n*power).find(n=>n>=absolute)||power*10,width=Math.max(0,Math.min(100,row.amount/axis*100)),axisText=format({amount:axis,currency:row.currency},ja?'ja':'en'),hint=total?(ja?'確認済み総額 ':'Verified total ')+axisText:(ja?'表示目盛 ':'Display scale ')+axisText+(ja?'（総額・残高率ではありません）':' (not a grant total or remaining percentage)'),stale=Date.now()-(row.capturedAt||0)>125000;
+  return `<div class="track extra-track api-balance-bar${stale?' api-credit-stale':''}${row.amount<0?' is-negative':''}" title="${esc(hint)}" role="meter" aria-label="${esc((ja?'残高 ':'Balance ')+format(row,ja?'ja':'en')+' · '+hint)}" aria-valuemin="0" aria-valuemax="${axis}" aria-valuenow="${Math.max(0,row.amount)}" aria-valuetext="${esc(format(row,ja?'ja':'en'))}"><i style="width:${width}%"></i></div>${showScale?`<small class="inline-scroll api-balance-scale" tabindex="0" title="${esc(hint)}"><span class="inline-scroll-text">${esc(hint)}</span></small>`:''}`;
+ }
+ function scaleNote(row,enabled,ja){const html=balanceBar(row,enabled,ja);const match=html.match(/title="([^"]+)"/);return match&&!html.includes('is-unknown')?match[1].replace(/&amp;/g,'&').replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&lt;/g,'<').replace(/&gt;/g,'>'):'';}
+ function expiryNote(row,ja){if(!row||row.status!=='ready')return '';const next=nextExpiry(row.nextExpiry,row);if(next)return (ja?'次回失効 ':'Next expiry ')+next.date.replaceAll('-','/')+' · '+format(next,ja?'ja':'en')+(ja?'（時刻未確認）':' (time unconfirmed)');if(Array.isArray(row.grants)&&row.grants.length>1)return row.grants.map(g=>format(g,ja?'ja':'en')+' / '+expiryNote({...g,grants:undefined},ja)).join(' · ');const t=row.expiresAt;if(!Number.isSafeInteger(t)||t<=0||t>8640000000000000)return ja?'期限未確認':'Expiry unconfirmed';return (t<=Date.now()?(ja?'期限切れ ':'Expired '):(ja?'期限 ':'Expires '))+new Date(t).toLocaleString(ja?'ja-JP':'en-US',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false});}
+ let state={};function set(value){state=value&&typeof value==='object'?value:{}}
+ function view(id,showAction=false){
+  if(!Object.hasOwn(PROVIDERS,id))return '';const p=PROVIDERS[id];const ja=root.GlanceLocale?.language()!=='en',row=state[id]||{},enabled=row.enabled===true,stale=Date.now()-(row.capturedAt||0)>125000;
+  const title=ja?'APIクレジット残高':'API credit balance',value=enabled&&row.status==='ready'&&typeof row.amount==='number'?format(row,ja?'ja':'en'):row.status==='postpaid'&&enabled?(ja?'後払い':'Postpaid'):'—';
+  const consoleStage=id==='claude'&&String(row.acquisition?.stage||'').startsWith('console-'),consoleNote=row.acquisition?.stage==='console-api'?(ja?'公式残高データから自動取得（画面表示不要）':'Automatically read official balance data; no visible page required'):/console-(ambiguous|no-api-organization)/.test(row.acquisition?.stage||'')?(ja?'請求組織を一意に特定できません。残高は未取得です。':'A unique billing organization could not be identified; balance unavailable.'):(ja?'公式残高データを取得できません。自動再試行します。':'Official balance data unavailable; retrying automatically.');
+  const note=!enabled?(ja?'API連携から個別に有効化':'Enable each provider in API connections'):row.status==='login'?(ja?'公式API請求画面でログイン':'Sign in on the official API billing page'):row.status==='postpaid'?(ja?'前払い残高は適用されません':'Prepaid balance does not apply'):consoleStage?consoleNote:id==='claude'&&row.acquisition?.status==='waiting'?(ja?'表示完了を待機中。同じ取得ページで自動再試行します。':'Waiting for rendering; retrying in the same acquisition tab.'):id==='claude'&&row.acquisition?.status==='paused'?(ja?'自動取得を停止中。公式画面の確認後、今すぐ更新を押してください。':'Automatic reading paused; check the official page, then Refresh now.'):row.status==='ready'&&!stale?(ja?'請求画面の表示値（プラン枠とは別）':'Billing page value; separate from plan limits'):(id==='claude'?(ja?'自動更新待ち。ログインが必要なら公式請求画面へ':'Waiting for automatic update; sign in on official billing if needed'):(id==='gemini'?(ja?'API残高は未取得（Geminiの利用枠とは別）':'API balance unavailable; separate from Gemini app limits'):(ja?'請求画面を開いて更新してください':'Open the billing page to update')));
+  const openaiStage=id==='chatgpt'&&enabled&&String(row.acquisition?.stage||'').startsWith('openai-');
+  const openaiNote=row.status==='login'?(ja?'公式API請求画面でログインしてください':'Sign in on the official API billing page'):row.acquisition?.status==='ready'?(ja?'公式請求画面を裏タブで自動更新（プラン枠とは別）':'Official billing refreshed in one background tab; separate from plan limits'):row.acquisition?.status==='paused'?(ja?'取得を停止中。ログイン状態を確認し、今すぐ更新で再試行してください。':'Reading paused. Check sign-in, then use Refresh now to retry.'):(ja?'裏タブの表示完了を待機中。前面への切替は行いません。':'Waiting for background rendering; no foreground switching.');
+  const promo=row.promotional||{},promoValue=enabled&&promo.status==='ready'&&typeof promo.amount==='number'?format(promo,ja?'ja':'en'):'—',promoLine=id==='claude'?`<div class="extra-line" style="flex-wrap:nowrap"><a style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" href="${p.url}" target="_blank" rel="noopener noreferrer">${ja?'プロモーションクレジット':'Promotional credits'}</a><b title="${esc(ja?'公式請求画面の表示値です。約1分ごとの読取りで公式残高データを確認します。画面の表示は不要です。公式側の反映が遅れる場合があります。':'Official billing-page value, read about once a minute without displaying a page; provider posting may be delayed.')}"${enabled&&promo.status==='ready'&&Date.now()-(promo.capturedAt||0)>125000?' class="api-credit-stale"':''}>${esc(promoValue)}</b></div>${balanceBar(promo,enabled,ja,false)}${enabled&&promo.status==='ready'?`<small class="inline-scroll api-credit-expiry" tabindex="0" title="${esc([scaleNote(promo,enabled,ja),expiryNote(promo,ja)].filter(Boolean).join(' · '))}"><span class="inline-scroll-text">${esc([scaleNote(promo,enabled,ja),expiryNote(promo,ja)].filter(Boolean).join(' · '))}</span></small>`:''}`:'';
+  const observed=enabled&&(id==='claude'&&promo.status==='ready'?promo.capturedAt:row.status==='ready'?row.capturedAt:0),timing=typeof observed==='number'&&observed>0?' · '+(ja?'読取 ':'Read ')+new Date(observed).toLocaleTimeString(ja?'ja-JP':'en-US',{hour12:false}):'',shownNote=openaiStage?openaiNote:consoleStage?consoleNote:id==='claude'&&enabled&&promo.status==='ready'&&Date.now()-(promo.capturedAt||0)<=125000?(ja?'公式請求画面の表示値（プラン枠とは別）':'Official billing-page value; separate from plan limits'):note;
+  const separateExpiry=id==='chatgpt'&&enabled&&row.status==='ready',expiryLine=separateExpiry?`<small class="inline-scroll api-credit-expiry" tabindex="0" title="${esc(expiryNote(row,ja))}"><span class="inline-scroll-text">${esc(expiryNote(row,ja))}</span></small>`:'';
+  const detail=[id==='claude'&&enabled&&row.status==='ready'&&row.amount===0?(ja?'購入残高0（確認済み）':'Purchased balance zero (confirmed)'):'',scaleNote(row,enabled,ja),enabled&&!separateExpiry?expiryNote(row,ja):'',shownNote+timing].filter(Boolean).join(' · ');
+  const last=enabled&&row.previous?`<small>${esc(ja?'前回':'Previous')} ${esc(format(row.previous,ja?'ja':'en'))} · ${esc(new Date(row.previous.capturedAt).toLocaleString(ja?'ja-JP':'en-US',{hour12:false}))}</small>`:'';
+  return `<div class="api-credit-row" data-api-provider="${id}"><div class="extra-line"><a href="${p.url}" target="_blank" rel="noopener noreferrer">${esc(title)} <small>${esc(p.name)}</small></a><b${stale&&enabled&&row.status==='ready'?' class="api-credit-stale"':''}>${esc(value)}</b></div>${balanceBar(row,enabled,ja,false)}${expiryLine}${promoLine}<small class="inline-scroll api-credit-note" tabindex="0" title="${esc(detail)}" aria-label="${esc(detail)}"><span class="inline-scroll-text">${esc(detail)}</span></small>${last}${showAction?`<button type="button" class="api-connections-button" data-api-setup>${esc(root.GlanceLocale?.t('apiConnections')||'API connections')} ↗</button>`:''}</div>`;
+ }
+ root.GlanceApiCredits={PROVIDERS,provider,money,parse,parseExpiry,parseNextExpiry,nextExpiry,promotional,sanitize,accept,format,balanceBar,expiryNote,set,view};
+ if(typeof module!=='undefined')module.exports=root.GlanceApiCredits;
+})(globalThis);

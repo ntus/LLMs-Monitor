@@ -1,0 +1,7 @@
+/* Status expands in its dock; reserve its measured height independently of advice. */
+:root{--status-dock-height:38px}
+.provider-status-host .provider-status-popover{position:static;max-height:45dvh;overflow:auto;box-sizing:border-box;margin:7px 0 0}
+main,html:fullscreen main{padding-bottom:calc(var(--status-dock-height) + 24px)}
+body:has(#advisor:not([hidden])) main,html:fullscreen body:has(#advisor:not([hidden])) main{padding-bottom:calc(var(--status-dock-height) + 84px)}
+.advisor,html:fullscreen .advisor{bottom:calc(var(--status-dock-height) + 8px)}
+.entitlement-tibo{margin-top:5px;font-size:10px;line-height:1.6}
