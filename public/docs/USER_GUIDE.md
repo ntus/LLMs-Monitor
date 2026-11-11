@@ -4,7 +4,7 @@ Canonical guide / 正本: https://github.com/ntus/LLMs-Monitor/blob/main/USER_GU
 
 [English](#en) · [日本語](#ja) · [Web版](https://llmsmonitor.ntus.org/manual#ja)
 
-App/extension package v1.132.0 · Guide revised 2026-11-11. Beta / β版。
+App/extension package v1.133.0 · Guide revised 2026-11-11. Beta / β版。
 
 
 <a id="en"></a>
@@ -28,9 +28,11 @@ LLMs Monitor brings supported AI usage pools, reset times, credits, history and 
 
 Flow: official service → extension in the same browser → monitor. Basic operation needs no external AI API key and works independently of LLMs Gateway and LLMs PMO.
 
-> This guide covers the v1.132.0 beta. The production site is https://llmsmonitor.ntus.org/. Fields depend on sign-in, plan and provider layout. — means unavailable, not zero or unlimited.
+> This guide covers the v1.133.0 beta. The production site is https://llmsmonitor.ntus.org/. Fields depend on sign-in, plan and provider layout. — means unavailable, not zero or unlimited.
 
-Version 1.132.0 updates: OpenAI API credits show the next observed expiry date and affected amount separately. Credit grants can have different dates. The usage report includes daily and hourly views in JST; gaps mean no observation. Claude Fable reset entitlements show their official expiry and availability. Gateway connection can remain approved until disconnected; use Open Gateway to open the installed local workbench. Official public-news collection depends on permissions and rendered posts; server-wide automatic collection is awaiting configuration.
+Version 1.133.0 updates: OpenAI API credits show the next observed expiry date and affected amount separately. Credit grants can have different dates. The usage report includes daily and hourly views in JST; gaps mean no observation. Claude Fable reset entitlements show their official expiry and availability. Gateway connection can remain approved until disconnected; use Open Gateway to open the installed local workbench. Official public-news collection depends on permissions and rendered posts; server-wide automatic collection is awaiting configuration.
+
+LLMs Monitor measures usage and headroom. LLMs Gateway provides the local execution entry point. LLMs Evidence supports evidence management. Use Products in the header for Evidence setup and local Gateway access. PMO and TaskBoards are marked Under construction.
 
 ### 2. Start here: first connection
 
@@ -309,9 +311,11 @@ LLMsモニターは、複数のAIの利用枠・リセット予定・クレジ�
 
 仕組みは「公式サービス → 同じブラウザーの拡張機能 → モニター画面」です。基本機能に外部AIのAPIキーは不要です。LLMs GatewayやLLMs PMOを導入しなくても利用できます。
 
-> v1.132.0のβ機能を説明します。本番サイトは https://llmsmonitor.ntus.org/ です。各社のログイン状態・契約・画面形式によって取得できる項目が異なります。「—」は未取得で、0や無制限という意味ではありません。
+> v1.133.0のβ機能を説明します。本番サイトは https://llmsmonitor.ntus.org/ です。各社のログイン状態・契約・画面形式によって取得できる項目が異なります。「—」は未取得で、0や無制限という意味ではありません。
 
-v1.132.0の追加機能：OpenAI APIクレジットは、取得できた次回失効日と対象金額を分けて表示します。複数の付与枠にはそれぞれ異なる期限があります。利用状況レポートは日本時間の日別・時間帯別表示に対応し、空白は観測がない区間です。ClaudeのFableリセット権は公式の有効期限と利用可能状態を表示します。Gateway連携は解除まで承認を維持でき、「Gatewayを開く」で導入済みのローカル画面を開きます。公式ニュースは許可と表示済み公開投稿に依存し、サーバーでの一括自動収集は設定準備中です。
+v1.133.0の追加機能：OpenAI APIクレジットは、取得できた次回失効日と対象金額を分けて表示します。複数の付与枠にはそれぞれ異なる期限があります。利用状況レポートは日本時間の日別・時間帯別表示に対応し、空白は観測がない区間です。ClaudeのFableリセット権は公式の有効期限と利用可能状態を表示します。Gateway連携は解除まで承認を維持でき、「Gatewayを開く」で導入済みのローカル画面を開きます。公式ニュースは許可と表示済み公開投稿に依存し、サーバーでの一括自動収集は設定準備中です。
+
+LLMs Monitorは利用状況と余力を確認し、LLMs Gatewayは実行の入口、LLMs Evidenceは証跡管理を担う製品ファミリーです。ヘッダーの「製品ファミリー」内のEvidence案内またはGatewayから各製品を開けます。
 
 ### 2. はじめに：最初の接続
 

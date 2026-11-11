@@ -263,3 +263,13 @@ html:fullscreen #cards>.card>.history{margin-top:auto}html:fullscreen #cards>.ca
 .header-web-links>button.header-product-link{font:inherit;font-size:11px;cursor:pointer;white-space:nowrap}
 
 .header-web-links{flex-wrap:wrap}
+
+/* Product navigation grows within one header control. */
+.product-family { position:relative; }
+.product-family>summary { cursor:pointer; white-space:nowrap; }
+.product-family-menu { position:absolute; top:calc(100% + 8px); right:0; z-index:200; width:260px; max-width:calc(100vw - 24px); max-height:70vh; overflow:auto; padding:8px; background:var(--panel,#111b29); color:var(--text,#e8edf5); border:1px solid var(--line,#344155); border-radius:12px; box-shadow:0 12px 35px #0005; }
+.product-family-menu>a,.product-family-menu>button,.product-family-pending { display:flex; flex-direction:column; align-items:flex-start; gap:3px; width:100%; box-sizing:border-box; padding:10px; border:0; border-radius:6px; background:transparent; color:inherit; font:inherit; text-decoration:none; text-align:left; }
+.product-family-menu>button { cursor:pointer; }
+.product-family-menu>a:hover,.product-family-menu>button:hover { background:#8882; }
+.product-family-menu small { font-size:11px; color:var(--muted,#9baac0); }
+.product-family-pending { opacity:.65; }
