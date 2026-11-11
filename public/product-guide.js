@@ -67,7 +67,7 @@
           },
           {
             "type": "link",
-            "url": "https://github.com/ntus/ai-evidence",
+            "url": "https://llmsevidence.ntus.org/",
             "text": "LLMs Evidence · 導入案内 / Setup ↗"
           }
         ]
@@ -818,7 +818,7 @@
           },
           {
             "type": "link",
-            "url": "https://github.com/ntus/ai-evidence",
+            "url": "https://llmsevidence.ntus.org/",
             "text": "LLMs Evidence · 導入案内 / Setup ↗"
           }
         ]
