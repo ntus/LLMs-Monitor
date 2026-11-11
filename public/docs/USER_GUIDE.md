@@ -2,9 +2,9 @@ Canonical guide / 正本: https://github.com/ntus/LLMs-Monitor/blob/main/USER_GU
 
 # LLMs Monitor User Guide / LLMsモニター取扱説明書
 
-[English](#en) · [日本語](#ja) · [Web版](https://llmsmonitor.ntus.info/manual#ja)
+[English](#en) · [日本語](#ja) · [Web版](https://llmsmonitor.ntus.org/manual#ja)
 
-App/extension package v1.121.0 · Guide revised 2026-11-08. Restricted beta / 限定β。
+App/extension package v1.132.0 · Guide revised 2026-11-11. Beta / β版。
 
 
 <a id="en"></a>
@@ -28,7 +28,9 @@ LLMs Monitor brings supported AI usage pools, reset times, credits, history and 
 
 Flow: official service → extension in the same browser → monitor. Basic operation needs no external AI API key and works independently of LLMs Gateway and LLMs PMO.
 
-> This guide covers the v1.121.0 beta. The hosted site currently has restricted access. Fields depend on sign-in, plan and provider layout. — means unavailable, not zero or unlimited.
+> This guide covers the v1.132.0 beta. The production site is https://llmsmonitor.ntus.org/. Fields depend on sign-in, plan and provider layout. — means unavailable, not zero or unlimited.
+
+Version 1.132.0 updates: OpenAI API credits show the next observed expiry date and affected amount separately. Credit grants can have different dates. The usage report includes daily and hourly views in JST; gaps mean no observation. Claude Fable reset entitlements show their official expiry and availability. Gateway connection can remain approved until disconnected; use Open Gateway to open the installed local workbench. Official public-news collection depends on permissions and rendered posts; server-wide automatic collection is awaiting configuration.
 
 ### 2. Start here: first connection
 
@@ -45,7 +47,7 @@ The Codex helper is unnecessary for ordinary quota monitoring. It is a separate 
 
 > Use desktop Chrome/Edge. This browser extension cannot be installed on iOS/Android.
 
-[拡張機能ZIP / Extension ZIP](https://llmsmonitor.ntus.info/LLMs-Monitor.zip)
+[拡張機能ZIP / Extension ZIP](https://llmsmonitor.ntus.org/LLMs-Monitor.zip)
 
 ### 3. Start here: a daily workflow
 
@@ -139,15 +141,15 @@ Register work note is available on supported ChatGPT/dots, Claude, Gemini and Mu
 
 Optional local Codex tasks use a separate helper. Obtain the current extension-ID-specific installer from Setup → Codex, follow the guide and check connection. Do not load it as an extension. macOS instructions and a Linux implementation exist; the Windows helper is unsupported. Unknown metadata is not inferred running/completed.
 
-[Detailed task guide](https://llmsmonitor.ntus.info/docs/TASK_DETAILS.md)
+[Detailed task guide](https://llmsmonitor.ntus.org/docs/TASK_DETAILS.md)
 
-[Codex helper guide](https://llmsmonitor.ntus.info/docs/CODEX_HELPER.md)
+[Codex helper guide](https://llmsmonitor.ntus.org/docs/CODEX_HELPER.md)
 
 ⋮⋮ is a drag handle; ☆/★ toggles favorites. The Codex helper targets macOS/Linux and needs Python 3.9+ and a discoverable Codex binary. Windows installation is unsupported.
 
-[ヘルパー導入ガイド / Helper guide](https://llmsmonitor.ntus.info/docs/CODEX_HELPER.md)
+[ヘルパー導入ガイド / Helper guide](https://llmsmonitor.ntus.org/docs/CODEX_HELPER.md)
 
-[汎用ヘルパーZIP（初回ID入力） / Generic helper ZIP (ID required)](https://llmsmonitor.ntus.info/LLMs-Monitor-Codex-Helper-v1.30.2.zip)
+[汎用ヘルパーZIP（初回ID入力） / Generic helper ZIP (ID required)](https://llmsmonitor.ntus.org/LLMs-Monitor-Codex-Helper-v1.30.2.zip)
 
 ### 9. Details: incidents and public updates
 
@@ -196,7 +198,7 @@ Muse Bus/answer reset times are reference-only. Copying a question does not send
 
 A percentage point is not a universal work unit. Observation count is not request frequency. Future analysis must match plan/model/task class and execution evidence. Credit transfer, shared API keys and automatic spending permission are not offered.
 
-[Team instructions](https://llmsmonitor.ntus.info/docs/TEAM_STATUS.md)
+[Team instructions](https://llmsmonitor.ntus.org/docs/TEAM_STATUS.md)
 
 ### 12. Details: memory saving and operating conditions
 
@@ -230,7 +232,7 @@ For IME/slow-input symptoms, compare identical conditions and tab counts with/wi
 
 > GitHub Issues is public. Do not post keys, cookies, auth URLs, account/org IDs, balances, bills, conversations, private Bus contents or raw usage CSV. Automatic redaction, attachments and submission are not provided.
 
-[Support instructions](https://llmsmonitor.ntus.info/docs/SUPPORT.md)
+[Support instructions](https://llmsmonitor.ntus.org/docs/SUPPORT.md)
 
 ### 14. Details: storage and privacy
 
@@ -256,7 +258,7 @@ No provider password or API key is entered into this monitor for analysis. Gatew
 
 ZIP, loaded runtime, Web UI, GitHub and browser stores update independently. A build is not store approval or general availability. Follow OS instructions for the unsigned/unnotarized updater; do not globally disable security protections.
 
-[Mac updater and rollback](https://llmsmonitor.ntus.info/docs/MAC_UPDATER.md)
+[Mac updater and rollback](https://llmsmonitor.ntus.org/docs/MAC_UPDATER.md)
 
 ### 16. A five-minute customer demonstration
 
@@ -307,7 +309,9 @@ LLMsモニターは、複数のAIの利用枠・リセット予定・クレジ�
 
 仕組みは「公式サービス → 同じブラウザーの拡張機能 → モニター画面」です。基本機能に外部AIのAPIキーは不要です。LLMs GatewayやLLMs PMOを導入しなくても利用できます。
 
-> v1.121.0のβ機能を説明します。サイトは現在アクセス制限付きです。各社のログイン状態・契約・画面形式によって取得できる項目が異なります。「—」は未取得で、0や無制限という意味ではありません。
+> v1.132.0のβ機能を説明します。本番サイトは https://llmsmonitor.ntus.org/ です。各社のログイン状態・契約・画面形式によって取得できる項目が異なります。「—」は未取得で、0や無制限という意味ではありません。
+
+v1.132.0の追加機能：OpenAI APIクレジットは、取得できた次回失効日と対象金額を分けて表示します。複数の付与枠にはそれぞれ異なる期限があります。利用状況レポートは日本時間の日別・時間帯別表示に対応し、空白は観測がない区間です。ClaudeのFableリセット権は公式の有効期限と利用可能状態を表示します。Gateway連携は解除まで承認を維持でき、「Gatewayを開く」で導入済みのローカル画面を開きます。公式ニュースは許可と表示済み公開投稿に依存し、サーバーでの一括自動収集は設定準備中です。
 
 ### 2. はじめに：最初の接続
 
@@ -324,7 +328,7 @@ LLMsモニターは、複数のAIの利用枠・リセット予定・クレジ�
 
 > Chrome／Edgeのデスクトップ版が対象です。iOS／Androidではこの拡張機能を導入できません。
 
-[拡張機能ZIP / Extension ZIP](https://llmsmonitor.ntus.info/LLMs-Monitor.zip)
+[拡張機能ZIP / Extension ZIP](https://llmsmonitor.ntus.org/LLMs-Monitor.zip)
 
 ### 3. はじめに：毎日の使い方
 
@@ -418,15 +422,15 @@ LLMsモニターは、複数のAIの利用枠・リセット予定・クレジ�
 
 端末内のCodexタスクには任意の専用ヘルパーを使います。セットアップのCodexから現在の拡張機能ID用の導入ZIPを保存し、手順に従って接続を確認します。ヘルパーをChrome拡張として読み込みません。macOSの導入手順とLinuxの実装があり、Windowsヘルパーは未対応です。状態未確認を稼働・完了と推測しません。
 
-[タスクの詳しい手順](https://llmsmonitor.ntus.info/docs/TASK_DETAILS.md)
+[タスクの詳しい手順](https://llmsmonitor.ntus.org/docs/TASK_DETAILS.md)
 
-[Codexヘルパー導入手順](https://llmsmonitor.ntus.info/docs/CODEX_HELPER.md)
+[Codexヘルパー導入手順](https://llmsmonitor.ntus.org/docs/CODEX_HELPER.md)
 
 ⋮⋮は移動用のハンドル、☆／★はお気に入りです。CodexヘルパーはmacOS／Linux向けでPython 3.9以上とCodex実行環境が必要です。Windows導入は未対応です。
 
-[ヘルパー導入ガイド / Helper guide](https://llmsmonitor.ntus.info/docs/CODEX_HELPER.md)
+[ヘルパー導入ガイド / Helper guide](https://llmsmonitor.ntus.org/docs/CODEX_HELPER.md)
 
-[汎用ヘルパーZIP（初回ID入力） / Generic helper ZIP (ID required)](https://llmsmonitor.ntus.info/LLMs-Monitor-Codex-Helper-v1.30.2.zip)
+[汎用ヘルパーZIP（初回ID入力） / Generic helper ZIP (ID required)](https://llmsmonitor.ntus.org/LLMs-Monitor-Codex-Helper-v1.30.2.zip)
 
 ### 9. 詳細：障害情報・Tibo・公開更新
 
@@ -486,7 +490,7 @@ Museの「Bus参考日時」や回答日時の反映は参考情報です。質�
 
 各社の1%は同じ処理容量ではありません。観測回数を利用回数と読み替えず、プラン・モデル・用途・実行結果が照合できる範囲で今後の分析に使います。余ったクレジットの譲渡、APIキー共有、課金許可の自動化は提供しません。
 
-[チームの操作手順](https://llmsmonitor.ntus.info/docs/TEAM_STATUS.md)
+[チームの操作手順](https://llmsmonitor.ntus.org/docs/TEAM_STATUS.md)
 
 ### 12. 詳細：省メモリ設定と動作条件
 
@@ -520,7 +524,7 @@ Chromeのメモリセーバー「最大」は裏タブを短時間で休止さ�
 
 > GitHub Issuesは公開の場です。APIキー、Cookie、認証URL、アカウント／組織ID、残高・請求、会話本文、非公開Bus内容やそのままのCSVを貼らないでください。画像の自動伏字・自動添付・自動起票は未提供です。
 
-[サポートの詳しい案内](https://llmsmonitor.ntus.info/docs/SUPPORT.md)
+[サポートの詳しい案内](https://llmsmonitor.ntus.org/docs/SUPPORT.md)
 
 ### 14. 詳細：保存範囲とプライバシー
 
@@ -546,7 +550,7 @@ Chromeのメモリセーバー「最大」は裏タブを短時間で休止さ�
 
 配布ZIP、読み込み済み拡張機能、Web画面、GitHub、ブラウザーストアは別々に版が反映されます。ストア審査済み、一般公開済みという意味にはなりません。更新アプリの署名・公証やOSの案内は導入手順に従い、セキュリティ保護を一括で無効にしないでください。
 
-[Mac更新・復元の詳細](https://llmsmonitor.ntus.info/docs/MAC_UPDATER.md)
+[Mac更新・復元の詳細](https://llmsmonitor.ntus.org/docs/MAC_UPDATER.md)
 
 ### 16. お客様へ説明する5分の流れ
 

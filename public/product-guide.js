@@ -2,11 +2,11 @@
 (function(root){
  const GUIDE={
   "en": {
-    "eyebrow": "USER GUIDE / v1.111.0",
+    "eyebrow": "USER GUIDE / v1.132.0",
     "title": "LLMs Monitor user guide",
     "intro": "Read the first three chapters for the overall picture, then use the detailed chapters as needed.",
     "toc": "Contents",
-    "revision": "Guide updated 8 November 2026 · app/extension package v1.111.0 · restricted beta / 2026年11月8日改訂・限定β",
+    "revision": "Guide updated 11 November 2026 · app/extension package v1.132.0 · beta / 2026年11月11日改訂・β版",
     "chapters": [
       {
         "id": "overview",
@@ -55,7 +55,11 @@
           },
           {
             "type": "note",
-            "text": "This guide covers the v1.111.0 beta. The hosted site currently has restricted access. Fields depend on sign-in, plan and provider layout. — means unavailable, not zero or unlimited."
+            "text": "This guide covers the v1.132.0 beta. The production site is https://llmsmonitor.ntus.org/. Fields depend on sign-in, plan and provider layout. — means unavailable, not zero or unlimited."
+          },
+          {
+            "type": "p",
+            "text": "Version 1.132.0 updates: OpenAI API credits show the next observed expiry date and affected amount separately. Credit grants can have different dates. The usage report includes daily and hourly views in JST; gaps mean no observation. Claude Fable reset entitlements show their official expiry and availability. Gateway connection can remain approved until disconnected; use Open Gateway to open the installed local workbench. Official public-news collection depends on permissions and rendered posts; server-wide automatic collection is awaiting configuration."
           }
         ]
       },
@@ -740,11 +744,11 @@
     ]
   },
   "ja": {
-    "eyebrow": "USER GUIDE / v1.111.0",
+    "eyebrow": "USER GUIDE / v1.132.0",
     "title": "LLMsモニター 取扱説明書",
     "intro": "最初の3章で全体像と基本操作をつかみ、後半は必要な機能の詳細を調べるときに使ってください。",
     "toc": "目次",
-    "revision": "Guide updated 8 November 2026 · app/extension package v1.111.0 · restricted beta / 2026年11月8日改訂・限定β",
+    "revision": "Guide updated 11 November 2026 · app/extension package v1.132.0 · beta / 2026年11月11日改訂・β版",
     "chapters": [
       {
         "id": "overview",
@@ -793,7 +797,11 @@
           },
           {
             "type": "note",
-            "text": "v1.111.0のβ機能を説明します。サイトは現在アクセス制限付きです。各社のログイン状態・契約・画面形式によって取得できる項目が異なります。「—」は未取得で、0や無制限という意味ではありません。"
+            "text": "v1.132.0のβ機能を説明します。本番サイトは https://llmsmonitor.ntus.org/ です。各社のログイン状態・契約・画面形式によって取得できる項目が異なります。「—」は未取得で、0や無制限という意味ではありません。"
+          },
+          {
+            "type": "p",
+            "text": "v1.132.0の追加機能：OpenAI APIクレジットは、取得できた次回失効日と対象金額を分けて表示します。複数の付与枠にはそれぞれ異なる期限があります。利用状況レポートは日本時間の日別・時間帯別表示に対応し、空白は観測がない区間です。ClaudeのFableリセット権は公式の有効期限と利用可能状態を表示します。Gateway連携は解除まで承認を維持でき、「Gatewayを開く」で導入済みのローカル画面を開きます。公式ニュースは許可と表示済み公開投稿に依存し、サーバーでの一括自動収集は設定準備中です。"
           }
         ]
       },
