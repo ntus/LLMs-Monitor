@@ -4,7 +4,7 @@ Canonical guide / 正本: https://github.com/ntus/LLMs-Monitor/blob/main/USER_GU
 
 [English](#en) · [日本語](#ja) · [Web版](https://llmsmonitor.ntus.org/manual#ja)
 
-App/extension package v1.133.0 · Guide revised 2026-11-11. Beta / β版。
+App/extension package v1.134.0 · Guide revised 2026-11-11. Beta / β版。
 
 
 <a id="en"></a>
@@ -28,9 +28,9 @@ LLMs Monitor brings supported AI usage pools, reset times, credits, history and 
 
 Flow: official service → extension in the same browser → monitor. Basic operation needs no external AI API key and works independently of LLMs Gateway and LLMs PMO.
 
-> This guide covers the v1.133.0 beta. The production site is https://llmsmonitor.ntus.org/. Fields depend on sign-in, plan and provider layout. — means unavailable, not zero or unlimited.
+> This guide covers the v1.134.0 beta. The production site is https://llmsmonitor.ntus.org/. Fields depend on sign-in, plan and provider layout. — means unavailable, not zero or unlimited.
 
-Version 1.133.0 updates: OpenAI API credits show the next observed expiry date and affected amount separately. Credit grants can have different dates. The usage report includes daily and hourly views in JST; gaps mean no observation. Claude Fable reset entitlements show their official expiry and availability. Gateway connection can remain approved until disconnected; use Open Gateway to open the installed local workbench. Official public-news collection depends on permissions and rendered posts; server-wide automatic collection is awaiting configuration.
+Version 1.134.0 updates: OpenAI API credits show the next observed expiry date and affected amount separately. Credit grants can have different dates. The usage report includes daily and hourly views in JST; gaps mean no observation. Claude Fable reset entitlements show their official expiry and availability. Gateway connection can remain approved until disconnected; use Open Gateway to open the installed local workbench. Official public-news collection depends on permissions and rendered posts; server-wide automatic collection is awaiting configuration.
 
 LLMs Monitor measures usage and headroom. LLMs Gateway provides the local execution entry point. LLMs Evidence supports evidence management. Use Products in the header for Evidence setup and local Gateway access. PMO and TaskBoards are marked Under construction.
 
@@ -311,11 +311,11 @@ LLMsモニターは、複数のAIの利用枠・リセット予定・クレジ�
 
 仕組みは「公式サービス → 同じブラウザーの拡張機能 → モニター画面」です。基本機能に外部AIのAPIキーは不要です。LLMs GatewayやLLMs PMOを導入しなくても利用できます。
 
-> v1.133.0のβ機能を説明します。本番サイトは https://llmsmonitor.ntus.org/ です。各社のログイン状態・契約・画面形式によって取得できる項目が異なります。「—」は未取得で、0や無制限という意味ではありません。
+> v1.134.0のβ機能を説明します。本番サイトは https://llmsmonitor.ntus.org/ です。各社のログイン状態・契約・画面形式によって取得できる項目が異なります。「—」は未取得で、0や無制限という意味ではありません。
 
-v1.133.0の追加機能：OpenAI APIクレジットは、取得できた次回失効日と対象金額を分けて表示します。複数の付与枠にはそれぞれ異なる期限があります。利用状況レポートは日本時間の日別・時間帯別表示に対応し、空白は観測がない区間です。ClaudeのFableリセット権は公式の有効期限と利用可能状態を表示します。Gateway連携は解除まで承認を維持でき、「Gatewayを開く」で導入済みのローカル画面を開きます。公式ニュースは許可と表示済み公開投稿に依存し、サーバーでの一括自動収集は設定準備中です。
+v1.134.0の追加機能：OpenAI APIクレジットは、取得できた次回失効日と対象金額を分けて表示します。複数の付与枠にはそれぞれ異なる期限があります。利用状況レポートは日本時間の日別・時間帯別表示に対応し、空白は観測がない区間です。ClaudeのFableリセット権は公式の有効期限と利用可能状態を表示します。Gateway連携は解除まで承認を維持でき、「Gatewayを開く」で導入済みのローカル画面を開きます。公式ニュースは許可と表示済み公開投稿に依存し、サーバーでの一括自動収集は設定準備中です。
 
-LLMs Monitorは利用状況と余力を確認し、LLMs Gatewayは実行の入口、LLMs Evidenceは証跡管理を担う製品ファミリーです。ヘッダーの「製品ファミリー」内のEvidence案内またはGatewayから各製品を開けます。
+LLMs Monitorは利用状況と余力を確認し、LLMs Gatewayは実行の入口、LLMs Evidenceは証跡管理を担う製品ファミリーです。ヘッダーの「製品ファミリー」で右側のスライドメニューを開きます。Gatewayの起動と「接続・共有の設定」は同じ製品の中にまとめています。Evidenceは導入案内を開き、PMOとTaskBoardsは準備中として表示します。
 
 ### 2. はじめに：最初の接続
 
@@ -471,7 +471,7 @@ ChatGPT接続時はTiboの公開情報も標準で確認する設計です。初
 
 一度承認すれば、解除するまで自動接続を維持します。短期セッションは自動更新するため、毎時の再入力は不要です。旧1時間方式からの移行時だけ、継続期間を明記した別画面で一度承認してください。ブラウザー停止・休止中は取得が止まり、再開後も元の取得日時で鮮度を判断します。
 
-1. メイン画面の「Gateway連携」を押します。専用の拡張設定が開きます。
+1. 「製品ファミリー」→Gatewayの「接続・共有の設定」→「Gateway連携設定」を押します。専用の拡張設定が開きます。
 2. Gatewayのローカル連携を導入した同じ端末・ブラウザープロファイルで、共有するサービスを選びます。初期状態は共有なしです。
 3. 「この端末で連携を開始」を押し、必要なブラウザー権限を確認します。別に開くGateway確認画面へMonitorの6桁を入力し、対象サービスと「解除するまで維持」を確認して承認します。
 4. Monitor側で「確認して連携」を押します。取得結果が変わると、選択したサービスの購読枠・観測日時・状態だけを自動共有します。

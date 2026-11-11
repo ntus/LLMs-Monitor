@@ -44,12 +44,16 @@ html:fullscreen,html:fullscreen body{width:100%;height:100%;overflow:hidden}html
 
 .header-web-links{flex-wrap:wrap}
 
-/* Product navigation grows within one header control. */
-.product-family { position:relative; }
-.product-family>summary { cursor:pointer; white-space:nowrap; }
-.product-family-menu { position:absolute; top:calc(100% + 8px); right:0; z-index:200; width:260px; max-width:calc(100vw - 24px); max-height:70vh; overflow:auto; padding:8px; background:var(--panel,#111b29); color:var(--text,#e8edf5); border:1px solid var(--line,#344155); border-radius:12px; box-shadow:0 12px 35px #0005; }
-.product-family-menu>a,.product-family-menu>button,.product-family-pending { display:flex; flex-direction:column; align-items:flex-start; gap:3px; width:100%; box-sizing:border-box; padding:10px; border:0; border-radius:6px; background:transparent; color:inherit; font:inherit; text-decoration:none; text-align:left; }
-.product-family-menu>button { cursor:pointer; }
-.product-family-menu>a:hover,.product-family-menu>button:hover { background:#8882; }
-.product-family-menu small { font-size:11px; color:var(--muted,#9baac0); }
-.product-family-pending { opacity:.65; }
+
+.product-family-dialog { position:fixed; inset:0 0 0 auto; margin:0; width:min(360px,100vw); height:100dvh; max-height:100dvh; max-width:100vw; padding:22px; box-sizing:border-box; border:0; border-left:1px solid var(--line,#344155); border-radius:0; color:var(--text,#e8edf5); background:var(--panel,#111b29); overflow:auto; }
+.product-family-dialog[open] { animation:family-slide-in .22s ease-out; }
+.product-family-dialog::backdrop { background:#0007; }
+.product-family-dialog>header { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px; }
+.product-family-dialog h2 { margin:0; font-size:18px; }
+.family-product { display:flex; flex-direction:column; gap:8px; padding:16px 0; border-bottom:1px solid var(--line,#344155); color:inherit; text-decoration:none; }
+.family-product small,.family-product p { font-size:12px; color:var(--muted,#a0aec0); margin:0; }
+.family-product details { font-size:12px; }
+.family-product details p { padding:10px 0; }
+.family-pending { opacity:.6; }
+@keyframes family-slide-in { from {transform:translateX(100%);opacity:.4} to {transform:translateX(0);opacity:1} }
+@media(prefers-reduced-motion:reduce) { .product-family-dialog[open] {animation:none} }

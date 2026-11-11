@@ -2,11 +2,11 @@
 (function(root){
  const GUIDE={
   "en": {
-    "eyebrow": "USER GUIDE / v1.133.0",
+    "eyebrow": "USER GUIDE / v1.134.0",
     "title": "LLMs Monitor user guide",
     "intro": "Read the first three chapters for the overall picture, then use the detailed chapters as needed.",
     "toc": "Contents",
-    "revision": "Guide updated 11 November 2026 · app/extension package v1.133.0 · beta / 2026年11月11日改訂・β版",
+    "revision": "Guide updated 11 November 2026 · app/extension package v1.134.0 · beta / 2026年11月11日改訂・β版",
     "chapters": [
       {
         "id": "overview",
@@ -55,15 +55,15 @@
           },
           {
             "type": "note",
-            "text": "This guide covers the v1.133.0 beta. The production site is https://llmsmonitor.ntus.org/. Fields depend on sign-in, plan and provider layout. — means unavailable, not zero or unlimited."
+            "text": "This guide covers the v1.134.0 beta. The production site is https://llmsmonitor.ntus.org/. Fields depend on sign-in, plan and provider layout. — means unavailable, not zero or unlimited."
           },
           {
             "type": "p",
-            "text": "Version 1.133.0 updates: OpenAI API credits show the next observed expiry date and affected amount separately. Credit grants can have different dates. The usage report includes daily and hourly views in JST; gaps mean no observation. Claude Fable reset entitlements show their official expiry and availability. Gateway connection can remain approved until disconnected; use Open Gateway to open the installed local workbench. Official public-news collection depends on permissions and rendered posts; server-wide automatic collection is awaiting configuration."
+            "text": "Version 1.134.0 updates: OpenAI API credits show the next observed expiry date and affected amount separately. Credit grants can have different dates. The usage report includes daily and hourly views in JST; gaps mean no observation. Claude Fable reset entitlements show their official expiry and availability. Gateway connection can remain approved until disconnected; use Open Gateway to open the installed local workbench. Official public-news collection depends on permissions and rendered posts; server-wide automatic collection is awaiting configuration."
           },
           {
             "type": "p",
-            "text": "LLMs Monitor measures usage and headroom. LLMs Gateway provides the local execution entry point. LLMs Evidence supports evidence management. Use Products in the header for Evidence setup and local Gateway access. PMO and TaskBoards are marked Under construction."
+            "text": "LLMs Monitor measures usage and headroom. LLMs Gateway provides the local execution entry point. LLMs Evidence supports evidence management. Open Products in the header to slide out the right-hand menu. Gateway launch and connection/sharing settings are grouped together. Use Evidence for setup instructions. PMO and TaskBoards are marked Under construction."
           },
           {
             "type": "link",
@@ -753,11 +753,11 @@
     ]
   },
   "ja": {
-    "eyebrow": "USER GUIDE / v1.133.0",
+    "eyebrow": "USER GUIDE / v1.134.0",
     "title": "LLMsモニター 取扱説明書",
     "intro": "最初の3章で全体像と基本操作をつかみ、後半は必要な機能の詳細を調べるときに使ってください。",
     "toc": "目次",
-    "revision": "Guide updated 11 November 2026 · app/extension package v1.133.0 · beta / 2026年11月11日改訂・β版",
+    "revision": "Guide updated 11 November 2026 · app/extension package v1.134.0 · beta / 2026年11月11日改訂・β版",
     "chapters": [
       {
         "id": "overview",
@@ -806,15 +806,15 @@
           },
           {
             "type": "note",
-            "text": "v1.133.0のβ機能を説明します。本番サイトは https://llmsmonitor.ntus.org/ です。各社のログイン状態・契約・画面形式によって取得できる項目が異なります。「—」は未取得で、0や無制限という意味ではありません。"
+            "text": "v1.134.0のβ機能を説明します。本番サイトは https://llmsmonitor.ntus.org/ です。各社のログイン状態・契約・画面形式によって取得できる項目が異なります。「—」は未取得で、0や無制限という意味ではありません。"
           },
           {
             "type": "p",
-            "text": "v1.133.0の追加機能：OpenAI APIクレジットは、取得できた次回失効日と対象金額を分けて表示します。複数の付与枠にはそれぞれ異なる期限があります。利用状況レポートは日本時間の日別・時間帯別表示に対応し、空白は観測がない区間です。ClaudeのFableリセット権は公式の有効期限と利用可能状態を表示します。Gateway連携は解除まで承認を維持でき、「Gatewayを開く」で導入済みのローカル画面を開きます。公式ニュースは許可と表示済み公開投稿に依存し、サーバーでの一括自動収集は設定準備中です。"
+            "text": "v1.134.0の追加機能：OpenAI APIクレジットは、取得できた次回失効日と対象金額を分けて表示します。複数の付与枠にはそれぞれ異なる期限があります。利用状況レポートは日本時間の日別・時間帯別表示に対応し、空白は観測がない区間です。ClaudeのFableリセット権は公式の有効期限と利用可能状態を表示します。Gateway連携は解除まで承認を維持でき、「Gatewayを開く」で導入済みのローカル画面を開きます。公式ニュースは許可と表示済み公開投稿に依存し、サーバーでの一括自動収集は設定準備中です。"
           },
           {
             "type": "p",
-            "text": "LLMs Monitorは利用状況と余力を確認し、LLMs Gatewayは実行の入口、LLMs Evidenceは証跡管理を担う製品ファミリーです。ヘッダーの「製品ファミリー」内のEvidence案内またはGatewayから各製品を開けます。"
+            "text": "LLMs Monitorは利用状況と余力を確認し、LLMs Gatewayは実行の入口、LLMs Evidenceは証跡管理を担う製品ファミリーです。ヘッダーの「製品ファミリー」で右側のスライドメニューを開きます。Gatewayの起動と「接続・共有の設定」をまとめ、Evidenceは導入案内、PMOとTaskBoardsは準備中として表示します。"
           },
           {
             "type": "link",
