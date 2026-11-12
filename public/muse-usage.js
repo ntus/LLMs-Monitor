@@ -48,6 +48,17 @@
   }
   return [...roots].filter(n=>![...roots].some(other=>other!==n&&other.contains?.(n)));
  }
+ function refreshGeneral(doc){
+  // Re-open only the read-only settings dialog in a freshly authorized hidden source.
+  if(doc.hidden!==true)return false;
+  const panels=settingsPanels(doc);if(panels.length!==1)return false;
+  const panel=panels[0],dialog=panel.matches?.('[role="dialog"]')?panel:panel.closest?.('[role="dialog"]');
+  if(!dialog||dialog.querySelector('textarea,[contenteditable="true"],input:not([type="radio"]):not([type="checkbox"]):not([type="hidden"]):not([type="range"])'))return false;
+  const general=[...panel.querySelectorAll(headings)].filter(n=>visible(n)&&/^(?:一般|General)$/i.test(n.textContent.trim()));
+  const closes=[...dialog.querySelectorAll('button[aria-label="閉じる"],button[aria-label="Close"]')].filter(n=>visible(n)&&!n.disabled);
+  if(general.length!==1||closes.length!==1)return false;
+  activate(closes[0]);return true;
+ }
  function collect(doc){
   const roots=settingsPanels(doc);if(roots.length!==1)return [];
   const panel=roots[0],heads=[...panel.querySelectorAll(headings)].filter(n=>visible(n)&&usage.test(n.textContent.trim()));if(heads.length!==1)return [];const h=heads[0];
@@ -141,5 +152,5 @@
   if(compact)return `<section class="widget-row" style="--color:${p.color}"><div class="widget-service"><span class="widget-mark">${p.mark}</span><a class="service-home" href="${p.home}" target="_blank" rel="noopener noreferrer">Muse</a></div><div class="widget-primary"><b>${metric}</b><span>${esc(label+' · '+caption)}</span></div>${bar}<div class="widget-reset">${esc(reset)}</div><p>${esc(note)}</p>${extra}${previous}${official}${historyView(shownHistory,true,options)}${task}</section>`;
   return `<article class="card muse-usage-card" style="--color:${p.color}"><div class="card-head"><span class="service-mark">${p.mark}</span><div class="service-title"><h2><a class="service-home" href="${p.home}" target="_blank" rel="noopener noreferrer">Muse</a></h2><span class="plan">${esc(clean?.plan?(clean.plan):(ja?'プラン未取得':'Plan unavailable'))}</span></div><span class="badge">${badge}</span>${task}</div><div class="gauge quota-overview" style="--session-color:${p.color}" role="${m?'img':'group'}" aria-label="${esc('Muse '+label+' '+caption+' '+number)}">${count===null?'':`<svg viewBox="0 0 120 120" aria-hidden="true"><circle class="weekly-ring-track${low?' quota-ring-low':''}" cx="60" cy="60" r="51"/><circle class="weekly-ring-fill${low?' quota-ring-low':''}" cx="60" cy="60" r="51" stroke-dasharray="${count*3.2044} 320.44"/></svg>`}<div class="quota-center"><div class="quota-caption">${caption}</div><div class="quota-session-label">${esc(label)}</div><div class="quota-current-number">${metric}</div>${!m?`<button type="button" data-connect-service="muse">${ja?'接続・ログイン確認':'Connect / sign in'}</button>`:''}${remainingText?`<div class="quota-countdown${valid&&G?.resetSoon?.({resetAt:m?.officialResetAt})?' reset-soon':''}">（${esc(remainingText)}）</div>`:''}</div></div><div class="quota-bar-block"><div class="metric-row"><span>${esc(label)}</span><b>${metric}</b></div>${bar}<p class="quota-reset-line${valid&&G?.resetSoon?.({resetAt:m?.officialResetAt})?' reset-soon':''}">${esc(reset)}</p></div><div class="grok-session-absent" aria-hidden="true"></div><p class="card-note">${esc(note)}</p><div class="extras"><button type="button" data-bus-timing-open>${ja?'Bus参考日時':'Bus reference time'}</button><button type="button" data-muse-reset-answer>${ja?'Muse回答の日時を反映':'Use reset time from Muse answer'}</button>${extra}${previous}<small>${ja?'金額の残高とは別です。AIによる外部解析は無効です。':'Separate from monetary balances. External AI interpretation is disabled.'}</small>${official}</div>${historyView(shownHistory,false,options)}<div class="card-bottom"><span class="age" data-quota-age="muse" data-captured-at="${Number(s.capturedAt)||0}">${esc(observedAge)}</span><a data-muse-usage href="${p.home}" target="_blank" rel="noopener noreferrer">${ja?'利用状況を開く ↗':'Open usage ↗'}</a></div></article>`;
  }
- root.GlanceMuseUsage=Object.freeze({planName,collect,extract,sanitize,view,prepare,resetTiming,resetRemaining,normalizeHistory,recordHistory,historyView,HISTORY_LIMIT,resetAnswer,validResetHint});if(typeof module!=='undefined')module.exports=root.GlanceMuseUsage;
+ root.GlanceMuseUsage=Object.freeze({planName,collect,extract,sanitize,view,prepare,refreshGeneral,resetTiming,resetRemaining,normalizeHistory,recordHistory,historyView,HISTORY_LIMIT,resetAnswer,validResetHint});if(typeof module!=='undefined')module.exports=root.GlanceMuseUsage;
 })(globalThis);
