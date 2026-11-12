@@ -124,7 +124,8 @@
  function localizedReset(text,at,ja){if(ja||!/[\u3040-\u30ff\u3400-\u9fff]/.test(text||''))return text;const t=resetTiming(text,at);return t?'Weekly limit resets '+new Date(t.resetAt).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'Reset date unavailable';}
  function resetAnswer(text,now=Date.now()){
   if(typeof text!=='string'||text.length>500)return null;
-  const matches=[...text.normalize('NFKC').matchAll(/次回のリセットは\s*(\d{4})年(\d{1,2})月(\d{1,2})日(?:[（(][日月火水木金土](?:曜日)?[）)])?\s*(\d{1,2}):(\d{2})\s*JST\s*です/g)];if(matches.length!==1)return null;
+  const clean=text.normalize('NFKC').replace(/\*\*/g,'').replace(/`/g,'');
+  const matches=[...clean.matchAll(/(?:次回(?:の)?(?:週次)?リセット(?:日時|時刻)?|Next (?:weekly )?reset(?: time| date)?)(?:は|:|\s|\*|=)*\s*(\d{4})(?:年|[\/-])(\d{1,2})(?:月|[\/-])(\d{1,2})日?(?:\s*\([日月火水木金土](?:曜日)?\))?\s*(\d{1,2}):(\d{2})\s*JST/gi)];if(matches.length!==1)return null;
   const [,y,m,d,h,min]=matches[0],stamp=`${y}-${m.padStart(2,'0')}-${d.padStart(2,'0')}T${h.padStart(2,'0')}:${min}:00+09:00`,at=officialReset(stamp);if(!at||at<=now||at>now+8*86400000)return null;
   return {resetAt:at,observedAt:now,source:'muse-answer'};
  }
