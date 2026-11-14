@@ -277,3 +277,9 @@ html:fullscreen #cards>.card>.history{margin-top:auto}html:fullscreen #cards>.ca
 .family-pending { opacity:.6; }
 @keyframes family-slide-in { from {transform:translateX(100%);opacity:.4} to {transform:translateX(0);opacity:1} }
 @media(prefers-reduced-motion:reduce) { .product-family-dialog[open] {animation:none} }
+
+/* Targeted recovery controls stay next to the instruction, without widening cards. */
+.recovery-link{font:inherit;color:var(--color,#a8c1ff);background:transparent;border:0;text-decoration:underline;text-underline-offset:2px;padding:3px 0;max-width:100%;white-space:normal;text-align:start;cursor:pointer}
+.recovery-link:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+.recovery-link:disabled{cursor:wait;opacity:.7}
+.recovery-status{display:block;font-size:inherit;overflow-wrap:anywhere}
