@@ -6,7 +6,13 @@ Canonical guide / 正本: https://github.com/ntus/LLMs-Monitor/blob/main/tools/m
 
 <a id="en"></a>
 
-Current compatibility note / 現行案内（2026-11-03）: app/extension candidate **v1.97.0**; this helper/updater runtime is unchanged. Follow the current main README for card actions, service coverage and release access. 以下の旧改訂日は補助ツール固有手順の履歴で、本体の現行版を示しません。
+Current release / 現行案内（2026-11-20）
+
+For v1.144.1, download the ZIP from this site, back up the currently loaded folder, replace its contents in place, and reload the extension and this page. The v1.0.1 Mac updater reads a separate GitHub feed, so its “up to date” message does not confirm this website release.
+
+v1.144.1へ更新するには、このサイトからZIPを保存し、現在の読込先をバックアップしてから同じフォルダーの中身を差し替え、拡張機能とこのページを再読み込みします。Mac更新ツールv1.0.1は別のGitHub配信元を参照するため、その「最新版」表示は本番サイトの版を示しません。
+
+[Setup / セットアップ](https://llmsmonitor.ntus.org/#setup)
 
 Guide revised 21 October 2026 for app/extension v1.63.0. The updater binary remains v1.0.1. macOS 11+ and Python 3.9+ are required. This user-launched tool updates unpacked extensions only; it is separate from the optional Codex helper and does not update a browser-store installation.
 

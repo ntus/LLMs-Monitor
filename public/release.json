@@ -1,6 +1,6 @@
 {
-  "version": "1.142.0",
+  "version": "1.144.1",
   "webVersion": "1.144.1",
   "origin": "https://llmsmonitor.ntus.org",
-  "packageSHA256": "9a982b5ceb617add5898dccd70d88133a6b8ac1b44bcc26ca50964c2cc184beb"
+  "packageSHA256": "540ec736b2b5d7cb06e9cfc97304ed74eae30d05037d0f22b4fa9ef6ec72af70"
 }

@@ -2,6 +2,12 @@ Canonical guide / 正本: https://github.com/ntus/LLMs-Monitor/blob/main/docs/RE
 
 # First-release readiness / 初版公開前確認
 
+Web app and manual Chrome/Edge download: v1.144.1. The Chrome Web Store edition has been submitted for review. Install the unpacked edition from Setup while store publication is pending.
+
+WebアプリとChrome／Edgeの手動配布版はv1.144.1です。Chromeウェブストア版は審査に提出済みです。ストアでの公開までは、セットアップから手動配布版を導入できます。
+
+[Current site guide / 最新の取扱説明](https://llmsmonitor.ntus.org/manual.html#ja)
+
 Updated8 November2026 · app/extension package **v1.110.0**. Existing owner-restricted Site and fixed-folder files updated to **v1.110.0**; the most recent Chrome runtime check still reported **v1.109.0**, so file installation is not runtime acceptance. This checklist does not declare general availability or browser-store approval.
 
 ## Verified baseline / 確認済みの基準

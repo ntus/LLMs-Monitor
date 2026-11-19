@@ -2,11 +2,11 @@
 (function(root){
  const GUIDE={
   "en": {
-    "eyebrow": "USER GUIDE / v1.134.0",
+    "eyebrow": "USER GUIDE / v1.144.1",
     "title": "LLMs Monitor user guide",
     "intro": "Read the first three chapters for the overall picture, then use the detailed chapters as needed.",
     "toc": "Contents",
-    "revision": "Guide updated 11 November 2026 · app/extension package v1.134.0 · beta / 2026年11月11日改訂・β版",
+    "revision": "Revised 20 November 2026 · Web and Chrome/Edge v1.144.1",
     "chapters": [
       {
         "id": "overview",
@@ -55,11 +55,11 @@
           },
           {
             "type": "note",
-            "text": "This guide covers the v1.134.0 beta. The production site is https://llmsmonitor.ntus.org/. Fields depend on sign-in, plan and provider layout. — means unavailable, not zero or unlimited."
+            "text": "Web app and manual Chrome/Edge download: v1.144.1. The Chrome Web Store edition has been submitted for review. Install the unpacked edition from Setup while store publication is pending."
           },
           {
             "type": "p",
-            "text": "Version 1.134.0 updates: OpenAI API credits show the next observed expiry date and affected amount separately. Credit grants can have different dates. The usage report includes daily and hourly views in JST; gaps mean no observation. Claude Fable reset entitlements show their official expiry and availability. Gateway connection can remain approved until disconnected; use Open Gateway to open the installed local workbench. Official public-news collection depends on permissions and rendered posts; server-wide automatic collection is awaiting configuration."
+            "text": "OpenAI API credits show the next observed expiry date and affected amount separately. Credit grants can have different dates. The usage report includes daily and hourly views in JST; gaps mean no observation. Claude Fable reset entitlements show their official expiry and availability. Gateway connection can remain approved until disconnected; use Open Gateway to open the installed local workbench. Official public-news collection depends on permissions and rendered posts; server-wide automatic collection is awaiting configuration."
           },
           {
             "type": "p",
@@ -97,7 +97,7 @@
           },
           {
             "type": "note",
-            "text": "Use desktop Chrome/Edge. This browser extension cannot be installed on iOS/Android."
+            "text": "Safari on Mac uses a separate development build, currently build 16. It is not included in the Chrome/Edge ZIP. On a Mac where the Safari build is installed, enable it in Safari Settings → Extensions, allow this monitor and the official sites you use, and reopen the monitor. A signed everyday-use release is pending."
           },
           {
             "type": "link",
@@ -490,6 +490,10 @@
             "text": "Team: disconnected is not a monitor failure. This optional view imports a locally produced status JSON from an existing ai-bus and shows self-reported capacity/freshness. Missing/stale reports are unconfirmed, not live execution, completion or official quota proof. Import/update/clear are explicit local actions."
           },
           {
+            "type": "note",
+            "text": "Gateway sharing has separate approvals for subscription quota and API credit balances. The transfer screen can carry over eligible existing approvals within the same Chrome profile after the local receiver is configured for the Store ID. Export settings and history from the old extension, then import them in the new one. Optional browser permissions must be approved for the new ID. Leave the old connection in place while verifying the transfer."
+          },
+          {
             "type": "p",
             "text": "Muse Bus/answer reset times are reference-only. Copying a question does not send it. They do not overwrite official quota, history, recovery audio or spending decisions."
           },
@@ -674,7 +678,7 @@
             "items": [
               "Check the current UI/runtime versions and loaded folder; export important work notes.",
               "Update the same LLMs-Monitor folder. Avoid uninstalling or creating a new sibling folder every time.",
-              "The Mac updater registers the existing folder once, then validates and backs up updates. Unchanged helpers/updaters need no reinstall.",
+              "For v1.144.1, download the ZIP from this site, back up the currently loaded folder, replace its contents in place, and reload the extension and this page. The v1.0.1 Mac updater reads a separate GitHub feed, so its “up to date” message does not confirm this website release.",
               "Reload the extension and monitor, then check versions and acquisition. Do not reload working conversations just to update the dashboard.",
               "Use the updater rollback procedure if needed. Code backups are separate from migrating browser-stored user data."
             ]
@@ -753,11 +757,11 @@
     ]
   },
   "ja": {
-    "eyebrow": "USER GUIDE / v1.134.0",
+    "eyebrow": "USER GUIDE / v1.144.1",
     "title": "LLMsモニター 取扱説明書",
     "intro": "最初の3章で全体像と基本操作をつかみ、後半は必要な機能の詳細を調べるときに使ってください。",
     "toc": "目次",
-    "revision": "Guide updated 11 November 2026 · app/extension package v1.134.0 · beta / 2026年11月11日改訂・β版",
+    "revision": "2026年11月20日改訂 · Web／Chrome・Edge v1.144.1",
     "chapters": [
       {
         "id": "overview",
@@ -806,11 +810,11 @@
           },
           {
             "type": "note",
-            "text": "v1.134.0のβ機能を説明します。本番サイトは https://llmsmonitor.ntus.org/ です。各社のログイン状態・契約・画面形式によって取得できる項目が異なります。「—」は未取得で、0や無制限という意味ではありません。"
+            "text": "WebアプリとChrome／Edgeの手動配布版はv1.144.1です。Chromeウェブストア版は審査に提出済みです。ストアでの公開までは、セットアップから手動配布版を導入できます。"
           },
           {
             "type": "p",
-            "text": "v1.134.0の追加機能：OpenAI APIクレジットは、取得できた次回失効日と対象金額を分けて表示します。複数の付与枠にはそれぞれ異なる期限があります。利用状況レポートは日本時間の日別・時間帯別表示に対応し、空白は観測がない区間です。ClaudeのFableリセット権は公式の有効期限と利用可能状態を表示します。Gateway連携は解除まで承認を維持でき、「Gatewayを開く」で導入済みのローカル画面を開きます。公式ニュースは許可と表示済み公開投稿に依存し、サーバーでの一括自動収集は設定準備中です。"
+            "text": "OpenAI APIクレジットは、取得できた次回失効日と対象金額を分けて表示します。複数の付与枠にはそれぞれ異なる期限があります。利用状況レポートは日本時間の日別・時間帯別表示に対応し、空白は観測がない区間です。ClaudeのFableリセット権は公式の有効期限と利用可能状態を表示します。Gateway連携は解除まで承認を維持でき、「Gatewayを開く」で導入済みのローカル画面を開きます。公式ニュースは許可と表示済み公開投稿に依存し、サーバーでの一括自動収集は設定準備中です。"
           },
           {
             "type": "p",
@@ -848,7 +852,7 @@
           },
           {
             "type": "note",
-            "text": "Chrome／Edgeのデスクトップ版が対象です。iOS／Androidではこの拡張機能を導入できません。"
+            "text": "Mac版Safariは別の開発版（ビルド16）です。Chrome／Edge用ZIPには含まれません。Safari版を導入済みのMacでは、Safariの［設定 → 機能拡張］で有効にし、本番モニターと利用する公式サイトを許可してモニターを開き直します。署名付きの常用版は準備中です。"
           },
           {
             "type": "link",
@@ -1241,6 +1245,10 @@
             "text": "「チーム：未接続」は基本モニターの故障ではありません。既存のai-busから別途ローカル出力した状態JSONを読み込み、自己申告の余力と鮮度を確認する任意機能です。欠けた情報や古い申告は未確認とし、作業の完了・実稼働・残量の公式証明には使いません。読込み・更新・ローカル消去の操作があります。"
           },
           {
+            "type": "note",
+            "text": "Gatewayの利用枠共有とAPI残高共有は別々の承認です。受信機をストア正式IDに対応させたうえで、同じChromeプロファイルの移行画面から対象となる既存承認を引き継げます。設定と履歴は旧版で書き出し、新版で読み込みます。任意のサイト権限は新IDで再許可し、引き継ぎを確認するまで旧版の連携を解除しないでください。"
+          },
+          {
             "type": "p",
             "text": "Museの「Bus参考日時」や回答日時の反映は参考情報です。質問文をコピーしてもMuseへ自動送信しません。公式残量・履歴・回復音・課金判断を上書きしません。"
           },
@@ -1425,7 +1433,7 @@
             "items": [
               "更新前に、現在の画面と拡張機能の版、読み込んでいるフォルダーを確認します。重要な作業メモは書き出します。",
               "更新は同じLLMs-Monitorフォルダーへ行います。アンインストールや毎回別名のフォルダーを増やす方法は避けます。",
-              "Mac更新アプリは初回に既存フォルダーを登録し、以後は検証とバックアップ付きで更新します。未変更のヘルパー・更新アプリを毎回入れ直す必要はありません。",
+              "v1.144.1へ更新するには、このサイトからZIPを保存し、現在の読込先をバックアップしてから同じフォルダーの中身を差し替え、拡張機能とこのページを再読み込みします。Mac更新ツールv1.0.1は別のGitHub配信元を参照するため、その「最新版」表示は本番サイトの版を示しません。",
               "拡張機能とモニターの再読み込み後に版と取得状態を確認します。作業中の会話を更新のためだけに再読込しません。",
               "問題があれば更新アプリの復元手順で前のファイルへ戻します。コードのバックアップと、ブラウザーに保存した利用データの移行は別です。"
             ]

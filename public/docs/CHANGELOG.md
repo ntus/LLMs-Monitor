@@ -2,6 +2,12 @@ Canonical guide / 正本: https://github.com/ntus/LLMs-Monitor/blob/main/CHANGEL
 
 # v1.119.0 — Separate OpenAI expiry line (2026-11-10)
 
+Web app and manual Chrome/Edge download: v1.144.1. The Chrome Web Store edition has been submitted for review. Install the unpacked edition from Setup while store publication is pending.
+
+WebアプリとChrome／Edgeの手動配布版はv1.144.1です。Chromeウェブストア版は審査に提出済みです。ストアでの公開までは、セットアップから手動配布版を導入できます。
+
+[Current site guide / 最新の取扱説明](https://llmsmonitor.ntus.org/manual.html#ja)
+
 - Separate next expiry/date/amount from the monetary-axis/read description.
 - Add operator-only structure-analysis/regression/budget/scheduler foundation. Not activated; no client AI, telemetry, new permissions or paid calls.
 

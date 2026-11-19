@@ -4,7 +4,7 @@ Canonical guide / 正本: https://github.com/ntus/LLMs-Monitor/blob/main/USER_GU
 
 [English](#en) · [日本語](#ja) · [Web版](https://llmsmonitor.ntus.org/manual#ja)
 
-App/extension package v1.134.0 · Guide revised 2026-11-11. Beta / β版。
+Web and Chrome/Edge package v1.144.1 · Guide revised 2026-11-20 / 2026年11月20日改訂。
 
 
 <a id="en"></a>
@@ -28,9 +28,9 @@ LLMs Monitor brings supported AI usage pools, reset times, credits, history and 
 
 Flow: official service → extension in the same browser → monitor. Basic operation needs no external AI API key and works independently of LLMs Gateway and LLMs PMO.
 
-> This guide covers the v1.134.0 beta. The production site is https://llmsmonitor.ntus.org/. Fields depend on sign-in, plan and provider layout. — means unavailable, not zero or unlimited.
+> Web app and manual Chrome/Edge download: v1.144.1. The Chrome Web Store edition has been submitted for review. Install the unpacked edition from Setup while store publication is pending. The production site is https://llmsmonitor.ntus.org/. Fields depend on sign-in, plan and provider layout. — means unavailable, not zero or unlimited.
 
-Version 1.134.0 updates: OpenAI API credits show the next observed expiry date and affected amount separately. Credit grants can have different dates. The usage report includes daily and hourly views in JST; gaps mean no observation. Claude Fable reset entitlements show their official expiry and availability. Gateway connection can remain approved until disconnected; use Open Gateway to open the installed local workbench. Official public-news collection depends on permissions and rendered posts; server-wide automatic collection is awaiting configuration.
+OpenAI API credits show the next observed expiry date and affected amount separately. Credit grants can have different dates. The usage report includes daily and hourly views in JST; gaps mean no observation. Claude Fable reset entitlements show their official expiry and availability. Gateway connection can remain approved until disconnected; use Open Gateway to open the installed local workbench. Official public-news collection depends on permissions and rendered posts; server-wide automatic collection is awaiting configuration.
 
 LLMs Monitor measures usage and headroom. LLMs Gateway provides the local execution entry point. LLMs Evidence supports evidence management. Use Products in the header for Evidence setup and local Gateway access. PMO and TaskBoards are marked Under construction.
 
@@ -47,7 +47,7 @@ The Codex helper is unnecessary for ordinary quota monitoring. It is a separate 
 
 > Collection requires the browser to be running; sleep and browser shutdown interrupt operation.
 
-> Use desktop Chrome/Edge. This browser extension cannot be installed on iOS/Android.
+> Safari on Mac uses a separate development build, currently build 16. It is not included in the Chrome/Edge ZIP. On a Mac where the Safari build is installed, enable it in Safari Settings → Extensions, allow this monitor and the official sites you use, and reopen the monitor. A signed everyday-use release is pending.
 
 [拡張機能ZIP / Extension ZIP](https://llmsmonitor.ntus.org/LLMs-Monitor.zip)
 
@@ -184,6 +184,8 @@ Language/theme propagate across supported monitor, floating and task views. Repo
 
 ### 11. Details: team, Gateway and PMO
 
+Gateway sharing has separate approvals for subscription quota and API credit balances. The transfer screen can carry over eligible existing approvals within the same Chrome profile after the local receiver is configured for the Store ID. Export settings and history from the old extension, then import them in the new one. Optional browser permissions must be approved for the new ID. Leave the old connection in place while verifying the transfer.
+
 **Local Gateway connection MVP:** open Gateway connection in the header, select the services to share (none by default), then start linking. Enter the Monitor code in the separate Gateway confirmation screen and approve the selected services there. Approval remains until you disconnect; short communication sessions renew automatically without an hourly prompt. The older one-hour mode needs one new approval to switch to this duration. Return to Monitor and confirm. Only selected subscription quotas, original observation times and availability are shared on this computer. Disconnect stops local sending, including a pending attempt, without deleting Monitor history. Claude continuity compares the initial subscription organization; it does not verify the API billing account. ChatGPT/Gemini account matching remains unsupported. Conversations, credentials, monetary balances and history are excluded. API execution and spending stay disabled. Local Gateway installation and explicit permission/approval are separate prerequisites; live acceptance is recorded separately.
 
 
@@ -254,7 +256,7 @@ No provider password or API key is entered into this monitor for analysis. Gatew
 
 1. Check the current UI/runtime versions and loaded folder; export important work notes.
 2. Update the same LLMs-Monitor folder. Avoid uninstalling or creating a new sibling folder every time.
-3. The Mac updater registers the existing folder once, then validates and backs up updates. Unchanged helpers/updaters need no reinstall.
+3. For v1.144.1, download the ZIP from this site, back up the currently loaded folder, replace its contents in place, and reload the extension and this page. The v1.0.1 Mac updater reads a separate GitHub feed, so its “up to date” message does not confirm this website release.
 4. Reload the extension and monitor, then check versions and acquisition. Do not reload working conversations just to update the dashboard.
 5. Use the updater rollback procedure if needed. Code backups are separate from migrating browser-stored user data.
 
@@ -311,13 +313,15 @@ LLMsモニターは、複数のAIの利用枠・リセット予定・クレジ�
 
 仕組みは「公式サービス → 同じブラウザーの拡張機能 → モニター画面」です。基本機能に外部AIのAPIキーは不要です。LLMs GatewayやLLMs PMOを導入しなくても利用できます。
 
-> v1.134.0のβ機能を説明します。本番サイトは https://llmsmonitor.ntus.org/ です。各社のログイン状態・契約・画面形式によって取得できる項目が異なります。「—」は未取得で、0や無制限という意味ではありません。
+> WebアプリとChrome／Edgeの手動配布版はv1.144.1です。Chromeウェブストア版は審査に提出済みです。ストアでの公開までは、セットアップから手動配布版を導入できます。本番サイトは https://llmsmonitor.ntus.org/ です。各社のログイン状態・契約・画面形式によって取得できる項目が異なります。「—」は未取得で、0や無制限という意味ではありません。
 
-v1.134.0の追加機能：OpenAI APIクレジットは、取得できた次回失効日と対象金額を分けて表示します。複数の付与枠にはそれぞれ異なる期限があります。利用状況レポートは日本時間の日別・時間帯別表示に対応し、空白は観測がない区間です。ClaudeのFableリセット権は公式の有効期限と利用可能状態を表示します。Gateway連携は解除まで承認を維持でき、「Gatewayを開く」で導入済みのローカル画面を開きます。公式ニュースは許可と表示済み公開投稿に依存し、サーバーでの一括自動収集は設定準備中です。
+OpenAI APIクレジットは、取得できた次回失効日と対象金額を分けて表示します。複数の付与枠にはそれぞれ異なる期限があります。利用状況レポートは日本時間の日別・時間帯別表示に対応し、空白は観測がない区間です。ClaudeのFableリセット権は公式の有効期限と利用可能状態を表示します。Gateway連携は解除まで承認を維持でき、「Gatewayを開く」で導入済みのローカル画面を開きます。公式ニュースは許可と表示済み公開投稿に依存し、サーバーでの一括自動収集は設定準備中です。
 
 LLMs Monitorは利用状況と余力を確認し、LLMs Gatewayは実行の入口、LLMs Evidenceは証跡管理を担う製品ファミリーです。ヘッダーの「製品ファミリー」で右側のスライドメニューを開きます。Gatewayの起動と「接続・共有の設定」は同じ製品の中にまとめています。Evidenceは導入案内を開き、PMOとTaskBoardsは準備中として表示します。
 
 ### 2. はじめに：最初の接続
+
+> Mac版Safariは別の開発版（ビルド16）です。Chrome／Edge用ZIPには含まれません。Safari版を導入済みのMacでは、Safariの［設定 → 機能拡張］で有効にし、本番モニターと利用する公式サイトを許可してモニターを開き直します。署名付きの常用版は準備中です。
 
 1. デスクトップ版ChromeまたはEdgeを使い、利用するAIの公式サイトに同じプロファイルでログインします。
 2. 案内された配布ZIPを保存・展開し、LLMs-Monitorフォルダーを今後も使う場所へ置きます。
@@ -467,6 +471,8 @@ ChatGPT接続時はTiboの公開情報も標準で確認する設計です。初
 
 ### 11. 詳細：チーム・Gateway・PMOとの関係
 
+Gatewayの利用枠共有とAPI残高共有は別々の承認です。受信機をストア正式IDに対応させたうえで、同じChromeプロファイルの移行画面から対象となる既存承認を引き継げます。設定と履歴は旧版で書き出し、新版で読み込みます。任意のサイト権限は新IDで再許可し、引き継ぎを確認するまで旧版の連携を解除しないでください。
+
 **この端末のGateway連携（MVP）**
 
 一度承認すれば、解除するまで自動接続を維持します。短期セッションは自動更新するため、毎時の再入力は不要です。旧1時間方式からの移行時だけ、継続期間を明記した別画面で一度承認してください。ブラウザー停止・休止中は取得が止まり、再開後も元の取得日時で鮮度を判断します。
@@ -548,7 +554,7 @@ Chromeのメモリセーバー「最大」は裏タブを短時間で休止さ�
 
 1. 更新前に、現在の画面と拡張機能の版、読み込んでいるフォルダーを確認します。重要な作業メモは書き出します。
 2. 更新は同じLLMs-Monitorフォルダーへ行います。アンインストールや毎回別名のフォルダーを増やす方法は避けます。
-3. Mac更新アプリは初回に既存フォルダーを登録し、以後は検証とバックアップ付きで更新します。未変更のヘルパー・更新アプリを毎回入れ直す必要はありません。
+3. v1.144.1へ更新するには、このサイトからZIPを保存し、現在の読込先をバックアップしてから同じフォルダーの中身を差し替え、拡張機能とこのページを再読み込みします。Mac更新ツールv1.0.1は別のGitHub配信元を参照するため、その「最新版」表示は本番サイトの版を示しません。
 4. 拡張機能とモニターの再読み込み後に版と取得状態を確認します。作業中の会話を更新のためだけに再読込しません。
 5. 問題があれば更新アプリの復元手順で前のファイルへ戻します。コードのバックアップと、ブラウザーに保存した利用データの移行は別です。
 
