@@ -2,11 +2,11 @@
 (function(root){
  const GUIDE={
   "en": {
-    "eyebrow": "USER GUIDE / v1.144.1",
+    "eyebrow": "USER GUIDE / v1.145.12",
     "title": "LLMs Monitor user guide",
     "intro": "Read the first three chapters for the overall picture, then use the detailed chapters as needed.",
     "toc": "Contents",
-    "revision": "Revised 20 November 2026 · Web and Chrome/Edge v1.144.1",
+    "revision": "Revised 25 November 2026 · Web and Chrome/Edge v1.145.12",
     "chapters": [
       {
         "id": "overview",
@@ -55,7 +55,7 @@
           },
           {
             "type": "note",
-            "text": "Web app and manual Chrome/Edge download: v1.144.1. The Chrome Web Store edition has been submitted for review. Install the unpacked edition from Setup while store publication is pending."
+            "text": "Web app and manual Chrome/Edge download: v1.145.12. The unpacked edition is available from Setup."
           },
           {
             "type": "p",
@@ -678,7 +678,7 @@
             "items": [
               "Check the current UI/runtime versions and loaded folder; export important work notes.",
               "Update the same LLMs-Monitor folder. Avoid uninstalling or creating a new sibling folder every time.",
-              "For v1.144.1, download the ZIP from this site, back up the currently loaded folder, replace its contents in place, and reload the extension and this page. The v1.0.1 Mac updater reads a separate GitHub feed, so its “up to date” message does not confirm this website release.",
+              "For v1.145.12, download the ZIP from this site, back up the currently loaded folder, replace its contents in place, and reload the extension and this page. The v1.0.1 Mac updater reads a separate GitHub feed, so its “up to date” message does not confirm this website release.",
               "Reload the extension and monitor, then check versions and acquisition. Do not reload working conversations just to update the dashboard.",
               "Use the updater rollback procedure if needed. Code backups are separate from migrating browser-stored user data."
             ]
@@ -757,11 +757,11 @@
     ]
   },
   "ja": {
-    "eyebrow": "USER GUIDE / v1.144.1",
+    "eyebrow": "USER GUIDE / v1.145.12",
     "title": "LLMsモニター 取扱説明書",
     "intro": "最初の3章で全体像と基本操作をつかみ、後半は必要な機能の詳細を調べるときに使ってください。",
     "toc": "目次",
-    "revision": "2026年11月20日改訂 · Web／Chrome・Edge v1.144.1",
+    "revision": "2026年11月25日改訂 · Web／Chrome・Edge v1.145.12",
     "chapters": [
       {
         "id": "overview",
@@ -810,7 +810,7 @@
           },
           {
             "type": "note",
-            "text": "WebアプリとChrome／Edgeの手動配布版はv1.144.1です。Chromeウェブストア版は審査に提出済みです。ストアでの公開までは、セットアップから手動配布版を導入できます。"
+            "text": "WebアプリとChrome／Edgeの手動配布版はv1.145.12です。セットアップから手動配布版を導入できます。"
           },
           {
             "type": "p",
@@ -1433,7 +1433,7 @@
             "items": [
               "更新前に、現在の画面と拡張機能の版、読み込んでいるフォルダーを確認します。重要な作業メモは書き出します。",
               "更新は同じLLMs-Monitorフォルダーへ行います。アンインストールや毎回別名のフォルダーを増やす方法は避けます。",
-              "v1.144.1へ更新するには、このサイトからZIPを保存し、現在の読込先をバックアップしてから同じフォルダーの中身を差し替え、拡張機能とこのページを再読み込みします。Mac更新ツールv1.0.1は別のGitHub配信元を参照するため、その「最新版」表示は本番サイトの版を示しません。",
+              "v1.145.12へ更新するには、このサイトからZIPを保存し、現在の読込先をバックアップしてから同じフォルダーの中身を差し替え、拡張機能とこのページを再読み込みします。Mac更新ツールv1.0.1は別のGitHub配信元を参照するため、その「最新版」表示は本番サイトの版を示しません。",
               "拡張機能とモニターの再読み込み後に版と取得状態を確認します。作業中の会話を更新のためだけに再読込しません。",
               "問題があれば更新アプリの復元手順で前のファイルへ戻します。コードのバックアップと、ブラウザーに保存した利用データの移行は別です。"
             ]

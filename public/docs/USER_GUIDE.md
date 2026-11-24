@@ -4,7 +4,7 @@ Canonical guide / 正本: https://github.com/ntus/LLMs-Monitor/blob/main/USER_GU
 
 [English](#en) · [日本語](#ja) · [Web版](https://llmsmonitor.ntus.org/manual#ja)
 
-Web and Chrome/Edge package v1.144.1 · Guide revised 2026-11-20 / 2026年11月20日改訂。
+Web and Chrome/Edge package v1.145.12 · Guide revised 2026-11-25 / 2026年11月25日改訂。
 
 
 <a id="en"></a>
@@ -28,7 +28,7 @@ LLMs Monitor brings supported AI usage pools, reset times, credits, history and 
 
 Flow: official service → extension in the same browser → monitor. Basic operation needs no external AI API key and works independently of LLMs Gateway and LLMs PMO.
 
-> Web app and manual Chrome/Edge download: v1.144.1. The Chrome Web Store edition has been submitted for review. Install the unpacked edition from Setup while store publication is pending. The production site is https://llmsmonitor.ntus.org/. Fields depend on sign-in, plan and provider layout. — means unavailable, not zero or unlimited.
+> Web app and manual Chrome/Edge download: v1.145.12. The unpacked edition is available from Setup. The production site is https://llmsmonitor.ntus.org/. Fields depend on sign-in, plan and provider layout. — means unavailable, not zero or unlimited.
 
 OpenAI API credits show the next observed expiry date and affected amount separately. Credit grants can have different dates. The usage report includes daily and hourly views in JST; gaps mean no observation. Claude Fable reset entitlements show their official expiry and availability. Gateway connection can remain approved until disconnected; use Open Gateway to open the installed local workbench. Official public-news collection depends on permissions and rendered posts; server-wide automatic collection is awaiting configuration.
 
@@ -256,7 +256,7 @@ No provider password or API key is entered into this monitor for analysis. Gatew
 
 1. Check the current UI/runtime versions and loaded folder; export important work notes.
 2. Update the same LLMs-Monitor folder. Avoid uninstalling or creating a new sibling folder every time.
-3. For v1.144.1, download the ZIP from this site, back up the currently loaded folder, replace its contents in place, and reload the extension and this page. The v1.0.1 Mac updater reads a separate GitHub feed, so its “up to date” message does not confirm this website release.
+3. For v1.145.12, download the ZIP from this site, back up the currently loaded folder, replace its contents in place, and reload the extension and this page. The v1.0.1 Mac updater reads a separate GitHub feed, so its “up to date” message does not confirm this website release.
 4. Reload the extension and monitor, then check versions and acquisition. Do not reload working conversations just to update the dashboard.
 5. Use the updater rollback procedure if needed. Code backups are separate from migrating browser-stored user data.
 
@@ -313,7 +313,7 @@ LLMsモニターは、複数のAIの利用枠・リセット予定・クレジ�
 
 仕組みは「公式サービス → 同じブラウザーの拡張機能 → モニター画面」です。基本機能に外部AIのAPIキーは不要です。LLMs GatewayやLLMs PMOを導入しなくても利用できます。
 
-> WebアプリとChrome／Edgeの手動配布版はv1.144.1です。Chromeウェブストア版は審査に提出済みです。ストアでの公開までは、セットアップから手動配布版を導入できます。本番サイトは https://llmsmonitor.ntus.org/ です。各社のログイン状態・契約・画面形式によって取得できる項目が異なります。「—」は未取得で、0や無制限という意味ではありません。
+> WebアプリとChrome／Edgeの手動配布版はv1.145.12です。セットアップから手動配布版を導入できます。本番サイトは https://llmsmonitor.ntus.org/ です。各社のログイン状態・契約・画面形式によって取得できる項目が異なります。「—」は未取得で、0や無制限という意味ではありません。
 
 OpenAI APIクレジットは、取得できた次回失効日と対象金額を分けて表示します。複数の付与枠にはそれぞれ異なる期限があります。利用状況レポートは日本時間の日別・時間帯別表示に対応し、空白は観測がない区間です。ClaudeのFableリセット権は公式の有効期限と利用可能状態を表示します。Gateway連携は解除まで承認を維持でき、「Gatewayを開く」で導入済みのローカル画面を開きます。公式ニュースは許可と表示済み公開投稿に依存し、サーバーでの一括自動収集は設定準備中です。
 
@@ -554,7 +554,7 @@ Chromeのメモリセーバー「最大」は裏タブを短時間で休止さ�
 
 1. 更新前に、現在の画面と拡張機能の版、読み込んでいるフォルダーを確認します。重要な作業メモは書き出します。
 2. 更新は同じLLMs-Monitorフォルダーへ行います。アンインストールや毎回別名のフォルダーを増やす方法は避けます。
-3. v1.144.1へ更新するには、このサイトからZIPを保存し、現在の読込先をバックアップしてから同じフォルダーの中身を差し替え、拡張機能とこのページを再読み込みします。Mac更新ツールv1.0.1は別のGitHub配信元を参照するため、その「最新版」表示は本番サイトの版を示しません。
+3. v1.145.12へ更新するには、このサイトからZIPを保存し、現在の読込先をバックアップしてから同じフォルダーの中身を差し替え、拡張機能とこのページを再読み込みします。Mac更新ツールv1.0.1は別のGitHub配信元を参照するため、その「最新版」表示は本番サイトの版を示しません。
 4. 拡張機能とモニターの再読み込み後に版と取得状態を確認します。作業中の会話を更新のためだけに再読込しません。
 5. 問題があれば更新アプリの復元手順で前のファイルへ戻します。コードのバックアップと、ブラウザーに保存した利用データの移行は別です。
 
@@ -595,3 +595,9 @@ API設定には、対応するClaude API参考情報を利用者の操作でJSON
 
 ## ClaudeのFableリセットと公式情報通知
 FableリセットはFableが消費した週間枠だけを戻す権利で、週間枠全体のリセットやAPIクレジットではありません。公式使用量画面が既存タブで開かれていると、利用可否と有効期限を取得します。［対象使用量なし］は現時点で戻す対象がない状態です。Monitorがリセットを実行することはありません。新しい期限・権利や利用可能への変化は端末内で判定してポップアップ通知します。同一イベントは繰り返しません。OS側の通知許可・集中モードにより表示されない場合があります。未知の公式画面形式や未表示の情報すべての検知を保証するものではありません。
+
+## Chrome toolbar usage / Chromeツールバーの使用率
+
+Hover over the LLMs Monitor toolbar icon to see the latest weekly usage recorded by the extension. Click the icon to open the monitor.
+
+ChromeのツールバーでLLMs Monitorのアイコンにポインターを置くと、拡張が取得した週間使用率が表示されます。クリックするとモニターが開きます。
